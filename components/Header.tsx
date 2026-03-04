@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { ChevronDown, Menu, X, LayoutDashboard } from "lucide-react";
-import { SignInButton, UserButton, Show } from "@clerk/nextjs";
+import { SignInButton, UserButton, Show, useUser } from "@clerk/nextjs";
 
 const navLinks = [
     { name: "Program Types", href: "#", hasDropdown: true },
@@ -15,7 +15,8 @@ const navLinks = [
 
 export default function Header() {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-    const [isSignInOpen, setIsSignInOpen] = useState(false);
+    const { user } = useUser();
+    const isSuperadmin = user?.publicMetadata?.role === "superadmin";
 
     return (
         <header className="sticky top-0 z-50 w-full bg-white border-b border-slate-100 shadow-sm">
@@ -52,7 +53,7 @@ export default function Header() {
                         <div className="ml-4">
                             <Show when="signed-out">
                                 <div className="flex items-center">
-                                    <SignInButton mode="modal">
+                                    <SignInButton mode="modal" forceRedirectUrl="/">
                                         <button className="flex items-center px-4 py-2 border-2 border-slate-800 rounded text-sm font-bold text-slate-800 hover:bg-slate-50 transition-all active:scale-95">
                                             Sign In
                                         </button>
@@ -63,11 +64,13 @@ export default function Header() {
                                 <div className="flex items-center space-x-4">
                                     <UserButton>
                                         <UserButton.MenuItems>
-                                            <UserButton.Link
-                                                label="Admin Dashboard"
-                                                labelIcon={<LayoutDashboard className="w-4 h-4" />}
-                                                href="/admin"
-                                            />
+                                            {isSuperadmin && (
+                                                <UserButton.Link
+                                                    label="Admin Dashboard"
+                                                    labelIcon={<LayoutDashboard className="w-4 h-4" />}
+                                                    href="/admin"
+                                                />
+                                            )}
                                         </UserButton.MenuItems>
                                     </UserButton>
                                 </div>
@@ -106,7 +109,7 @@ export default function Header() {
                     ))}
                     <div className="pt-4 px-3 space-y-3">
                         <Show when="signed-out">
-                            <SignInButton mode="modal">
+                            <SignInButton mode="modal" forceRedirectUrl="/">
                                 <button className="w-full flex justify-center items-center px-4 py-3 border-2 border-slate-800 rounded text-base font-bold text-slate-800 hover:bg-slate-50">
                                     Sign In
                                 </button>
@@ -117,11 +120,13 @@ export default function Header() {
                                 <div className="px-3 py-3">
                                     <UserButton showName>
                                         <UserButton.MenuItems>
-                                            <UserButton.Link
-                                                label="Admin Dashboard"
-                                                labelIcon={<LayoutDashboard className="w-4 h-4" />}
-                                                href="/admin"
-                                            />
+                                            {isSuperadmin && (
+                                                <UserButton.Link
+                                                    label="Admin Dashboard"
+                                                    labelIcon={<LayoutDashboard className="w-4 h-4" />}
+                                                    href="/admin"
+                                                />
+                                            )}
                                         </UserButton.MenuItems>
                                     </UserButton>
                                 </div>

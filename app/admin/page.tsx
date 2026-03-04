@@ -2,11 +2,12 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Plus, LayoutGrid, FileText } from "lucide-react";
+import { Plus, LayoutGrid, FileText, Users } from "lucide-react";
 import ProgramsManager from "./_components/ProgramsManager";
 import ArticlesManager from "./_components/ArticlesManager";
+import UsersManager from "./_components/UsersManager";
 
-type AdminTab = "programs" | "articles";
+type AdminTab = "programs" | "articles" | "users";
 
 export default function AdminDashboard() {
     const [activeTab, setActiveTab] = useState<AdminTab>("programs");
@@ -49,8 +50,8 @@ export default function AdminDashboard() {
                                 setIsCreatingArticle(false);
                             }}
                             className={`flex items-center gap-2 py-4 text-sm font-bold transition-all relative ${activeTab === "programs"
-                                    ? "text-cobalt-600"
-                                    : "text-gray-400 hover:text-gray-600"
+                                ? "text-cobalt-600"
+                                : "text-gray-400 hover:text-gray-600"
                                 }`}
                         >
                             <LayoutGrid className="w-4 h-4" />
@@ -65,13 +66,29 @@ export default function AdminDashboard() {
                                 setIsCreatingArticle(false);
                             }}
                             className={`flex items-center gap-2 py-4 text-sm font-bold transition-all relative ${activeTab === "articles"
-                                    ? "text-cobalt-600"
-                                    : "text-gray-400 hover:text-gray-600"
+                                ? "text-cobalt-600"
+                                : "text-gray-400 hover:text-gray-600"
                                 }`}
                         >
                             <FileText className="w-4 h-4" />
                             Manage Articles
                             {activeTab === "articles" && (
+                                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-cobalt-600" />
+                            )}
+                        </button>
+                        <button
+                            onClick={() => {
+                                setActiveTab("users");
+                                setIsCreatingArticle(false);
+                            }}
+                            className={`flex items-center gap-2 py-4 text-sm font-bold transition-all relative ${activeTab === "users"
+                                ? "text-cobalt-600"
+                                : "text-gray-400 hover:text-gray-600"
+                                }`}
+                        >
+                            <Users className="w-4 h-4" />
+                            Manage Team
+                            {activeTab === "users" && (
                                 <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-cobalt-600" />
                             )}
                         </button>
@@ -83,11 +100,13 @@ export default function AdminDashboard() {
             <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
                 {activeTab === "programs" ? (
                     <ProgramsManager />
-                ) : (
+                ) : activeTab === "articles" ? (
                     <ArticlesManager
                         isCreating={isCreatingArticle}
                         onCancelCreate={() => setIsCreatingArticle(false)}
                     />
+                ) : (
+                    <UsersManager />
                 )}
             </div>
         </div>
