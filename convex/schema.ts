@@ -45,6 +45,9 @@ export default defineSchema({
     providerLogo: v.optional(v.string()),
     coverImage: v.optional(v.string()),
     photos: v.array(v.string()),
+
+    // Timestamps
+    updatedAt: v.optional(v.number()),
   })
     .index("by_status", ["status"])
     .index("by_country", ["country"])

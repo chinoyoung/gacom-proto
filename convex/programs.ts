@@ -126,7 +126,7 @@ export const updateProgram = mutation({
     const patch = Object.fromEntries(
       Object.entries(fields).filter(([, v]) => v !== undefined)
     );
-    await ctx.db.patch(id, patch);
+    await ctx.db.patch(id, { ...patch, updatedAt: Date.now() });
     return id;
   },
 });

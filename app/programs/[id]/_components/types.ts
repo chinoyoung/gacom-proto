@@ -27,4 +27,6 @@ export interface Program {
   providerLogo?: string;
   coverImage?: string;
   photos: string[];
+  updatedAt?: number;
+  _creationTime: number;
 }

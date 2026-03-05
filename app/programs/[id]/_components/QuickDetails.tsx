@@ -8,6 +8,16 @@ interface QuickDetailsProps {
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
+function formatUpdatedAt(ts: number): string {
+  const diffMs = Date.now() - ts;
+  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+  if (diffDays === 0) return "Today";
+  if (diffDays === 1) return "Yesterday";
+  if (diffDays < 7) return `${diffDays} days ago`;
+  if (diffDays < 30) return `${Math.floor(diffDays / 7)} weeks ago`;
+  return new Date(ts).toLocaleDateString("en-US", { month: "long", year: "numeric" });
+}
+
 function capitalizeFirst(str: string): string {
   if (!str) return str;
   return str.charAt(0).toUpperCase() + str.slice(1).replace(/_/g, " ");
@@ -269,6 +279,21 @@ export default function QuickDetails({ program }: QuickDetailsProps) {
           <GridCell key={cell.label} {...cell} />
         ))}
       </div>
+
+      {/* Last updated */}
+      {(program.updatedAt ?? program._creationTime) && (
+        <div className="px-4 py-2.5 border-t border-slate-100 flex items-center gap-1.5">
+          <svg className="w-3 h-3 text-slate-300 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
+          </svg>
+          <p className="text-xs text-slate-400">
+            Listing updated{" "}
+            <span className="font-medium text-slate-500">
+              {formatUpdatedAt(program.updatedAt ?? program._creationTime)}
+            </span>
+          </p>
+        </div>
+      )}
     </div>
   );
 }
