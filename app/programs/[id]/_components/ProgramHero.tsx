@@ -28,7 +28,7 @@ export default function ProgramHero({ program }: ProgramHeroProps) {
   const facts: FactItem[] = [
     {
       key: "location",
-      icon: <MapPin className="w-4 h-4 text-[#0A5E85]" aria-hidden="true" />,
+      icon: <MapPin className="w-4 h-4 text-cobalt-500" aria-hidden="true" />,
       label: "Location",
       value: `${program.city}, ${program.country}`,
     },
@@ -40,7 +40,7 @@ export default function ProgramHero({ program }: ProgramHeroProps) {
       .join(" · ");
     facts.push({
       key: "terms",
-      icon: <Calendar className="w-4 h-4 text-[#0A5E85]" aria-hidden="true" />,
+      icon: <Calendar className="w-4 h-4 text-cobalt-500" aria-hidden="true" />,
       label: "Terms",
       value: termsValue,
     });
@@ -49,7 +49,7 @@ export default function ProgramHero({ program }: ProgramHeroProps) {
   if (program.duration) {
     facts.push({
       key: "duration",
-      icon: <Clock className="w-4 h-4 text-[#0A5E85]" aria-hidden="true" />,
+      icon: <Clock className="w-4 h-4 text-cobalt-500" aria-hidden="true" />,
       label: "Duration",
       value: program.duration,
     });
@@ -58,19 +58,9 @@ export default function ProgramHero({ program }: ProgramHeroProps) {
   if (program.cost) {
     facts.push({
       key: "cost",
-      icon: <Coins className="w-4 h-4 text-[#0A5E85]" aria-hidden="true" />,
+      icon: <Coins className="w-4 h-4 text-cobalt-500" aria-hidden="true" />,
       label: "Cost",
       value: program.cost,
-    });
-  }
-
-  if (program.applicationDeadline) {
-    facts.push({
-      key: "deadline",
-      icon: <Clock className="w-4 h-4 text-[#0A5E85]" aria-hidden="true" />,
-      label: "Apply by",
-      value: program.applicationDeadline,
-      urgent: true,
     });
   }
 
@@ -85,63 +75,73 @@ export default function ProgramHero({ program }: ProgramHeroProps) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
 
           {/* Two-column editorial layout */}
-          <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 lg:items-start">
+          <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 lg:items-center">
 
             {/* Left: identity + conversion info */}
             <div className="flex-1 min-w-0 lg:max-w-[55%] flex flex-col gap-4">
 
               {/* Provider + trust signals */}
               <div>
-                <p className="text-[11px] font-bold text-[#023D58] uppercase tracking-[0.15em] mb-2">
+                <p className="text-xs font-bold text-cobalt-700 uppercase tracking-[0.15em] mb-2">
                   {program.provider}
                 </p>
                 <div className="flex items-center gap-2 flex-wrap">
-                  <div className="flex items-center gap-1.5 bg-[#FFF9ED] text-[#B07B22] text-[12px] font-semibold px-3 py-1 rounded-full border border-[#F6E1B6]">
-                    <span className="text-[#D98C12]" aria-hidden="true">★</span>
+                  <div className="flex items-center gap-1.5 bg-sun-50 text-sun-700 text-xs font-semibold px-3 py-1 rounded-full border border-sun-100">
+                    <span className="text-sun-600" aria-hidden="true">★</span>
                     <span>{STATIC_RATING}</span>
-                    <span className="font-normal text-[#DCA757]">/ {STATIC_REVIEW_COUNT} reviews</span>
+                    <span className="font-normal text-sun-400">/ {STATIC_REVIEW_COUNT} reviews</span>
                   </div>
-                  <div className="flex items-center gap-1 bg-[#F0FDF4] text-[#297C46] text-[12px] font-semibold px-3 py-1 rounded-full border border-[#BCE8CB]">
-                    <CheckCircle className="w-3.5 h-3.5 text-[#359B55] shrink-0" aria-hidden="true" />
+                  <div className="flex items-center gap-1 bg-fern-50 text-fern-800 text-xs font-semibold px-3 py-1 rounded-full border border-fern-200">
+                    <CheckCircle className="w-3.5 h-3.5 text-fern-900 shrink-0" aria-hidden="true" />
                     Verified
                   </div>
                 </div>
               </div>
 
               {/* Title */}
-              <div>
-                <h1 className="text-3xl md:text-[34px] font-extrabold text-slate-900 leading-[1.15] tracking-tight mb-2">
+              <div className="flex items-stretch gap-4">
+                {program.providerLogo && (
+                  <div className="shrink-0 aspect-square w-16 h-16 rounded-lg border border-slate-200 bg-white shadow-sm overflow-hidden flex items-center justify-center">
+                    <img
+                      src={program.providerLogo}
+                      alt={`${program.provider} logo`}
+                      className="w-full h-full object-contain p-1"
+                    />
+                  </div>
+                )}
+                <h1 className="text-2xl md:text-3xl font-extrabold text-slate-900 leading-[1.15] tracking-tight mb-2">
                   {program.title}
                 </h1>
               </div>
 
               {/* Key facts strip */}
-              <div className="pt-4 border-t border-slate-200">
+              <div className="py-4 border-y border-slate-300">
                 <div className="grid grid-cols-2 gap-x-4 gap-y-3 sm:flex sm:flex-wrap sm:items-center sm:gap-x-5 sm:gap-y-3">
                   {facts.map((fact, idx) => (
                     <div key={fact.key} className="flex items-center gap-2 sm:contents">
                       {/* The fact item — always visible */}
                       <div className="flex items-center gap-2 min-w-0">
-                        <div className="flex items-center justify-center w-7 h-7 rounded-md bg-[#EEF4F8] shrink-0">
+                        <div className="flex items-center justify-center w-7 h-7 rounded-md bg-slate-100 shrink-0">
                           {fact.icon}
                         </div>
                         <div className="min-w-0">
-                          <p className="text-[10px] font-semibold uppercase tracking-wider text-slate-400 leading-none mb-0.5">
+                          <p className="text-xs font-semibold uppercase tracking-wider text-slate-400 leading-none mb-0.5">
                             {fact.label}
                           </p>
-                          <p className={`text-sm font-semibold leading-snug ${fact.urgent ? "text-[#9C4640]" : "text-slate-800"}`}>
+                          <p className={`text-sm font-semibold leading-snug ${fact.urgent ? "text-roman-700" : "text-slate-800"}`}>
                             {fact.value}
                           </p>
                         </div>
                       </div>
                       {/* Divider — desktop only, between items */}
                       {idx < facts.length - 1 && (
-                        <div className="hidden sm:block h-7 w-px bg-slate-200 self-center shrink-0" aria-hidden="true" />
+                        <div className="hidden sm:block h-7 w-px bg-slate-300 self-center shrink-0" aria-hidden="true" />
                       )}
                     </div>
                   ))}
                 </div>
               </div>
+
 
               {/* CTAs */}
               <div className="flex flex-wrap items-center gap-3 pt-1">
@@ -150,7 +150,7 @@ export default function ProgramHero({ program }: ProgramHeroProps) {
                     href={program.applyUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex justify-center items-center gap-2 px-5 py-2.5 bg-[#DA645A] text-white font-bold text-sm rounded-lg hover:bg-[#C6554C] transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#DA645A] focus-visible:ring-offset-2"
+                    className="inline-flex justify-center items-center gap-2 px-5 py-2.5 bg-roman-500 text-white font-bold text-sm rounded-lg hover:bg-roman-600 transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-roman-500 focus-visible:ring-offset-2"
                   >
                     Visit Website
                     <ExternalLink className="w-4 h-4" strokeWidth={2.5} aria-hidden="true" />
@@ -159,7 +159,7 @@ export default function ProgramHero({ program }: ProgramHeroProps) {
 
                 <button
                   type="button"
-                  className="inline-flex justify-center items-center px-5 py-2.5 bg-[#11688B] text-white font-bold text-sm rounded-lg hover:bg-[#0E5775] transition-colors shadow-sm cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#11688B] focus-visible:ring-offset-2"
+                  className="inline-flex justify-center items-center px-5 py-2.5 bg-cobalt-400 text-white font-bold text-sm rounded-lg hover:bg-cobalt-500 transition-colors shadow-sm cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-400 focus-visible:ring-offset-2"
                 >
                   Inquire Here
                 </button>
@@ -169,14 +169,14 @@ export default function ProgramHero({ program }: ProgramHeroProps) {
                     href={program.applyUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex justify-center items-center px-5 py-2.5 bg-[#11688B] text-white font-bold text-sm rounded-lg hover:bg-[#0E5775] transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#11688B] focus-visible:ring-offset-2"
+                    className="inline-flex justify-center items-center px-5 py-2.5 bg-cobalt-400 text-white font-bold text-sm rounded-lg hover:bg-cobalt-500 transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-400 focus-visible:ring-offset-2"
                   >
                     Apply Now
                   </a>
                 ) : (
                   <button
                     type="button"
-                    className="inline-flex justify-center items-center px-5 py-2.5 bg-[#11688B] text-white font-bold text-sm rounded-lg hover:bg-[#0E5775] transition-colors shadow-sm cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#11688B] focus-visible:ring-offset-2"
+                    className="inline-flex justify-center items-center px-5 py-2.5 bg-cobalt-400 text-white font-bold text-sm rounded-lg hover:bg-cobalt-500 transition-colors shadow-sm cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-400 focus-visible:ring-offset-2"
                   >
                     Apply Now
                   </button>
@@ -187,7 +187,7 @@ export default function ProgramHero({ program }: ProgramHeroProps) {
 
             {/* Right: compact photo grid */}
             <div className="w-full lg:w-[45%] shrink-0 mt-6 lg:mt-0">
-              <div className="h-[240px] sm:h-[340px] lg:h-[360px] rounded-xl overflow-hidden shadow-sm border border-slate-200/60">
+              <div className="h-60 sm:h-80 lg:h-96 rounded-xl overflow-hidden shadow-sm border border-slate-200/60">
                 <PhotoGrid photos={allPhotos} title={program.title} onPhotoClick={setLightboxIdx} />
               </div>
             </div>
@@ -280,7 +280,7 @@ interface PhotoGridProps {
 function PhotoGrid({ photos, title, onPhotoClick }: PhotoGridProps) {
   if (photos.length === 0) {
     return (
-      <div className="w-full h-full bg-gradient-to-br from-[#023D58] to-[#0A5E85] rounded-xl" />
+      <div className="w-full h-full bg-gradient-to-br from-cobalt-700 to-cobalt-500 rounded-xl" />
     );
   }
 
@@ -381,7 +381,7 @@ function PhotoGrid({ photos, title, onPhotoClick }: PhotoGridProps) {
             )}
           </div>
         ) : (
-          <div className="bg-[#EEF4F8]" />
+          <div className="bg-slate-100" />
         )}
       </div>
     </div>
@@ -397,7 +397,7 @@ export function ProgramHeroSkeleton() {
     <section className="bg-slate-100 border-b border-slate-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 animate-pulse">
 
-        <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 lg:items-start">
+        <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 lg:items-center">
           {/* Left Column Skeleton */}
           <div className="flex-1 min-w-0 lg:max-w-[55%] flex flex-col gap-4">
             <div>
@@ -408,9 +408,12 @@ export function ProgramHeroSkeleton() {
               </div>
             </div>
 
-            <div>
-              <div className="h-9 bg-slate-200 rounded w-[85%] mb-3" />
-              <div className="h-5 bg-slate-100 rounded w-full" />
+            <div className="flex items-start gap-4">
+              <div className="w-16 h-16 rounded-lg bg-slate-100 shrink-0" />
+              <div className="flex-1">
+                <div className="h-9 bg-slate-200 rounded w-[85%] mb-3" />
+                <div className="h-5 bg-slate-100 rounded w-full" />
+              </div>
             </div>
 
             <div className="pt-4 border-t border-slate-200">
@@ -428,15 +431,15 @@ export function ProgramHeroSkeleton() {
             </div>
 
             <div className="flex flex-wrap items-center gap-3 pt-1">
-              <div className="h-10 bg-slate-200 rounded-lg w-[140px]" />
-              <div className="h-10 bg-slate-200 rounded-lg w-[120px]" />
-              <div className="h-10 bg-slate-200 rounded-lg w-[110px]" />
+              <div className="h-10 bg-slate-200 rounded-lg w-36" />
+              <div className="h-10 bg-slate-200 rounded-lg w-32" />
+              <div className="h-10 bg-slate-200 rounded-lg w-28" />
             </div>
           </div>
 
           {/* Right Column Skeleton */}
           <div className="w-full lg:w-[45%] shrink-0 mt-6 lg:mt-0">
-            <div className="h-[240px] sm:h-[340px] lg:h-[360px] rounded-xl bg-slate-100 overflow-hidden" />
+            <div className="h-60 sm:h-80 lg:h-96 rounded-xl bg-slate-100 overflow-hidden" />
           </div>
         </div>
       </div>

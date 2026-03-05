@@ -580,11 +580,11 @@ export default function ReviewsManager({ isCreating, onCancelCreate }: ReviewsMa
                                         </td>
                                         <td className="px-6 py-4">
                                             {review.status === "published" ? (
-                                                <span className="px-2.5 py-1 bg-green-100 text-green-700 rounded-full text-[10px] font-bold uppercase tracking-wide">
+                                                <span className="px-2.5 py-1 bg-green-100 text-green-700 rounded-full text-xs font-bold uppercase tracking-wide">
                                                     Published
                                                 </span>
                                             ) : (
-                                                <span className="px-2.5 py-1 bg-gray-100 text-gray-500 rounded-full text-[10px] font-bold uppercase tracking-wide">
+                                                <span className="px-2.5 py-1 bg-gray-100 text-gray-500 rounded-full text-xs font-bold uppercase tracking-wide">
                                                     Draft
                                                 </span>
                                             )}

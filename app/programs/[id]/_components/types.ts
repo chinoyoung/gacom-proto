@@ -24,6 +24,7 @@ export interface Program {
   housingType?: string;
   languageOfInstruction?: string;
   creditsAvailable?: string;
+  providerLogo?: string;
   coverImage?: string;
   photos: string[];
 }

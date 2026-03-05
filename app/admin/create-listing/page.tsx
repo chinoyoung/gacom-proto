@@ -50,6 +50,7 @@ interface ProgramFormData {
   languageOfInstruction: string;
   creditsAvailable: string;
   // Step 7
+  providerLogo: string;
   coverImage: string;
   photos: string[];
 }
@@ -78,6 +79,7 @@ const INITIAL_FORM_DATA: ProgramFormData = {
   housingType: "",
   languageOfInstruction: "",
   creditsAvailable: "",
+  providerLogo: "",
   coverImage: "",
   photos: [],
 };
@@ -93,6 +95,7 @@ function CreateListingContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const editId = searchParams.get("id") as Id<"programs"> | null;
+  const editSlug = searchParams.get("slug");
 
   const [currentStep, setCurrentStep] = useState(1);
   const [programId, setProgramId] = useState<Id<"programs"> | null>(editId);
@@ -100,9 +103,17 @@ function CreateListingContent() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [toast, setToast] = useState<ToastState | null>(null);
 
-  const existingProgram = useQuery(api.programs.getProgram, editId ? { id: editId } : "skip");
+  const programById = useQuery(api.programs.getProgram, editId ? { id: editId } : "skip");
+  const programBySlug = useQuery(api.programs.getBySlug, editSlug && !editId ? { slug: editSlug } : "skip");
+  const existingProgram = programById ?? programBySlug;
   const createProgram = useMutation(api.programs.createProgram);
   const updateProgram = useMutation(api.programs.updateProgram);
+
+  useEffect(() => {
+    if (existingProgram && !programId) {
+      setProgramId(existingProgram._id);
+    }
+  }, [existingProgram, programId]);
 
   useEffect(() => {
     if (existingProgram) {
@@ -130,6 +141,7 @@ function CreateListingContent() {
         housingType: existingProgram.housingType || "",
         languageOfInstruction: existingProgram.languageOfInstruction || "",
         creditsAvailable: existingProgram.creditsAvailable || "",
+        providerLogo: existingProgram.providerLogo || "",
         coverImage: existingProgram.coverImage || "",
         photos: existingProgram.photos || [],
       });
@@ -183,6 +195,7 @@ function CreateListingContent() {
         creditsAvailable: formData.creditsAvailable || undefined,
       },
       7: {
+        providerLogo: formData.providerLogo || undefined,
         coverImage: formData.coverImage || undefined,
         photos: formData.photos,
       },
@@ -345,6 +358,7 @@ function CreateListingContent() {
         return (
           <Step7Media
             data={{
+              providerLogo: formData.providerLogo,
               coverImage: formData.coverImage,
               photos: formData.photos,
             }}

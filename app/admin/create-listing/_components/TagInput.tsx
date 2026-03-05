@@ -48,7 +48,7 @@ export default function TagInput({
 
   return (
     <div className="relative">
-      <div className="min-h-[42px] w-full rounded-md border border-gray-300 bg-white px-3 py-2 flex flex-wrap gap-1.5 focus-within:ring-2 focus-within:ring-cobalt-500 focus-within:border-cobalt-500">
+      <div className="min-h-11 w-full rounded-md border border-gray-300 bg-white px-3 py-2 flex flex-wrap gap-1.5 focus-within:ring-2 focus-within:ring-cobalt-500 focus-within:border-cobalt-500">
         {tags.map((tag, index) => (
           <span
             key={index}
@@ -82,7 +82,7 @@ export default function TagInput({
           }}
           onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
           placeholder={tags.length === 0 ? placeholder : ""}
-          className="flex-1 min-w-[120px] border-none bg-transparent text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-0 p-0"
+          className="flex-1 min-w-32 border-none bg-transparent text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-0 p-0"
         />
       </div>
 

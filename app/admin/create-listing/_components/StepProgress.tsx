@@ -89,7 +89,7 @@ export default function StepProgress({ currentStep, onStepClick, formData }: Ste
                 </div>
                 <span
                   className={[
-                    "mt-1 text-[10px] font-bold uppercase tracking-wider whitespace-nowrap",
+                    "mt-1 text-xs font-bold uppercase tracking-wider whitespace-nowrap",
                     isActive || isCompleted ? "text-cobalt-500" : isFulfilled ? "text-green-600" : "text-gray-400",
                   ].join(" ")}
                 >

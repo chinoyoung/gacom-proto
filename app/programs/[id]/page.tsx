@@ -7,7 +7,6 @@ import { api } from "@/convex/_generated/api";
 
 import ProgramHero, { ProgramHeroSkeleton } from "./_components/ProgramHero";
 import QuickDetails from "./_components/QuickDetails";
-import ApplyCTA from "./_components/ApplyCTA";
 import ProgramOverview from "./_components/ProgramOverview";
 import WhatsIncluded from "./_components/WhatsIncluded";
 import SubjectAreas from "./_components/SubjectAreas";
@@ -21,10 +20,10 @@ import type { Program } from "./_components/types";
 
 function MobileStickyBar({ program }: { program: Program }) {
   return (
-    <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-slate-200 px-4 py-3 flex gap-3 shadow-[0_-4px_16px_rgba(0,0,0,0.08)]">
+    <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-slate-200 px-4 py-3 flex gap-3 shadow-lg">
       <button
         type="button"
-        className="flex-1 px-4 py-2.5 border-2 border-cobalt-500 text-cobalt-600 font-semibold text-sm rounded-lg hover:bg-cobalt-500/[0.07] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 cursor-pointer"
+        className="flex-1 px-4 py-2.5 border-2 border-cobalt-500 text-cobalt-600 font-semibold text-sm rounded-lg hover:bg-cobalt-500/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 cursor-pointer"
       >
         Send Inquiry
       </button>
@@ -80,9 +79,9 @@ function LoadingSkeleton() {
               </div>
             ))}
           </div>
-          <div className="lg:w-[320px] xl:w-[340px] shrink-0 space-y-4">
-            <div className="h-[220px] bg-slate-50 rounded-xl border border-slate-100" />
-            <div className="h-[400px] bg-slate-50 rounded-xl border border-slate-100" />
+          <div className="lg:w-80 xl:w-80 shrink-0 space-y-4">
+            <div className="h-56 bg-slate-50 rounded-xl border border-slate-100" />
+            <div className="h-96 bg-slate-50 rounded-xl border border-slate-100" />
           </div>
         </div>
       </div>
@@ -153,7 +152,7 @@ export default function ProgramDetailPage() {
           {/* Mobile: simple back link */}
           <Link
             href="/programs"
-            className="sm:hidden inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-[#084B6A] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0A5E85] rounded"
+            className="sm:hidden inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-cobalt-600 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 rounded"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
@@ -166,7 +165,7 @@ export default function ProgramDetailPage() {
             <li>
               <Link
                 href="/"
-                className="hover:text-[#084B6A] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0A5E85] rounded"
+                className="hover:text-cobalt-600 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 rounded"
               >
                 Home
               </Link>
@@ -175,7 +174,7 @@ export default function ProgramDetailPage() {
             <li>
               <Link
                 href="/programs"
-                className="hover:text-[#084B6A] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0A5E85] rounded"
+                className="hover:text-cobalt-600 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 rounded"
               >
                 Programs
               </Link>
@@ -184,14 +183,14 @@ export default function ProgramDetailPage() {
             <li>
               <Link
                 href={`/programs?city=${encodeURIComponent(program.city)}`}
-                className="hover:text-[#084B6A] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0A5E85] rounded"
+                className="hover:text-cobalt-600 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 rounded"
               >
                 {program.city}
               </Link>
             </li>
             <li aria-hidden="true" className="text-slate-300">/</li>
             <li
-              className="text-slate-700 font-medium truncate max-w-[240px]"
+              className="text-slate-700 font-medium truncate max-w-60"
               aria-current="page"
             >
               {program.title}
@@ -227,10 +226,7 @@ export default function ProgramDetailPage() {
             </div>
 
             {/* ── Right sidebar ── */}
-            <div className="w-full lg:w-[320px] xl:w-[340px] shrink-0 lg:sticky lg:top-6 lg:self-start space-y-4">
-              {/* Apply CTA first — primary conversion goal */}
-              <ApplyCTA program={program} />
-
+            <div className="w-full lg:w-80 xl:w-80 shrink-0 lg:sticky lg:top-6 lg:self-start space-y-4">
               {/* Quick details second — supporting info */}
               <QuickDetails program={program} />
             </div>

@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 import { ChevronDown, Menu, X, LayoutDashboard } from "lucide-react";
 import { SignInButton, UserButton, Show, useUser } from "@clerk/nextjs";
 
@@ -17,6 +18,11 @@ export default function Header() {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const { user } = useUser();
     const isSuperadmin = user?.publicMetadata?.role === "superadmin";
+    const pathname = usePathname();
+    const programEditMatch = pathname?.match(/^\/programs\/([^/]+)$/);
+    const editProgramHref = programEditMatch
+        ? `/admin/create-listing?slug=${programEditMatch[1]}`
+        : null;
 
     return (
         <header className="sticky top-0 z-50 w-full bg-white border-b border-slate-100 shadow-sm">
@@ -38,6 +44,14 @@ export default function Header() {
 
                     {/* Desktop Navigation */}
                     <nav className="hidden lg:flex items-center space-x-8">
+                        {isSuperadmin && editProgramHref && (
+                            <Link
+                                href={editProgramHref}
+                                className="flex items-center text-sm font-bold text-slate-800 hover:text-cobalt-600 transition-colors"
+                            >
+                                Edit Program
+                            </Link>
+                        )}
                         {navLinks.map((link) => (
                             <Link
                                 key={link.name}
@@ -98,6 +112,14 @@ export default function Header() {
             {/* Mobile Menu */}
             {isMobileMenuOpen && (
                 <div className="lg:hidden bg-white border-t border-slate-100 px-4 pt-2 pb-6 space-y-1 shadow-lg">
+                    {isSuperadmin && editProgramHref && (
+                        <Link
+                            href={editProgramHref}
+                            className="block px-3 py-3 text-base font-bold text-slate-700 hover:text-cobalt-600 hover:bg-slate-50 rounded-md"
+                        >
+                            Edit Program
+                        </Link>
+                    )}
                     {navLinks.map((link) => (
                         <Link
                             key={link.name}

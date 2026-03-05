@@ -130,7 +130,7 @@ export default function Footer() {
                                     <li key={link.name}>
                                         <Link
                                             href={link.href}
-                                            className="text-slate-600 hover:text-cobalt-600 text-[13px] transition-colors"
+                                            className="text-slate-600 hover:text-cobalt-600 text-sm transition-colors"
                                         >
                                             {link.name}
                                         </Link>
@@ -188,14 +188,14 @@ export default function Footer() {
                         />
                     </div>
 
-                    <div className="w-full flex flex-col md:flex-row justify-between items-center gap-4 text-[12px] text-slate-500">
+                    <div className="w-full flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-500">
                         <div className="flex gap-4">
                             <Link href="#" className="hover:text-slate-900 transition-colors">Terms of Use & Privacy</Link>
                             <Link href="#" className="hover:text-slate-900 transition-colors">Legal</Link>
                             <Link href="#" className="hover:text-slate-900 transition-colors">Sitemap</Link>
                         </div>
 
-                        <div className="font-serif italic text-slate-500 text-[16px] md:text-[18px]">
+                        <div className="font-serif italic text-slate-500 text-base md:text-lg">
                             Meaningful Travel Starts Here
                         </div>
 

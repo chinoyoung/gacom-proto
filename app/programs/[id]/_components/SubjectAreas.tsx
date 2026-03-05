@@ -22,7 +22,7 @@ export default function SubjectAreas({ program }: SubjectAreasProps) {
         {program.subjectAreas.map((subject, idx) => (
           <span
             key={idx}
-            className="inline-flex items-center px-3 py-1.5 bg-slate-100 text-cobalt-700 border border-slate-200 rounded-full text-sm font-medium hover:bg-cobalt-500/[0.1] hover:border-cobalt-300/50 transition-colors"
+            className="inline-flex items-center px-3 py-1.5 bg-slate-100 text-cobalt-700 border border-slate-200 rounded-full text-sm font-medium hover:bg-cobalt-500/10 hover:border-cobalt-300/50 transition-colors"
           >
             {subject}
           </span>

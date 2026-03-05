@@ -18,8 +18,7 @@ function capitalizeFirst(str: string): string {
 function MapPinIcon() {
   return (
     <svg
-      className="w-3.5 h-3.5 shrink-0"
-      style={{ color: "#0A5E85" }}
+      className="w-3.5 h-3.5 shrink-0 text-cobalt-500"
       fill="currentColor"
       viewBox="0 0 20 20"
       aria-hidden="true"
@@ -36,8 +35,7 @@ function MapPinIcon() {
 function CalendarIcon() {
   return (
     <svg
-      className="w-3.5 h-3.5 shrink-0"
-      style={{ color: "#0A5E85" }}
+      className="w-3.5 h-3.5 shrink-0 text-cobalt-500"
       fill="currentColor"
       viewBox="0 0 20 20"
       aria-hidden="true"
@@ -54,8 +52,7 @@ function CalendarIcon() {
 function ClockIcon() {
   return (
     <svg
-      className="w-3.5 h-3.5 shrink-0"
-      style={{ color: "#0A5E85" }}
+      className="w-3.5 h-3.5 shrink-0 text-cobalt-500"
       fill="currentColor"
       viewBox="0 0 20 20"
       aria-hidden="true"
@@ -72,8 +69,7 @@ function ClockIcon() {
 function GraduationCapIcon() {
   return (
     <svg
-      className="w-3.5 h-3.5 shrink-0"
-      style={{ color: "#0A5E85" }}
+      className="w-3.5 h-3.5 shrink-0 text-cobalt-500"
       fill="currentColor"
       viewBox="0 0 20 20"
       aria-hidden="true"
@@ -86,8 +82,7 @@ function GraduationCapIcon() {
 function GlobeIcon() {
   return (
     <svg
-      className="w-3.5 h-3.5 shrink-0"
-      style={{ color: "#0A5E85" }}
+      className="w-3.5 h-3.5 shrink-0 text-cobalt-500"
       fill="currentColor"
       viewBox="0 0 20 20"
       aria-hidden="true"
@@ -104,8 +99,7 @@ function GlobeIcon() {
 function HomeIcon() {
   return (
     <svg
-      className="w-3.5 h-3.5 shrink-0"
-      style={{ color: "#0A5E85" }}
+      className="w-3.5 h-3.5 shrink-0 text-cobalt-500"
       fill="currentColor"
       viewBox="0 0 20 20"
       aria-hidden="true"
@@ -118,8 +112,7 @@ function HomeIcon() {
 function ChatIcon() {
   return (
     <svg
-      className="w-3.5 h-3.5 shrink-0"
-      style={{ color: "#0A5E85" }}
+      className="w-3.5 h-3.5 shrink-0 text-cobalt-500"
       fill="currentColor"
       viewBox="0 0 20 20"
       aria-hidden="true"
@@ -136,8 +129,7 @@ function ChatIcon() {
 function CertificateIcon() {
   return (
     <svg
-      className="w-3.5 h-3.5 shrink-0"
-      style={{ color: "#0A5E85" }}
+      className="w-3.5 h-3.5 shrink-0 text-cobalt-500"
       fill="currentColor"
       viewBox="0 0 20 20"
       aria-hidden="true"
@@ -169,7 +161,7 @@ function GridCell({ icon, label, value, fullWidth = false }: GridCellProps) {
     >
       <div className="flex items-center gap-1.5">
         {icon}
-        <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-400 leading-none">
+        <span className="text-xs font-semibold uppercase tracking-wider text-slate-400 leading-none">
           {label}
         </span>
       </div>
@@ -265,7 +257,7 @@ export default function QuickDetails({ program }: QuickDetailsProps) {
   return (
     <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden sticky top-6 self-start">
       {/* Header */}
-      <div className="px-5 py-4" style={{ backgroundColor: "#0A5E85" }}>
+      <div className="px-5 py-4 bg-cobalt-500">
         <h2 className="text-sm font-semibold text-white tracking-wide uppercase">
           Quick Details
         </h2>

@@ -205,9 +205,9 @@ export default function ArticlesManager({
                             {/* Preview Column */}
                             <div className="space-y-6">
                                 <h3 className="text-sm font-bold text-gray-400 uppercase tracking-widest">Card Preview</h3>
-                                <div className="bg-gray-50 rounded-xl border-2 border-dashed border-gray-200 p-8 flex items-center justify-center min-h-[400px]">
+                                <div className="bg-gray-50 rounded-xl border-2 border-dashed border-gray-200 p-8 flex items-center justify-center min-h-96">
                                     {formData.title || formData.coverImage ? (
-                                        <div className="w-[340px] shadow-2xl scale-110">
+                                        <div className="w-80 shadow-2xl scale-110">
                                             <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col pointer-events-none">
                                                 <div className="relative aspect-[16/10] overflow-hidden bg-slate-100">
                                                     {formData.coverImage ? (
@@ -225,14 +225,14 @@ export default function ArticlesManager({
                                                     )}
                                                     {formData.tags && (
                                                         <div className="absolute top-4 left-4">
-                                                            <span className="bg-[#172B4D]/80 backdrop-blur-sm text-white px-3 py-1.5 rounded-full text-[10px] font-bold tracking-wide uppercase">
+                                                            <span className="bg-cobalt-700/80 backdrop-blur-sm text-white px-3 py-1.5 rounded-full text-xs font-bold tracking-wide uppercase">
                                                                 {formData.tags.split(",")[0].trim()}
                                                             </span>
                                                         </div>
                                                     )}
                                                 </div>
                                                 <div className="p-6">
-                                                    <h3 className="text-xl font-bold text-[#172B4D] leading-tight mb-6 line-clamp-2 min-h-[3rem]">
+                                                    <h3 className="text-xl font-bold text-slate-900 leading-tight mb-6 line-clamp-2 min-h-[3rem]">
                                                         {formData.title || "Your Title Here"}
                                                     </h3>
                                                     <div className="mt-auto flex items-center justify-between">
@@ -310,7 +310,7 @@ export default function ArticlesManager({
                                         <td className="px-6 py-4">
                                             <div className="flex gap-1 flex-wrap">
                                                 {article.tags.map(t => (
-                                                    <span key={t} className="px-2 py-0.5 bg-gray-100 text-gray-600 rounded text-[10px] font-bold uppercase">{t}</span>
+                                                    <span key={t} className="px-2 py-0.5 bg-gray-100 text-gray-600 rounded text-xs font-bold uppercase">{t}</span>
                                                 ))}
                                             </div>
                                         </td>

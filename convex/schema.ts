@@ -42,6 +42,7 @@ export default defineSchema({
     hostInstitution: v.optional(v.string()),
 
     // Media (URL strings for prototype)
+    providerLogo: v.optional(v.string()),
     coverImage: v.optional(v.string()),
     photos: v.array(v.string()),
   })

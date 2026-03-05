@@ -9,7 +9,7 @@ export default function Home() {
         <div className="max-w-5xl mx-auto px-6">
           <div className="inline-flex items-center space-x-2 bg-slate-50 rounded-full px-3 py-1 mb-6 border border-slate-100">
             <span className="flex h-1.5 w-1.5 rounded-full bg-cobalt-500 animate-pulse"></span>
-            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500">Internal Prototype</span>
+            <span className="text-xs font-bold uppercase tracking-[0.2em] text-slate-500">Internal Prototype</span>
           </div>
           <h1 className="text-4xl font-extrabold tracking-tight text-slate-900 mb-4">
             Design <span className="text-cobalt-600">Prototypes.</span>
@@ -71,13 +71,13 @@ export default function Home() {
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <div className="w-8 h-8 rounded bg-slate-100 flex items-center justify-center">
-                <span className="font-bold text-[10px] text-slate-400">GA</span>
+                <span className="font-bold text-xs text-slate-400">GA</span>
               </div>
               <p className="text-xs font-bold text-slate-400 uppercase tracking-[0.2em]">
                 Restricted Engineering Environment
               </p>
             </div>
-            <p className="text-[10px] text-slate-300 font-medium italic">
+            <p className="text-xs text-slate-300 font-medium italic">
               Property of GoAbroad.com
             </p>
           </div>
@@ -121,14 +121,14 @@ function ModuleListItem({
           <div className="flex items-center space-x-3 mb-0.5">
             <h3 className="font-bold text-slate-900 tracking-tight">{title}</h3>
             {tag && (
-              <span className={`text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border 
+              <span className={`text-xs font-bold uppercase tracking-wider px-2 py-0.5 rounded border 
                 ${isPrimary ? 'bg-cobalt-50 text-white border-cobalt-100' : 'bg-slate-50 text-slate-500 border-slate-100'}
               `}>
                 {tag}
               </span>
             )}
             {isDraft && (
-              <span className="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-slate-100 text-slate-400 border border-slate-200 italic">
+              <span className="text-xs font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-slate-100 text-slate-400 border border-slate-200 italic">
                 Coming Soon
               </span>
             )}
@@ -140,7 +140,7 @@ function ModuleListItem({
       </div>
 
       {!isDraft && (
-        <div className="mt-4 md:mt-0 flex items-center font-bold text-[11px] uppercase tracking-widest text-slate-300 group-hover:text-cobalt-600 transition-colors">
+        <div className="mt-4 md:mt-0 flex items-center font-bold text-xs uppercase tracking-widest text-slate-300 group-hover:text-cobalt-600 transition-colors">
           Open <ArrowRight className="w-3.5 h-3.5 ml-2 group-hover:translate-x-1 transition-transform" />
         </div>
       )}

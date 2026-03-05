@@ -74,7 +74,7 @@ function ReviewCard({ review }: ReviewCardProps) {
         </div>
         <div className="flex items-center gap-2 shrink-0">
           {/* Overall rating badge */}
-          <span className="flex items-center gap-1.5 text-[#B07B22]">
+          <span className="flex items-center gap-1.5 text-sun-700">
             <span className="text-amber-400 text-lg">★</span>
             <span className="font-bold text-lg">{review.overallRating}</span>
           </span>
@@ -122,7 +122,7 @@ function ReviewCard({ review }: ReviewCardProps) {
       <button
         type="button"
         onClick={() => setExpanded((prev) => !prev)}
-        className="text-sm font-semibold text-[#0A5E85] hover:underline cursor-pointer flex items-center gap-1 mt-3"
+        className="text-sm font-semibold text-cobalt-500 hover:underline cursor-pointer flex items-center gap-1 mt-3"
       >
         {expanded ? (
           <>
@@ -247,14 +247,14 @@ export default function ProgramReviews({ programId }: ProgramReviewsProps) {
         <div className="flex flex-wrap items-center gap-3">
           <button
             type="button"
-            className="px-4 py-2 bg-[#0A5E85] text-white font-semibold text-sm rounded-lg hover:bg-[#084f70] transition-colors"
+            className="px-4 py-2 bg-cobalt-500 text-white font-semibold text-sm rounded-lg hover:bg-cobalt-600 transition-colors"
           >
             Review this Program
           </button>
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value as SortBy)}
-            className="px-3 py-2 border border-slate-200 rounded-lg text-sm font-medium text-slate-700 bg-white focus:outline-none focus:ring-2 focus:ring-[#0A5E85]"
+            className="px-3 py-2 border border-slate-200 rounded-lg text-sm font-medium text-slate-700 bg-white focus:outline-none focus:ring-2 focus:ring-cobalt-500"
           >
             <option value="recent">Recent</option>
             <option value="highest">Highest Rated</option>

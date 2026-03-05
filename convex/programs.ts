@@ -115,6 +115,7 @@ export const updateProgram = mutation({
     languageOfInstruction: v.optional(v.string()),
     creditsAvailable: v.optional(v.string()),
     // Media
+    providerLogo: v.optional(v.string()),
     coverImage: v.optional(v.string()),
     photos: v.optional(v.array(v.string())),
     // Status

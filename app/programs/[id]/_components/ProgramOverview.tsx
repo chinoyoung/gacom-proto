@@ -35,7 +35,7 @@ export default function ProgramOverview({ program }: ProgramOverviewProps) {
       )}
 
       {program.hostInstitution && (
-        <div className="mt-8 flex items-start gap-2.5 bg-cobalt-500/[0.07] border border-cobalt-300/30 rounded-lg p-3 sm:p-4">
+        <div className="mt-8 flex items-start gap-2.5 bg-cobalt-500/10 border border-cobalt-300/30 rounded-lg p-3 sm:p-4">
           <svg
             className="w-5 h-5 text-cobalt-500 shrink-0 mt-0.5"
             fill="currentColor"

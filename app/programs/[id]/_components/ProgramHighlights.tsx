@@ -40,7 +40,7 @@ export default function ProgramHighlights({ program }: ProgramHighlightsProps) {
         {program.highlights.map((highlight, idx) => (
           <div
             key={idx}
-            className="group relative flex flex-col gap-3 p-4 sm:p-5 rounded-2xl bg-white border border-slate-100 shadow-[0_2px_8px_-2px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_24px_-4px_rgba(0,0,0,0.08)] transition-all duration-300"
+            className="group relative flex flex-col gap-3 p-4 sm:p-5 rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-md transition-all duration-300"
           >
             {/* Subtle top indicator */}
             <div className="absolute top-0 left-6 right-6 h-px bg-gradient-to-r from-transparent via-cobalt-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -49,7 +49,7 @@ export default function ProgramHighlights({ program }: ProgramHighlightsProps) {
               <CheckIcon />
             </div>
 
-            <p className="text-[14px] text-slate-600 leading-relaxed font-medium">
+            <p className="text-sm text-slate-600 leading-relaxed font-medium">
               {highlight}
             </p>
           </div>

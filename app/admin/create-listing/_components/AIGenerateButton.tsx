@@ -83,6 +83,7 @@ export default function AIGenerateButton({
                 mockData.creditsAvailable = "12-15 credits";
                 break;
             case 7:
+                mockData.providerLogo = "https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&q=80&w=128";
                 mockData.coverImage = "https://images.unsplash.com/photo-1518780664697-55e3ad937233";
                 mockData.photos = ["https://images.unsplash.com/photo-1518780664697-55e3ad937233"];
                 break;

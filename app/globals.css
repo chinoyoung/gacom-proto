@@ -16,6 +16,7 @@
   --color-cobalt-100: #14A3C3;
   --color-cobalt-200: #0F83B9;
   --color-cobalt-300: #0875A7;
+  --color-cobalt-400: #11688B;
   --color-cobalt-500: #0A5E85;
   --color-cobalt-600: #084B6A;
   --color-cobalt-700: #023D58;
@@ -28,18 +29,24 @@
   --color-roman-700: #9C4640;
 
   /* Sun */
+  --color-sun-50: #FFF9ED;
+  --color-sun-100: #F6E1B6;
   --color-sun-200: #FDD79D;
   --color-sun-300: #FCC570;
+  --color-sun-400: #DCA757;
   --color-sun-500: #FAA929;
-  --color-sun-600: #E49A25;
+  --color-sun-600: #D98C12;
   --color-sun-700: #B2781D;
 
   /* Fern */
+  --color-fern-50: #F0FDF4;
   --color-fern-200: #b9dabf;
   --color-fern-300: #9AC9A2;
   --color-fern-500: #68AF74;
   --color-fern-600: #5F9F6A;
   --color-fern-700: #4A7C52;
+  --color-fern-800: #297C46;
+  --color-fern-900: #359B55;
 }
 
 

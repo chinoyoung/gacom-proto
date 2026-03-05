@@ -5,6 +5,7 @@ import TagInput from "./TagInput";
 import AIGenerateButton from "./AIGenerateButton";
 
 interface Step7Data {
+  providerLogo: string;
   coverImage: string;
   photos: string[];
 }
@@ -49,10 +50,16 @@ function ImagePreview({ url, alt }: { url: string; alt: string }) {
 
 export default function Step7Media({ data, onChange, formData }: Step7MediaProps) {
   const [coverImageError, setCoverImageError] = useState(false);
+  const [logoError, setLogoError] = useState(false);
 
   const handleCoverImageChange = (url: string) => {
     setCoverImageError(false);
     onChange({ coverImage: url });
+  };
+
+  const handleLogoChange = (url: string) => {
+    setLogoError(false);
+    onChange({ providerLogo: url });
   };
 
   return (
@@ -71,6 +78,45 @@ export default function Step7Media({ data, onChange, formData }: Step7MediaProps
       />
 
       <div className="space-y-5">
+        {/* Provider Logo */}
+        <div>
+          <label
+            htmlFor="providerLogo"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Provider Logo URL{" "}
+            <span className="text-gray-400 font-normal">(optional)</span>
+          </label>
+          <p className="mt-0.5 text-xs text-gray-500">
+            Displayed beside the program title. Use a square logo (at least 128×128px).
+          </p>
+          <div className="mt-1 flex items-center gap-3">
+            <input
+              id="providerLogo"
+              type="url"
+              value={data.providerLogo}
+              onChange={(e) => handleLogoChange(e.target.value)}
+              placeholder="https://example.com/logo.png"
+              className="block w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder-gray-400 shadow-sm focus:border-cobalt-500 focus:outline-none focus:ring-2 focus:ring-cobalt-500"
+            />
+            {data.providerLogo && isValidUrl(data.providerLogo) && (
+              logoError ? (
+                <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-lg border border-red-200 bg-red-50 text-xs text-red-400">
+                  Failed
+                </div>
+              ) : (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={data.providerLogo}
+                  alt="Provider logo preview"
+                  onError={() => setLogoError(true)}
+                  className="h-16 w-16 shrink-0 rounded-lg object-contain border border-gray-200 bg-white p-1"
+                />
+              )
+            )}
+          </div>
+        </div>
+
         {/* Cover Image */}
         <div>
           <label

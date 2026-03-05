@@ -19,7 +19,7 @@ export async function POST(req: Request) {
 
         switch (step) {
             case 0:
-                fieldList = "ALL fields (title, provider, hostInstitution, slug, city, country, terms, duration, educationLevels, eligibleNationalities, ageRequirement, description, whatsIncluded, subjectAreas, highlights, cost, applicationDeadline, contactEmail, contactPhone, applyUrl, housingType, languageOfInstruction, creditsAvailable, coverImage, photos)";
+                fieldList = "ALL fields (title, provider, hostInstitution, slug, city, country, terms, duration, educationLevels, eligibleNationalities, ageRequirement, description, whatsIncluded, subjectAreas, highlights, cost, applicationDeadline, contactEmail, contactPhone, applyUrl, housingType, languageOfInstruction, creditsAvailable, providerLogo, coverImage, photos)";
                 stepInstructions = "Generate a complete, realistic study abroad program listing with all fields filled. Ensure high quality for the description and highlights. terms must be an array from ['fall', 'spring', 'summer', 'academic_year', 'year_round']. educationLevels must be an array from ['freshman', 'sophomore', 'junior', 'senior', 'graduate']. Suggest relevant Unsplash photo URLs for coverImage and photos array.";
                 break;
             case 1:
@@ -47,8 +47,8 @@ export async function POST(req: Request) {
                 stepInstructions = "Suggest realistic pricing ($), application deadline, contact email, contact phone, and application URL. housingType: shared apt/host family/etc. language: English/Local/etc. credits: typical semester credits.";
                 break;
             case 7:
-                fieldList = "{ coverImage, photos }";
-                stepInstructions = "Suggest a relevant, high-quality Unsplash image URL for the coverImage and an array of 3-5 additional high-quality Unsplash image URLs for the photos array. Ensure they are based on the program's location and theme. Example: https://images.unsplash.com/photo-XXX?auto=format&fit=crop&q=80&w=1200";
+                fieldList = "{ providerLogo, coverImage, photos }";
+                stepInstructions = "Suggest a relevant, high-quality Unsplash image URL for the coverImage and an array of 3-5 additional high-quality Unsplash image URLs for the photos array. Ensure they are based on the program's location and theme. Example: https://images.unsplash.com/photo-XXX?auto=format&fit=crop&q=80&w=1200. For providerLogo, suggest a plausible logo image URL from Unsplash (small square, e.g. a university building or institution crest). Use format: https://images.unsplash.com/photo-XXX?auto=format&fit=crop&q=80&w=128";
                 break;
             case "article":
                 fieldList = "{ title, author, tags, coverImage }";
