@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
-import { MessageSquare, ChevronDown, ChevronUp, Star } from "lucide-react";
+import { ChevronDown, ChevronUp, Star } from "lucide-react";
 
 interface ProgramReviewsProps {
   programId: string;
@@ -35,12 +35,11 @@ interface ReviewCardProps {
   review: Review;
 }
 
-
 function StarDisplay({ rating }: { rating?: number }) {
   if (rating == null) return null;
   return (
     <span className="flex items-center gap-1">
-      <span className="text-amber-400 text-sm">★</span>
+      <span className="text-sun-500 text-sm">★</span>
       <span className="text-sm font-semibold text-slate-700">{rating.toFixed(1)}</span>
     </span>
   );
@@ -74,9 +73,10 @@ function ReviewCard({ review }: ReviewCardProps) {
         </div>
         <div className="flex items-center gap-2 shrink-0">
           {/* Overall rating badge */}
-          <span className="flex items-center gap-1.5 text-sun-700">
-            <span className="text-amber-400 text-lg">★</span>
+          <span className="flex items-center gap-1.5 text-sun-500">
+            <span className="text-sun-500 text-lg">★</span>
             <span className="font-bold text-lg">{review.overallRating}</span>
+            <span className="text-xs text-slate-400 font-normal">/10</span>
           </span>
           <button
             type="button"
@@ -155,33 +155,50 @@ function ReviewCard({ review }: ReviewCardProps) {
 function SummaryCard({
   avgRating,
   totalReviews,
+  categoryAverages,
 }: {
   avgRating: number;
   totalReviews: number;
+  categoryAverages: Record<string, number> | null;
 }) {
   return (
-    <div className="border border-slate-200 rounded-xl p-5 bg-white flex flex-wrap sm:flex-nowrap items-center justify-around sm:justify-start gap-6 sm:gap-12 mb-6">
-      <div>
-        <p className="text-sm font-bold text-slate-500 uppercase tracking-wide mb-1">
-          Overall Rating
-        </p>
-        <div className="flex items-center gap-2">
-          <span className="text-3xl font-extrabold text-slate-900">
-            {avgRating.toFixed(2)}
-          </span>
-          <span className="text-amber-400 text-2xl">★</span>
+    <div className="border border-slate-200 rounded-xl p-5 sm:p-6 bg-white mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-[auto_1fr] gap-6 sm:gap-10">
+        {/* Left — overall score */}
+        <div className="flex flex-col items-center sm:items-start justify-center sm:border-r sm:border-slate-100 sm:pr-10">
+          <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-1">
+            Overall Score
+          </p>
+          <div className="flex items-end gap-1.5">
+            <span className="text-5xl font-extrabold text-slate-900 leading-none">
+              {avgRating.toFixed(1)}
+            </span>
+            <span className="text-lg text-slate-400 font-medium mb-1">/10</span>
+          </div>
+          <p className="text-xs text-slate-400 mt-2">
+            {totalReviews} {totalReviews === 1 ? "review" : "reviews"}
+          </p>
         </div>
-      </div>
-      <div>
-        <p className="text-sm font-bold text-slate-500 uppercase tracking-wide mb-1">
-          Total Reviews
-        </p>
-        <div className="flex items-center gap-2">
-          <span className="text-3xl font-extrabold text-slate-900">
-            {totalReviews}
-          </span>
-          <MessageSquare size={24} className="text-slate-400" />
-        </div>
+
+        {/* Right — category bars */}
+        {categoryAverages && (
+          <div className="flex flex-col gap-3 justify-center">
+            {Object.entries(categoryAverages).map(([label, value]) => (
+              <div key={label} className="flex items-center gap-3">
+                <span className="text-xs text-slate-500 w-32 shrink-0">{label}</span>
+                <div className="flex-1 h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-cobalt-400 rounded-full"
+                    style={{ width: `${(value / 10) * 100}%` }}
+                  />
+                </div>
+                <span className="text-xs font-semibold text-slate-700 w-6 text-right shrink-0">
+                  {value.toFixed(1)}
+                </span>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -219,6 +236,15 @@ export default function ProgramReviews({ programId }: ProgramReviewsProps) {
       ) / 100
       : 0;
 
+  const categoryAverages = reviews.length > 0 ? {
+    Academics: Math.round(reviews.reduce((s, r) => s + r.academicsRating, 0) / reviews.length * 10) / 10,
+    "Living Situation": Math.round(reviews.reduce((s, r) => s + r.livingSituationRating, 0) / reviews.length * 10) / 10,
+    "Cultural Immersion": Math.round(reviews.reduce((s, r) => s + r.culturalImmersionRating, 0) / reviews.length * 10) / 10,
+    "Administration": Math.round(reviews.reduce((s, r) => s + r.programAdministrationRating, 0) / reviews.length * 10) / 10,
+    "Health & Safety": Math.round(reviews.reduce((s, r) => s + r.healthAndSafetyRating, 0) / reviews.length * 10) / 10,
+    "Community": Math.round(reviews.reduce((s, r) => s + r.communityRating, 0) / reviews.length * 10) / 10,
+  } : null;
+
   const sortedReviews = [...reviews].sort((a, b) => {
     if (sortBy === "highest") return b.overallRating - a.overallRating;
     if (sortBy === "lowest") return a.overallRating - b.overallRating;
@@ -244,13 +270,7 @@ export default function ProgramReviews({ programId }: ProgramReviewsProps) {
             Hear what past participants have to say about the programs
           </p>
         </div>
-        <div className="flex flex-wrap items-center gap-3">
-          <button
-            type="button"
-            className="px-4 py-2 bg-cobalt-500 text-white font-semibold text-sm rounded-lg hover:bg-cobalt-600 transition-colors"
-          >
-            Review this Program
-          </button>
+        <div className="flex items-center gap-3">
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value as SortBy)}
@@ -265,7 +285,11 @@ export default function ProgramReviews({ programId }: ProgramReviewsProps) {
 
       {/* Summary card */}
       {reviews.length > 0 && (
-        <SummaryCard avgRating={avgRating} totalReviews={reviews.length} />
+        <SummaryCard
+          avgRating={avgRating}
+          totalReviews={reviews.length}
+          categoryAverages={categoryAverages}
+        />
       )}
 
       {/* Reviews list */}
@@ -278,13 +302,31 @@ export default function ProgramReviews({ programId }: ProgramReviewsProps) {
           <p className="text-sm mt-1">
             Be the first to share your experience with this program.
           </p>
+          <div className="mt-6">
+            <button
+              type="button"
+              className="px-5 py-2.5 border border-cobalt-500 text-cobalt-600 font-semibold text-sm rounded-lg hover:bg-cobalt-50 transition-colors"
+            >
+              Write a Review
+            </button>
+          </div>
         </div>
       ) : (
-        <div className="space-y-4">
-          {sortedReviews.map((review) => (
-            <ReviewCard key={review._id} review={review as Review} />
-          ))}
-        </div>
+        <>
+          <div className="space-y-4">
+            {sortedReviews.map((review) => (
+              <ReviewCard key={review._id} review={review as Review} />
+            ))}
+          </div>
+          <div className="mt-6 pt-6 border-t border-slate-100 flex justify-center">
+            <button
+              type="button"
+              className="px-5 py-2.5 border border-cobalt-500 text-cobalt-600 font-semibold text-sm rounded-lg hover:bg-cobalt-50 transition-colors"
+            >
+              Write a Review
+            </button>
+          </div>
+        </>
       )}
     </section>
   );
