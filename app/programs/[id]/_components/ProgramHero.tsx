@@ -120,10 +120,10 @@ export default function ProgramHero({ program }: ProgramHeroProps) {
         style={
           hasImage
             ? {
-                backgroundImage: `url(${program.coverImage})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-              }
+              backgroundImage: `url(${program.coverImage})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+            }
             : undefined
         }
       >
@@ -170,7 +170,7 @@ export default function ProgramHero({ program }: ProgramHeroProps) {
         )}
 
         {/* Key Facts Strip */}
-        <div className="mt-5 pt-5 border-t border-slate-100">
+        <div className="my-5 bg-slate-50 rounded-lg p-5 border-t border-b border-slate-100">
           <div className="flex flex-wrap items-center gap-x-6 gap-y-4">
             {facts.map((fact, idx) => (
               <div key={fact.key} className="flex items-center gap-x-6 gap-y-4">
