@@ -3,7 +3,6 @@
 import { useParams } from "next/navigation";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import { MapPin, Calendar, ClipboardList, Coins } from "lucide-react";
 
 import ProgramHero from "./_components/ProgramHero";
 import QuickDetails from "./_components/QuickDetails";
@@ -13,81 +12,10 @@ import WhatsIncluded from "./_components/WhatsIncluded";
 import SubjectAreas from "./_components/SubjectAreas";
 import ProgramHighlights from "./_components/ProgramHighlights";
 import PhotoGallery from "./_components/PhotoGallery";
+import ProgramReviews from "./_components/ProgramReviews";
 import RelatedPrograms from "./_components/RelatedPrograms";
 import ProgramArticles from "./_components/ProgramArticles";
 import type { Program } from "./_components/types";
-
-// ─── Static prototype values ───────────────────────────────────────────────────
-
-const STATIC_RATING = 8.41;
-const STATIC_REVIEW_COUNT = 103;
-
-// ─── Stats strip ──────────────────────────────────────────────────────────────
-
-function StatsStrip({ program }: { program: Program }) {
-  return (
-    <div className="border-t border-[#E5E9F0] bg-white border-b">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="flex flex-wrap items-center gap-x-4 py-3 text-[13px] text-slate-500 font-sans">
-
-          {/* Rating */}
-          <div className="flex items-center gap-1">
-            <span className="font-bold text-[#172B4D]">{STATIC_RATING}</span>
-            <span className="text-[#D98C12]">★</span>
-            <span className="ml-1">· {STATIC_REVIEW_COUNT} reviews</span>
-          </div>
-
-          <span className="text-slate-300">|</span>
-
-          {/* Location */}
-          <div className="flex items-center gap-1.5">
-            <MapPin className="w-3.5 h-3.5 text-[#0B5C85]" aria-hidden="true" />
-            <span>
-              {program.city}, {program.country}
-            </span>
-          </div>
-
-          {/* Terms */}
-          {program.terms.length > 0 && (
-            <>
-              <span className="text-slate-300">|</span>
-              <div className="flex items-center gap-1.5">
-                <ClipboardList className="w-3.5 h-3.5 text-[#0B5C85]" aria-hidden="true" />
-                <span>
-                  {program.terms
-                    .map((t) => t.charAt(0).toUpperCase() + t.slice(1))
-                    .join(", ")}
-                </span>
-              </div>
-            </>
-          )}
-
-          {/* Cost */}
-          {program.cost && (
-            <>
-              <span className="text-slate-300">|</span>
-              <div className="flex items-center gap-1.5">
-                <Coins className="w-3.5 h-3.5 text-[#0B5C85]" aria-hidden="true" />
-                <span>{program.cost}</span>
-              </div>
-            </>
-          )}
-
-          {/* Deadline */}
-          {program.applicationDeadline && (
-            <>
-              <span className="text-slate-300">|</span>
-              <div className="flex items-center gap-1.5">
-                <Calendar className="w-3.5 h-3.5 text-[#C85A53]" aria-hidden="true" />
-                <span>Deadline: {program.applicationDeadline}</span>
-              </div>
-            </>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-}
 
 // ─── Mobile sticky CTA bar ─────────────────────────────────────────────────────
 
@@ -126,9 +54,7 @@ function MobileStickyBar({ program }: { program: Program }) {
 function LoadingSkeleton() {
   return (
     <div className="animate-pulse">
-      {/* Hero skeleton */}
       <div className="w-full h-[420px] bg-slate-200" />
-      {/* Stats strip skeleton */}
       <div className="border-b border-slate-200 bg-white px-4 sm:px-6 py-3">
         <div className="max-w-7xl mx-auto flex gap-6">
           <div className="h-4 bg-slate-200 rounded w-28" />
@@ -136,10 +62,8 @@ function LoadingSkeleton() {
           <div className="h-4 bg-slate-200 rounded w-20" />
         </div>
       </div>
-
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
         <div className="flex flex-col lg:flex-row gap-8">
-          {/* Left column skeleton */}
           <div className="flex-1 min-w-0 space-y-8">
             <div>
               <div className="h-6 bg-slate-200 rounded w-48 mb-4" />
@@ -160,8 +84,6 @@ function LoadingSkeleton() {
               </div>
             </div>
           </div>
-
-          {/* Sidebar skeleton */}
           <div className="lg:w-[320px] xl:w-[340px] shrink-0 space-y-4">
             <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
               <div className="h-14 bg-slate-200" />
@@ -249,11 +171,8 @@ export default function ProgramDetailPage() {
   return (
     <>
       <main className="pb-20 lg:pb-0">
-        {/* Full-width hero */}
+        {/* Full-width hero — stats are overlaid inside ProgramHero */}
         <ProgramHero program={program} />
-
-        {/* Stats strip — quick-glance bar below hero */}
-        <StatsStrip program={program} />
 
         {/* Page content */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
@@ -264,16 +183,19 @@ export default function ProgramDetailPage() {
               {/* 1. Overview — context first */}
               <ProgramOverview program={program} />
 
-              {/* 2. Highlights — value proposition before media */}
-              <ProgramHighlights program={program} />
-
-              {/* 3. What's Included — concrete value drivers */}
+              {/* 2. What's Included — concrete value up front */}
               <WhatsIncluded program={program} />
 
-              {/* 4. Photo gallery — aspiration / social proof */}
+              {/* 3. Highlights — aspirational value */}
+              <ProgramHighlights program={program} />
+
+              {/* 4. Photo gallery — social proof / aspiration */}
               <PhotoGallery program={program} />
 
-              {/* 5. Subject areas — discovery / SEO */}
+              {/* 5. Reviews */}
+              <ProgramReviews programId={program._id} />
+
+              {/* 6. Subject areas — discovery / SEO */}
               <SubjectAreas program={program} />
             </div>
 

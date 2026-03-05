@@ -87,6 +87,26 @@ export default function AIGenerateButton({
                 mockData.coverImage = "https://images.unsplash.com/photo-1518780664697-55e3ad937233";
                 mockData.photos = ["https://images.unsplash.com/photo-1518780664697-55e3ad937233"];
                 break;
+            case "review": {
+                const destinations = ["Thailand", "Spain", "Japan", "Italy", "South Korea"];
+                const dest = destinations[Math.floor(Math.random() * destinations.length)];
+                const names = ["Sophia Williams", "Marcus Chen", "Aisha Patel", "James Okafor", "Elena Russo"];
+                const countries = ["United States", "Canada", "United Kingdom", "Australia", "Germany"];
+                const idx = Math.floor(Math.random() * names.length);
+                const rating = Math.floor(Math.random() * 3) + 8; // 8–10
+                mockData.reviewerName = names[idx];
+                mockData.reviewerCountry = countries[idx];
+                mockData.reviewTitle = `An unforgettable experience in ${dest}`;
+                mockData.body = `Studying abroad in ${dest} was one of the best decisions I've ever made. The program exceeded every expectation — from the incredible academic coursework to the cultural experiences woven into daily life. The staff were incredibly supportive, always going the extra mile to ensure every student felt at home. I made lifelong friends from around the world and came back with a completely new perspective. I wholeheartedly recommend this program to anyone considering studying abroad.`;
+                mockData.overallRating = rating;
+                mockData.academicsRating = Math.min(10, rating + Math.floor(Math.random() * 2) - 1);
+                mockData.livingSituationRating = Math.min(10, rating + Math.floor(Math.random() * 2) - 1);
+                mockData.culturalImmersionRating = Math.min(10, rating);
+                mockData.programAdministrationRating = Math.min(10, rating + Math.floor(Math.random() * 2) - 1);
+                mockData.healthAndSafetyRating = Math.min(10, rating);
+                mockData.communityRating = Math.min(10, rating + Math.floor(Math.random() * 2) - 1);
+                break;
+            }
         }
         onGenerated(mockData);
     };

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { CheckCircle, MapPin } from "lucide-react";
+import { CheckCircle, MapPin, Calendar, Coins, Clock } from "lucide-react";
 import type { Program } from "./types";
 
 interface ProgramHeroProps {
@@ -12,18 +12,76 @@ interface ProgramHeroProps {
 const STATIC_RATING = 8.41;
 const STATIC_REVIEW_COUNT = 103;
 
+interface FactItem {
+  key: string;
+  icon: React.ReactNode;
+  label: string;
+  value: string;
+  urgent?: boolean;
+}
+
 export default function ProgramHero({ program }: ProgramHeroProps) {
   const hasImage = Boolean(program.coverImage);
 
+  // Build key facts — only include items with data
+  const facts: FactItem[] = [
+    {
+      key: "location",
+      icon: <MapPin className="w-4 h-4 text-[#0A5E85]" aria-hidden="true" />,
+      label: "Location",
+      value: `${program.city}, ${program.country}`,
+    },
+  ];
+
+  if (program.terms.length > 0) {
+    const termsValue = program.terms
+      .map((t) => t.charAt(0).toUpperCase() + t.slice(1).toLowerCase())
+      .join(" · ");
+    facts.push({
+      key: "terms",
+      icon: <Calendar className="w-4 h-4 text-[#0A5E85]" aria-hidden="true" />,
+      label: "Terms",
+      value: termsValue,
+    });
+  }
+
+  if (program.duration) {
+    facts.push({
+      key: "duration",
+      icon: <Clock className="w-4 h-4 text-[#0A5E85]" aria-hidden="true" />,
+      label: "Duration",
+      value: program.duration,
+    });
+  }
+
+  if (program.cost) {
+    facts.push({
+      key: "cost",
+      icon: <Coins className="w-4 h-4 text-[#0A5E85]" aria-hidden="true" />,
+      label: "Cost",
+      value: program.cost,
+    });
+  }
+
+  if (program.applicationDeadline) {
+    facts.push({
+      key: "deadline",
+      icon: <Clock className="w-4 h-4 text-[#0A5E85]" aria-hidden="true" />,
+      label: "Apply by",
+      value: program.applicationDeadline,
+      urgent: true,
+    });
+  }
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-5 pb-6">
-      {/* ── Breadcrumbs — above the image, on white ── */}
+      {/* Breadcrumbs — above the image */}
       <nav aria-label="Breadcrumb" className="mb-3">
         <ol className="flex items-center gap-1.5 text-sm text-slate-500 flex-wrap">
           <li>
             <Link
               href="/"
-              className="hover:text-cobalt-600 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 rounded"
+              className="hover:text-[#084B6A] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0A5E85] rounded"
             >
               Home
             </Link>
@@ -32,7 +90,7 @@ export default function ProgramHero({ program }: ProgramHeroProps) {
           <li>
             <Link
               href="/programs"
-              className="hover:text-cobalt-600 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 rounded"
+              className="hover:text-[#084B6A] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0A5E85] rounded"
             >
               Programs
             </Link>
@@ -41,7 +99,7 @@ export default function ProgramHero({ program }: ProgramHeroProps) {
           <li>
             <Link
               href={`/programs?city=${encodeURIComponent(program.city)}`}
-              className="hover:text-cobalt-600 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 rounded"
+              className="hover:text-[#084B6A] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0A5E85] rounded"
             >
               {program.city}
             </Link>
@@ -56,115 +114,122 @@ export default function ProgramHero({ program }: ProgramHeroProps) {
         </ol>
       </nav>
 
-      {/* ── Hero image — max-w-7xl, rounded ── */}
+      {/* Hero image — clean, no overlay, no text on image */}
       <div
         className="w-full h-[340px] sm:h-[400px] rounded-xl overflow-hidden"
         style={
           hasImage
             ? {
-              backgroundImage: `url(${program.coverImage})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-            }
+                backgroundImage: `url(${program.coverImage})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+              }
             : undefined
         }
       >
+        {/* Gradient fallback when no image */}
         {!hasImage && (
-          <div className="w-full h-full bg-gradient-to-br from-cobalt-700 to-cobalt-500" />
+          <div className="h-full w-full bg-gradient-to-br from-[#023D58] to-[#0A5E85]" />
         )}
       </div>
 
-      {/* ── Hero content — below the image, on white ── */}
-      <div className="pt-8 pb-4">
-        {/* Provider name */}
-        <p className="text-[11px] font-bold text-cobalt-700 uppercase tracking-[0.15em] mb-2 font-sans">
-          {program.provider}
-        </p>
+      {/* Below-image content */}
+      <div className="pt-6 pb-4">
+        {/* Row A: Provider label (left) | Rating + Verified badges (right) */}
+        <div className="flex items-center justify-between gap-4 mb-2 flex-wrap">
+          <p className="text-[11px] font-bold text-[#023D58] uppercase tracking-[0.15em] font-sans">
+            {program.provider}
+          </p>
+
+          <div className="flex items-center gap-2">
+            {/* Rating badge */}
+            <div className="flex items-center gap-1.5 bg-[#FFF9ED] text-[#B07B22] text-[12px] font-semibold px-3 py-1 rounded-full border border-[#F6E1B6]">
+              <span className="text-[#D98C12]" aria-hidden="true">★</span>
+              <span>{STATIC_RATING}</span>
+              <span className="font-normal text-[#DCA757]">/ {STATIC_REVIEW_COUNT} reviews</span>
+            </div>
+
+            {/* Verified badge */}
+            <div className="flex items-center gap-1 bg-[#F0FDF4] text-[#297C46] text-[12px] font-semibold px-3 py-1 rounded-full border border-[#BCE8CB]">
+              <CheckCircle className="w-3.5 h-3.5 text-[#359B55] shrink-0" aria-hidden="true" />
+              Verified
+            </div>
+          </div>
+        </div>
 
         {/* Program title */}
-        <h1 className="text-3xl md:text-[34px] font-extrabold text-slate-900 leading-[1.15] mb-4 max-w-4xl tracking-tight">
+        <h1 className="text-3xl md:text-[34px] font-extrabold text-slate-900 leading-[1.15] mb-3 max-w-4xl tracking-tight">
           {program.title}
         </h1>
 
         {/* Tagline */}
         {program.tagline && (
-          <p className="text-base text-slate-500 mb-6 max-w-3xl leading-relaxed font-normal">
+          <p className="text-base text-slate-500 max-w-3xl leading-relaxed font-normal">
             {program.tagline}
           </p>
         )}
 
-        {/* Badges + CTAs row */}
-        <div className="flex flex-wrap items-center justify-between gap-6 mt-6">
-          {/* Badges */}
-          <div className="flex flex-wrap items-center gap-3">
-            {/* Rating badge */}
-            <div className="flex items-center gap-1.5 bg-[#FFF9ED] text-[#B07B22] text-[13px] font-semibold px-4 py-2 rounded-full border border-[#F6E1B6]">
-              <span className="text-[#D98C12]">★</span>
-              <span>{STATIC_RATING}</span>
-              <span className="font-medium text-[#DCA757]">
-                / {STATIC_REVIEW_COUNT} reviews
-              </span>
-            </div>
+        {/* Key Facts Strip */}
+        <div className="mt-5 pt-5 border-t border-slate-100">
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-4">
+            {facts.map((fact, idx) => (
+              <div key={fact.key} className="flex items-center gap-x-6 gap-y-4">
+                <div className="flex items-center gap-2.5">
+                  {/* Icon in a small cobalt tinted square */}
+                  <div className="flex items-center justify-center w-8 h-8 rounded-md bg-[#EEF4F8] shrink-0">
+                    {fact.icon}
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-semibold uppercase tracking-wider text-slate-400 leading-none mb-0.5">
+                      {fact.label}
+                    </p>
+                    <p
+                      className={
+                        fact.urgent
+                          ? "text-sm font-semibold text-[#9C4640] leading-none"
+                          : "text-sm font-semibold text-slate-800 leading-none"
+                      }
+                    >
+                      {fact.value}
+                    </p>
+                  </div>
+                </div>
 
-            {/* Verified badge */}
-            <div className="flex items-center gap-1.5 bg-[#F0FDF4] text-[#297C46] text-[13px] font-semibold px-4 py-2 rounded-full border border-[#BCE8CB]">
-              <CheckCircle className="w-4 h-4 text-[#359B55]" aria-hidden="true" />
-              Verified
-            </div>
-
-            {/* Location chip */}
-            <div className="flex items-center gap-1.5 bg-[#F4F6F9] text-[#42526E] text-[13px] font-semibold px-4 py-2 rounded-full border border-[#DFE3EB]">
-              <MapPin className="w-4 h-4 text-[#0B5C85]" aria-hidden="true" />
-              {program.city}, {program.country}
-            </div>
-          </div>
-
-          {/* CTA buttons */}
-          <div className="flex flex-wrap gap-3">
-            {program.applyUrl ? (
-              <a
-                href={program.applyUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-5 py-2 border border-slate-200 bg-white text-slate-700 font-bold text-[13px] rounded hover:bg-slate-50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 shadow-sm"
-              >
-                Visit Website
-              </a>
-            ) : (
-              <button
-                type="button"
-                className="px-5 py-2 border border-slate-200 bg-white text-slate-700 font-bold text-[13px] rounded hover:bg-slate-50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 cursor-pointer shadow-sm"
-              >
-                Visit Website
-              </button>
-            )}
-
-            <button
-              type="button"
-              className="px-5 py-2 border border-[#0F5A81] text-[#0F5A81] font-bold text-[13px] rounded hover:bg-[#0F5A81]/5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 cursor-pointer shadow-sm"
-            >
-              Inquire Here
-            </button>
-
-            {program.applyUrl ? (
-              <a
-                href={program.applyUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-6 py-2 bg-[#0F5A81] text-white font-bold text-[13px] rounded hover:bg-[#0E4F71] transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2"
-              >
-                Apply Now
-              </a>
-            ) : (
-              <button
-                type="button"
-                className="px-6 py-2 bg-[#0F5A81] text-white font-bold text-[13px] rounded hover:bg-[#0E4F71] transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2 cursor-pointer"
-              >
-                Apply Now
-              </button>
-            )}
+                {/* Vertical divider — only between items, not after last */}
+                {idx < facts.length - 1 && (
+                  <div className="h-8 w-px bg-slate-200 self-center" aria-hidden="true" />
+                )}
+              </div>
+            ))}
           </div>
         </div>
+
+        {/* Visit Website — subtle link only; Apply Now lives in the sidebar */}
+        {program.applyUrl && (
+          <div className="mt-4">
+            <a
+              href={program.applyUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-[13px] text-[#084B6A] font-medium hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0A5E85] rounded"
+            >
+              Visit program website
+              {/* External link icon */}
+              <svg
+                className="w-3.5 h-3.5 opacity-60 shrink-0"
+                viewBox="0 0 16 16"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M6 3H3a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h9a1 1 0 0 0 1-1v-3M9 2h5m0 0v5m0-5L7 10" />
+              </svg>
+            </a>
+          </div>
+        )}
       </div>
     </div>
   );

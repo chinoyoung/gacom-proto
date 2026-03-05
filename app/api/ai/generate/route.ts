@@ -54,6 +54,10 @@ export async function POST(req: Request) {
                 fieldList = "{ title, author, tags, coverImage }";
                 stepInstructions = "Generate a compelling study abroad article title, a professional author or report name (e.g., 'GoAbroad Research Team'), 1-2 relevant tags, and a high-quality Unsplash cover image URL. The content should be inspiring and informative.";
                 break;
+            case "review":
+                fieldList = "{ reviewTitle, body, reviewerName, reviewerCountry, overallRating, academicsRating, livingSituationRating, culturalImmersionRating, programAdministrationRating, healthAndSafetyRating, communityRating }";
+                stepInstructions = "Generate a realistic, authentic-sounding study abroad program review from a past student. reviewTitle should be a short punchy headline (e.g. 'Best semester of my life'). body should be 3-5 paragraphs covering academics, culture, housing, and personal growth — write in first person, genuine and specific. reviewerName should be a realistic full name. reviewerCountry should be a real country. overallRating is a number 1-10 (lean towards 7-10 for authenticity). The 6 category ratings (academicsRating, livingSituationRating, culturalImmersionRating, programAdministrationRating, healthAndSafetyRating, communityRating) are each a number 1-10, slightly varied from each other to feel real. All ratings must be numbers, not strings.";
+                break;
             default:
                 return NextResponse.json({ error: "Invalid step" }, { status: 400 });
         }

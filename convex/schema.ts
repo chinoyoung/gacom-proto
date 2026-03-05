@@ -58,4 +58,26 @@ export default defineSchema({
     coverImage: v.optional(v.string()),
     slug: v.string(),
   }).index("by_slug", ["slug"]),
+
+  reviews: defineTable({
+    programId: v.id("programs"),
+    reviewerName: v.string(),
+    reviewerCountry: v.string(),
+    date: v.string(), // e.g. "February 04, 2025"
+    reviewTitle: v.string(),
+    body: v.string(),
+    overallRating: v.number(), // 1–10
+    // Category ratings (each 1–10)
+    academicsRating: v.number(),
+    livingSituationRating: v.number(),
+    culturalImmersionRating: v.number(),
+    programAdministrationRating: v.number(),
+    healthAndSafetyRating: v.number(),
+    communityRating: v.number(),
+    photo: v.optional(v.string()), // reviewer/experience photo URL
+    status: v.union(v.literal("draft"), v.literal("published")),
+  })
+    .index("by_program", ["programId"])
+    .index("by_status", ["status"])
+    .index("by_program_status", ["programId", "status"]),
 });

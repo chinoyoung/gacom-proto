@@ -12,8 +12,8 @@ const STATIC_REVIEW_COUNT = 103;
 export default function ApplyCTA({ program }: ApplyCTAProps) {
   return (
     <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-      {/* Header */}
-      <div className="bg-cobalt-500 px-5 py-4">
+      {/* Compact cobalt header */}
+      <div className="bg-cobalt-500 px-5 py-3.5">
         <p className="text-xs font-semibold text-cobalt-100 uppercase tracking-wide mb-0.5">
           {program.provider}
         </p>
@@ -23,7 +23,7 @@ export default function ApplyCTA({ program }: ApplyCTAProps) {
       </div>
 
       <div className="p-5 space-y-3">
-        {/* Rating trust signal */}
+        {/* Trust signals row */}
         <div className="flex items-center gap-2 pb-3 border-b border-slate-100">
           <div className="flex items-center gap-1 bg-sun-500/10 text-sun-700 text-xs font-bold px-2 py-1 rounded-md">
             <span>★</span>
@@ -49,11 +49,11 @@ export default function ApplyCTA({ program }: ApplyCTAProps) {
           </span>
         </div>
 
-        {/* Deadline urgency — show prominently if set */}
+        {/* Deadline urgency — prominent left-border block */}
         {program.applicationDeadline && (
-          <div className="flex items-center gap-2 bg-roman-500/[0.08] border border-roman-300/40 rounded-lg px-3 py-2.5">
+          <div className="flex items-start gap-3 border-l-4 border-roman-500 bg-roman-500/[0.05] rounded-r-lg px-3 py-2.5">
             <svg
-              className="w-4 h-4 text-roman-500 shrink-0"
+              className="w-4 h-4 text-roman-500 shrink-0 mt-0.5"
               fill="currentColor"
               viewBox="0 0 20 20"
               aria-hidden="true"
@@ -64,10 +64,24 @@ export default function ApplyCTA({ program }: ApplyCTAProps) {
                 clipRule="evenodd"
               />
             </svg>
-            <p className="text-xs text-roman-700 leading-tight">
-              <span className="font-bold">Application deadline:</span>{" "}
-              {program.applicationDeadline}
-            </p>
+            <div>
+              <p className="text-xs font-bold text-roman-700 uppercase tracking-wide leading-none mb-0.5">
+                Deadline
+              </p>
+              <p className="text-sm font-semibold text-roman-700 leading-snug">
+                {program.applicationDeadline}
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* Pricing quick-view */}
+        {program.cost && (
+          <div className="flex items-center justify-between px-3 py-2.5 bg-slate-50 rounded-lg border border-slate-200">
+            <span className="text-xs font-medium text-slate-500 uppercase tracking-wide">
+              Program Cost
+            </span>
+            <span className="font-bold text-slate-800 text-sm">{program.cost}</span>
           </div>
         )}
 
@@ -77,7 +91,7 @@ export default function ApplyCTA({ program }: ApplyCTAProps) {
             href={program.applyUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center gap-2 w-full px-4 py-3 bg-cobalt-500 text-white font-bold text-sm rounded-lg hover:bg-cobalt-600 transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2"
+            className="flex items-center justify-center gap-2 w-full px-4 py-2.5 bg-cobalt-500 text-white font-bold text-sm rounded-lg hover:bg-cobalt-600 transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2"
           >
             Apply Now
             <svg
@@ -98,7 +112,7 @@ export default function ApplyCTA({ program }: ApplyCTAProps) {
         ) : (
           <button
             type="button"
-            className="flex items-center justify-center gap-2 w-full px-4 py-3 bg-cobalt-500 text-white font-bold text-sm rounded-lg hover:bg-cobalt-600 transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2 cursor-pointer"
+            className="flex items-center justify-center gap-2 w-full px-4 py-2.5 bg-cobalt-500 text-white font-bold text-sm rounded-lg hover:bg-cobalt-600 transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2 cursor-pointer"
           >
             Apply Now
             <svg
@@ -126,7 +140,12 @@ export default function ApplyCTA({ program }: ApplyCTAProps) {
           Send Inquiry
         </button>
 
-        {/* Visit website link */}
+        {/* Micro trust line — reduces friction */}
+        <p className="text-xs text-slate-400 text-center pt-0.5">
+          · Free to apply · No commitment
+        </p>
+
+        {/* Visit provider website */}
         {program.applyUrl && (
           <a
             href={program.applyUrl}
@@ -155,8 +174,8 @@ export default function ApplyCTA({ program }: ApplyCTAProps) {
 
       {/* Contact info */}
       {(program.contactEmail || program.contactPhone) && (
-        <div className="px-5 pb-5 border-t border-slate-100 pt-4 space-y-1.5">
-          <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
+        <div className="px-5 pb-4 border-t border-slate-100 pt-3 space-y-1.5">
+          <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
             Contact {program.provider}
           </p>
           {program.contactEmail && (
