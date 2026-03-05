@@ -40,8 +40,8 @@ function StarDisplay({ rating }: { rating?: number }) {
   if (rating == null) return null;
   return (
     <span className="flex items-center gap-1">
-      <span className="text-amber-400 text-sm">{"★".repeat(5)}</span>
-      <span className="text-sm font-semibold text-slate-700">{rating}</span>
+      <span className="text-amber-400 text-sm">★</span>
+      <span className="text-sm font-semibold text-slate-700">{rating.toFixed(1)}</span>
     </span>
   );
 }
@@ -198,7 +198,7 @@ export default function ProgramReviews({ programId }: ProgramReviewsProps) {
   // Loading state
   if (reviews === undefined) {
     return (
-      <section className="mt-20 pt-10 border-t border-slate-100">
+      <section className="pt-10 border-t border-slate-100">
         <div className="animate-pulse space-y-4">
           <div className="h-8 bg-slate-200 rounded w-48" />
           <div className="h-4 bg-slate-100 rounded w-72" />
@@ -229,7 +229,7 @@ export default function ProgramReviews({ programId }: ProgramReviewsProps) {
   return (
     <section
       aria-labelledby="reviews-heading"
-      className="mt-20 pt-10 border-t border-slate-100"
+      className="pt-10 border-t border-slate-100"
     >
       {/* Header row */}
       <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-6">

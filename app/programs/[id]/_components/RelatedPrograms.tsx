@@ -6,9 +6,10 @@ import ProgramCard from "@/components/ProgramCard";
 
 interface RelatedProgramsProps {
     currentProgramId: string;
+    subjectAreas: string[];
 }
 
-export default function RelatedPrograms({ currentProgramId }: RelatedProgramsProps) {
+export default function RelatedPrograms({ currentProgramId, subjectAreas }: RelatedProgramsProps) {
     const allPrograms = useQuery(api.programs.listPrograms, { status: "published" });
 
     if (allPrograms === undefined) {
@@ -24,9 +25,14 @@ export default function RelatedPrograms({ currentProgramId }: RelatedProgramsPro
         );
     }
 
-    // Filter out the current program and take the first 3
+    // Prefer programs sharing at least 1 subject area
     const relatedPrograms = allPrograms
         .filter((p) => p._id !== currentProgramId)
+        .sort((a, b) => {
+            const aMatches = a.subjectAreas?.filter((s) => subjectAreas.includes(s)).length ?? 0;
+            const bMatches = b.subjectAreas?.filter((s) => subjectAreas.includes(s)).length ?? 0;
+            return bMatches - aMatches;
+        })
         .slice(0, 3);
 
     if (relatedPrograms.length === 0) return null;

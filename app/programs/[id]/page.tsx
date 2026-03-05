@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { useQuery } from "convex/react";
@@ -15,6 +16,85 @@ import ProgramReviews from "./_components/ProgramReviews";
 import RelatedPrograms from "./_components/RelatedPrograms";
 import ProgramArticles from "./_components/ProgramArticles";
 import type { Program } from "./_components/types";
+
+// ─── Desktop sticky header ─────────────────────────────────────────────────────
+
+const STICKY_RATING = 8.41;
+const STICKY_REVIEW_COUNT = 103;
+
+function StickyProgramHeader({
+  program,
+  visible,
+}: {
+  program: Program;
+  visible: boolean;
+}) {
+  return (
+    <div
+      aria-hidden={!visible}
+      className={[
+        "hidden lg:block",
+        "fixed top-0 left-0 right-0 z-50",
+        "bg-white border-b border-slate-200 shadow-sm",
+        "transition-transform duration-200",
+        visible ? "translate-y-0" : "-translate-y-full",
+      ].join(" ")}
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 h-[60px] flex items-center gap-4">
+        {/* Left: logo + title + rating */}
+        <div className="flex items-center gap-3 flex-1 min-w-0">
+          {program.providerLogo && (
+            <div className="shrink-0 w-8 h-8 rounded border border-slate-200 bg-white overflow-hidden flex items-center justify-center">
+              <img
+                src={program.providerLogo}
+                alt={`${program.provider} logo`}
+                className="w-full h-full object-contain p-0.5"
+              />
+            </div>
+          )}
+
+          <p className="font-semibold text-slate-900 text-sm truncate">
+            {program.title}
+          </p>
+
+          <span className="shrink-0 flex items-center gap-1 text-xs text-sun-700 font-medium">
+            <span className="text-sun-500" aria-hidden="true">★</span>
+            {STICKY_RATING}
+            <span className="text-slate-400 font-normal">· {STICKY_REVIEW_COUNT} reviews</span>
+          </span>
+        </div>
+
+        {/* Right: CTAs — match hero button styles */}
+        <div className="flex items-center gap-2 shrink-0">
+          <button
+            type="button"
+            className="px-4 py-2 bg-cobalt-400 text-white font-bold text-sm rounded-lg hover:bg-cobalt-500 transition-colors shadow-sm cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-400 focus-visible:ring-offset-2"
+          >
+            Inquire Here
+          </button>
+
+          {program.applyUrl ? (
+            <a
+              href={program.applyUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-4 py-2 bg-cobalt-400 text-white font-bold text-sm rounded-lg hover:bg-cobalt-500 transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-400 focus-visible:ring-offset-2"
+            >
+              Apply Now
+            </a>
+          ) : (
+            <button
+              type="button"
+              className="px-4 py-2 bg-cobalt-400 text-white font-bold text-sm rounded-lg hover:bg-cobalt-500 transition-colors shadow-sm cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-400 focus-visible:ring-offset-2"
+            >
+              Apply Now
+            </button>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
 
 // ─── Mobile sticky CTA bar ─────────────────────────────────────────────────────
 
@@ -136,6 +216,25 @@ export default function ProgramDetailPage() {
     slug ? { slug } : "skip"
   );
 
+  const heroRef = useRef<HTMLDivElement>(null);
+  const [stickyVisible, setStickyVisible] = useState(false);
+
+  useEffect(() => {
+    const el = heroRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        // Show sticky header when the hero is no longer intersecting
+        setStickyVisible(!entry.isIntersecting);
+      },
+      { threshold: 0 }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   if (program === undefined) {
     return <LoadingSkeleton />;
   }
@@ -146,6 +245,8 @@ export default function ProgramDetailPage() {
 
   return (
     <>
+      <StickyProgramHeader program={program} visible={stickyVisible} />
+
       <main className="pb-20 lg:pb-0">
         {/* Breadcrumbs — full width above hero, not on hero background */}
         <nav aria-label="Breadcrumb" className="max-w-7xl mx-auto px-4 sm:px-6 pt-4 mb-3">
@@ -198,8 +299,10 @@ export default function ProgramDetailPage() {
           </ol>
         </nav>
 
-        {/* Full-width hero — stats are overlaid inside ProgramHero */}
-        <ProgramHero program={program} />
+        {/* Full-width hero — observed to trigger sticky header */}
+        <div ref={heroRef}>
+          <ProgramHero program={program} />
+        </div>
 
         {/* Page content */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16">
@@ -237,7 +340,7 @@ export default function ProgramDetailPage() {
           <ProgramArticles />
 
           {/* Related Programs Section */}
-          <RelatedPrograms currentProgramId={program._id} />
+          <RelatedPrograms currentProgramId={program._id} subjectAreas={program.subjectAreas ?? []} />
         </div>
       </main>
 

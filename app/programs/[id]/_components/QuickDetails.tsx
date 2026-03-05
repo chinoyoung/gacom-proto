@@ -136,6 +136,15 @@ function ChatIcon() {
   );
 }
 
+function CurrencyIcon() {
+  return (
+    <svg className="w-3.5 h-3.5 shrink-0 text-cobalt-500" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+      <path d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z" />
+      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z" clipRule="evenodd" />
+    </svg>
+  );
+}
+
 function CertificateIcon() {
   return (
     <svg
@@ -175,7 +184,7 @@ function GridCell({ icon, label, value, fullWidth = false }: GridCellProps) {
           {label}
         </span>
       </div>
-      <div className="text-sm text-slate-800 font-medium leading-snug truncate">
+      <div className="text-sm text-slate-800 font-medium leading-snug min-w-0">
         {value}
       </div>
     </div>
@@ -197,8 +206,8 @@ export default function QuickDetails({ program }: QuickDetailsProps) {
       ? program.educationLevels.map((l) => capitalizeFirst(l)).join(", ")
       : "Open to All";
 
-  // Nationalities — show first 2 + "& X more" when the list is long
-  const MAX_NATIONALITIES = 2;
+  // Nationalities — show first 4 + "& X more" when the list is long
+  const MAX_NATIONALITIES = 4;
   const nats = program.eligibleNationalities;
   const nationalitiesDisplay =
     nats.length === 0
@@ -221,6 +230,7 @@ export default function QuickDetails({ program }: QuickDetailsProps) {
       icon: <CalendarIcon />,
       label: "Terms",
       value: termsDisplay,
+      fullWidth: true,
     },
     ...(program.duration
       ? [
@@ -231,15 +241,29 @@ export default function QuickDetails({ program }: QuickDetailsProps) {
           } satisfies CellDef,
         ]
       : []),
+    ...(program.cost
+      ? [
+          {
+            icon: <CurrencyIcon />,
+            label: "Cost",
+            value: program.cost,
+          } satisfies CellDef,
+        ]
+      : []),
     {
       icon: <GraduationCapIcon />,
       label: "Education",
       value: educationDisplay,
+      fullWidth: true,
     },
     {
       icon: <GlobeIcon />,
       label: "Nationalities",
-      value: nationalitiesDisplay,
+      value: (
+        <span title={nats.length > 0 ? nats.join(", ") : undefined}>
+          {nationalitiesDisplay}
+        </span>
+      ),
     },
     {
       icon: <HomeIcon />,
@@ -259,10 +283,32 @@ export default function QuickDetails({ program }: QuickDetailsProps) {
             icon: <CertificateIcon />,
             label: "Credits",
             value: program.creditsAvailable,
+            fullWidth: true,
+          } satisfies CellDef,
+        ]
+      : []),
+    ...(program.applicationDeadline
+      ? [
+          {
+            icon: <CalendarIcon />,
+            label: "Deadline",
+            value: (
+              <span className="text-roman-700">{program.applicationDeadline}</span>
+            ),
+            fullWidth: true,
           } satisfies CellDef,
         ]
       : []),
   ];
+
+  // Auto-expand the last cell to full width if it would otherwise be orphaned
+  const halfWidthCount = cells.filter((c) => !c.fullWidth).length;
+  const processedCells = cells.map((cell, i) => {
+    if (i === cells.length - 1 && !cell.fullWidth && halfWidthCount % 2 !== 0) {
+      return { ...cell, fullWidth: true };
+    }
+    return cell;
+  });
 
   return (
     <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden sticky top-6 self-start">
@@ -275,9 +321,37 @@ export default function QuickDetails({ program }: QuickDetailsProps) {
 
       {/* 2-column grid — gaps are filled with the slate-100 background, giving the appearance of divider lines */}
       <div className="grid grid-cols-2 gap-px bg-slate-100">
-        {cells.map((cell) => (
+        {processedCells.map((cell) => (
           <GridCell key={cell.label} {...cell} />
         ))}
+      </div>
+
+      {/* Apply CTA */}
+      <div className="px-4 py-4 border-t border-slate-100 space-y-2">
+        {program.applyUrl ? (
+          <a
+            href={program.applyUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block w-full py-2.5 text-sm font-semibold text-center text-white bg-cobalt-500 hover:bg-cobalt-600 rounded-lg transition-colors"
+          >
+            Apply Now
+          </a>
+        ) : (
+          <button
+            type="button"
+            disabled
+            className="w-full py-2.5 text-sm font-semibold text-white bg-cobalt-500 opacity-50 cursor-not-allowed rounded-lg"
+          >
+            Apply Now
+          </button>
+        )}
+        <button
+          type="button"
+          className="w-full py-2.5 text-sm font-semibold text-cobalt-600 border border-cobalt-500 hover:bg-cobalt-50 rounded-lg transition-colors"
+        >
+          Send Inquiry
+        </button>
       </div>
 
       {/* Last updated */}
