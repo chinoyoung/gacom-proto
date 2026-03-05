@@ -4,7 +4,7 @@ import { useParams } from "next/navigation";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 
-import ProgramHero from "./_components/ProgramHero";
+import ProgramHero, { ProgramHeroSkeleton } from "./_components/ProgramHero";
 import QuickDetails from "./_components/QuickDetails";
 import ApplyCTA from "./_components/ApplyCTA";
 import ProgramOverview from "./_components/ProgramOverview";
@@ -54,58 +54,24 @@ function MobileStickyBar({ program }: { program: Program }) {
 function LoadingSkeleton() {
   return (
     <div className="animate-pulse">
-      <div className="w-full h-[420px] bg-slate-200" />
-      <div className="border-b border-slate-200 bg-white px-4 sm:px-6 py-3">
-        <div className="max-w-7xl mx-auto flex gap-6">
-          <div className="h-4 bg-slate-200 rounded w-28" />
-          <div className="h-4 bg-slate-200 rounded w-24" />
-          <div className="h-4 bg-slate-200 rounded w-20" />
-        </div>
-      </div>
+      <ProgramHeroSkeleton />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
-        <div className="flex flex-col lg:flex-row gap-8">
-          <div className="flex-1 min-w-0 space-y-8">
-            <div>
-              <div className="h-6 bg-slate-200 rounded w-48 mb-4" />
-              <div className="space-y-2">
-                <div className="h-4 bg-slate-200 rounded w-full" />
-                <div className="h-4 bg-slate-200 rounded w-5/6" />
-                <div className="h-4 bg-slate-200 rounded w-4/6" />
+        <div className="flex flex-col lg:flex-row gap-8 items-start">
+          <div className="flex-1 min-w-0 space-y-12">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="space-y-4">
+                <div className="h-7 bg-slate-200 rounded w-48 mb-6" />
+                <div className="space-y-3">
+                  <div className="h-4 bg-slate-100 rounded w-full" />
+                  <div className="h-4 bg-slate-100 rounded w-[95%]" />
+                  <div className="h-4 bg-slate-100 rounded w-[90%]" />
+                </div>
               </div>
-            </div>
-            <div>
-              <div className="h-6 bg-slate-200 rounded w-40 mb-4" />
-              <div className="grid grid-cols-4 grid-rows-2 gap-2 h-48 rounded-lg overflow-hidden">
-                <div className="col-span-2 row-span-2 bg-slate-200" />
-                <div className="bg-slate-200" />
-                <div className="bg-slate-200" />
-                <div className="bg-slate-200" />
-                <div className="bg-slate-200" />
-              </div>
-            </div>
+            ))}
           </div>
           <div className="lg:w-[320px] xl:w-[340px] shrink-0 space-y-4">
-            <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
-              <div className="h-14 bg-slate-200" />
-              <div className="p-5 space-y-3">
-                <div className="h-10 bg-slate-200 rounded-lg" />
-                <div className="h-10 bg-slate-200 rounded-lg" />
-              </div>
-            </div>
-            <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
-              <div className="h-12 bg-slate-200" />
-              <div className="p-5 space-y-4">
-                {Array.from({ length: 6 }).map((_, i) => (
-                  <div key={i} className="flex gap-2.5">
-                    <div className="w-4 h-4 bg-slate-200 rounded mt-0.5 shrink-0" />
-                    <div className="flex-1 space-y-1">
-                      <div className="h-3 bg-slate-200 rounded w-24" />
-                      <div className="h-4 bg-slate-200 rounded w-32" />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+            <div className="h-[220px] bg-slate-50 rounded-xl border border-slate-100" />
+            <div className="h-[400px] bg-slate-50 rounded-xl border border-slate-100" />
           </div>
         </div>
       </div>

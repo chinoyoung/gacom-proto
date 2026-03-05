@@ -12,11 +12,11 @@ interface ReviewsManagerProps {
     onCancelCreate?: () => void;
 }
 
-const initialFormData = {
+const baseFormData = {
     programId: "",
     reviewerName: "",
     reviewerCountry: "",
-    date: new Date().toISOString().split("T")[0],
+    date: "",
     reviewTitle: "",
     body: "",
     overallRating: 10,
@@ -30,6 +30,10 @@ const initialFormData = {
     status: "published" as "draft" | "published",
 };
 
+function getInitialFormData() {
+    return { ...baseFormData, date: new Date().toISOString().split("T")[0] };
+}
+
 export default function ReviewsManager({ isCreating, onCancelCreate }: ReviewsManagerProps) {
     const reviews = useQuery(api.reviews.listReviews);
     const programs = useQuery(api.programs.listPrograms, {});
@@ -40,7 +44,7 @@ export default function ReviewsManager({ isCreating, onCancelCreate }: ReviewsMa
     const [isEditing, setIsEditing] = useState(false);
     const [editingId, setEditingId] = useState<Id<"reviews"> | null>(null);
     const [searchQuery, setSearchQuery] = useState("");
-    const [formData, setFormData] = useState(initialFormData);
+    const [formData, setFormData] = useState(getInitialFormData);
 
     // Sync isCreating prop with internal isEditing state
     useEffect(() => {
@@ -57,7 +61,7 @@ export default function ReviewsManager({ isCreating, onCancelCreate }: ReviewsMa
     );
 
     const resetForm = () => {
-        setFormData(initialFormData);
+        setFormData(getInitialFormData());
         setEditingId(null);
         setIsEditing(false);
         if (onCancelCreate) onCancelCreate();
@@ -73,7 +77,7 @@ export default function ReviewsManager({ isCreating, onCancelCreate }: ReviewsMa
             date: (() => {
                 const parsed = new Date(review.date);
                 return isNaN(parsed.getTime())
-                    ? new Date().toISOString().split("T")[0]
+                    ? getInitialFormData().date
                     : parsed.toISOString().split("T")[0];
             })(),
             reviewTitle: review.reviewTitle,
