@@ -1,7 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import Image from "next/image";
+import { useState, useEffect } from "react";
 import { Heart } from "lucide-react";
 
 interface Article {
@@ -14,20 +13,25 @@ interface Article {
     slug: string;
 }
 
+function getRelativeTime(dateStr: string) {
+    const date = new Date(dateStr);
+    const now = new Date();
+    const diffDays = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
+
+    if (diffDays === 0) return "Today";
+    if (diffDays === 1) return "Yesterday";
+    if (diffDays < 7) return `${diffDays} days ago`;
+    if (diffDays < 30) return `${Math.floor(diffDays / 7)} weeks ago`;
+    return date.toLocaleDateString("en-US");
+}
+
 export default function ArticleCard({ article }: { article: Article }) {
     const [imageError, setImageError] = useState(false);
-    // Simple relative date helper for prototype
-    const getRelativeTime = (dateStr: string) => {
-        const date = new Date(dateStr);
-        const now = new Date();
-        const diffDays = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
+    const [relativeTime, setRelativeTime] = useState<string | null>(null);
 
-        if (diffDays === 0) return "Today";
-        if (diffDays === 1) return "Yesterday";
-        if (diffDays < 7) return `${diffDays} days ago`;
-        if (diffDays < 30) return `${Math.floor(diffDays / 7)} weeks ago`;
-        return date.toLocaleDateString();
-    };
+    useEffect(() => {
+        setRelativeTime(getRelativeTime(article.publishDate));
+    }, [article.publishDate]);
 
     return (
         <article className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col group hover:shadow-md transition-all duration-300">
@@ -75,7 +79,7 @@ export default function ArticleCard({ article }: { article: Article }) {
                         {article.author}
                     </span>
                     <span className="text-sm text-slate-400">
-                        {getRelativeTime(article.publishDate)}
+                        {relativeTime ?? ""}
                     </span>
                 </div>
             </div>

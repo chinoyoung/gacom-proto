@@ -23,7 +23,6 @@ interface ProgramFormData {
   // Step 1
   title: string;
   provider: string;
-  tagline: string;
   hostInstitution: string;
   slug: string;
   // Step 2
@@ -58,7 +57,6 @@ interface ProgramFormData {
 const INITIAL_FORM_DATA: ProgramFormData = {
   title: "",
   provider: "",
-  tagline: "",
   hostInstitution: "",
   slug: "",
   city: "",
@@ -111,7 +109,6 @@ function CreateListingContent() {
       setFormData({
         title: existingProgram.title || "",
         provider: existingProgram.provider || "",
-        tagline: existingProgram.tagline || "",
         hostInstitution: existingProgram.hostInstitution || "",
         slug: existingProgram.slug || "",
         city: existingProgram.city || "",
@@ -153,7 +150,6 @@ function CreateListingContent() {
       1: {
         title: formData.title,
         provider: formData.provider,
-        tagline: formData.tagline || undefined,
         hostInstitution: formData.hostInstitution || undefined,
         slug: formData.slug || undefined,
       },
@@ -202,7 +198,6 @@ function CreateListingContent() {
         const id = await createProgram({
           title: formData.title,
           provider: formData.provider,
-          tagline: formData.tagline || undefined,
           hostInstitution: formData.hostInstitution || undefined,
           slug: formData.slug || undefined,
         });
@@ -275,7 +270,6 @@ function CreateListingContent() {
             data={{
               title: formData.title,
               provider: formData.provider,
-              tagline: formData.tagline,
               hostInstitution: formData.hostInstitution,
               slug: formData.slug,
             }}

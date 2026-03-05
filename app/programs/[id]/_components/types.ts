@@ -3,7 +3,6 @@ export interface Program {
   _id: string;
   title: string;
   provider: string;
-  tagline?: string;
   hostInstitution?: string;
   status: "draft" | "published";
   city: string;

@@ -5,7 +5,6 @@ import { Id } from "@/convex/_generated/dataModel";
 interface ProgramFormData {
   title: string;
   provider: string;
-  tagline: string;
   hostInstitution: string;
   city: string;
   country: string;
@@ -144,7 +143,6 @@ export default function Step8Review({
         <ReviewSection title="Basic Information">
           <ReviewField label="Program Title" value={data.title} />
           <ReviewField label="Provider" value={data.provider} />
-          <ReviewField label="Tagline" value={data.tagline} />
           <ReviewField label="Host Institution" value={data.hostInstitution} />
         </ReviewSection>
 

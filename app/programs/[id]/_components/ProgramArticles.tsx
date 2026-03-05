@@ -9,8 +9,8 @@ export default function ProgramArticles() {
 
     if (articles === undefined) {
         return (
-            <section className="mt-16 pt-16 border-t border-gray-200">
-                <h2 className="text-2xl font-bold text-slate-900 mb-5">Related Articles</h2>
+            <section className="mt-20 pt-10 border-t border-gray-200">
+                <h2 className="text-2xl font-bold text-slate-900 mb-6">Related Articles</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 animate-pulse">
                     {[1, 2, 3].map((i) => (
                         <div key={i} className="bg-gray-100 rounded-xl h-96" />
@@ -26,10 +26,10 @@ export default function ProgramArticles() {
     const displayedArticles = articles.slice(0, 3);
 
     return (
-        <section className="mt-16 pt-16 border-t border-gray-200">
+        <section className="mt-20 pt-10 border-t border-gray-200">
             <div className="max-w-7xl mx-auto">
-                <div className="flex items-center justify-between mb-8">
-                    <h2 className="text-2xl font-bold text-slate-900 mb-5">Expert Guides & Advice</h2>
+                <div className="flex items-center justify-between mb-6">
+                    <h2 className="text-2xl font-bold text-slate-900">Expert Guides & Advice</h2>
                     <button className="text-cobalt-600 font-bold text-sm hover:underline">
                         Read more articles
                     </button>

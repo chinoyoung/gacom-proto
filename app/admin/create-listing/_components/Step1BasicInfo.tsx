@@ -16,7 +16,6 @@ function generateSlug(title: string): string {
 interface Step1Data {
   title: string;
   provider: string;
-  tagline: string;
   hostInstitution: string;
   slug: string;
 }
@@ -141,28 +140,6 @@ export default function Step1BasicInfo({ data, onChange, formData }: Step1BasicI
           />
         </div>
 
-        {/* Tagline */}
-        <div>
-          <label htmlFor="tagline" className="block text-sm font-medium text-gray-700">
-            Tagline{" "}
-            <span className="text-gray-400 font-normal">(optional)</span>
-          </label>
-          <p className="mt-0.5 text-xs text-gray-500">
-            A short, compelling description shown on listing cards.
-          </p>
-          <input
-            id="tagline"
-            type="text"
-            value={data.tagline}
-            onChange={(e) => onChange({ tagline: e.target.value })}
-            placeholder="e.g. Discover Italy through immersive academic experiences"
-            maxLength={120}
-            className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder-gray-400 shadow-sm focus:border-cobalt-500 focus:outline-none focus:ring-2 focus:ring-cobalt-500"
-          />
-          <p className="mt-1 text-xs text-gray-400 text-right">
-            {data.tagline.length}/120
-          </p>
-        </div>
 
         {/* Host Institution */}
         <div>

@@ -6,7 +6,6 @@ export default defineSchema({
     // Basic Info
     title: v.string(),
     provider: v.string(),
-    tagline: v.optional(v.string()),
     slug: v.optional(v.string()),
     status: v.union(v.literal("draft"), v.literal("published")),
 

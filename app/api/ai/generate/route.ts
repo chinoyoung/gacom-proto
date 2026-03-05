@@ -19,12 +19,12 @@ export async function POST(req: Request) {
 
         switch (step) {
             case 0:
-                fieldList = "ALL fields (title, provider, tagline, hostInstitution, slug, city, country, terms, duration, educationLevels, eligibleNationalities, ageRequirement, description, whatsIncluded, subjectAreas, highlights, cost, applicationDeadline, contactEmail, contactPhone, applyUrl, housingType, languageOfInstruction, creditsAvailable, coverImage, photos)";
+                fieldList = "ALL fields (title, provider, hostInstitution, slug, city, country, terms, duration, educationLevels, eligibleNationalities, ageRequirement, description, whatsIncluded, subjectAreas, highlights, cost, applicationDeadline, contactEmail, contactPhone, applyUrl, housingType, languageOfInstruction, creditsAvailable, coverImage, photos)";
                 stepInstructions = "Generate a complete, realistic study abroad program listing with all fields filled. Ensure high quality for the description and highlights. terms must be an array from ['fall', 'spring', 'summer', 'academic_year', 'year_round']. educationLevels must be an array from ['freshman', 'sophomore', 'junior', 'senior', 'graduate']. Suggest relevant Unsplash photo URLs for coverImage and photos array.";
                 break;
             case 1:
-                fieldList = "{ title, provider, tagline, hostInstitution, slug }";
-                stepInstructions = "Generate a compelling program title and tagline. If provider is given, suggest a title that fits. Auto-generate the URL slug based on the title.";
+                fieldList = "{ title, provider, hostInstitution, slug }";
+                stepInstructions = "Generate a compelling program title. If provider is given, suggest a title that fits. Auto-generate the URL slug based on the title.";
                 break;
             case 2:
                 fieldList = "{ city, country, terms, duration }";

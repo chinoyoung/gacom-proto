@@ -54,7 +54,6 @@ export const createProgram = mutation({
   args: {
     title: v.string(),
     provider: v.string(),
-    tagline: v.optional(v.string()),
     hostInstitution: v.optional(v.string()),
     slug: v.optional(v.string()),
   },
@@ -62,7 +61,6 @@ export const createProgram = mutation({
     return await ctx.db.insert("programs", {
       title: args.title,
       provider: args.provider,
-      tagline: args.tagline,
       hostInstitution: args.hostInstitution,
       slug: args.slug ?? generateSlug(args.title),
       status: "draft",
@@ -90,7 +88,6 @@ export const updateProgram = mutation({
     // Basic Info
     title: v.optional(v.string()),
     provider: v.optional(v.string()),
-    tagline: v.optional(v.string()),
     hostInstitution: v.optional(v.string()),
     slug: v.optional(v.string()),
     // Location & Terms

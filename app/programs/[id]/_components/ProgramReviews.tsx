@@ -72,7 +72,7 @@ function ReviewCard({ review }: ReviewCardProps) {
             {review.date}
           </p>
         </div>
-        <div className="flex items-center gap-3 shrink-0">
+        <div className="flex items-center gap-2 shrink-0">
           {/* Overall rating badge */}
           <span className="flex items-center gap-1.5 text-[#B07B22]">
             <span className="text-amber-400 text-lg">★</span>
@@ -111,9 +111,8 @@ function ReviewCard({ review }: ReviewCardProps) {
           />
         )}
         <p
-          className={`text-sm text-slate-700 leading-relaxed mt-3 ${
-            expanded ? "" : "line-clamp-3"
-          }`}
+          className={`text-sm text-slate-700 leading-relaxed mt-3 ${expanded ? "" : "line-clamp-3"
+            }`}
         >
           {review.body}
         </p>
@@ -161,7 +160,7 @@ function SummaryCard({
   totalReviews: number;
 }) {
   return (
-    <div className="border border-slate-200 rounded-xl p-5 bg-white flex items-center gap-12 mb-6">
+    <div className="border border-slate-200 rounded-xl p-5 bg-white flex flex-wrap sm:flex-nowrap items-center justify-around sm:justify-start gap-6 sm:gap-12 mb-6">
       <div>
         <p className="text-sm font-bold text-slate-500 uppercase tracking-wide mb-1">
           Overall Rating
@@ -199,7 +198,7 @@ export default function ProgramReviews({ programId }: ProgramReviewsProps) {
   // Loading state
   if (reviews === undefined) {
     return (
-      <section className="mt-10 pt-10 border-t border-slate-100">
+      <section className="mt-20 pt-10 border-t border-slate-100">
         <div className="animate-pulse space-y-4">
           <div className="h-8 bg-slate-200 rounded w-48" />
           <div className="h-4 bg-slate-100 rounded w-72" />
@@ -214,10 +213,10 @@ export default function ProgramReviews({ programId }: ProgramReviewsProps) {
   const avgRating =
     reviews.length > 0
       ? Math.round(
-          (reviews.reduce((sum, r) => sum + r.overallRating, 0) /
-            reviews.length) *
-            100
-        ) / 100
+        (reviews.reduce((sum, r) => sum + r.overallRating, 0) /
+          reviews.length) *
+        100
+      ) / 100
       : 0;
 
   const sortedReviews = [...reviews].sort((a, b) => {
@@ -230,7 +229,7 @@ export default function ProgramReviews({ programId }: ProgramReviewsProps) {
   return (
     <section
       aria-labelledby="reviews-heading"
-      className="mt-10 pt-10 border-t border-slate-100"
+      className="mt-20 pt-10 border-t border-slate-100"
     >
       {/* Header row */}
       <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-6">
@@ -241,11 +240,11 @@ export default function ProgramReviews({ programId }: ProgramReviewsProps) {
           >
             Program Reviews
           </h2>
-          <p className="text-sm text-slate-500 mt-1">
+          <p className="text-sm text-slate-500 mt-2">
             Hear what past participants have to say about the programs
           </p>
         </div>
-        <div className="flex items-center gap-3 shrink-0">
+        <div className="flex flex-wrap items-center gap-3">
           <button
             type="button"
             className="px-4 py-2 bg-[#0A5E85] text-white font-semibold text-sm rounded-lg hover:bg-[#084f70] transition-colors"

@@ -36,11 +36,11 @@ export default function ProgramHighlights({ program }: ProgramHighlightsProps) {
         Program Highlights
       </h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         {program.highlights.map((highlight, idx) => (
           <div
             key={idx}
-            className="group relative flex flex-col gap-3 p-5 rounded-2xl bg-white border border-slate-100 shadow-[0_2px_8px_-2px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_24px_-4px_rgba(0,0,0,0.08)] transition-all duration-300"
+            className="group relative flex flex-col gap-3 p-4 sm:p-5 rounded-2xl bg-white border border-slate-100 shadow-[0_2px_8px_-2px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_24px_-4px_rgba(0,0,0,0.08)] transition-all duration-300"
           >
             {/* Subtle top indicator */}
             <div className="absolute top-0 left-6 right-6 h-px bg-gradient-to-r from-transparent via-cobalt-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />

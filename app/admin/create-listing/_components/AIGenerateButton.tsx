@@ -50,7 +50,6 @@ export default function AIGenerateButton({
             case 1:
                 mockData.title = "Sample " + ["Rome", "Paris", "Tokyo", "London"][Math.floor(Math.random() * 4)] + " Exploration";
                 mockData.provider = "Global Education Experts";
-                mockData.tagline = "A life-changing journey awaits you.";
                 mockData.hostInstitution = "Local University Center";
                 mockData.slug = mockData.title.toLowerCase().replace(/\s+/g, "-");
                 break;

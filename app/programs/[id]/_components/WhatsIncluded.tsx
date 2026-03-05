@@ -13,7 +13,7 @@ export default function WhatsIncluded({ program }: WhatsIncludedProps) {
     <section aria-labelledby="included-heading">
       <h2
         id="included-heading"
-        className="text-2xl font-bold text-slate-900 mb-5"
+        className="text-2xl font-bold text-slate-900 mb-6"
       >
         What&apos;s Included
       </h2>

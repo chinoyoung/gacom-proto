@@ -13,7 +13,7 @@ export default function SubjectAreas({ program }: SubjectAreasProps) {
     <section aria-labelledby="subjects-heading">
       <h2
         id="subjects-heading"
-        className="text-2xl font-bold text-slate-900 mb-5"
+        className="text-2xl font-bold text-slate-900 mb-6"
       >
         Subject Areas
       </h2>
