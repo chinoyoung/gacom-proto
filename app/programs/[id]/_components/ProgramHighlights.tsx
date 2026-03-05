@@ -13,7 +13,7 @@ export default function ProgramHighlights({ program }: ProgramHighlightsProps) {
     <section aria-labelledby="highlights-heading">
       <h2
         id="highlights-heading"
-        className="text-xl font-bold text-slate-900 border-l-[3px] border-cobalt-500 pl-3 mb-5"
+        className="text-2xl font-bold text-slate-900 mb-5"
       >
         Program Highlights
       </h2>

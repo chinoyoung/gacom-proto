@@ -148,6 +148,52 @@ function CreateListingContent() {
     setFormData((prev) => ({ ...prev, ...patch }));
   }, []);
 
+  const getStepPayload = useCallback((step: number): Partial<ProgramFormData> | null => {
+    const stepPayloads: Record<number, Partial<ProgramFormData>> = {
+      1: {
+        title: formData.title,
+        provider: formData.provider,
+        tagline: formData.tagline || undefined,
+        hostInstitution: formData.hostInstitution || undefined,
+        slug: formData.slug || undefined,
+      },
+      2: {
+        city: formData.city,
+        country: formData.country,
+        terms: formData.terms,
+        duration: formData.duration || undefined,
+      },
+      3: {
+        educationLevels: formData.educationLevels,
+        eligibleNationalities: formData.eligibleNationalities,
+        ageRequirement: formData.ageRequirement || undefined,
+      },
+      4: {
+        description: formData.description,
+        whatsIncluded: formData.whatsIncluded,
+      },
+      5: {
+        subjectAreas: formData.subjectAreas,
+        highlights: formData.highlights,
+      },
+      6: {
+        cost: formData.cost || undefined,
+        applicationDeadline: formData.applicationDeadline || undefined,
+        contactEmail: formData.contactEmail || undefined,
+        contactPhone: formData.contactPhone || undefined,
+        applyUrl: formData.applyUrl || undefined,
+        housingType: formData.housingType || undefined,
+        languageOfInstruction: formData.languageOfInstruction || undefined,
+        creditsAvailable: formData.creditsAvailable || undefined,
+      },
+      7: {
+        coverImage: formData.coverImage || undefined,
+        photos: formData.photos,
+      },
+    };
+    return stepPayloads[step] ?? null;
+  }, [formData]);
+
   const handleNext = async () => {
     setIsSubmitting(true);
     try {
@@ -162,51 +208,7 @@ function CreateListingContent() {
         });
         setProgramId(id);
       } else if (programId) {
-        // Persist step data on subsequent steps (or step 1 update)
-        const stepPayloads: Record<number, Partial<ProgramFormData>> = {
-          1: {
-            title: formData.title,
-            provider: formData.provider,
-            tagline: formData.tagline || undefined,
-            hostInstitution: formData.hostInstitution || undefined,
-            slug: formData.slug || undefined,
-          },
-          2: {
-            city: formData.city,
-            country: formData.country,
-            terms: formData.terms,
-            duration: formData.duration || undefined,
-          },
-          3: {
-            educationLevels: formData.educationLevels,
-            eligibleNationalities: formData.eligibleNationalities,
-            ageRequirement: formData.ageRequirement || undefined,
-          },
-          4: {
-            description: formData.description,
-            whatsIncluded: formData.whatsIncluded,
-          },
-          5: {
-            subjectAreas: formData.subjectAreas,
-            highlights: formData.highlights,
-          },
-          6: {
-            cost: formData.cost || undefined,
-            applicationDeadline: formData.applicationDeadline || undefined,
-            contactEmail: formData.contactEmail || undefined,
-            contactPhone: formData.contactPhone || undefined,
-            applyUrl: formData.applyUrl || undefined,
-            housingType: formData.housingType || undefined,
-            languageOfInstruction: formData.languageOfInstruction || undefined,
-            creditsAvailable: formData.creditsAvailable || undefined,
-          },
-          7: {
-            coverImage: formData.coverImage || undefined,
-            photos: formData.photos,
-          },
-        };
-
-        const payload = stepPayloads[currentStep];
+        const payload = getStepPayload(currentStep);
         if (payload) {
           await updateProgram({ id: programId, ...payload });
         }
@@ -229,6 +231,11 @@ function CreateListingContent() {
     if (!programId) return;
     setIsSubmitting(true);
     try {
+      // Save current step's data before publishing
+      const payload = getStepPayload(currentStep);
+      if (payload) {
+        await updateProgram({ id: programId, ...payload });
+      }
       await updateProgram({ id: programId, status: "published" });
       router.push(`/programs/${formData.slug}`);
     } catch (err) {
@@ -245,6 +252,11 @@ function CreateListingContent() {
     }
     setIsSubmitting(true);
     try {
+      // Save current step's data before updating status
+      const payload = getStepPayload(currentStep);
+      if (payload) {
+        await updateProgram({ id: programId, ...payload });
+      }
       await updateProgram({ id: programId, status: "draft" });
       showToast("Draft saved successfully!");
     } catch (err) {
