@@ -176,7 +176,7 @@ interface GridCellProps {
 function GridCell({ icon, label, value, fullWidth = false }: GridCellProps) {
   return (
     <div
-      className={`bg-white px-3 py-2.5 flex flex-col gap-1 min-w-0${fullWidth ? " col-span-2" : ""}`}
+      className={`bg-white px-4 py-3.5 flex flex-col gap-1.5 min-w-0${fullWidth ? " col-span-2" : ""}`}
     >
       <div className="flex items-center gap-1.5">
         {icon}
@@ -264,11 +264,13 @@ export default function QuickDetails({ program }: QuickDetailsProps) {
           {nationalitiesDisplay}
         </span>
       ),
+      fullWidth: true,
     },
     {
       icon: <HomeIcon />,
       label: "Housing",
       value: program.housingType ? capitalizeFirst(program.housingType) : "Varies",
+      fullWidth: true,
     },
     {
       icon: <ChatIcon />,
@@ -276,6 +278,7 @@ export default function QuickDetails({ program }: QuickDetailsProps) {
       value: program.languageOfInstruction
         ? capitalizeFirst(program.languageOfInstruction)
         : "English",
+      fullWidth: true,
     },
     ...(program.creditsAvailable
       ? [

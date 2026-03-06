@@ -11,6 +11,7 @@ import QuickDetails from "./_components/QuickDetails";
 import ProgramOverview from "./_components/ProgramOverview";
 import WhatsIncluded from "./_components/WhatsIncluded";
 import SubjectAreas from "./_components/SubjectAreas";
+import ProgramDetails from "./_components/ProgramDetails";
 import ProgramHighlights from "./_components/ProgramHighlights";
 import ProgramReviews from "./_components/ProgramReviews";
 import RelatedPrograms from "./_components/RelatedPrograms";
@@ -316,7 +317,10 @@ export default function ProgramDetailPage() {
               {/* 2. What's Included — concrete value up front */}
               <WhatsIncluded program={program} />
 
-              {/* 3. Highlights — aspirational value */}
+              {/* 3. Program Details — structured facts */}
+              <ProgramDetails program={program} />
+
+              {/* 4. Highlights — aspirational value */}
               <ProgramHighlights program={program} />
 
               {/* 4. Photo gallery — social proof / aspiration — REMOVED (integrated into Hero) */}
