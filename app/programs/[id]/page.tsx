@@ -67,29 +67,29 @@ function StickyProgramHeader({
           <span className="shrink-0 flex items-center gap-1 text-xs text-sun-700 font-medium">
             <span className="text-sun-500" aria-hidden="true">★</span>
             {STICKY_RATING}
-            <span className="text-slate-400 font-normal">· {STICKY_REVIEW_COUNT} reviews</span>
+            <span className="text-slate-500 font-normal">· {STICKY_REVIEW_COUNT} reviews</span>
           </span>
         </div>
 
-        {/* Right: CTAs — match hero button styles */}
+        {/* Right: CTAs — button hierarchy */}
         <div className="flex items-center gap-3 shrink-0">
           {program.applyUrl && (
             <a
               href={program.applyUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex justify-center items-center gap-2 px-5 py-2.5 bg-roman-500 text-white font-bold text-sm rounded-lg hover:bg-roman-600 transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-roman-500 focus-visible:ring-offset-2"
+              className="inline-flex items-center gap-1.5 text-sm font-semibold text-cobalt-600 hover:text-cobalt-700 hover:underline transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 rounded"
             >
               Visit Website
-              <ExternalLink className="w-4 h-4" strokeWidth={2.5} aria-hidden="true" />
+              <ExternalLink className="w-3.5 h-3.5" strokeWidth={2.5} aria-hidden="true" />
             </a>
           )}
 
           <button
             type="button"
-            className="inline-flex justify-center items-center px-5 py-2.5 bg-cobalt-400 text-white font-bold text-sm rounded-lg hover:bg-cobalt-500 transition-colors shadow-sm cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-400 focus-visible:ring-offset-2"
+            className="inline-flex justify-center items-center px-5 py-2 border-2 border-cobalt-500 text-cobalt-600 font-semibold text-sm rounded-lg hover:bg-cobalt-50 transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2"
           >
-            Inquire Here
+            Inquire
           </button>
 
           {program.applyUrl ? (
@@ -97,14 +97,14 @@ function StickyProgramHeader({
               href={program.applyUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex justify-center items-center px-5 py-2.5 bg-cobalt-400 text-white font-bold text-sm rounded-lg hover:bg-cobalt-500 transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-400 focus-visible:ring-offset-2"
+              className="inline-flex justify-center items-center px-5 py-2 bg-cobalt-500 text-white font-semibold text-sm rounded-lg hover:bg-cobalt-600 transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2"
             >
               Apply Now
             </a>
           ) : (
             <button
               type="button"
-              className="inline-flex justify-center items-center px-5 py-2.5 bg-cobalt-400 text-white font-bold text-sm rounded-lg hover:bg-cobalt-500 transition-colors shadow-sm cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-400 focus-visible:ring-offset-2"
+              className="inline-flex justify-center items-center px-5 py-2 bg-cobalt-500 text-white font-semibold text-sm rounded-lg hover:bg-cobalt-600 transition-colors shadow-sm cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2"
             >
               Apply Now
             </button>
@@ -113,7 +113,7 @@ function StickyProgramHeader({
           <button
             type="button"
             onClick={onToggleSave}
-            className={`inline-flex justify-center items-center gap-1.5 px-4 py-2.5 text-sm font-semibold rounded-lg border transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-400 focus-visible:ring-offset-2 ${
+            className={`inline-flex justify-center items-center gap-1.5 px-4 py-2 text-sm font-semibold rounded-lg border transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-400 focus-visible:ring-offset-2 ${
               saved
                 ? "bg-cobalt-50 border-cobalt-300 text-cobalt-600"
                 : "bg-white border-slate-300 text-slate-700 hover:border-slate-400"
@@ -142,7 +142,7 @@ function MobileStickyBar({ program }: { program: Program }) {
         type="button"
         className="flex-1 px-4 py-2.5 border-2 border-cobalt-500 text-cobalt-600 font-semibold text-sm rounded-lg hover:bg-cobalt-500/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 cursor-pointer"
       >
-        Send Inquiry
+        Inquire
       </button>
       {program.applyUrl ? (
         <a

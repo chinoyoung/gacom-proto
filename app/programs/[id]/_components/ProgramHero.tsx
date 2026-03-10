@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Bookmark, CheckCircle, MapPin, Calendar, Coins, Clock, ExternalLink, Expand } from "lucide-react";
+import { Bookmark, CheckCircle, MapPin, Calendar, Coins, Clock, Expand } from "lucide-react";
 import type { Program } from "./types";
 
 interface ProgramHeroProps {
@@ -87,10 +87,10 @@ export default function ProgramHero({ program }: ProgramHeroProps) {
                   {program.provider}
                 </p>
                 <div className="flex items-center gap-2 flex-wrap">
-                  <div className="flex items-center gap-1.5 bg-sun-50 text-sun-700 text-xs font-semibold px-3 py-1 rounded-full border border-sun-100">
+                  <div className="flex items-center gap-1.5 bg-sun-50 text-sun-800 text-xs font-semibold px-3 py-1 rounded-full border border-sun-200">
                     <span className="text-sun-600" aria-hidden="true">★</span>
                     <span>{STATIC_RATING}</span>
-                    <span className="font-normal text-sun-400">/ {STATIC_REVIEW_COUNT} reviews</span>
+                    <span className="font-normal text-sun-600">/ {STATIC_REVIEW_COUNT} reviews</span>
                   </div>
                   <div className="flex items-center gap-1 bg-fern-50 text-fern-800 text-xs font-semibold px-3 py-1 rounded-full border border-fern-200">
                     <CheckCircle className="w-3.5 h-3.5 text-fern-900 shrink-0" aria-hidden="true" />
@@ -138,38 +138,19 @@ export default function ProgramHero({ program }: ProgramHeroProps) {
 
               {/* CTAs */}
               <div className="flex flex-wrap items-center gap-3 pt-1">
-                {program.applyUrl && (
-                  <a
-                    href={program.applyUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex justify-center items-center gap-2 px-5 py-2.5 bg-roman-500 text-white font-bold text-sm rounded-lg hover:bg-roman-600 transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-roman-500 focus-visible:ring-offset-2"
-                  >
-                    Visit Website
-                    <ExternalLink className="w-4 h-4" strokeWidth={2.5} aria-hidden="true" />
-                  </a>
-                )}
-
-                <button
-                  type="button"
-                  className="inline-flex justify-center items-center px-5 py-2.5 bg-cobalt-400 text-white font-bold text-sm rounded-lg hover:bg-cobalt-500 transition-colors shadow-sm cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-400 focus-visible:ring-offset-2"
-                >
-                  Inquire Here
-                </button>
-
                 {program.applyUrl ? (
                   <a
                     href={program.applyUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex justify-center items-center px-5 py-2.5 bg-cobalt-400 text-white font-bold text-sm rounded-lg hover:bg-cobalt-500 transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-400 focus-visible:ring-offset-2"
+                    className="inline-flex justify-center items-center px-5 py-2.5 bg-cobalt-500 text-white font-bold text-sm rounded-lg hover:bg-cobalt-600 transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2"
                   >
                     Apply Now
                   </a>
                 ) : (
                   <button
                     type="button"
-                    className="inline-flex justify-center items-center px-5 py-2.5 bg-cobalt-400 text-white font-bold text-sm rounded-lg hover:bg-cobalt-500 transition-colors shadow-sm cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-400 focus-visible:ring-offset-2"
+                    className="inline-flex justify-center items-center px-5 py-2.5 bg-cobalt-500 text-white font-bold text-sm rounded-lg hover:bg-cobalt-600 transition-colors shadow-sm cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2"
                   >
                     Apply Now
                   </button>
@@ -434,9 +415,8 @@ export function ProgramHeroSkeleton() {
             </div>
 
             <div className="flex flex-wrap items-center gap-3 pt-1">
-              <div className="h-10 bg-slate-200 rounded-lg w-36" />
               <div className="h-10 bg-slate-200 rounded-lg w-32" />
-              <div className="h-10 bg-slate-200 rounded-lg w-28" />
+              <div className="h-10 bg-slate-200 rounded-lg w-24" />
             </div>
           </div>
 
