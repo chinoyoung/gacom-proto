@@ -3,9 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "run-p dev:*",
-    "dev:next": "next dev",
-    "dev:convex": "convex dev",
+    "dev": "npm-run-all --parallel -l dev:backend dev:frontend",
+    "dev:backend": "convex dev",
+    "dev:frontend": "next dev",
+    "predev": "convex dev --until-success",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"

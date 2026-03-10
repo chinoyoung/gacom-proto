@@ -21,24 +21,21 @@ export default function WhatsIncluded({ program }: WhatsIncludedProps) {
       <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2.5">
         {program.whatsIncluded.map((item, idx) => (
           <li key={idx} className="flex items-start gap-2.5">
-            <span
-              className="flex-shrink-0 w-5 h-5 rounded-full bg-fern-200 flex items-center justify-center mt-0.5"
+            <svg
+              className="w-4 h-4 flex-shrink-0 text-fern-600 mt-0.5"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2}
+              viewBox="0 0 20 20"
               aria-hidden="true"
             >
-              <svg
-                className="w-3 h-3 text-fern-700"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth={3}
-                viewBox="0 0 12 12"
-              >
-                <path
-                  d="M2 6l3 3 5-5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </span>
+              <circle cx="10" cy="10" r="9" strokeWidth="1.5" />
+              <path
+                d="M6 10.5l3 3 5-6"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
             <span className="text-sm text-slate-700 leading-snug">{item}</span>
           </li>
         ))}

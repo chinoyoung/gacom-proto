@@ -115,31 +115,23 @@ export default function ProgramHero({ program }: ProgramHeroProps) {
               </div>
 
               {/* Key facts strip */}
-              <div className="py-4 border-y border-slate-300">
-                <div className="grid grid-cols-2 gap-x-4 gap-y-3 sm:flex sm:flex-wrap sm:items-center sm:gap-x-5 sm:gap-y-3">
+              <div className="py-3 border-y border-slate-200">
+                <ul
+                  className="flex flex-wrap items-center gap-x-4 gap-y-2"
+                  aria-label="Program key facts"
+                >
                   {facts.map((fact, idx) => (
-                    <div key={fact.key} className="flex items-center gap-2 sm:contents">
-                      {/* The fact item — always visible */}
-                      <div className="flex items-center gap-2 min-w-0">
-                        <div className="flex items-center justify-center w-7 h-7 rounded-md bg-slate-100 shrink-0">
-                          {fact.icon}
-                        </div>
-                        <div className="min-w-0">
-                          <p className="text-xs font-semibold uppercase tracking-wider text-slate-400 leading-none mb-0.5">
-                            {fact.label}
-                          </p>
-                          <p className={`text-sm font-semibold leading-snug ${fact.urgent ? "text-roman-700" : "text-slate-800"}`}>
-                            {fact.value}
-                          </p>
-                        </div>
-                      </div>
-                      {/* Divider — desktop only, between items */}
-                      {idx < facts.length - 1 && (
-                        <div className="hidden sm:block h-7 w-px bg-slate-300 self-center shrink-0" aria-hidden="true" />
+                    <li key={fact.key} className="flex items-center gap-1.5">
+                      {idx > 0 && (
+                        <span className="mr-2 text-slate-300 select-none" aria-hidden="true">·</span>
                       )}
-                    </div>
+                      {fact.icon}
+                      <span className={`text-sm font-semibold leading-none ${fact.urgent ? "text-roman-700" : "text-slate-700"}`}>
+                        {fact.value}
+                      </span>
+                    </li>
                   ))}
-                </div>
+                </ul>
               </div>
 
 
@@ -416,18 +408,10 @@ export function ProgramHeroSkeleton() {
               </div>
             </div>
 
-            <div className="pt-4 border-t border-slate-200">
-              <div className="grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-4 sm:gap-6">
-                {[1, 2, 3, 4].map((i) => (
-                  <div key={i} className="flex items-center gap-2">
-                    <div className="w-7 h-7 rounded-md bg-slate-100 shrink-0" />
-                    <div className="space-y-1.5">
-                      <div className="h-2 bg-slate-50 rounded w-8" />
-                      <div className="h-3 bg-slate-200 rounded w-16" />
-                    </div>
-                  </div>
-                ))}
-              </div>
+            <div className="py-3 border-y border-slate-200 flex flex-wrap gap-x-4 gap-y-2">
+              {[48, 72, 56, 44].map((w, i) => (
+                <div key={i} className="h-4 bg-slate-200 rounded" style={{ width: w }} />
+              ))}
             </div>
 
             <div className="flex flex-wrap items-center gap-3 pt-1">

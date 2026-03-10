@@ -290,18 +290,6 @@ export default function QuickDetails({ program }: QuickDetailsProps) {
           } satisfies CellDef,
         ]
       : []),
-    ...(program.applicationDeadline
-      ? [
-          {
-            icon: <CalendarIcon />,
-            label: "Deadline",
-            value: (
-              <span className="text-roman-700">{program.applicationDeadline}</span>
-            ),
-            fullWidth: true,
-          } satisfies CellDef,
-        ]
-      : []),
   ];
 
   // Auto-expand the last cell to full width if it would otherwise be orphaned

@@ -167,7 +167,7 @@ function SummaryCard({
         {/* Left — overall score */}
         <div className="flex flex-col items-center sm:items-start justify-center sm:border-r sm:border-slate-100 sm:pr-10">
           <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-1">
-            Overall Score
+            Overall Rating
           </p>
           <div className="flex items-end gap-1.5">
             <span className="text-5xl font-extrabold text-slate-900 leading-none">
@@ -175,7 +175,7 @@ function SummaryCard({
             </span>
             <span className="text-lg text-slate-400 font-medium mb-1">/10</span>
           </div>
-          <p className="text-xs text-slate-400 mt-2">
+          <p className="text-sm font-semibold text-cobalt-600 mt-2">
             {totalReviews} {totalReviews === 1 ? "review" : "reviews"}
           </p>
         </div>
@@ -271,6 +271,12 @@ export default function ProgramReviews({ programId }: ProgramReviewsProps) {
           </p>
         </div>
         <div className="flex items-center gap-3">
+          <button
+            type="button"
+            className="px-4 py-2 bg-roman-500 text-white font-semibold text-sm rounded-lg hover:bg-roman-600 cursor-pointer transition-colors"
+          >
+            Review this Program
+          </button>
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value as SortBy)}
@@ -305,9 +311,9 @@ export default function ProgramReviews({ programId }: ProgramReviewsProps) {
           <div className="mt-6">
             <button
               type="button"
-              className="px-5 py-2.5 border border-cobalt-500 text-cobalt-600 font-semibold text-sm rounded-lg hover:bg-cobalt-50 transition-colors"
+              className="px-5 py-2.5 bg-roman-500 text-white font-semibold text-sm rounded-lg hover:bg-roman-600 cursor-pointer transition-colors"
             >
-              Write a Review
+              Review this Program
             </button>
           </div>
         </div>
@@ -317,14 +323,6 @@ export default function ProgramReviews({ programId }: ProgramReviewsProps) {
             {sortedReviews.map((review) => (
               <ReviewCard key={review._id} review={review as Review} />
             ))}
-          </div>
-          <div className="mt-6 pt-6 border-t border-slate-100 flex justify-center">
-            <button
-              type="button"
-              className="px-5 py-2.5 border border-cobalt-500 text-cobalt-600 font-semibold text-sm rounded-lg hover:bg-cobalt-50 transition-colors"
-            >
-              Write a Review
-            </button>
           </div>
         </>
       )}

@@ -6,23 +6,16 @@ interface ProgramHighlightsProps {
   program: Program;
 }
 
-function CheckIcon() {
+function StarIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 20 20"
-      fill="none"
+      fill="currentColor"
       aria-hidden="true"
-      className="w-5 h-5 flex-shrink-0"
+      className="w-4 h-4 flex-shrink-0"
     >
-      <circle cx="10" cy="10" r="9" stroke="currentColor" strokeWidth="1.5" />
-      <path
-        d="M6 10.5l3 3 5-6"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <path d="M10 1.5l2.39 4.84 5.34.78-3.87 3.77.91 5.32L10 13.77l-4.77 2.44.91-5.32L2.27 7.12l5.34-.78L10 1.5z" />
     </svg>
   );
 }
@@ -36,22 +29,18 @@ export default function ProgramHighlights({ program }: ProgramHighlightsProps) {
         Program Highlights
       </h2>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+      <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2">
         {program.highlights.map((highlight, idx) => (
-          <div
-            key={idx}
-            className="flex flex-col gap-3 p-4 sm:p-5 rounded-xl bg-white border border-slate-100 shadow-sm"
-          >
-            <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-cobalt-600/10 text-cobalt-700 shrink-0">
-              <CheckIcon />
-            </div>
-
-            <p className="text-sm text-slate-600 leading-relaxed font-medium">
+          <li key={idx} className="flex items-start gap-2 py-1">
+            <span className="text-sun-500 mt-0.5">
+              <StarIcon />
+            </span>
+            <span className="text-sm text-slate-700 leading-snug">
               {highlight}
-            </p>
-          </div>
+            </span>
+          </li>
         ))}
-      </div>
+      </ul>
     </section>
   );
 }

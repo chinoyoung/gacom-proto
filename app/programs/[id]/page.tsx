@@ -314,30 +314,31 @@ export default function ProgramDetailPage() {
               {/* 1. Overview — context first */}
               <ProgramOverview program={program} />
 
-              {/* 2. What's Included — concrete value up front */}
-              <WhatsIncluded program={program} />
-
-              {/* 3. Program Details — structured facts */}
-              <ProgramDetails program={program} />
-
-              {/* 4. Highlights — aspirational value */}
+              {/* 2. Highlights — key selling points */}
               <ProgramHighlights program={program} />
 
-              {/* 4. Photo gallery — social proof / aspiration — REMOVED (integrated into Hero) */}
-
-              {/* 5. Reviews */}
-              <ProgramReviews programId={program._id} />
-
-              {/* 6. Subject areas — discovery / SEO */}
-              <SubjectAreas program={program} />
+              {/* 3. What's Included — concrete value up front */}
+              <WhatsIncluded program={program} />
             </div>
 
             {/* ── Right sidebar ── */}
-            <div className="w-full lg:w-80 xl:w-80 shrink-0 lg:sticky lg:top-6 lg:self-start space-y-4">
+            <div className="w-full lg:w-[400px] shrink-0 lg:sticky lg:top-6 lg:self-start space-y-4">
               {/* Quick details second — supporting info */}
               <QuickDetails program={program} />
             </div>
 
+          </div>
+
+          {/* Full-width sections — below the sidebar */}
+          <div className="space-y-20 mt-20">
+            {/* 3. Program Details — structured facts */}
+            <ProgramDetails program={program} />
+
+            {/* 4. Reviews */}
+            <ProgramReviews programId={program._id} />
+
+            {/* 6. Subject areas — discovery / SEO */}
+            <SubjectAreas program={program} />
           </div>
 
           {/* Related Articles Section */}
