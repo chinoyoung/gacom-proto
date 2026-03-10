@@ -85,26 +85,62 @@ const ITEM_LIMIT = 3;
 
 // ─── Expandable list ─────────────────────────────────────────────────────────
 
-function ExpandableList({ items }: { items: string[] }) {
-  const [expanded, setExpanded] = useState(false);
+function ExpandableList({ items, title }: { items: string[]; title?: string }) {
+  const [open, setOpen] = useState(false);
   const hasMore = items.length > ITEM_LIMIT;
-  const visible = expanded ? items : items.slice(0, ITEM_LIMIT);
+  const preview = items.slice(0, ITEM_LIMIT);
 
   return (
-    <div className="flex flex-col gap-1">
-      {visible.map((item) => (
-        <span key={item} className="text-sm text-slate-700">
+    <div className="flex flex-col gap-0 divide-y divide-slate-100">
+      {preview.map((item) => (
+        <span key={item} className="text-sm text-slate-700 py-2 first:pt-0">
           {item}
         </span>
       ))}
       {hasMore && (
-        <button
-          type="button"
-          onClick={() => setExpanded((v) => !v)}
-          className="self-start mt-1 text-xs font-semibold text-cobalt-600 hover:text-cobalt-700 transition-colors focus-visible:outline-none"
-        >
-          {expanded ? "Show less ↑" : "Show all ↓"}
-        </button>
+        <>
+          <button
+            type="button"
+            onClick={() => setOpen(true)}
+            className="self-start mt-1 text-xs font-semibold text-cobalt-600 hover:text-cobalt-700 transition-colors focus-visible:outline-none cursor-pointer"
+          >
+            Show all ({items.length})
+          </button>
+
+          {open && (
+            <div
+              className="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
+              onClick={() => setOpen(false)}
+            >
+              <div
+                className="bg-white rounded-xl shadow-lg w-full max-w-sm mx-4 max-h-[70vh] flex flex-col"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="flex items-center justify-between p-4 border-b border-slate-100">
+                  <h3 className="text-sm font-bold text-slate-900">
+                    {title ?? "All Items"}
+                  </h3>
+                  <button
+                    type="button"
+                    onClick={() => setOpen(false)}
+                    className="text-slate-400 hover:text-slate-600 transition-colors cursor-pointer"
+                  >
+                    <svg viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
+                      <path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
+                    </svg>
+                  </button>
+                </div>
+                <div className="p-4 overflow-y-auto flex flex-col gap-2">
+                  {items.map((item) => (
+                    <span key={item} className="text-sm text-slate-700">
+                      {item}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+        </>
       )}
     </div>
   );
@@ -179,7 +215,7 @@ export default function ProgramDetails({ program }: { program: Program }) {
         {/* Subjects & Courses */}
         {hasSubjects && (
           <DetailCard icon={<DocumentIcon />} title="Subjects & Courses">
-            <ExpandableList items={program.subjectAreas} />
+            <ExpandableList items={program.subjectAreas} title="Subjects & Courses" />
           </DetailCard>
         )}
 
@@ -192,7 +228,7 @@ export default function ProgramDetails({ program }: { program: Program }) {
                   <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1">
                     Terms
                   </p>
-                  <ExpandableList items={program.terms} />
+                  <ExpandableList items={program.terms} title="Terms" />
                 </div>
               )}
               {program.duration && (
@@ -221,7 +257,7 @@ export default function ProgramDetails({ program }: { program: Program }) {
               <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1">
                 Nationalities
               </p>
-              <ExpandableList items={program.eligibleNationalities} />
+              <ExpandableList items={program.eligibleNationalities} title="Nationalities" />
             </div>
           ) : (
             <p className="text-sm text-slate-700">Open to All</p>
@@ -242,7 +278,7 @@ export default function ProgramDetails({ program }: { program: Program }) {
         {/* What's Included */}
         {hasWhatsIncluded && (
           <DetailCard icon={<ClipboardListIcon />} title="What's Included">
-            <ExpandableList items={program.whatsIncluded} />
+            <ExpandableList items={program.whatsIncluded} title="What's Included" />
           </DetailCard>
         )}
 
@@ -263,7 +299,7 @@ export default function ProgramDetails({ program }: { program: Program }) {
               <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1">
                 Accepted Education Levels
               </p>
-              <ExpandableList items={program.educationLevels} />
+              <ExpandableList items={program.educationLevels} title="Education Levels" />
             </div>
           ) : (
             <p className="text-sm text-slate-700">Open to All</p>

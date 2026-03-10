@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { useQuery } from "convex/react";
+import { Bookmark, ExternalLink } from "lucide-react";
 import { api } from "@/convex/_generated/api";
 
 import ProgramHero, { ProgramHeroSkeleton } from "./_components/ProgramHero";
@@ -14,9 +15,11 @@ import SubjectAreas from "./_components/SubjectAreas";
 import ProgramDetails from "./_components/ProgramDetails";
 import ProgramHighlights from "./_components/ProgramHighlights";
 import ProgramReviews from "./_components/ProgramReviews";
+import WhyChooseProgram from "./_components/WhyChooseProgram";
 import RelatedPrograms from "./_components/RelatedPrograms";
 import ProgramArticles from "./_components/ProgramArticles";
 import type { Program } from "./_components/types";
+import { Id } from "@/convex/_generated/dataModel";
 
 // ─── Desktop sticky header ─────────────────────────────────────────────────────
 
@@ -26,9 +29,13 @@ const STICKY_REVIEW_COUNT = 103;
 function StickyProgramHeader({
   program,
   visible,
+  saved,
+  onToggleSave,
 }: {
   program: Program;
   visible: boolean;
+  saved: boolean;
+  onToggleSave: () => void;
 }) {
   return (
     <div
@@ -66,10 +73,22 @@ function StickyProgramHeader({
         </div>
 
         {/* Right: CTAs — match hero button styles */}
-        <div className="flex items-center gap-2 shrink-0">
+        <div className="flex items-center gap-3 shrink-0">
+          {program.applyUrl && (
+            <a
+              href={program.applyUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex justify-center items-center gap-2 px-5 py-2.5 bg-roman-500 text-white font-bold text-sm rounded-lg hover:bg-roman-600 transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-roman-500 focus-visible:ring-offset-2"
+            >
+              Visit Website
+              <ExternalLink className="w-4 h-4" strokeWidth={2.5} aria-hidden="true" />
+            </a>
+          )}
+
           <button
             type="button"
-            className="px-4 py-2 bg-cobalt-400 text-white font-bold text-sm rounded-lg hover:bg-cobalt-500 transition-colors shadow-sm cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-400 focus-visible:ring-offset-2"
+            className="inline-flex justify-center items-center px-5 py-2.5 bg-cobalt-400 text-white font-bold text-sm rounded-lg hover:bg-cobalt-500 transition-colors shadow-sm cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-400 focus-visible:ring-offset-2"
           >
             Inquire Here
           </button>
@@ -79,18 +98,36 @@ function StickyProgramHeader({
               href={program.applyUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="px-4 py-2 bg-cobalt-400 text-white font-bold text-sm rounded-lg hover:bg-cobalt-500 transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-400 focus-visible:ring-offset-2"
+              className="inline-flex justify-center items-center px-5 py-2.5 bg-cobalt-400 text-white font-bold text-sm rounded-lg hover:bg-cobalt-500 transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-400 focus-visible:ring-offset-2"
             >
               Apply Now
             </a>
           ) : (
             <button
               type="button"
-              className="px-4 py-2 bg-cobalt-400 text-white font-bold text-sm rounded-lg hover:bg-cobalt-500 transition-colors shadow-sm cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-400 focus-visible:ring-offset-2"
+              className="inline-flex justify-center items-center px-5 py-2.5 bg-cobalt-400 text-white font-bold text-sm rounded-lg hover:bg-cobalt-500 transition-colors shadow-sm cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-400 focus-visible:ring-offset-2"
             >
               Apply Now
             </button>
           )}
+
+          <button
+            type="button"
+            onClick={onToggleSave}
+            className={`inline-flex justify-center items-center gap-1.5 px-4 py-2.5 text-sm font-semibold rounded-lg border transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-400 focus-visible:ring-offset-2 ${
+              saved
+                ? "bg-cobalt-50 border-cobalt-300 text-cobalt-600"
+                : "bg-white border-slate-300 text-slate-700 hover:border-slate-400"
+            }`}
+            aria-label={saved ? "Unsave program" : "Save program"}
+          >
+            <Bookmark
+              className="w-4 h-4"
+              fill={saved ? "currentColor" : "none"}
+              strokeWidth={2}
+            />
+            {saved ? "Saved" : "Save"}
+          </button>
         </div>
       </div>
     </div>
@@ -217,6 +254,19 @@ export default function ProgramDetailPage() {
     slug ? { slug } : "skip"
   );
 
+  const reviews = useQuery(
+    api.reviews.listReviewsByProgram,
+    program?._id ? { programId: program._id as Id<"programs">, status: "published" } : "skip"
+  );
+
+  const avgRating =
+    reviews && reviews.length > 0
+      ? Math.round(
+          (reviews.reduce((sum, r) => sum + r.overallRating, 0) / reviews.length) * 100
+        ) / 100
+      : 0;
+
+  const [saved, setSaved] = useState(false);
   const heroRef = useRef<HTMLDivElement>(null);
   const [stickyVisible, setStickyVisible] = useState(false);
 
@@ -234,7 +284,7 @@ export default function ProgramDetailPage() {
 
     observer.observe(el);
     return () => observer.disconnect();
-  }, []);
+  }, [program]);
 
   if (program === undefined) {
     return <LoadingSkeleton />;
@@ -246,7 +296,7 @@ export default function ProgramDetailPage() {
 
   return (
     <>
-      <StickyProgramHeader program={program} visible={stickyVisible} />
+      <StickyProgramHeader program={program} visible={stickyVisible} saved={saved} onToggleSave={() => setSaved((v) => !v)} />
 
       <main className="pb-20 lg:pb-0">
         {/* Breadcrumbs — full width above hero, not on hero background */}
@@ -336,6 +386,13 @@ export default function ProgramDetailPage() {
 
             {/* 4. Reviews */}
             <ProgramReviews programId={program._id} />
+
+            {/* 5. Why Students Choose This Program */}
+            <WhyChooseProgram
+              program={program}
+              avgRating={avgRating}
+              totalReviews={reviews?.length ?? 0}
+            />
 
             {/* 6. Subject areas — discovery / SEO */}
             <SubjectAreas program={program} />

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { CheckCircle, MapPin, Calendar, Coins, Clock, ExternalLink, Expand } from "lucide-react";
+import { Bookmark, CheckCircle, MapPin, Calendar, Coins, Clock, ExternalLink, Expand } from "lucide-react";
 import type { Program } from "./types";
 
 interface ProgramHeroProps {
@@ -23,6 +23,7 @@ interface FactItem {
 
 export default function ProgramHero({ program }: ProgramHeroProps) {
   const [lightboxIdx, setLightboxIdx] = useState<number | null>(null);
+  const [saved, setSaved] = useState(false);
 
   // Build key facts — only include items with data
   const facts: FactItem[] = [
@@ -173,6 +174,24 @@ export default function ProgramHero({ program }: ProgramHeroProps) {
                     Apply Now
                   </button>
                 )}
+
+                <button
+                  type="button"
+                  onClick={() => setSaved((v) => !v)}
+                  className={`inline-flex justify-center items-center gap-1.5 px-4 py-2.5 text-sm font-semibold rounded-lg border transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-400 focus-visible:ring-offset-2 ${
+                    saved
+                      ? "bg-cobalt-50 border-cobalt-300 text-cobalt-600"
+                      : "bg-white border-slate-300 text-slate-700 hover:border-slate-400"
+                  }`}
+                  aria-label={saved ? "Unsave program" : "Save program"}
+                >
+                  <Bookmark
+                    className="w-4 h-4"
+                    fill={saved ? "currentColor" : "none"}
+                    strokeWidth={2}
+                  />
+                  {saved ? "Saved" : "Save"}
+                </button>
               </div>
 
             </div>

@@ -165,18 +165,27 @@ function SummaryCard({
     <div className="border border-slate-200 rounded-xl p-5 sm:p-6 bg-white mb-8">
       <div className="grid grid-cols-1 sm:grid-cols-[auto_1fr] gap-6 sm:gap-10">
         {/* Left — overall score */}
-        <div className="flex flex-col items-center sm:items-start justify-center sm:border-r sm:border-slate-100 sm:pr-10">
-          <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-1">
-            Overall Rating
-          </p>
-          <div className="flex items-end gap-1.5">
-            <span className="text-5xl font-extrabold text-slate-900 leading-none">
-              {avgRating.toFixed(1)}
-            </span>
-            <span className="text-lg text-slate-400 font-medium mb-1">/10</span>
+        <div className="flex flex-col items-center justify-center sm:border-r sm:border-slate-100 sm:pr-10">
+          <span className="text-5xl font-extrabold text-slate-900 leading-none">
+            {avgRating.toFixed(1)}
+          </span>
+          <div className="flex items-center gap-0.5 mt-3">
+            {[1, 2, 3, 4, 5].map((star) => {
+              const filled = avgRating / 2 >= star;
+              const half = !filled && avgRating / 2 >= star - 0.5;
+              return (
+                <Star
+                  key={star}
+                  size={20}
+                  className={filled || half ? "text-sun-500" : "text-slate-300"}
+                  fill={filled ? "currentColor" : half ? "url(#half-star)" : "none"}
+                  strokeWidth={filled || half ? 0 : 1.5}
+                />
+              );
+            })}
           </div>
-          <p className="text-sm font-semibold text-cobalt-600 mt-2">
-            {totalReviews} {totalReviews === 1 ? "review" : "reviews"}
+          <p className="text-sm text-slate-500 mt-2">
+            Based on {totalReviews} {totalReviews === 1 ? "review" : "reviews"}
           </p>
         </div>
 
