@@ -12,7 +12,6 @@ import QuickDetails from "./_components/QuickDetails";
 import ProgramOverview from "./_components/ProgramOverview";
 import WhatsIncluded from "./_components/WhatsIncluded";
 import SubjectAreas from "./_components/SubjectAreas";
-import ProgramDetails from "./_components/ProgramDetails";
 import ProgramHighlights from "./_components/ProgramHighlights";
 import ProgramReviews from "./_components/ProgramReviews";
 import WhyChooseProgram from "./_components/WhyChooseProgram";
@@ -381,9 +380,6 @@ export default function ProgramDetailPage() {
 
           {/* Full-width sections — below the sidebar */}
           <div className="space-y-20 mt-20">
-            {/* 3. Program Details — structured facts */}
-            <ProgramDetails program={program} />
-
             {/* 4. Reviews */}
             <ProgramReviews programId={program._id} />
 
