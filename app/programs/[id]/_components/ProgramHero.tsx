@@ -174,32 +174,59 @@ export default function ProgramHero({ program }: ProgramHeroProps) {
 
 
               {/* CTAs */}
-              <div className="flex flex-wrap items-center gap-3 pt-1">
-                {program.applyUrl ? (
-                  <a
-                    href={program.applyUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex justify-center items-center px-5 py-2.5 bg-cobalt-500 text-white font-bold text-sm rounded-lg hover:bg-cobalt-600 transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2"
-                  >
-                    Apply Now
-                  </a>
-                ) : (
-                  <button
-                    type="button"
-                    className="inline-flex justify-center items-center px-5 py-2.5 bg-cobalt-500 text-white font-bold text-sm rounded-lg hover:bg-cobalt-600 transition-colors shadow-sm cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2"
-                  >
-                    Apply Now
-                  </button>
-                )}
+              <div className="flex items-center gap-3 pt-1">
+                <div className="flex flex-col sm:flex-row flex-1 sm:flex-none gap-3">
+                  {/* Apply Now */}
+                  {program.applyUrl ? (
+                    <a
+                      href={program.applyUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full sm:w-auto inline-flex justify-center items-center px-5 py-2.5 bg-cobalt-500 text-white font-bold text-sm rounded-lg hover:bg-cobalt-600 transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2"
+                    >
+                      Apply Now
+                    </a>
+                  ) : (
+                    <button
+                      type="button"
+                      className="w-full sm:w-auto inline-flex justify-center items-center px-5 py-2.5 bg-cobalt-500 text-white font-bold text-sm rounded-lg hover:bg-cobalt-600 transition-colors shadow-sm cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2"
+                    >
+                      Apply Now
+                    </button>
+                  )}
 
+                  {/* Inquire */}
+                  {program.contactEmail ? (
+                    <a
+                      href={`mailto:${program.contactEmail}`}
+                      className="w-full sm:w-auto inline-flex justify-center items-center gap-1.5 px-5 py-2.5 bg-white border border-cobalt-300 text-cobalt-600 font-semibold text-sm rounded-lg hover:bg-cobalt-50 transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-400 focus-visible:ring-offset-2"
+                    >
+                      <Mail className="w-4 h-4" />
+                      Inquire
+                    </a>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        document.getElementById("quick-details")?.scrollIntoView({ behavior: "smooth" });
+                      }}
+                      className="w-full sm:w-auto inline-flex justify-center items-center gap-1.5 px-5 py-2.5 bg-white border border-cobalt-300 text-cobalt-600 font-semibold text-sm rounded-lg hover:bg-cobalt-50 transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-400 focus-visible:ring-offset-2"
+                    >
+                      <Mail className="w-4 h-4" />
+                      Inquire
+                    </button>
+                  )}
+                </div>
+
+                {/* Save — icon only */}
                 <button
                   type="button"
                   onClick={() => setSaved((v) => !v)}
-                  className={`inline-flex justify-center items-center gap-1.5 px-4 py-2.5 text-sm font-semibold rounded-lg border transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-400 focus-visible:ring-offset-2 ${saved
+                  className={`inline-flex justify-center items-center w-10 h-10 shrink-0 rounded-lg border transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-400 focus-visible:ring-offset-2 ${
+                    saved
                       ? "bg-cobalt-50 border-cobalt-300 text-cobalt-600"
                       : "bg-white border-slate-300 text-slate-700 hover:border-slate-400"
-                    }`}
+                  }`}
                   aria-label={saved ? "Unsave program" : "Save program"}
                 >
                   <Bookmark
@@ -207,7 +234,6 @@ export default function ProgramHero({ program }: ProgramHeroProps) {
                     fill={saved ? "currentColor" : "none"}
                     strokeWidth={2}
                   />
-                  {saved ? "Saved" : "Save"}
                 </button>
               </div>
 
