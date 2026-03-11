@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { Bookmark, CheckCircle, MapPin, Calendar, Coins, Clock, Expand, GraduationCap, Award, Mail } from "lucide-react";
 import type { Program } from "./types";
 
@@ -446,10 +445,10 @@ export function ProgramHeroSkeleton() {
   return (
     <section className="bg-slate-100 border-b border-slate-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 animate-pulse">
-
         <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 lg:items-center">
           {/* Left Column Skeleton */}
-          <div className="flex-1 min-w-0 lg:max-w-[55%] flex flex-col gap-4">
+          <div className="flex-1 min-w-0 lg:max-w-[60%] flex flex-col gap-4">
+            {/* Provider + trust badges */}
             <div>
               <div className="h-3.5 bg-slate-200 rounded w-24 mb-3" />
               <div className="flex items-center gap-2">
@@ -458,6 +457,7 @@ export function ProgramHeroSkeleton() {
               </div>
             </div>
 
+            {/* Logo + title */}
             <div className="flex items-start gap-4">
               <div className="w-16 h-16 rounded-lg bg-slate-100 shrink-0" />
               <div className="flex-1">
@@ -466,21 +466,45 @@ export function ProgramHeroSkeleton() {
               </div>
             </div>
 
-            <div className="py-3 border-y border-slate-200 flex flex-wrap gap-x-4 gap-y-2">
-              {[48, 72, 56, 44].map((w, i) => (
-                <div key={i} className="h-4 bg-slate-200 rounded" style={{ width: w }} />
-              ))}
+            {/* Fact grid skeleton */}
+            <div className="py-3 border-y border-slate-200">
+              <div className="grid grid-cols-2 gap-x-6 gap-y-4">
+                <div className="flex flex-col gap-4">
+                  {[80, 64, 56].map((w, i) => (
+                    <div key={i} className="flex items-start gap-2">
+                      <div className="w-4 h-4 bg-slate-200 rounded shrink-0 mt-0.5" />
+                      <div>
+                        <div className="h-3 bg-slate-100 rounded w-12 mb-1.5" />
+                        <div className="h-4 bg-slate-200 rounded" style={{ width: w }} />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div className="flex flex-col gap-4">
+                  {[72, 60, 48].map((w, i) => (
+                    <div key={i} className="flex items-start gap-2">
+                      <div className="w-4 h-4 bg-slate-200 rounded shrink-0 mt-0.5" />
+                      <div>
+                        <div className="h-3 bg-slate-100 rounded w-12 mb-1.5" />
+                        <div className="h-4 bg-slate-200 rounded" style={{ width: w }} />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
 
+            {/* CTA skeleton */}
             <div className="flex flex-wrap items-center gap-3 pt-1">
               <div className="h-10 bg-slate-200 rounded-lg w-32" />
-              <div className="h-10 bg-slate-200 rounded-lg w-24" />
+              <div className="h-10 bg-slate-200 rounded-lg w-28" />
+              <div className="h-10 w-10 bg-slate-200 rounded-lg" />
             </div>
           </div>
 
           {/* Right Column Skeleton */}
-          <div className="w-full lg:w-[45%] shrink-0 mt-6 lg:mt-0">
-            <div className="h-60 sm:h-80 lg:h-96 rounded-xl bg-slate-100 overflow-hidden" />
+          <div className="w-full lg:w-[40%] shrink-0 mt-6 lg:mt-0">
+            <div className="h-48 sm:h-64 lg:h-96 rounded-xl bg-slate-100 overflow-hidden" />
           </div>
         </div>
       </div>
