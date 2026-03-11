@@ -138,24 +138,38 @@ export default function ProgramHero({ program }: ProgramHeroProps) {
                 </h1>
               </div>
 
-              {/* Key facts strip */}
+              {/* Fact grid */}
               <div className="py-3 border-y border-slate-200">
-                <ul
-                  className="flex flex-wrap items-center gap-x-4 gap-y-2"
-                  aria-label="Program key facts"
-                >
-                  {facts.map((fact, idx) => (
-                    <li key={fact.key} className="flex items-center gap-1.5">
-                      {idx > 0 && (
-                        <span className="mr-2 text-slate-300 select-none" aria-hidden="true">·</span>
-                      )}
-                      {fact.icon}
-                      <span className={`text-sm font-semibold leading-none ${fact.urgent ? "text-roman-700" : "text-slate-700"}`}>
-                        {fact.value}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
+                <div className="grid grid-cols-2 gap-x-6 gap-y-3">
+                  {/* Left column */}
+                  <div className="flex flex-col gap-3">
+                    {leftFacts.map((fact, idx) => (
+                      <div key={fact.key} className={`flex items-start gap-2 ${idx > 0 ? "pt-3 border-t border-slate-200" : ""}`}>
+                        <div className="mt-0.5 shrink-0">{fact.icon}</div>
+                        <div>
+                          <p className="text-xs text-slate-500">{fact.label}</p>
+                          <p className="text-sm font-semibold text-slate-700">{fact.value}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  {/* Right column */}
+                  {rightFacts.length > 0 && (
+                    <div className="flex flex-col gap-3">
+                      {rightFacts.map((fact, idx) => (
+                        <div key={fact.key} className={`flex items-start gap-2 ${idx > 0 ? "pt-3 border-t border-slate-200" : ""}`}>
+                          <div className="mt-0.5 shrink-0">{fact.icon}</div>
+                          <div>
+                            <p className="text-xs text-slate-500">{fact.label}</p>
+                            <p className={fact.emphasized ? "text-base font-bold text-slate-900" : "text-sm font-semibold text-slate-700"}>
+                              {fact.value}
+                            </p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
 
 
