@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Bookmark, CheckCircle, MapPin, Calendar, Coins, Clock, Expand } from "lucide-react";
+import { Bookmark, CheckCircle, MapPin, Calendar, Coins, Clock, Expand, GraduationCap, Award, Mail } from "lucide-react";
 import type { Program } from "./types";
 
 interface ProgramHeroProps {
@@ -18,15 +18,15 @@ interface FactItem {
   icon: React.ReactNode;
   label: string;
   value: string;
-  urgent?: boolean;
+  emphasized?: boolean;
 }
 
 export default function ProgramHero({ program }: ProgramHeroProps) {
   const [lightboxIdx, setLightboxIdx] = useState<number | null>(null);
   const [saved, setSaved] = useState(false);
 
-  // Build key facts — only include items with data
-  const facts: FactItem[] = [
+  // Build left-column facts
+  const leftFacts: FactItem[] = [
     {
       key: "location",
       icon: <MapPin className="w-4 h-4 text-cobalt-500" aria-hidden="true" />,
@@ -36,19 +36,18 @@ export default function ProgramHero({ program }: ProgramHeroProps) {
   ];
 
   if (program.terms.length > 0) {
-    const termsValue = program.terms
-      .map((t) => t.charAt(0).toUpperCase() + t.slice(1).toLowerCase())
-      .join(" · ");
-    facts.push({
+    leftFacts.push({
       key: "terms",
       icon: <Calendar className="w-4 h-4 text-cobalt-500" aria-hidden="true" />,
       label: "Terms",
-      value: termsValue,
+      value: program.terms
+        .map((t) => t.charAt(0).toUpperCase() + t.slice(1).toLowerCase())
+        .join(" · "),
     });
   }
 
   if (program.duration) {
-    facts.push({
+    leftFacts.push({
       key: "duration",
       icon: <Clock className="w-4 h-4 text-cobalt-500" aria-hidden="true" />,
       label: "Duration",
@@ -56,12 +55,36 @@ export default function ProgramHero({ program }: ProgramHeroProps) {
     });
   }
 
+  // Build right-column facts
+  const rightFacts: FactItem[] = [];
+
   if (program.cost) {
-    facts.push({
+    rightFacts.push({
       key: "cost",
       icon: <Coins className="w-4 h-4 text-cobalt-500" aria-hidden="true" />,
       label: "Cost",
       value: program.cost,
+      emphasized: true,
+    });
+  }
+
+  if (program.educationLevels.length > 0) {
+    rightFacts.push({
+      key: "education",
+      icon: <GraduationCap className="w-4 h-4 text-cobalt-500" aria-hidden="true" />,
+      label: "Education Level",
+      value: program.educationLevels
+        .map((l) => l.charAt(0).toUpperCase() + l.slice(1).replace(/_/g, " "))
+        .join(", "),
+    });
+  }
+
+  if (program.creditsAvailable) {
+    rightFacts.push({
+      key: "credits",
+      icon: <Award className="w-4 h-4 text-cobalt-500" aria-hidden="true" />,
+      label: "Credits",
+      value: program.creditsAvailable,
     });
   }
 
