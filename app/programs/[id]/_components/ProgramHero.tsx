@@ -92,8 +92,8 @@ export default function ProgramHero({ program }: ProgramHeroProps) {
                     <span>{STATIC_RATING}</span>
                     <span className="font-normal text-sun-600">/ {STATIC_REVIEW_COUNT} reviews</span>
                   </div>
-                  <div className="flex items-center gap-1 bg-fern-50 text-fern-800 text-xs font-semibold px-3 py-1 rounded-full border border-fern-200">
-                    <CheckCircle className="w-3.5 h-3.5 text-fern-900 shrink-0" aria-hidden="true" />
+                  <div className="flex items-center gap-1.5 bg-fern-50 text-fern-800 text-xs font-semibold px-3 py-1 rounded-full border border-fern-200">
+                    <CheckCircle className="w-3.5 h-3.5 text-fern-600 shrink-0" aria-hidden="true" />
                     Verified
                   </div>
                 </div>
@@ -159,11 +159,10 @@ export default function ProgramHero({ program }: ProgramHeroProps) {
                 <button
                   type="button"
                   onClick={() => setSaved((v) => !v)}
-                  className={`inline-flex justify-center items-center gap-1.5 px-4 py-2.5 text-sm font-semibold rounded-lg border transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-400 focus-visible:ring-offset-2 ${
-                    saved
+                  className={`inline-flex justify-center items-center gap-1.5 px-4 py-2.5 text-sm font-semibold rounded-lg border transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-400 focus-visible:ring-offset-2 ${saved
                       ? "bg-cobalt-50 border-cobalt-300 text-cobalt-600"
                       : "bg-white border-slate-300 text-slate-700 hover:border-slate-400"
-                  }`}
+                    }`}
                   aria-label={saved ? "Unsave program" : "Save program"}
                 >
                   <Bookmark
@@ -192,7 +191,7 @@ export default function ProgramHero({ program }: ProgramHeroProps) {
       {/* Lightbox */}
       {lightboxIdx !== null && (
         <div
-          className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-4 backdrop-blur-sm"
+          className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-4 backdrop-blur-sm cursor-pointer"
           onClick={() => setLightboxIdx(null)}
         >
           <button

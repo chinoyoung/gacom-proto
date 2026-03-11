@@ -83,7 +83,7 @@ function ReviewCard({ review }: ReviewCardProps) {
             onClick={() => setExpanded((prev) => !prev)}
             aria-expanded={expanded}
             aria-label={expanded ? "Collapse review" : "Expand review"}
-            className="text-slate-400 hover:text-slate-600 transition-colors"
+            className="text-slate-400 hover:text-slate-600 transition-colors cursor-pointer"
           >
             {expanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
           </button>
@@ -289,7 +289,7 @@ export default function ProgramReviews({ programId }: ProgramReviewsProps) {
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value as SortBy)}
-            className="px-3 py-2 border border-slate-200 rounded-lg text-sm font-medium text-slate-700 bg-white focus:outline-none focus:ring-2 focus:ring-cobalt-500"
+            className="px-3 py-2 border border-slate-200 rounded-lg text-sm font-medium text-slate-700 bg-white focus:outline-none focus:ring-2 focus:ring-cobalt-500 cursor-pointer"
           >
             <option value="recent">Recent</option>
             <option value="highest">Highest Rated</option>

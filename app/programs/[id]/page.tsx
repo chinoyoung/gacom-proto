@@ -113,7 +113,7 @@ function StickyProgramHeader({
           <button
             type="button"
             onClick={onToggleSave}
-            className={`inline-flex justify-center items-center gap-1.5 px-4 py-2 text-sm font-semibold rounded-lg border transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-400 focus-visible:ring-offset-2 ${
+            className={`inline-flex justify-center items-center gap-1.5 px-4 py-2 text-sm font-semibold rounded-lg border transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2 ${
               saved
                 ? "bg-cobalt-50 border-cobalt-300 text-cobalt-600"
                 : "bg-white border-slate-300 text-slate-700 hover:border-slate-400"

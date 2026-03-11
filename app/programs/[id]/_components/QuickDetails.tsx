@@ -362,9 +362,9 @@ export default function QuickDetails({ program }: QuickDetailsProps) {
         )}
         <button
           type="button"
-          className="w-full py-2.5 text-sm font-semibold text-cobalt-600 border border-cobalt-500 hover:bg-cobalt-50 rounded-lg transition-colors"
+          className="w-full py-2.5 text-sm font-semibold text-cobalt-600 border-2 border-cobalt-500 hover:bg-cobalt-50 rounded-lg transition-colors cursor-pointer"
         >
-          Send Inquiry
+          Inquire
         </button>
       </div>
 
