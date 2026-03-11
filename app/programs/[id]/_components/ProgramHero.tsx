@@ -102,7 +102,7 @@ export default function ProgramHero({ program }: ProgramHeroProps) {
           <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 lg:items-center">
 
             {/* Left: identity + conversion info */}
-            <div className="flex-1 min-w-0 lg:max-w-[55%] flex flex-col gap-4">
+            <div className="flex-1 min-w-0 lg:max-w-[60%] flex flex-col gap-4">
 
               {/* Provider + trust signals */}
               <div>
@@ -239,12 +239,14 @@ export default function ProgramHero({ program }: ProgramHeroProps) {
 
             </div>
 
-            {/* Right: compact photo grid */}
-            <div className="w-full lg:w-[45%] shrink-0 mt-6 lg:mt-0">
-              <div className="h-60 sm:h-80 lg:h-96 rounded-xl overflow-hidden shadow-sm border border-slate-200/60">
-                <PhotoGrid photos={allPhotos} title={program.title} onPhotoClick={setLightboxIdx} />
+            {/* Right: photo grid — only when photos exist */}
+            {allPhotos.length > 0 && (
+              <div className="w-full lg:w-[40%] shrink-0 mt-6 lg:mt-0">
+                <div className="h-48 sm:h-64 lg:h-96 rounded-xl overflow-hidden shadow-sm border border-slate-200/60">
+                  <PhotoGrid photos={allPhotos} title={program.title} onPhotoClick={setLightboxIdx} />
+                </div>
               </div>
-            </div>
+            )}
 
           </div>
         </div>
@@ -332,12 +334,6 @@ interface PhotoGridProps {
 }
 
 function PhotoGrid({ photos, title, onPhotoClick }: PhotoGridProps) {
-  if (photos.length === 0) {
-    return (
-      <div className="w-full h-full bg-gradient-to-br from-cobalt-700 to-cobalt-500 rounded-xl" />
-    );
-  }
-
   if (photos.length === 1) {
     return (
       <div
