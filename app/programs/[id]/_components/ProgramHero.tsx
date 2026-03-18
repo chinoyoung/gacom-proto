@@ -49,16 +49,18 @@ export default function ProgramHero({ program }: ProgramHeroProps) {
       <section className="bg-white border-b border-slate-200">
 
         {/* Mobile: image on top — full bleed */}
-        <div className="lg:hidden">
-          <HeroImage
-            coverImage={program.coverImage}
-            title={program.title}
-            photos={allPhotos}
-            onPhotoClick={setLightboxIdx}
-            heightClass="h-64"
-            mobile
-          />
-        </div>
+        {allPhotos.length > 0 && (
+          <div className="lg:hidden">
+            <HeroImage
+              coverImage={program.coverImage}
+              title={program.title}
+              photos={allPhotos}
+              onPhotoClick={setLightboxIdx}
+              heightClass="h-64"
+              mobile
+            />
+          </div>
+        )}
 
         <div className="max-w-7xl mx-auto px-5 py-6 lg:px-4 lg:py-16">
           <div className="flex flex-col lg:flex-row lg:gap-16 lg:items-center">
@@ -157,15 +159,17 @@ export default function ProgramHero({ program }: ProgramHeroProps) {
             </div>
 
             {/* Right column — hero image (desktop only) */}
-            <div className="hidden lg:block w-[45%] shrink-0">
-              <HeroImage
-                coverImage={program.coverImage}
-                title={program.title}
-                photos={allPhotos}
-                onPhotoClick={setLightboxIdx}
-                heightClass="h-[480px]"
-              />
-            </div>
+            {allPhotos.length > 0 && (
+              <div className="hidden lg:block w-[45%] shrink-0">
+                <HeroImage
+                  coverImage={program.coverImage}
+                  title={program.title}
+                  photos={allPhotos}
+                  onPhotoClick={setLightboxIdx}
+                  heightClass="h-[480px]"
+                />
+              </div>
+            )}
 
           </div>
         </div>
