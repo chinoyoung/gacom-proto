@@ -18,11 +18,13 @@ Add a URL input to Step 1 of the create listing form. When a user pastes a unive
 **Request:** `{ url: string }`
 
 **Processing:**
-1. Validate the URL format
-2. Fetch the page HTML server-side via `fetch()`
+1. Validate URL format (must be http/https, reject private/internal IPs to prevent SSRF)
+2. Fetch the page HTML server-side via `fetch()` with a timeout (10s)
 3. Strip scripts, styles, and non-content elements to extract meaningful text
-4. Send extracted text to Claude with a structured prompt that maps content to `ProgramFormData` fields
-5. Parse Claude's JSON response
+4. Truncate to ~50K characters if needed (keep top 70% + bottom 30% for head/footer coverage)
+5. Send extracted text to Claude with a structured prompt that maps content to `ProgramFormData` fields
+6. Validate Claude's JSON response against expected field types (strings are strings, arrays are arrays)
+7. Normalize enum fields (e.g., map "Fall 2026" to "Fall", reject unrecognized values)
 
 **Response:** `{ fields: Partial<ProgramFormData> }` — same field names as the existing form data shape. Only includes fields where information was found.
 
@@ -67,14 +69,27 @@ Fields use the same enum values defined in the Convex schema (e.g., terms must b
 
 Return only fields where information is clearly present. Omit fields where information is ambiguous or absent.
 
+### Security
+
+- **SSRF protection:** Validate URL before fetching — only allow http/https, block private IP ranges (127.x, 10.x, 192.168.x, 169.254.x, localhost)
+- **Fetch timeout:** 10 second timeout to prevent hanging on slow/unresponsive servers
+
+### Error Messages
+
+- Invalid URL format: "Please enter a valid website URL"
+- Private/internal URL: "That URL can't be accessed"
+- Unreachable/timeout: "We couldn't reach that website. Check the URL and try again."
+- No relevant data found: "We didn't find program information on that page. Try a specific program page."
+
 ### Edge Cases
 
 - **Invalid/unreachable URL:** Return error message, form stays editable
 - **Page has no relevant info:** Return empty fields object, form stays blank
 - **Partial info:** Fill what's available, leave rest blank for manual entry
 - **User already typed data:** Scraped data overwrites (acceptable since this is Step 1, early in the flow)
-- **JS-rendered pages:** Server-side fetch won't capture JS content; this is a known limitation. Most university sites are server-rendered.
-- **Very large pages:** Truncate extracted text to fit Claude's context window (keep to ~50K characters)
+- **JS-rendered pages:** Server-side fetch won't capture JS content; known limitation, most university sites are server-rendered
+- **Very large pages:** Truncate extracted text (top 70% + bottom 30%) to ~50K characters
+- **Claude returns invalid data:** Validate response types, drop invalid enum values silently
 
 ### Files Changed
 
