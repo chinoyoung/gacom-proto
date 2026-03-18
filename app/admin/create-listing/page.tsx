@@ -287,6 +287,7 @@ function CreateListingContent() {
               slug: formData.slug,
             }}
             onChange={updateFormData}
+            onImport={updateFormData}
             formData={formData}
           />
         );
