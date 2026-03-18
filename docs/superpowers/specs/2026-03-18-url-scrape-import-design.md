@@ -65,7 +65,7 @@ The prompt instructs Claude to extract and map website content to these form fie
 - **Step 6:** cost, applicationDeadline, contactEmail, contactPhone, applyUrl, housingType, languageOfInstruction, creditsAvailable
 - **Step 7:** coverImage, photos, providerLogo (image URLs found on the page)
 
-Fields use the same enum values defined in the Convex schema (e.g., terms must be from "Fall", "Spring", "Summer", "Winter", "Year-Round"; educationLevels from "High School", "Undergraduate", "Graduate", "Doctoral", "Professional").
+Fields use the same enum values defined in the Convex schema (e.g., terms from "fall", "spring", "summer", "academic_year", "year_round"; educationLevels from "freshman", "sophomore", "junior", "senior", "graduate").
 
 Return only fields where information is clearly present. Omit fields where information is ambiguous or absent.
 
