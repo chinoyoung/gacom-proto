@@ -1,91 +1,40 @@
 "use client";
 
 import { useState } from "react";
-import { Bookmark, CheckCircle, MapPin, Calendar, Coins, Clock, Expand, GraduationCap, Award, Mail } from "lucide-react";
+import {
+  ArrowRight,
+  Building2,
+  MapPin,
+  Star,
+  Heart,
+  Calendar,
+  Clock,
+  Coins,
+  Images,
+  CheckCircle,
+} from "lucide-react";
 import type { Program } from "./types";
 
 interface ProgramHeroProps {
   program: Program;
 }
 
-// Static rating for prototype
-const STATIC_RATING = 8.41;
-const STATIC_REVIEW_COUNT = 103;
-
-interface FactItem {
-  key: string;
-  icon: React.ReactNode;
-  label: string;
-  value: string;
-  emphasized?: boolean;
+function formatUpdatedAt(ts: number): string {
+  const diffMs = Date.now() - ts;
+  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+  if (diffDays === 0) return "Today";
+  if (diffDays === 1) return "Yesterday";
+  if (diffDays < 7) return `${diffDays} days ago`;
+  if (diffDays < 30) { const w = Math.floor(diffDays / 7); return `${w} ${w === 1 ? "week" : "weeks"} ago`; }
+  return new Date(ts).toLocaleDateString("en-US", { month: "long", year: "numeric" });
 }
 
+// Static values for prototype
+const STATIC_RATING = "8.4 / 10";
+const STATIC_REVIEWS = "103 reviews";
 export default function ProgramHero({ program }: ProgramHeroProps) {
   const [lightboxIdx, setLightboxIdx] = useState<number | null>(null);
   const [saved, setSaved] = useState(false);
-
-  // Build left-column facts
-  const leftFacts: FactItem[] = [
-    {
-      key: "location",
-      icon: <MapPin className="w-4 h-4 text-cobalt-500" aria-hidden="true" />,
-      label: "Location",
-      value: `${program.city}, ${program.country}`,
-    },
-  ];
-
-  if (program.terms.length > 0) {
-    leftFacts.push({
-      key: "terms",
-      icon: <Calendar className="w-4 h-4 text-cobalt-500" aria-hidden="true" />,
-      label: "Terms",
-      value: program.terms
-        .map((t) => t.charAt(0).toUpperCase() + t.slice(1).toLowerCase())
-        .join(" · "),
-    });
-  }
-
-  if (program.duration) {
-    leftFacts.push({
-      key: "duration",
-      icon: <Clock className="w-4 h-4 text-cobalt-500" aria-hidden="true" />,
-      label: "Duration",
-      value: program.duration,
-    });
-  }
-
-  // Build right-column facts
-  const rightFacts: FactItem[] = [];
-
-  if (program.cost) {
-    rightFacts.push({
-      key: "cost",
-      icon: <Coins className="w-4 h-4 text-cobalt-500" aria-hidden="true" />,
-      label: "Cost",
-      value: program.cost,
-      emphasized: true,
-    });
-  }
-
-  if (program.educationLevels.length > 0) {
-    rightFacts.push({
-      key: "education",
-      icon: <GraduationCap className="w-4 h-4 text-cobalt-500" aria-hidden="true" />,
-      label: "Education Level",
-      value: program.educationLevels
-        .map((l) => l.charAt(0).toUpperCase() + l.slice(1).replace(/_/g, " "))
-        .join(", "),
-    });
-  }
-
-  if (program.creditsAvailable) {
-    rightFacts.push({
-      key: "credits",
-      icon: <Award className="w-4 h-4 text-cobalt-500" aria-hidden="true" />,
-      label: "Credits",
-      value: program.creditsAvailable,
-    });
-  }
 
   // Collect all images: cover first, then additional photos
   const allPhotos = [program.coverImage, ...program.photos].filter(
@@ -94,37 +43,33 @@ export default function ProgramHero({ program }: ProgramHeroProps) {
 
   return (
     <>
-      <section className="bg-slate-100 border-b border-slate-300">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+      {/* ------------------------------------------------------------------ */}
+      {/* Hero Main                                                            */}
+      {/* ------------------------------------------------------------------ */}
+      <section className="bg-white border-b border-slate-200">
 
-          {/* Two-column editorial layout */}
-          <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 lg:items-center">
+        {/* Mobile: image on top — full bleed */}
+        <div className="lg:hidden">
+          <HeroImage
+            coverImage={program.coverImage}
+            title={program.title}
+            photos={allPhotos}
+            onPhotoClick={setLightboxIdx}
+            heightClass="h-64"
+            mobile
+          />
+        </div>
 
-            {/* Left: identity + conversion info */}
-            <div className="flex-1 min-w-0 lg:max-w-[60%] flex flex-col gap-4">
+        <div className="max-w-7xl mx-auto px-5 py-6 lg:px-4 lg:py-16">
+          <div className="flex flex-col lg:flex-row lg:gap-16 lg:items-center">
 
-              {/* Provider + trust signals */}
-              <div>
-                <p className="text-xs font-bold text-cobalt-700 uppercase tracking-[0.15em] mb-2">
-                  {program.provider}
-                </p>
-                <div className="flex items-center gap-2 flex-wrap">
-                  <div className="flex items-center gap-1.5 bg-sun-50 text-sun-800 text-xs font-semibold px-3 py-1 rounded-full border border-sun-200">
-                    <span className="text-sun-600" aria-hidden="true">★</span>
-                    <span>{STATIC_RATING}</span>
-                    <span className="font-normal text-sun-600">/ {STATIC_REVIEW_COUNT} reviews</span>
-                  </div>
-                  <div className="flex items-center gap-1.5 bg-fern-50 text-fern-800 text-xs font-semibold px-3 py-1 rounded-full border border-fern-200">
-                    <CheckCircle className="w-3.5 h-3.5 text-fern-600 shrink-0" aria-hidden="true" />
-                    Verified
-                  </div>
-                </div>
-              </div>
+            {/* Left column — text content */}
+            <div className="flex-1 min-w-0 flex flex-col gap-5 lg:gap-7">
 
-              {/* Title */}
-              <div className="flex items-stretch gap-4">
+              {/* 1. Provider identity */}
+              <div className="flex items-center gap-2 lg:gap-3 flex-wrap">
                 {program.providerLogo && (
-                  <div className="shrink-0 aspect-square w-16 h-16 rounded-lg border border-slate-200 bg-white shadow-sm overflow-hidden flex items-center justify-center">
+                  <div className="shrink-0 w-11 h-11 lg:w-16 lg:h-16 rounded-lg lg:rounded-xl border border-slate-200 bg-white overflow-hidden flex items-center justify-center">
                     <img
                       src={program.providerLogo}
                       alt={`${program.provider} logo`}
@@ -132,127 +77,108 @@ export default function ProgramHero({ program }: ProgramHeroProps) {
                     />
                   </div>
                 )}
-                <h1 className="text-2xl md:text-3xl font-extrabold text-slate-900 leading-[1.15] tracking-tight mb-2">
+                <div className="inline-flex items-center gap-1.5 bg-cobalt-700/10 rounded-full px-3 py-1 lg:px-3.5 lg:py-1.5">
+                  <Building2 className="w-3.5 h-3.5 lg:w-4 lg:h-4 text-cobalt-700 shrink-0" aria-hidden="true" />
+                  <span className="text-xs lg:text-sm font-semibold text-cobalt-700">{program.provider}</span>
+                </div>
+                <span className="text-xs text-slate-400">
+                  Updated {formatUpdatedAt(program.updatedAt ?? program._creationTime)}
+                </span>
+              </div>
+
+              {/* 2. Headline group */}
+              <div className="flex flex-col gap-3 lg:gap-4">
+                <h1 className="text-[2rem] lg:text-4xl font-bold text-cobalt-500 leading-[1.15] tracking-tight">
                   {program.title}
                 </h1>
-              </div>
-
-              {/* Fact grid */}
-              <div className="py-3 border-y border-slate-200">
-                <div className="grid grid-cols-2 gap-x-6 gap-y-3">
-                  {/* Left column */}
-                  <div className="flex flex-col gap-3">
-                    {leftFacts.map((fact, idx) => (
-                      <div key={fact.key} className={`flex items-start gap-2 ${idx > 0 ? "pt-3 border-t border-slate-200" : ""}`}>
-                        <div className="mt-0.5 shrink-0">{fact.icon}</div>
-                        <div>
-                          <p className="text-xs text-slate-500">{fact.label}</p>
-                          <p className="text-sm font-semibold text-slate-700">{fact.value}</p>
-                        </div>
-                      </div>
-                    ))}
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
+                  <div className="inline-flex items-center gap-1.5">
+                    <Star className="w-3.5 h-3.5 text-sun-500 fill-sun-500 shrink-0" aria-hidden="true" />
+                    <span className="text-xs lg:text-sm font-semibold text-slate-700">{STATIC_RATING}</span>
+                    <span className="text-xs text-slate-400 font-normal">/ {STATIC_REVIEWS}</span>
                   </div>
-                  {/* Right column */}
-                  {rightFacts.length > 0 && (
-                    <div className="flex flex-col gap-3">
-                      {rightFacts.map((fact, idx) => (
-                        <div key={fact.key} className={`flex items-start gap-2 ${idx > 0 ? "pt-3 border-t border-slate-200" : ""}`}>
-                          <div className="mt-0.5 shrink-0">{fact.icon}</div>
-                          <div>
-                            <p className="text-xs text-slate-500">{fact.label}</p>
-                            <p className={fact.emphasized ? "text-base font-bold text-slate-900" : "text-sm font-semibold text-slate-700"}>
-                              {fact.value}
-                            </p>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
+                  <div className="inline-flex items-center gap-1.5">
+                    <CheckCircle className="w-3.5 h-3.5 text-fern-600 shrink-0" aria-hidden="true" />
+                    <span className="text-xs lg:text-sm font-semibold text-slate-700">Verified</span>
+                  </div>
                 </div>
+                <p className="text-[15px] lg:text-base text-slate-500 leading-relaxed line-clamp-3">
+                  {program.description}
+                </p>
               </div>
 
+              {/* 3. CTA buttons */}
+              <div className="flex flex-col lg:flex-row gap-3">
+                {program.applyUrl ? (
+                  <a
+                    href={program.applyUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-2 bg-cobalt-500 text-white font-semibold text-[15px] lg:text-base px-6 lg:px-7 py-3.5 rounded-lg hover:bg-cobalt-600 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-700 focus-visible:ring-offset-2"
+                  >
+                    Visit Website
+                    <ArrowRight className="w-4 h-4" aria-hidden="true" />
+                  </a>
+                ) : (
+                  <button
+                    type="button"
+                    className="inline-flex items-center justify-center gap-2 bg-cobalt-500 text-white font-semibold text-[15px] lg:text-base px-6 lg:px-7 py-3.5 rounded-lg hover:bg-cobalt-600 transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-700 focus-visible:ring-offset-2"
+                  >
+                    Visit Website
+                    <ArrowRight className="w-4 h-4" aria-hidden="true" />
+                  </button>
+                )}
 
-              {/* CTAs */}
-              <div className="flex items-center gap-3 pt-1">
-                <div className="flex flex-col sm:flex-row flex-1 sm:flex-none gap-3">
-                  {/* Apply Now */}
-                  {program.applyUrl ? (
-                    <a
-                      href={program.applyUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-full sm:w-auto inline-flex justify-center items-center px-5 py-2.5 bg-cobalt-500 text-white font-bold text-sm rounded-lg hover:bg-cobalt-600 transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2"
-                    >
-                      Apply Now
-                    </a>
-                  ) : (
-                    <button
-                      type="button"
-                      className="w-full sm:w-auto inline-flex justify-center items-center px-5 py-2.5 bg-cobalt-500 text-white font-bold text-sm rounded-lg hover:bg-cobalt-600 transition-colors shadow-sm cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2"
-                    >
-                      Apply Now
-                    </button>
-                  )}
+                <button
+                  type="button"
+                  className="inline-flex items-center justify-center gap-2 border border-cobalt-700 text-cobalt-700 font-semibold text-[15px] lg:text-base px-6 lg:px-7 py-3.5 rounded-lg bg-transparent hover:bg-cobalt-700/5 transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-700 focus-visible:ring-offset-2"
+                >
+                  Inquire Here
+                </button>
 
-                  {/* Inquire */}
-                  {program.contactEmail ? (
-                    <a
-                      href={`mailto:${program.contactEmail}`}
-                      className="w-full sm:w-auto inline-flex justify-center items-center gap-1.5 px-5 py-2.5 bg-white border border-cobalt-300 text-cobalt-600 font-semibold text-sm rounded-lg hover:bg-cobalt-50 transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-400 focus-visible:ring-offset-2"
-                    >
-                      <Mail className="w-4 h-4" />
-                      Inquire
-                    </a>
-                  ) : (
-                    <button
-                      type="button"
-                      onClick={() => {
-                        document.getElementById("quick-details")?.scrollIntoView({ behavior: "smooth" });
-                      }}
-                      className="w-full sm:w-auto inline-flex justify-center items-center gap-1.5 px-5 py-2.5 bg-white border border-cobalt-300 text-cobalt-600 font-semibold text-sm rounded-lg hover:bg-cobalt-50 transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-400 focus-visible:ring-offset-2"
-                    >
-                      <Mail className="w-4 h-4" />
-                      Inquire
-                    </button>
-                  )}
-                </div>
-
-                {/* Save — icon only */}
                 <button
                   type="button"
                   onClick={() => setSaved((v) => !v)}
-                  className={`inline-flex justify-center items-center w-10 h-10 shrink-0 rounded-lg border transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-400 focus-visible:ring-offset-2 ${
-                    saved
-                      ? "bg-cobalt-50 border-cobalt-300 text-cobalt-600"
-                      : "bg-white border-slate-300 text-slate-700 hover:border-slate-400"
-                  }`}
+                  className={`hidden lg:inline-flex items-center justify-center gap-2 px-3.5 py-3.5 rounded-lg border transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-700 focus-visible:ring-offset-2 ${saved
+                      ? "bg-roman-50 border-roman-300 text-roman-500"
+                      : "border-slate-300 text-slate-600 hover:border-slate-400"
+                    }`}
                   aria-label={saved ? "Unsave program" : "Save program"}
                 >
-                  <Bookmark
-                    className="w-4 h-4"
+                  <Heart
+                    className={`w-4 h-4 ${saved ? "text-roman-500" : ""}`}
                     fill={saved ? "currentColor" : "none"}
                     strokeWidth={2}
                   />
                 </button>
               </div>
 
+
             </div>
 
-            {/* Right: photo grid — only when photos exist */}
-            {allPhotos.length > 0 && (
-              <div className="w-full lg:w-[40%] shrink-0 mt-6 lg:mt-0">
-                <div className="h-48 sm:h-64 lg:h-96 rounded-xl overflow-hidden shadow-sm border border-slate-200/60">
-                  <PhotoGrid photos={allPhotos} title={program.title} onPhotoClick={setLightboxIdx} />
-                </div>
-              </div>
-            )}
+            {/* Right column — hero image (desktop only) */}
+            <div className="hidden lg:block w-[45%] shrink-0">
+              <HeroImage
+                coverImage={program.coverImage}
+                title={program.title}
+                photos={allPhotos}
+                onPhotoClick={setLightboxIdx}
+                heightClass="h-[480px]"
+              />
+            </div>
 
           </div>
         </div>
       </section>
 
+      {/* ------------------------------------------------------------------ */}
+      {/* Facts Bar                                                            */}
+      {/* ------------------------------------------------------------------ */}
+      <FactsBar program={program} />
 
-      {/* Lightbox */}
+      {/* ------------------------------------------------------------------ */}
+      {/* Lightbox                                                             */}
+      {/* ------------------------------------------------------------------ */}
       {lightboxIdx !== null && (
         <div
           className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-4 backdrop-blur-sm cursor-pointer"
@@ -269,7 +195,6 @@ export default function ProgramHero({ program }: ProgramHeroProps) {
             </svg>
           </button>
 
-          {/* Prev button */}
           {lightboxIdx > 0 && (
             <button
               type="button"
@@ -286,7 +211,6 @@ export default function ProgramHero({ program }: ProgramHeroProps) {
             </button>
           )}
 
-          {/* Next button */}
           {lightboxIdx < allPhotos.length - 1 && (
             <button
               type="button"
@@ -310,7 +234,7 @@ export default function ProgramHero({ program }: ProgramHeroProps) {
             <img
               src={allPhotos[lightboxIdx]}
               alt={`${program.title} - photo ${lightboxIdx + 1}`}
-              className="object-contain w-auto h-auto max-w-full max-h-[85vh] rounded-lg shadow-2xl"
+              className="object-contain w-auto h-auto max-w-full max-h-[85vh] rounded-lg"
             />
             <p className="absolute -bottom-10 left-0 right-0 text-center text-white/70 text-sm font-medium tracking-wide">
               {lightboxIdx + 1} / {allPhotos.length}
@@ -323,191 +247,241 @@ export default function ProgramHero({ program }: ProgramHeroProps) {
 }
 
 // ---------------------------------------------------------------------------
-// PhotoGrid — isolated so the conditional rendering stays readable
+// HeroImage — shared between mobile (top) and desktop (right column)
 // ---------------------------------------------------------------------------
 
-interface PhotoGridProps {
-  photos: string[];
+interface HeroImageProps {
+  coverImage?: string;
   title: string;
+  photos: string[];
   onPhotoClick: (idx: number) => void;
+  heightClass: string;
+  mobile?: boolean;
 }
 
-function PhotoGrid({ photos, title, onPhotoClick }: PhotoGridProps) {
-  if (photos.length === 1) {
-    return (
-      <div
-        className="w-full h-full relative rounded-xl overflow-hidden group cursor-pointer"
-        onClick={() => onPhotoClick(0)}
-      >
-        <img
-          src={photos[0]}
-          alt={title}
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-        />
-        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
+function HeroImage({ coverImage, title, photos, onPhotoClick, heightClass, mobile }: HeroImageProps) {
+  // Thumbnails: skip cover (index 0), show up to 3 extras
+  const thumbs = photos.slice(1, 4);
+  const remainingCount = photos.length - 4;
 
-        {/* Gallery Indicator */}
-        <div className="absolute bottom-3 right-3 bg-white/90 backdrop-blur-sm px-3 py-2 rounded-lg flex items-center gap-2 text-slate-800 shadow-sm transition-all duration-300 group-hover:bg-white group-hover:-translate-y-0.5">
-          <Expand className="w-4 h-4" />
-          <span className="text-sm font-semibold">View gallery</span>
+  return (
+    <div
+      className={`relative overflow-hidden ${mobile ? "" : "rounded-2xl"} ${heightClass}`}
+    >
+      {/* Main image or gradient placeholder */}
+      {coverImage ? (
+        <img
+          src={coverImage}
+          alt={title}
+          className="absolute inset-0 w-full h-full object-cover cursor-pointer transition-transform duration-500 hover:scale-105"
+          onClick={() => onPhotoClick(0)}
+        />
+      ) : (
+        <div className="absolute inset-0 bg-gradient-to-br from-cobalt-700 to-cobalt-500" />
+      )}
+
+      {/* Bottom gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent pointer-events-none" />
+
+      {/* Gallery thumbnail strip — bottom */}
+      {photos.length > 1 && (
+        <div className={`absolute bottom-0 left-0 right-0 flex items-end gap-1.5 ${mobile ? "px-4 pb-4" : "px-6 pb-6"
+          }`}>
+          {thumbs.map((photo, i) => {
+            const photoIdx = i + 1;
+            const isLast = i === thumbs.length - 1 && remainingCount > 0;
+            return (
+              <button
+                key={photoIdx}
+                type="button"
+                onClick={(e) => { e.stopPropagation(); onPhotoClick(photoIdx); }}
+                className={`relative shrink-0 overflow-hidden border-2 border-white/60 cursor-pointer transition-transform hover:scale-105 ${mobile ? "w-12 h-12 rounded-md" : "w-16 h-16 rounded-lg"
+                  }`}
+              >
+                <img
+                  src={photo}
+                  alt={`${title} photo ${photoIdx + 1}`}
+                  className="w-full h-full object-cover"
+                />
+                {isLast && (
+                  <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                    <span className="text-white font-semibold text-xs">+{remainingCount}</span>
+                  </div>
+                )}
+              </button>
+            );
+          })}
+
+          {/* Gallery button */}
+          <button
+            type="button"
+            onClick={(e) => { e.stopPropagation(); onPhotoClick(0); }}
+            className={`shrink-0 bg-white/90 backdrop-blur-sm flex items-center gap-1.5 cursor-pointer transition-colors hover:bg-white ${mobile ? "rounded-md px-2.5 py-2" : "rounded-lg px-3 py-2.5"
+              }`}
+          >
+            <Images className={`${mobile ? "w-3.5 h-3.5" : "w-4 h-4"} text-slate-700`} aria-hidden="true" />
+            <span className={`${mobile ? "text-[11px]" : "text-xs"} font-semibold text-slate-700`}>
+              {photos.length} photos
+            </span>
+          </button>
         </div>
-      </div>
-    );
+      )}
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// FactsBar — dynamic program details
+// ---------------------------------------------------------------------------
+
+function FactsBar({ program }: { program: Program }) {
+  const facts: { icon: React.ReactNode; label: string; value: string }[] = [];
+
+  facts.push({
+    icon: <MapPin className="w-4 h-4 text-white/70 shrink-0" aria-hidden="true" />,
+    label: "Location",
+    value: `${program.city}, ${program.country}`,
+  });
+
+  if (program.terms.length > 0) {
+    facts.push({
+      icon: <Calendar className="w-4 h-4 text-white/70 shrink-0" aria-hidden="true" />,
+      label: "Terms",
+      value: program.terms
+        .map((t) => t.charAt(0).toUpperCase() + t.slice(1).toLowerCase())
+        .join(" · "),
+    });
   }
 
-  // 2 or more photos: main image left spanning both rows, up to 2 thumbs stacked right
-  return (
-    <div className="grid grid-cols-[1fr] sm:grid-cols-[2fr_1fr] grid-rows-[2fr_1fr] sm:grid-rows-2 gap-1.5 sm:gap-2 h-full rounded-xl overflow-hidden bg-slate-50">
-      {/* Main image — spans both rows on desktop, top row on mobile */}
-      <div
-        className="row-span-1 sm:row-span-2 relative group cursor-pointer overflow-hidden"
-        onClick={() => onPhotoClick(0)}
-      >
-        <img
-          src={photos[0]}
-          alt={title}
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-        />
-        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
+  if (program.duration) {
+    facts.push({
+      icon: <Clock className="w-4 h-4 text-white/70 shrink-0" aria-hidden="true" />,
+      label: "Duration",
+      value: program.duration,
+    });
+  }
 
-        {/* Gallery Indicator */}
-        <div className="absolute bottom-3 right-3 bg-white/90 backdrop-blur-sm px-3 py-2 rounded-lg flex items-center gap-2 text-slate-800 shadow-sm transition-all duration-300 group-hover:bg-white group-hover:-translate-y-0.5">
-          <Expand className="w-4 h-4" />
-          <span className="text-sm font-semibold">View gallery</span>
-        </div>
+  if (program.cost) {
+    facts.push({
+      icon: <Coins className="w-4 h-4 text-white/70 shrink-0" aria-hidden="true" />,
+      label: "Cost",
+      value: program.cost,
+    });
+  }
+
+  if (facts.length === 0) return null;
+
+  return (
+    <div className="bg-cobalt-500">
+      {/* Mobile: 2×2 grid */}
+      <div className="grid grid-cols-2 gap-4 px-5 py-5 lg:hidden">
+        {facts.map((fact) => (
+          <div key={fact.label} className="flex flex-col items-center text-center">
+            <span className="text-lg font-bold text-white leading-tight">{fact.value}</span>
+            <span className="text-[11px] text-white/70 mt-0.5">{fact.label}</span>
+          </div>
+        ))}
       </div>
 
-      {/* Thumbnails Row on mobile / Right Column on desktop */}
-      <div className="grid grid-cols-2 sm:contents gap-1.5 sm:gap-2">
-        {/* Thumb 1 */}
-        {photos[1] && (
-          <div
-            className="relative group cursor-pointer overflow-hidden"
-            onClick={() => onPhotoClick(1)}
-          >
-            <img
-              src={photos[1]}
-              alt={`${title} photo 2`}
-              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-            />
-            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
-
-            {/* Subtle expand icon for thumbnails */}
-            <div className="absolute bottom-2 right-2 bg-black/40 backdrop-blur-md p-1.5 rounded-md text-white transition-opacity duration-300 group-hover:bg-black/60">
-              <Expand className="w-3.5 h-3.5" />
+      {/* Desktop: single row with dividers */}
+      <div className="hidden lg:flex items-center justify-center gap-10 max-w-7xl mx-auto px-4 sm:px-6 py-5">
+        {facts.map((fact, idx) => (
+          <div key={fact.label} className="flex items-center gap-10">
+            {idx > 0 && <div className="w-px h-10 bg-white/20" aria-hidden="true" />}
+            <div className="flex items-center gap-3">
+              {fact.icon}
+              <div>
+                <span className="text-xs text-white/60 uppercase tracking-wide">{fact.label}</span>
+                <p className="text-sm font-semibold text-white leading-tight">{fact.value}</p>
+              </div>
             </div>
           </div>
-        )}
-
-        {/* Thumb 2 — or empty filler cell to keep grid balanced */}
-        {photos[2] ? (
-          <div
-            className="relative group cursor-pointer overflow-hidden"
-            onClick={() => onPhotoClick(2)}
-          >
-            <img
-              src={photos[2]}
-              alt={`${title} photo 3`}
-              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-            />
-            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
-
-            {/* Overlay if there are more photos */}
-            {photos.length > 3 && (
-              <div className="absolute inset-0 bg-slate-900/40 flex flex-col items-center justify-center group-hover:bg-slate-900/50 transition-colors duration-300">
-                <Expand className="w-6 h-6 text-white mb-1.5 opacity-90" />
-                <span className="text-white font-semibold tracking-wide text-sm sm:text-base">
-                  +{photos.length - 3} photos
-                </span>
-              </div>
-            )}
-
-            {/* If no overlay, just show subtle expand icon */}
-            {photos.length <= 3 && (
-              <div className="absolute bottom-2 right-2 bg-black/40 backdrop-blur-md p-1.5 rounded-md text-white transition-opacity duration-300 group-hover:bg-black/60 hidden sm:block">
-                <Expand className="w-3.5 h-3.5" />
-              </div>
-            )}
-          </div>
-        ) : (
-          <div className="bg-slate-100" />
-        )}
+        ))}
       </div>
     </div>
   );
 }
 
 // ---------------------------------------------------------------------------
-// Loader / Skeleton
+// Skeleton
 // ---------------------------------------------------------------------------
 
 export function ProgramHeroSkeleton() {
   return (
-    <section className="bg-slate-100 border-b border-slate-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 animate-pulse">
-        <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 lg:items-center">
-          {/* Left Column Skeleton */}
-          <div className="flex-1 min-w-0 lg:max-w-[60%] flex flex-col gap-4">
-            {/* Provider + trust badges */}
-            <div>
-              <div className="h-3.5 bg-slate-200 rounded w-24 mb-3" />
-              <div className="flex items-center gap-2">
-                <div className="h-6 bg-slate-100 rounded-full w-24" />
-                <div className="h-6 bg-slate-100 rounded-full w-20" />
+    <>
+      <section className="bg-white border-b border-slate-200">
+        {/* Mobile image skeleton */}
+        <div className="lg:hidden h-64 bg-slate-100 animate-pulse" />
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 lg:py-16 animate-pulse">
+          <div className="flex flex-col lg:flex-row lg:gap-16 lg:items-center">
+
+            {/* Left column */}
+            <div className="flex-1 min-w-0 flex flex-col gap-5 lg:gap-7">
+              {/* Provider identity */}
+              <div className="flex items-center gap-3">
+                <div className="w-16 h-16 rounded-xl bg-slate-100 shrink-0" />
+                <div className="h-7 bg-slate-100 rounded-full w-36" />
+              </div>
+
+              {/* Headline */}
+              <div className="flex flex-col gap-3">
+                <div className="h-10 bg-slate-200 rounded w-[90%]" />
+                <div className="h-6 bg-slate-200 rounded w-[75%]" />
+                <div className="h-4 bg-slate-100 rounded w-full" />
+                <div className="h-4 bg-slate-100 rounded w-[80%]" />
+              </div>
+
+              {/* CTAs */}
+              <div className="flex gap-3">
+                <div className="h-12 bg-slate-200 rounded-lg w-40" />
+                <div className="h-12 bg-slate-100 rounded-lg w-36" />
+                <div className="h-12 bg-slate-100 rounded-lg w-12" />
+              </div>
+
+              {/* Trust signals */}
+              <div className="flex gap-6">
+                {[80, 100, 72].map((w, i) => (
+                  <div key={i} className="h-4 bg-slate-100 rounded" style={{ width: w }} />
+                ))}
               </div>
             </div>
 
-            {/* Logo + title */}
-            <div className="flex items-start gap-4">
-              <div className="w-16 h-16 rounded-lg bg-slate-100 shrink-0" />
-              <div className="flex-1">
-                <div className="h-9 bg-slate-200 rounded w-[85%] mb-3" />
-                <div className="h-5 bg-slate-100 rounded w-full" />
-              </div>
+            {/* Right column (desktop) */}
+            <div className="hidden lg:block w-[45%] shrink-0">
+              <div className="h-[480px] rounded-2xl bg-slate-100" />
             </div>
 
-            {/* Fact grid skeleton */}
-            <div className="py-3 border-y border-slate-200">
-              <div className="grid grid-cols-2 gap-x-6 gap-y-4">
-                <div className="flex flex-col gap-4">
-                  {[80, 64, 56].map((w, i) => (
-                    <div key={i} className="flex items-start gap-2">
-                      <div className="w-4 h-4 bg-slate-200 rounded shrink-0 mt-0.5" />
-                      <div>
-                        <div className="h-3 bg-slate-100 rounded w-12 mb-1.5" />
-                        <div className="h-4 bg-slate-200 rounded" style={{ width: w }} />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <div className="flex flex-col gap-4">
-                  {[72, 60, 48].map((w, i) => (
-                    <div key={i} className="flex items-start gap-2">
-                      <div className="w-4 h-4 bg-slate-200 rounded shrink-0 mt-0.5" />
-                      <div>
-                        <div className="h-3 bg-slate-100 rounded w-12 mb-1.5" />
-                        <div className="h-4 bg-slate-200 rounded" style={{ width: w }} />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* CTA skeleton */}
-            <div className="flex flex-wrap items-center gap-3 pt-1">
-              <div className="h-10 bg-slate-200 rounded-lg w-32" />
-              <div className="h-10 bg-slate-200 rounded-lg w-28" />
-              <div className="h-10 w-10 bg-slate-200 rounded-lg" />
-            </div>
-          </div>
-
-          {/* Right Column Skeleton */}
-          <div className="w-full lg:w-[40%] shrink-0 mt-6 lg:mt-0">
-            <div className="h-48 sm:h-64 lg:h-96 rounded-xl bg-slate-100 overflow-hidden" />
           </div>
         </div>
+      </section>
+
+      {/* Facts bar skeleton */}
+      <div className="bg-cobalt-700 hidden lg:flex items-center justify-center gap-10 max-w-7xl mx-auto px-4 sm:px-6 py-5 animate-pulse">
+        {[0, 1, 2, 3].map((i) => (
+          <div key={i} className="flex items-center gap-10">
+            {i > 0 && <div className="w-px h-10 bg-white/20" />}
+            <div className="flex items-center gap-3">
+              <div className="w-4 h-4 bg-white/20 rounded" />
+              <div className="flex flex-col gap-1">
+                <div className="h-3 bg-white/10 rounded w-12" />
+                <div className="h-4 bg-white/20 rounded w-24" />
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
-    </section>
+      <div className="bg-cobalt-700 px-4 sm:px-6 py-5 flex flex-col gap-3 lg:hidden animate-pulse">
+        {[0, 1, 2, 3].map((i) => (
+          <div key={i} className="flex items-center gap-3">
+            <div className="w-4 h-4 bg-white/20 rounded" />
+            <div className="flex flex-col gap-1">
+              <div className="h-3 bg-white/10 rounded w-12" />
+              <div className="h-4 bg-white/20 rounded w-28" />
+            </div>
+          </div>
+        ))}
+      </div>
+    </>
   );
 }

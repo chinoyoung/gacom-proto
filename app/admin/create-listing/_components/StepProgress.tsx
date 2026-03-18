@@ -45,7 +45,7 @@ export default function StepProgress({ currentStep, onStepClick, formData }: Ste
   return (
     <div className="w-full">
       {/* Desktop: horizontal stepper */}
-      <div className="hidden sm:flex items-center justify-between">
+      <div className="hidden sm:flex items-start">
         {STEPS.map((step, index) => {
           const isCompleted = step.number < currentStep;
           const isActive = step.number === currentStep;
@@ -53,13 +53,13 @@ export default function StepProgress({ currentStep, onStepClick, formData }: Ste
           const isClickable = onStepClick && (isCompleted || isFulfilled || step.number === 1);
 
           return (
-            <div key={step.number} className="flex items-center flex-1 last:flex-none">
-              {/* Circle + label */}
+            <div key={step.number} className="flex flex-1 items-start">
+              {/* Step: circle + label */}
               <button
                 onClick={() => isClickable && onStepClick(step.number)}
                 disabled={!isClickable}
                 className={[
-                  "flex flex-col items-center focus:outline-none transition-opacity",
+                  "flex flex-col items-center shrink-0 focus:outline-none transition-opacity",
                   isClickable ? "cursor-pointer" : "cursor-not-allowed opacity-50",
                 ].join(" ")}
               >
@@ -89,7 +89,7 @@ export default function StepProgress({ currentStep, onStepClick, formData }: Ste
                 </div>
                 <span
                   className={[
-                    "mt-1 text-xs font-bold uppercase tracking-wider whitespace-nowrap",
+                    "mt-1 w-20 text-[10px] font-bold uppercase tracking-wider text-center leading-tight",
                     isActive || isCompleted ? "text-cobalt-500" : isFulfilled ? "text-green-600" : "text-gray-400",
                   ].join(" ")}
                 >
@@ -101,8 +101,8 @@ export default function StepProgress({ currentStep, onStepClick, formData }: Ste
               {index < STEPS.length - 1 && (
                 <div
                   className={[
-                    "h-0.5 flex-1 mx-2 mt-[-16px] transition-colors",
-                    isCompleted ? "bg-cobalt-500" : isStepFulfilled(step.number) ? "bg-green-500" : "bg-gray-200",
+                    "h-0.5 flex-1 mt-4 mx-1",
+                    isCompleted ? "bg-cobalt-500" : isFulfilled ? "bg-green-500" : "bg-gray-200",
                   ].join(" ")}
                 />
               )}

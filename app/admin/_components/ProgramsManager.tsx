@@ -43,13 +43,13 @@ export default function ProgramsManager() {
                     />
                 </div>
                 <div className="flex gap-4">
-                    <div className="bg-white px-4 py-2 rounded-lg border border-gray-200 shadow-sm">
-                        <span className="text-xs font-bold text-gray-400 uppercase tracking-widest block">Total Programs</span>
+                    <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-lg border border-gray-200 shadow-sm">
                         <span className="text-xl font-extrabold text-gray-900">{programs?.length ?? 0}</span>
+                        <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">Total Programs</span>
                     </div>
-                    <div className="bg-white px-4 py-2 rounded-lg border border-gray-200 shadow-sm">
-                        <span className="text-xs font-bold text-gray-400 uppercase tracking-widest block">Published</span>
+                    <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-lg border border-gray-200 shadow-sm">
                         <span className="text-xl font-extrabold text-green-600">{programs?.filter(p => p.status === 'published').length ?? 0}</span>
+                        <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">Published</span>
                     </div>
                 </div>
             </div>

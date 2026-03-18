@@ -21,7 +21,7 @@ function getRelativeTime(dateStr: string) {
     if (diffDays === 0) return "Today";
     if (diffDays === 1) return "Yesterday";
     if (diffDays < 7) return `${diffDays} days ago`;
-    if (diffDays < 30) return `${Math.floor(diffDays / 7)} weeks ago`;
+    if (diffDays < 30) { const w = Math.floor(diffDays / 7); return `${w} ${w === 1 ? "week" : "weeks"} ago`; }
     return date.toLocaleDateString("en-US");
 }
 

@@ -4,14 +4,13 @@ import { useEffect, useRef, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { useQuery } from "convex/react";
-import { Bookmark, ExternalLink } from "lucide-react";
+import { Heart, ArrowRight } from "lucide-react";
 import { api } from "@/convex/_generated/api";
 
 import ProgramHero, { ProgramHeroSkeleton } from "./_components/ProgramHero";
 import QuickDetails from "./_components/QuickDetails";
 import ProgramOverview from "./_components/ProgramOverview";
 import WhatsIncluded from "./_components/WhatsIncluded";
-import SubjectAreas from "./_components/SubjectAreas";
 import ProgramHighlights from "./_components/ProgramHighlights";
 import ProgramReviews from "./_components/ProgramReviews";
 import WhyChooseProgram from "./_components/WhyChooseProgram";
@@ -19,6 +18,7 @@ import RelatedPrograms from "./_components/RelatedPrograms";
 import ProgramArticles from "./_components/ProgramArticles";
 import type { Program } from "./_components/types";
 import { Id } from "@/convex/_generated/dataModel";
+import ProgramDetails from "./_components/ProgramDetails";
 
 // ─── Desktop sticky header ─────────────────────────────────────────────────────
 
@@ -71,25 +71,13 @@ function StickyProgramHeader({
           </span>
         </div>
 
-        {/* Right: CTAs — button hierarchy */}
+        {/* Right: CTAs */}
         <div className="flex items-center gap-3 shrink-0">
-          {program.applyUrl && (
-            <a
-              href={program.applyUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-sm font-semibold text-cobalt-600 hover:text-cobalt-700 hover:underline transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 rounded"
-            >
-              Visit Website
-              <ExternalLink className="w-3.5 h-3.5" strokeWidth={2.5} aria-hidden="true" />
-            </a>
-          )}
-
           <button
             type="button"
-            className="inline-flex justify-center items-center px-5 py-2 border-2 border-cobalt-500 text-cobalt-600 font-semibold text-sm rounded-lg hover:bg-cobalt-50 transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2"
+            className="inline-flex justify-center items-center px-5 py-2 border border-cobalt-500 text-cobalt-500 font-semibold text-sm rounded-lg hover:bg-cobalt-500/5 transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2"
           >
-            Inquire
+            Inquire Here
           </button>
 
           {program.applyUrl ? (
@@ -97,35 +85,35 @@ function StickyProgramHeader({
               href={program.applyUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex justify-center items-center px-5 py-2 bg-cobalt-500 text-white font-semibold text-sm rounded-lg hover:bg-cobalt-600 transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2"
+              className="inline-flex justify-center items-center gap-2 px-5 py-2 bg-cobalt-500 text-white font-semibold text-sm rounded-lg hover:bg-cobalt-600 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2"
             >
-              Apply Now
+              Visit Website
+              <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
             </a>
           ) : (
             <button
               type="button"
-              className="inline-flex justify-center items-center px-5 py-2 bg-cobalt-500 text-white font-semibold text-sm rounded-lg hover:bg-cobalt-600 transition-colors shadow-sm cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2"
+              className="inline-flex justify-center items-center gap-2 px-5 py-2 bg-cobalt-500 text-white font-semibold text-sm rounded-lg hover:bg-cobalt-600 transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2"
             >
-              Apply Now
+              Visit Website
+              <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
             </button>
           )}
 
           <button
             type="button"
             onClick={onToggleSave}
-            className={`inline-flex justify-center items-center gap-1.5 px-4 py-2 text-sm font-semibold rounded-lg border transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2 ${
-              saved
-                ? "bg-cobalt-50 border-cobalt-300 text-cobalt-600"
-                : "bg-white border-slate-300 text-slate-700 hover:border-slate-400"
-            }`}
+            className={`inline-flex justify-center items-center px-3 py-2 rounded-lg border transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2 ${saved
+              ? "bg-roman-50 border-roman-300 text-roman-500"
+              : "bg-white border-slate-300 text-slate-600 hover:border-slate-400"
+              }`}
             aria-label={saved ? "Unsave program" : "Save program"}
           >
-            <Bookmark
-              className="w-4 h-4"
+            <Heart
+              className={`w-4 h-4 ${saved ? "text-roman-500" : ""}`}
               fill={saved ? "currentColor" : "none"}
               strokeWidth={2}
             />
-            {saved ? "Saved" : "Save"}
           </button>
         </div>
       </div>
@@ -140,25 +128,27 @@ function MobileStickyBar({ program }: { program: Program }) {
     <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-slate-200 px-4 py-3 flex gap-3 shadow-lg">
       <button
         type="button"
-        className="flex-1 px-4 py-2.5 border-2 border-cobalt-500 text-cobalt-600 font-semibold text-sm rounded-lg hover:bg-cobalt-500/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 cursor-pointer"
+        className="flex-1 px-4 py-2.5 border border-cobalt-500 text-cobalt-500 font-semibold text-sm rounded-lg hover:bg-cobalt-500/5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 cursor-pointer"
       >
-        Inquire
+        Inquire Here
       </button>
       {program.applyUrl ? (
         <a
           href={program.applyUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex-1 text-center px-4 py-2.5 bg-cobalt-500 text-white font-semibold text-sm rounded-lg hover:bg-cobalt-600 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2"
+          className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-cobalt-500 text-white font-semibold text-sm rounded-lg hover:bg-cobalt-600 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2"
         >
-          Apply Now
+          Visit Website
+          <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
         </a>
       ) : (
         <button
           type="button"
-          className="flex-1 px-4 py-2.5 bg-cobalt-500 text-white font-semibold text-sm rounded-lg hover:bg-cobalt-600 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2 cursor-pointer"
+          className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-cobalt-500 text-white font-semibold text-sm rounded-lg hover:bg-cobalt-600 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2 cursor-pointer"
         >
-          Apply Now
+          Visit Website
+          <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
         </button>
       )}
     </div>
@@ -261,8 +251,8 @@ export default function ProgramDetailPage() {
   const avgRating =
     reviews && reviews.length > 0
       ? Math.round(
-          (reviews.reduce((sum, r) => sum + r.overallRating, 0) / reviews.length) * 100
-        ) / 100
+        (reviews.reduce((sum, r) => sum + r.overallRating, 0) / reviews.length) * 100
+      ) / 100
       : 0;
 
   const [saved, setSaved] = useState(false);
@@ -380,6 +370,8 @@ export default function ProgramDetailPage() {
 
           {/* Full-width sections — below the sidebar */}
           <div className="space-y-20 mt-20">
+            <ProgramDetails program={program} />
+
             {/* 4. Reviews */}
             <ProgramReviews programId={program._id} />
 
@@ -389,9 +381,6 @@ export default function ProgramDetailPage() {
               avgRating={avgRating}
               totalReviews={reviews?.length ?? 0}
             />
-
-            {/* 6. Subject areas — discovery / SEO */}
-            <SubjectAreas program={program} />
           </div>
 
           {/* Related Articles Section */}

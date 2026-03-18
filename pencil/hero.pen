@@ -1,0 +1,1492 @@
+{
+  "version": "2.8",
+  "children": [
+    {
+      "type": "frame",
+      "id": "nIG2a",
+      "x": 0,
+      "y": 0,
+      "name": "Hero Section",
+      "width": 1440,
+      "fill": "$bg-white",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "52qS7",
+          "name": "Navigation",
+          "width": "fill_container",
+          "stroke": {
+            "align": "inside",
+            "thickness": {
+              "bottom": 1
+            },
+            "fill": "$border-default"
+          },
+          "padding": [
+            8,
+            80
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "N5scZ",
+              "name": "logoGroup",
+              "gap": 10,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "SkJlJ",
+                  "name": "Site Logo",
+                  "width": 64,
+                  "height": 64,
+                  "fill": {
+                    "type": "image",
+                    "enabled": true,
+                    "url": "image.png",
+                    "mode": "fit"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "IOb0x",
+              "name": "navLinks",
+              "gap": 32,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "fh2Sr",
+                  "name": "link1",
+                  "fill": "$text-primary",
+                  "content": "Programs",
+                  "fontFamily": "Inter",
+                  "fontSize": 15,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "text",
+                  "id": "RqTF9",
+                  "name": "link2",
+                  "fill": "$text-primary",
+                  "content": "Destinations",
+                  "fontFamily": "Inter",
+                  "fontSize": 15,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "text",
+                  "id": "ZyDPu",
+                  "name": "link3",
+                  "fill": "$text-primary",
+                  "content": "About",
+                  "fontFamily": "Inter",
+                  "fontSize": 15,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "text",
+                  "id": "I4LHS",
+                  "name": "link4",
+                  "fill": "$text-primary",
+                  "content": "Resources",
+                  "fontFamily": "Inter",
+                  "fontSize": 15,
+                  "fontWeight": "500"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "VqHW0",
+              "name": "rightGroup",
+              "gap": 20,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "e478e",
+                  "name": "signIn",
+                  "fill": "$text-secondary",
+                  "content": "Sign In",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "frame",
+                  "id": "Fh2q6",
+                  "name": "ctaBtn",
+                  "fill": "$cobalt",
+                  "cornerRadius": 8,
+                  "padding": [
+                    8,
+                    20
+                  ],
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "w9YZ2",
+                      "name": "ctaText",
+                      "fill": "$text-on-accent",
+                      "content": "Get Started",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "600"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "xLsKE",
+          "name": "Hero Main",
+          "width": "fill_container",
+          "gap": 48,
+          "padding": [
+            64,
+            80
+          ],
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "0HVtn",
+              "name": "Hero Text",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 28,
+              "justifyContent": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "ZSVmH",
+                  "name": "Provider Identity",
+                  "gap": 16,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "hxEpl",
+                      "name": "Provider Logo",
+                      "width": 64,
+                      "height": 64,
+                      "fill": {
+                        "type": "image",
+                        "enabled": true,
+                        "url": "./images/generated-1773209631306.png",
+                        "mode": "fill"
+                      },
+                      "cornerRadius": 12,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 1,
+                        "fill": "$border-default"
+                      }
+                    },
+                    {
+                      "type": "frame",
+                      "id": "IJQCl",
+                      "name": "Badge",
+                      "fill": "#1B496515",
+                      "cornerRadius": 100,
+                      "gap": 8,
+                      "padding": [
+                        6,
+                        14
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "MpNcU",
+                          "name": "badgeIcon",
+                          "width": 16,
+                          "height": 16,
+                          "iconFontName": "building-2",
+                          "iconFontFamily": "lucide",
+                          "fill": "$cobalt"
+                        },
+                        {
+                          "type": "text",
+                          "id": "tBU1y",
+                          "name": "badgeText",
+                          "fill": "$cobalt",
+                          "content": "Worldbridge Study Abroad",
+                          "fontFamily": "Inter",
+                          "fontSize": 13,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "kJqTF",
+                  "name": "Headline Group",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 16,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "cBUCG",
+                      "name": "headlineText",
+                      "fill": "$cobalt",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "Semester in Barcelona: Language, Culture & Innovation",
+                      "lineHeight": 1.1,
+                      "fontFamily": "Inter",
+                      "fontSize": 48,
+                      "fontWeight": "700",
+                      "letterSpacing": -1
+                    },
+                    {
+                      "type": "text",
+                      "id": "4fau4",
+                      "name": "subText",
+                      "fill": "$text-secondary",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "Discover world-class programs in 45+ countries. Earn transferable credits, immerse yourself in new cultures, and build a global network — all with dedicated support from application to return.",
+                      "lineHeight": 1.6,
+                      "fontFamily": "Inter",
+                      "fontSize": 17,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "xOEIM",
+                  "name": "CTA Buttons",
+                  "gap": 16,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "D4kAM",
+                      "name": "Primary CTA",
+                      "fill": "$cobalt",
+                      "cornerRadius": 8,
+                      "gap": 8,
+                      "padding": [
+                        14,
+                        28
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "r0Ww7",
+                          "name": "primaryText",
+                          "fill": "$text-on-accent",
+                          "content": "Visit Website",
+                          "fontFamily": "Inter",
+                          "fontSize": 16,
+                          "fontWeight": "600"
+                        },
+                        {
+                          "type": "icon_font",
+                          "id": "4o1k0",
+                          "name": "primaryIcon",
+                          "width": 18,
+                          "height": 18,
+                          "iconFontName": "arrow-right",
+                          "iconFontFamily": "lucide",
+                          "fill": "$text-on-accent"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "V9tJG",
+                      "name": "Secondary CTA",
+                      "cornerRadius": 8,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 1.5,
+                        "fill": "$cobalt"
+                      },
+                      "gap": 8,
+                      "padding": [
+                        14,
+                        28
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "j4ksE",
+                          "name": "secondaryText",
+                          "fill": "$cobalt",
+                          "content": "Inquire Here",
+                          "fontFamily": "Inter",
+                          "fontSize": 16,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "u9bC6",
+                  "name": "Trust Signals",
+                  "gap": 24,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "VM7AY",
+                      "name": "trust1",
+                      "gap": 6,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "fpmz5",
+                          "name": "trust1Icon",
+                          "width": 16,
+                          "height": 16,
+                          "iconFontName": "shield-check",
+                          "iconFontFamily": "lucide",
+                          "fill": "$fern"
+                        },
+                        {
+                          "type": "text",
+                          "id": "jkjCj",
+                          "name": "trust1Text",
+                          "fill": "$text-secondary",
+                          "content": "Verified Programs",
+                          "fontFamily": "Inter",
+                          "fontSize": 13,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "TocuY",
+                      "name": "trust2",
+                      "gap": 6,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "RiMwL",
+                          "name": "trust2Icon",
+                          "width": 16,
+                          "height": 16,
+                          "iconFontName": "credit-card",
+                          "iconFontFamily": "lucide",
+                          "fill": "$fern"
+                        },
+                        {
+                          "type": "text",
+                          "id": "u60xV",
+                          "name": "trust2Text",
+                          "fill": "$text-secondary",
+                          "content": "Flexible Payments",
+                          "fontFamily": "Inter",
+                          "fontSize": 13,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "8PjGX",
+                      "name": "trust3",
+                      "gap": 6,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "enaj9",
+                          "name": "trust3Icon",
+                          "width": 16,
+                          "height": 16,
+                          "iconFontName": "headset",
+                          "iconFontFamily": "lucide",
+                          "fill": "$fern"
+                        },
+                        {
+                          "type": "text",
+                          "id": "1YbPO",
+                          "name": "trust3Text",
+                          "fill": "$text-secondary",
+                          "content": "24/7 Support",
+                          "fontFamily": "Inter",
+                          "fontSize": 13,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "gHZX3",
+              "name": "Hero Image Area",
+              "clip": true,
+              "width": "fill_container",
+              "height": 480,
+              "cornerRadius": 16,
+              "layout": "none",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "Y91rL",
+                  "x": 0,
+                  "y": 0,
+                  "name": "Hero Image",
+                  "metadata": {
+                    "type": "unsplash",
+                    "username": "traveloyavlog",
+                    "link": "https://unsplash.com/@traveloyavlog",
+                    "author": "Aldo Loya"
+                  },
+                  "width": 616,
+                  "height": 480,
+                  "fill": {
+                    "type": "image",
+                    "enabled": true,
+                    "url": "https://images.unsplash.com/photo-1581211085718-1405201b753a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzMyMDc0OTZ8&ixlib=rb-4.1.0&q=80&w=1080",
+                    "mode": "fill"
+                  }
+                },
+                {
+                  "type": "frame",
+                  "id": "6TYLl",
+                  "x": 0,
+                  "y": 0,
+                  "name": "Image Overlay",
+                  "width": 616,
+                  "height": 480,
+                  "fill": {
+                    "type": "gradient",
+                    "gradientType": "linear",
+                    "enabled": true,
+                    "rotation": 0,
+                    "size": {
+                      "height": 1
+                    },
+                    "colors": [
+                      {
+                        "color": "#00000000",
+                        "position": 0
+                      },
+                      {
+                        "color": "#00000040",
+                        "position": 1
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "frame",
+                  "id": "XZkYi",
+                  "x": 24,
+                  "y": 24,
+                  "name": "Floating Card - Rating",
+                  "fill": "#FFFFFFEE",
+                  "cornerRadius": 12,
+                  "gap": 10,
+                  "padding": [
+                    10,
+                    16
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "80EDN",
+                      "name": "card1Icon",
+                      "width": 18,
+                      "height": 18,
+                      "iconFontName": "star",
+                      "iconFontFamily": "lucide",
+                      "fill": "$sun"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "guZJa",
+                      "name": "card1Text",
+                      "layout": "vertical",
+                      "gap": 2,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "gPvpF",
+                          "name": "card1Rating",
+                          "fill": "$text-primary",
+                          "content": "9.8 / 10",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "700"
+                        },
+                        {
+                          "type": "text",
+                          "id": "h2YRj",
+                          "name": "card1Label",
+                          "fill": "$text-secondary",
+                          "content": "Student Rating",
+                          "fontFamily": "Inter",
+                          "fontSize": 11,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "Gwsnr",
+                  "x": 380,
+                  "y": 400,
+                  "name": "Floating Card - Location",
+                  "fill": "#FFFFFFEE",
+                  "cornerRadius": 12,
+                  "gap": 10,
+                  "padding": [
+                    10,
+                    16
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "vPxMl",
+                      "name": "card2Icon",
+                      "width": 18,
+                      "height": 18,
+                      "iconFontName": "map-pin",
+                      "iconFontFamily": "lucide",
+                      "fill": "$roman"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "DjKdN",
+                      "name": "card2Text",
+                      "layout": "vertical",
+                      "gap": 2,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "uc8xL",
+                          "name": "card2City",
+                          "fill": "$text-primary",
+                          "content": "Barcelona, Spain",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "700"
+                        },
+                        {
+                          "type": "text",
+                          "id": "gM1fF",
+                          "name": "card2Label",
+                          "fill": "$text-secondary",
+                          "content": "Popular Destination",
+                          "fontFamily": "Inter",
+                          "fontSize": 11,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "rzZ6b",
+          "name": "Stats Bar",
+          "width": "fill_container",
+          "fill": "$cobalt",
+          "gap": 48,
+          "padding": [
+            24,
+            80
+          ],
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "ktJgx",
+              "name": "stat1",
+              "layout": "vertical",
+              "gap": 4,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "bqG1d",
+                  "name": "stat1num",
+                  "fill": "$text-on-accent",
+                  "content": "2,500+",
+                  "fontFamily": "Inter",
+                  "fontSize": 28,
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "text",
+                  "id": "gj0Lv",
+                  "name": "stat1label",
+                  "fill": "#FFFFFFB3",
+                  "content": "Students Enrolled",
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "rectangle",
+              "id": "QbGs0",
+              "name": "div1",
+              "fill": "#FFFFFF33",
+              "width": 1,
+              "height": 40
+            },
+            {
+              "type": "frame",
+              "id": "l4wfQ",
+              "name": "stat2",
+              "layout": "vertical",
+              "gap": 4,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "rm58e",
+                  "name": "stat2num",
+                  "fill": "$text-on-accent",
+                  "content": "45+",
+                  "fontFamily": "Inter",
+                  "fontSize": 28,
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "text",
+                  "id": "8zxG2",
+                  "name": "stat2label",
+                  "fill": "#FFFFFFB3",
+                  "content": "Countries",
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "rectangle",
+              "id": "jjFEg",
+              "name": "div2",
+              "fill": "#FFFFFF33",
+              "width": 1,
+              "height": 40
+            },
+            {
+              "type": "frame",
+              "id": "qf5YV",
+              "name": "stat3",
+              "layout": "vertical",
+              "gap": 4,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "5ZTMM",
+                  "name": "stat3num",
+                  "fill": "$text-on-accent",
+                  "content": "98%",
+                  "fontFamily": "Inter",
+                  "fontSize": 28,
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "text",
+                  "id": "SEhSk",
+                  "name": "stat3label",
+                  "fill": "#FFFFFFB3",
+                  "content": "Satisfaction Rate",
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "rectangle",
+              "id": "j9fep",
+              "name": "div3",
+              "fill": "#FFFFFF33",
+              "width": 1,
+              "height": 40
+            },
+            {
+              "type": "frame",
+              "id": "3m5sG",
+              "name": "stat4",
+              "layout": "vertical",
+              "gap": 4,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "OEjOO",
+                  "name": "stat4num",
+                  "fill": "$text-on-accent",
+                  "content": "150+",
+                  "fontFamily": "Inter",
+                  "fontSize": 28,
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "text",
+                  "id": "vJ27v",
+                  "name": "stat4label",
+                  "fill": "#FFFFFFB3",
+                  "content": "Partner Universities",
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "fontWeight": "normal"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "UFF7G",
+      "x": 1540,
+      "y": 0,
+      "name": "Hero Section — Mobile",
+      "width": 402,
+      "fill": "$bg-white",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "68hJb",
+          "name": "Mobile Navigation",
+          "width": "fill_container",
+          "stroke": {
+            "align": "inside",
+            "thickness": {
+              "bottom": 1
+            },
+            "fill": "$border-default"
+          },
+          "padding": [
+            14,
+            20
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "DtOw5",
+              "name": "logoGroup",
+              "gap": 8,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "qxzyY",
+                  "name": "Site Logo",
+                  "width": 32,
+                  "height": 32,
+                  "fill": {
+                    "type": "image",
+                    "enabled": true,
+                    "url": "image.png",
+                    "mode": "fit"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "icon_font",
+              "id": "RdsiP",
+              "name": "menuIcon",
+              "width": 24,
+              "height": 24,
+              "iconFontName": "menu",
+              "iconFontFamily": "lucide",
+              "fill": "$text-primary"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "sGNXy",
+          "name": "Mobile Hero Main",
+          "width": "fill_container",
+          "layout": "vertical",
+          "children": [
+            {
+              "type": "frame",
+              "id": "KWSbx",
+              "name": "Mobile Hero Image",
+              "clip": true,
+              "width": "fill_container",
+              "height": 260,
+              "layout": "none",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "AWL8Q",
+                  "x": 0,
+                  "y": 0,
+                  "name": "Image BG",
+                  "metadata": {
+                    "type": "unsplash",
+                    "username": "alvarolopez5",
+                    "link": "https://unsplash.com/@alvarolopez5",
+                    "author": "Álvaro López"
+                  },
+                  "width": 402,
+                  "height": 260,
+                  "fill": {
+                    "type": "image",
+                    "enabled": true,
+                    "url": "https://images.unsplash.com/photo-1701604538450-f67895f0a4bf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzMyMDkwNjl8&ixlib=rb-4.1.0&q=80&w=1080",
+                    "mode": "fill"
+                  }
+                },
+                {
+                  "type": "frame",
+                  "id": "R9l7v",
+                  "x": 0,
+                  "y": 0,
+                  "name": "Overlay",
+                  "width": 402,
+                  "height": 260,
+                  "fill": {
+                    "type": "gradient",
+                    "gradientType": "linear",
+                    "enabled": true,
+                    "rotation": 0,
+                    "size": {
+                      "height": 1
+                    },
+                    "colors": [
+                      {
+                        "color": "#00000000",
+                        "position": 0
+                      },
+                      {
+                        "color": "#00000050",
+                        "position": 1
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "frame",
+                  "id": "H84ST",
+                  "x": 16,
+                  "y": 16,
+                  "name": "Rating Card",
+                  "fill": "#FFFFFFEE",
+                  "cornerRadius": 10,
+                  "gap": 8,
+                  "padding": [
+                    8,
+                    12
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "R0ZhN",
+                      "name": "ratingIcon",
+                      "width": 14,
+                      "height": 14,
+                      "iconFontName": "star",
+                      "iconFontFamily": "lucide",
+                      "fill": "$sun"
+                    },
+                    {
+                      "type": "text",
+                      "id": "qUrgk",
+                      "name": "ratingText",
+                      "fill": "$text-primary",
+                      "content": "9.8 / 10",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "700"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "yNCWj",
+                  "x": 240,
+                  "y": 210,
+                  "name": "Location Card",
+                  "fill": "#FFFFFFEE",
+                  "cornerRadius": 10,
+                  "gap": 8,
+                  "padding": [
+                    8,
+                    12
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "lEueT",
+                      "name": "locIcon",
+                      "width": 14,
+                      "height": 14,
+                      "iconFontName": "map-pin",
+                      "iconFontFamily": "lucide",
+                      "fill": "$roman"
+                    },
+                    {
+                      "type": "text",
+                      "id": "xRipm",
+                      "name": "locText",
+                      "fill": "$text-primary",
+                      "content": "Barcelona, Spain",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "700"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "vdpLz",
+              "name": "Mobile Hero Text",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 20,
+              "padding": [
+                24,
+                20
+              ],
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "qYwGV",
+                  "name": "Provider",
+                  "gap": 12,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "kqnv5",
+                      "name": "Logo",
+                      "width": 44,
+                      "height": 44,
+                      "fill": {
+                        "type": "image",
+                        "enabled": true,
+                        "url": "./images/generated-1773209644161.png",
+                        "mode": "fill"
+                      },
+                      "cornerRadius": 10,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 1,
+                        "fill": "$border-default"
+                      }
+                    },
+                    {
+                      "type": "frame",
+                      "id": "xuySk",
+                      "name": "Badge",
+                      "fill": "#1B496515",
+                      "cornerRadius": 100,
+                      "gap": 6,
+                      "padding": [
+                        5,
+                        12
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "TLPMD",
+                          "name": "badgeIconM",
+                          "width": 14,
+                          "height": 14,
+                          "iconFontName": "building-2",
+                          "iconFontFamily": "lucide",
+                          "fill": "$cobalt"
+                        },
+                        {
+                          "type": "text",
+                          "id": "s3JHe",
+                          "name": "badgeTextM",
+                          "fill": "$cobalt",
+                          "content": "Worldbridge Study Abroad",
+                          "fontFamily": "Inter",
+                          "fontSize": 12,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "nQE5B",
+                  "name": "Headline Group",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 12,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "VeKqo",
+                      "name": "headlineM",
+                      "fill": "$cobalt",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "Semester in Barcelona: Language, Culture & Innovation",
+                      "lineHeight": 1.15,
+                      "fontFamily": "Inter",
+                      "fontSize": 32,
+                      "fontWeight": "700",
+                      "letterSpacing": -0.5
+                    },
+                    {
+                      "type": "text",
+                      "id": "ltvxo",
+                      "name": "subTextM",
+                      "fill": "$text-secondary",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "Discover world-class programs in 45+ countries. Earn transferable credits, immerse yourself in new cultures, and build a global network.",
+                      "lineHeight": 1.55,
+                      "fontFamily": "Inter",
+                      "fontSize": 15,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "6KQWI",
+                  "name": "CTA Buttons",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 12,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "ZbYxK",
+                      "name": "Primary CTA",
+                      "width": "fill_container",
+                      "fill": "$cobalt",
+                      "cornerRadius": 8,
+                      "gap": 8,
+                      "padding": [
+                        14,
+                        24
+                      ],
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "2EUHF",
+                          "name": "primaryTextM",
+                          "fill": "$text-on-accent",
+                          "content": "Visit Website",
+                          "fontFamily": "Inter",
+                          "fontSize": 15,
+                          "fontWeight": "600"
+                        },
+                        {
+                          "type": "icon_font",
+                          "id": "L0Btf",
+                          "name": "primaryIconM",
+                          "width": 16,
+                          "height": 16,
+                          "iconFontName": "arrow-right",
+                          "iconFontFamily": "lucide",
+                          "fill": "$text-on-accent"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "hiIId",
+                      "name": "Secondary CTA",
+                      "width": "fill_container",
+                      "cornerRadius": 8,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 1.5,
+                        "fill": "$cobalt"
+                      },
+                      "gap": 8,
+                      "padding": [
+                        14,
+                        24
+                      ],
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "Ws1ZS",
+                          "name": "secondaryTextM",
+                          "fill": "$cobalt",
+                          "content": "Inquire Here",
+                          "fontFamily": "Inter",
+                          "fontSize": 15,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "JwNCq",
+                  "name": "Trust Signals",
+                  "width": "fill_container",
+                  "gap": 16,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "0EsRt",
+                      "name": "t1",
+                      "gap": 5,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "Ewj7W",
+                          "name": "t1i",
+                          "width": 14,
+                          "height": 14,
+                          "iconFontName": "shield-check",
+                          "iconFontFamily": "lucide",
+                          "fill": "$fern"
+                        },
+                        {
+                          "type": "text",
+                          "id": "bPkzy",
+                          "name": "t1t",
+                          "fill": "$text-secondary",
+                          "content": "Verified",
+                          "fontFamily": "Inter",
+                          "fontSize": 12,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "Lr1rG",
+                      "name": "t2",
+                      "gap": 5,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "Dto0F",
+                          "name": "t2i",
+                          "width": 14,
+                          "height": 14,
+                          "iconFontName": "credit-card",
+                          "iconFontFamily": "lucide",
+                          "fill": "$fern"
+                        },
+                        {
+                          "type": "text",
+                          "id": "VpQHB",
+                          "name": "t2t",
+                          "fill": "$text-secondary",
+                          "content": "Flexible Pay",
+                          "fontFamily": "Inter",
+                          "fontSize": 12,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "LBLXG",
+                      "name": "t3",
+                      "gap": 5,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "0fWLy",
+                          "name": "t3i",
+                          "width": 14,
+                          "height": 14,
+                          "iconFontName": "headset",
+                          "iconFontFamily": "lucide",
+                          "fill": "$fern"
+                        },
+                        {
+                          "type": "text",
+                          "id": "582op",
+                          "name": "t3t",
+                          "fill": "$text-secondary",
+                          "content": "24/7 Support",
+                          "fontFamily": "Inter",
+                          "fontSize": 12,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "ll5kO",
+          "name": "Mobile Stats Bar",
+          "width": "fill_container",
+          "fill": "$cobalt",
+          "layout": "vertical",
+          "gap": 16,
+          "padding": 20,
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "97sxN",
+              "name": "row1",
+              "width": "fill_container",
+              "justifyContent": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "tPdun",
+                  "name": "stat1",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 2,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "Y1gqg",
+                      "name": "stat1num",
+                      "fill": "$text-on-accent",
+                      "content": "2,500+",
+                      "fontFamily": "Inter",
+                      "fontSize": 22,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "me8Nn",
+                      "name": "stat1label",
+                      "fill": "#FFFFFFB3",
+                      "content": "Students Enrolled",
+                      "fontFamily": "Inter",
+                      "fontSize": 11,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "MN2AI",
+                  "name": "stat2",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 2,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "eUwm7",
+                      "name": "stat2num",
+                      "fill": "$text-on-accent",
+                      "content": "45+",
+                      "fontFamily": "Inter",
+                      "fontSize": 22,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "5MCnB",
+                      "name": "stat2label",
+                      "fill": "#FFFFFFB3",
+                      "content": "Countries",
+                      "fontFamily": "Inter",
+                      "fontSize": 11,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "BC2CL",
+              "name": "row2",
+              "width": "fill_container",
+              "justifyContent": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "ztNkR",
+                  "name": "stat3",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 2,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "KPMRe",
+                      "name": "stat3num",
+                      "fill": "$text-on-accent",
+                      "content": "98%",
+                      "fontFamily": "Inter",
+                      "fontSize": 22,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "sVrod",
+                      "name": "stat3label",
+                      "fill": "#FFFFFFB3",
+                      "content": "Satisfaction Rate",
+                      "fontFamily": "Inter",
+                      "fontSize": 11,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "AEcq4",
+                  "name": "stat4",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 2,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "OdofE",
+                      "name": "stat4num",
+                      "fill": "$text-on-accent",
+                      "content": "150+",
+                      "fontFamily": "Inter",
+                      "fontSize": 22,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "bzNc5",
+                      "name": "stat4label",
+                      "fill": "#FFFFFFB3",
+                      "content": "Partner Universities",
+                      "fontFamily": "Inter",
+                      "fontSize": 11,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "variables": {
+    "accent-blue": {
+      "type": "color",
+      "value": "#2563EB"
+    },
+    "accent-blue-dark": {
+      "type": "color",
+      "value": "#1D4ED8"
+    },
+    "bg-highlight": {
+      "type": "color",
+      "value": "#EFF6FF"
+    },
+    "bg-white": {
+      "type": "color",
+      "value": "#FFFFFF"
+    },
+    "border-default": {
+      "type": "color",
+      "value": "#E4E4E7"
+    },
+    "cobalt": {
+      "type": "color",
+      "value": "#1B4965"
+    },
+    "cobalt-dark": {
+      "type": "color",
+      "value": "#0F2D40"
+    },
+    "fern": {
+      "type": "color",
+      "value": "#81B29A"
+    },
+    "roman": {
+      "type": "color",
+      "value": "#E07A5F"
+    },
+    "sun": {
+      "type": "color",
+      "value": "#F2CC8F"
+    },
+    "text-muted": {
+      "type": "color",
+      "value": "#A1A1AA"
+    },
+    "text-on-accent": {
+      "type": "color",
+      "value": "#FFFFFF"
+    },
+    "text-primary": {
+      "type": "color",
+      "value": "#18181B"
+    },
+    "text-secondary": {
+      "type": "color",
+      "value": "#71717A"
+    }
+  }
+}
