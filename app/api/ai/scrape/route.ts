@@ -8,7 +8,7 @@ const anthropic = new Anthropic({
 const BLOCKED_HOSTNAMES = [
   "localhost",
   "127.0.0.1",
-  "[::1]",
+  "::1",
 ];
 
 const BLOCKED_IP_PREFIXES = [
@@ -89,6 +89,15 @@ function normalizeEducationLevels(levels: unknown): string[] {
     .filter((l): l is string => l !== null);
 }
 
+function isValidHttpsUrl(value: string): boolean {
+  try {
+    const u = new URL(value);
+    return u.protocol === "https:";
+  } catch {
+    return false;
+  }
+}
+
 function validateAndCleanFields(fields: Record<string, unknown>): Record<string, unknown> {
   const cleaned: Record<string, unknown> = {};
 
@@ -96,8 +105,7 @@ function validateAndCleanFields(fields: Record<string, unknown>): Record<string,
     "title", "provider", "hostInstitution", "city", "country", "duration",
     "ageRequirement", "description", "cost", "applicationDeadline",
     "contactEmail", "contactPhone", "applyUrl", "housingType",
-    "languageOfInstruction", "creditsAvailable", "providerLogo",
-    "coverImage",
+    "languageOfInstruction", "creditsAvailable",
   ];
   for (const key of stringFields) {
     if (typeof fields[key] === "string" && (fields[key] as string).trim()) {
@@ -105,8 +113,15 @@ function validateAndCleanFields(fields: Record<string, unknown>): Record<string,
     }
   }
 
+  if (typeof fields.coverImage === "string" && isValidHttpsUrl(fields.coverImage)) {
+    cleaned.coverImage = fields.coverImage.trim();
+  }
+  if (typeof fields.providerLogo === "string" && isValidHttpsUrl(fields.providerLogo)) {
+    cleaned.providerLogo = fields.providerLogo.trim();
+  }
+
   const arrayFields = [
-    "eligibleNationalities", "whatsIncluded", "subjectAreas", "highlights", "photos",
+    "eligibleNationalities", "whatsIncluded", "subjectAreas", "highlights",
   ];
   for (const key of arrayFields) {
     if (Array.isArray(fields[key])) {
@@ -115,6 +130,13 @@ function validateAndCleanFields(fields: Record<string, unknown>): Record<string,
       );
       if (filtered.length > 0) cleaned[key] = filtered;
     }
+  }
+
+  if (Array.isArray(fields.photos)) {
+    const validPhotos = (fields.photos as unknown[]).filter(
+      (item): item is string => typeof item === "string" && isValidHttpsUrl(item)
+    );
+    if (validPhotos.length > 0) cleaned.photos = validPhotos;
   }
 
   const terms = normalizeTerms(fields.terms);
@@ -165,21 +187,25 @@ export async function POST(req: Request) {
     try {
       const controller = new AbortController();
       const timeout = setTimeout(() => controller.abort(), 10000);
-      const fetchResponse = await fetch(url, {
-        signal: controller.signal,
-        headers: {
-          "User-Agent": "Mozilla/5.0 (compatible; GoAbroadBot/1.0)",
-        },
-      });
-      clearTimeout(timeout);
+      let fetchResponse: Response;
+      try {
+        fetchResponse = await fetch(url, {
+          signal: controller.signal,
+          headers: {
+            "User-Agent": "Mozilla/5.0 (compatible; GoAbroadBot/1.0)",
+          },
+        });
+      } finally {
+        clearTimeout(timeout);
+      }
 
-      if (!fetchResponse.ok) {
+      if (!fetchResponse!.ok) {
         return NextResponse.json(
           { error: "We couldn't reach that website. Check the URL and try again." },
           { status: 400 }
         );
       }
-      html = await fetchResponse.text();
+      html = await fetchResponse!.text();
     } catch (err: unknown) {
       if (err instanceof Error && err.name === "AbortError") {
         return NextResponse.json(
@@ -227,8 +253,8 @@ String fields (include only if found):
 - housingType: type of housing (e.g. "Shared Apartment", "Host Family", "Dormitory")
 - languageOfInstruction: language of instruction
 - creditsAvailable: academic credits available
-- coverImage: a main/hero image URL found on the page (must be an absolute URL starting with https://; resolve relative paths using the page's base URL: ${url})
-- providerLogo: a logo image URL found on the page (must be an absolute URL starting with https://; resolve relative paths using the page's base URL: ${url})
+- coverImage: a main/hero image URL found on the page (must be an absolute URL starting with https://; resolve relative paths using the page's base URL: ${parsedUrl.origin})
+- providerLogo: a logo image URL found on the page (must be an absolute URL starting with https://; resolve relative paths using the page's base URL: ${parsedUrl.origin})
 
 Array fields (include only if found):
 - terms: program terms, each must be EXACTLY one of: "fall", "spring", "summer", "academic_year", "year_round"
@@ -237,7 +263,7 @@ Array fields (include only if found):
 - whatsIncluded: list of what's included in the program
 - subjectAreas: list of academic subject areas
 - highlights: list of program highlights or features
-- photos: array of image URLs found on the page (must be absolute URLs starting with https://; resolve relative paths using the page's base URL: ${url})
+- photos: array of image URLs found on the page (must be absolute URLs starting with https://; resolve relative paths using the page's base URL: ${parsedUrl.origin})
 
 Website content:
 ${text}`;
@@ -255,8 +281,18 @@ ${text}`;
     }
 
     const jsonText = content.text.trim();
-    const cleanedJson = jsonText.replace(/^```json\s*/, "").replace(/```$/, "").trim();
-    const rawFields = JSON.parse(cleanedJson);
+    const cleanedJson = jsonText.replace(/^```(?:json)?\s*/i, "").replace(/\s*```\s*$/i, "").trim();
+
+    let rawFields: Record<string, unknown>;
+    try {
+      rawFields = JSON.parse(cleanedJson);
+    } catch {
+      return NextResponse.json(
+        { error: "We couldn't extract program information from that page." },
+        { status: 422 }
+      );
+    }
+
     const fields = validateAndCleanFields(rawFields);
 
     if (Object.keys(fields).length === 0) {
@@ -269,9 +305,8 @@ ${text}`;
     return NextResponse.json({ fields });
   } catch (err: unknown) {
     console.error("Scrape Error:", err);
-    const message = err instanceof Error ? err.message : "Failed to extract program information";
     return NextResponse.json(
-      { error: message },
+      { error: "Failed to extract program information" },
       { status: 500 }
     );
   }
