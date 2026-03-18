@@ -3,6 +3,16 @@
 import { useEffect, useRef, useState } from "react";
 import AIGenerateButton from "./AIGenerateButton";
 
+const IMPORT_STATUS_MESSAGES = [
+  "Scanning website...",
+  "Reading program details...",
+  "Extracting courses & subjects...",
+  "Gathering pricing info...",
+  "Analyzing eligibility requirements...",
+  "Checking housing options...",
+  "Compiling results...",
+];
+
 function generateSlug(title: string): string {
   return title
     .toLowerCase()
@@ -34,6 +44,37 @@ export default function Step1BasicInfo({ data, onChange, onImport, formData }: S
   const [importUrl, setImportUrl] = useState("");
   const [isImporting, setIsImporting] = useState(false);
   const [importError, setImportError] = useState("");
+  const [importProgress, setImportProgress] = useState(0);
+  const [importStatusIndex, setImportStatusIndex] = useState(0);
+
+  useEffect(() => {
+    if (!isImporting) {
+      return;
+    }
+
+    setImportProgress(0);
+    setImportStatusIndex(0);
+
+    // Progress bar: increment every 300ms, slow down as it approaches 90%
+    const progressInterval = setInterval(() => {
+      setImportProgress((prev) => {
+        if (prev >= 90) return prev;
+        const remaining = 90 - prev;
+        const increment = Math.max(0.5, remaining * 0.08);
+        return Math.min(90, prev + increment);
+      });
+    }, 300);
+
+    // Status text: rotate every 2.5 seconds
+    const statusInterval = setInterval(() => {
+      setImportStatusIndex((prev) => (prev + 1) % IMPORT_STATUS_MESSAGES.length);
+    }, 2500);
+
+    return () => {
+      clearInterval(progressInterval);
+      clearInterval(statusInterval);
+    };
+  }, [isImporting]);
 
   // Auto-generate slug from title unless admin has manually edited it
   useEffect(() => {
@@ -71,18 +112,24 @@ export default function Step1BasicInfo({ data, onChange, onImport, formData }: S
 
       if (!res.ok) {
         setImportError(result.error || "Failed to import program information");
+        setIsImporting(false);
         return;
       }
 
       if (result.fields && Object.keys(result.fields).length > 0) {
+        // Show completion state briefly
+        setImportProgress(100);
+        setImportStatusIndex(-1); // signals "Done!"
         onImport(result.fields);
+        await new Promise((resolve) => setTimeout(resolve, 600));
         setImportUrl("");
+        setIsImporting(false);
       } else {
         setImportError("No program information found on that page.");
+        setIsImporting(false);
       }
     } catch {
       setImportError("Something went wrong. Please try again.");
-    } finally {
       setIsImporting(false);
     }
   };
@@ -128,19 +175,26 @@ export default function Step1BasicInfo({ data, onChange, onImport, formData }: S
             disabled={isImporting || !importUrl.trim()}
             className="inline-flex shrink-0 items-center gap-1.5 rounded-md bg-cobalt-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-cobalt-700 focus:outline-none focus:ring-2 focus:ring-cobalt-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
           >
-            {isImporting ? (
-              <>
-                <svg aria-hidden="true" className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-                </svg>
-                Importing...
-              </>
-            ) : (
-              "Import"
-            )}
+            {isImporting ? "Importing..." : "Import"}
           </button>
         </div>
+        {isImporting && (
+          <div className="mt-3">
+            <div className="relative h-7 w-full overflow-hidden rounded-md bg-gray-200">
+              <div
+                className="absolute inset-y-0 left-0 rounded-md bg-cobalt-600 transition-all duration-300 ease-out"
+                style={{ width: `${importProgress}%` }}
+              />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className="text-xs font-medium text-white drop-shadow-sm">
+                  {importStatusIndex === -1
+                    ? "Done!"
+                    : IMPORT_STATUS_MESSAGES[importStatusIndex]}
+                </span>
+              </div>
+            </div>
+          </div>
+        )}
         {importError && (
           <p className="mt-2 text-sm text-red-600">{importError}</p>
         )}
