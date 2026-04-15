@@ -1,9 +1,13 @@
 import Link from 'next/link';
 import { Globe, ArrowRight, LayoutDashboard, PenTool, FileText } from 'lucide-react';
+import AdminHeader from '@/components/AdminHeader';
+import AdminFooter from '@/components/AdminFooter';
 
 export default function Home() {
   return (
-    <div className="min-h-[calc(100vh-5rem)] bg-white">
+    <>
+      <AdminHeader />
+      <div className="min-h-[calc(100vh-5rem)] bg-white">
       {/* Hero Header */}
       <section className="py-16 border-b border-slate-100">
         <div className="max-w-5xl mx-auto px-6">
@@ -25,42 +29,46 @@ export default function Home() {
         <div className="max-w-5xl mx-auto px-6">
           <h2 className="text-xs font-bold text-slate-400 uppercase tracking-[0.2em] mb-8">Available Modules</h2>
 
-          <div className="space-y-4">
+          {/* Prototypes */}
+          <div>
+            <h3 className="text-xs font-bold text-slate-300 uppercase tracking-[0.2em] mb-4">Prototypes</h3>
+            <div className="space-y-4">
+              <ModuleListItem
+                href="/programs"
+                icon={Globe}
+                title="Program Directory"
+                description="A modernized search and discovery engine for global study abroad programs."
+                tag="Beta"
+                isPrimary
+              />
+              <ModuleListItem
+                href="/admin/create-listing"
+                icon={PenTool}
+                title="Create Listing"
+                description="Multi-step form for drafting and publishing new program listings."
+              />
+              <ModuleListItem
+                href="#"
+                icon={FileText}
+                title="Articles & Content"
+                description="Editorial management system for travel guides and participant resources."
+                isDraft
+              />
+            </div>
+          </div>
 
-            {/* Primary Module: Program Directory */}
-            <ModuleListItem
-              href="/programs"
-              icon={Globe}
-              title="Program Directory"
-              description="A modernized search and discovery engine for global study abroad programs."
-              tag="Beta"
-              isPrimary
-            />
-
-            {/* Other Modules in List Format */}
-            <ModuleListItem
-              href="/admin"
-              icon={LayoutDashboard}
-              title="Partner Dashboard"
-              description="Administrative hub for managing listings, applications, and organizational settings."
-              tag="Admin Only"
-            />
-
-            <ModuleListItem
-              href="/admin/create-listing"
-              icon={PenTool}
-              title="Listing Creation Flow"
-              description="Multi-step interactive interface for drafting and publishing new program listings."
-            />
-
-            <ModuleListItem
-              href="#"
-              icon={FileText}
-              title="Articles & Content"
-              description="Editorial management system for travel guides and participant resources."
-              isDraft
-            />
-
+          {/* Admin */}
+          <div className="mt-10">
+            <h3 className="text-xs font-bold text-slate-300 uppercase tracking-[0.2em] mb-4">Admin</h3>
+            <div className="space-y-4">
+              <ModuleListItem
+                href="/admin"
+                icon={LayoutDashboard}
+                title="Admin"
+                description="Administrative hub for managing listings, applications, and organizational settings."
+                tag="Admin Only"
+              />
+            </div>
           </div>
         </div>
       </section>
@@ -83,7 +91,9 @@ export default function Home() {
           </div>
         </div>
       </section>
-    </div>
+      </div>
+      <AdminFooter />
+    </>
   );
 }
 
