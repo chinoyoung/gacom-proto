@@ -8,7 +8,8 @@ import { useDesignVersion } from "@/lib/use-design-version";
 
 import LoadingSkeleton from "./_components/LoadingSkeleton";
 import ProgramNotFound from "./_components/ProgramNotFound";
-import DefaultDetailPage from "./_components/DefaultDetailPage";
+import V1DetailPage from "./_versions/v1/V1DetailPage";
+import V2DetailPage from "./_versions/v2/V2DetailPage";
 import ModernDetailPage from "./_versions/modern/ModernDetailPage";
 import InquiryDetailPage from "./_versions/inquiry/InquiryDetailPage";
 
@@ -47,17 +48,13 @@ export default function ProgramDetailPage() {
   }
 
   switch (version) {
+    case "v2":
+      return <V2DetailPage program={program} reviews={reviews} avgRating={avgRating} />;
     case "modern":
       return <ModernDetailPage program={program} reviews={reviews} avgRating={avgRating} />;
     case "inquiry":
       return <InquiryDetailPage program={program} reviews={reviews} avgRating={avgRating} />;
     default:
-      return (
-        <DefaultDetailPage
-          program={program}
-          reviews={reviews}
-          avgRating={avgRating}
-        />
-      );
+      return <V1DetailPage program={program} reviews={reviews} avgRating={avgRating} />;
   }
 }
