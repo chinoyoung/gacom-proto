@@ -1,7 +1,6 @@
 "use client";
 
 import TagInput from "./TagInput";
-import AIGenerateButton from "./AIGenerateButton";
 
 interface Step3Data {
   educationLevels: string[];
@@ -12,7 +11,6 @@ interface Step3Data {
 interface Step3EligibilityProps {
   data: Step3Data;
   onChange: (data: Partial<Step3Data>) => void;
-  formData: any;
 }
 
 const EDUCATION_LEVELS = [
@@ -23,7 +21,7 @@ const EDUCATION_LEVELS = [
   { value: "graduate", label: "Graduate" },
 ];
 
-export default function Step3Eligibility({ data, onChange, formData }: Step3EligibilityProps) {
+export default function Step3Eligibility({ data, onChange }: Step3EligibilityProps) {
   const toggleLevel = (value: string) => {
     const updated = data.educationLevels.includes(value)
       ? data.educationLevels.filter((l) => l !== value)
@@ -39,12 +37,6 @@ export default function Step3Eligibility({ data, onChange, formData }: Step3Elig
           Who is this program designed for?
         </p>
       </div>
-
-      <AIGenerateButton
-        step={3}
-        formData={formData}
-        onGenerated={onChange}
-      />
 
       <div className="space-y-4">
         {/* Education Levels */}

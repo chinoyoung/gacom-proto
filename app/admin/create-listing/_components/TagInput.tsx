@@ -7,6 +7,7 @@ interface TagInputProps {
   onChange: (tags: string[]) => void;
   placeholder?: string;
   suggestions?: string[];
+  maxTags?: number;
 }
 
 export default function TagInput({
@@ -14,6 +15,7 @@ export default function TagInput({
   onChange,
   placeholder = "Type and press Enter to add",
   suggestions = [],
+  maxTags,
 }: TagInputProps) {
   const [inputValue, setInputValue] = useState("");
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -24,7 +26,10 @@ export default function TagInput({
       !tags.includes(s)
   );
 
+  const isAtMax = maxTags !== undefined && tags.length >= maxTags;
+
   const addTag = (value: string) => {
+    if (isAtMax) return;
     const trimmed = value.trim();
     if (trimmed && !tags.includes(trimmed)) {
       onChange([...tags, trimmed]);
@@ -70,6 +75,7 @@ export default function TagInput({
         <input
           type="text"
           value={inputValue}
+          disabled={isAtMax}
           onChange={(e) => {
             setInputValue(e.target.value);
             setShowSuggestions(e.target.value.length > 0 && suggestions.length > 0);
@@ -82,7 +88,7 @@ export default function TagInput({
           }}
           onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
           placeholder={tags.length === 0 ? placeholder : ""}
-          className="flex-1 min-w-32 border-none bg-transparent text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-0 p-0"
+          className="flex-1 min-w-32 border-none bg-transparent text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-0 p-0 disabled:cursor-not-allowed"
         />
       </div>
 
@@ -103,7 +109,9 @@ export default function TagInput({
       )}
 
       <p className="mt-1 text-xs text-gray-500">
-        Press Enter or comma to add. Backspace to remove last.
+        {isAtMax
+          ? `Maximum of ${maxTags} items reached.`
+          : "Press Enter or comma to add. Backspace to remove last."}
       </p>
     </div>
   );

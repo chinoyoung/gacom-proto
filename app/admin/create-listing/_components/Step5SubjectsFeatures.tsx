@@ -1,7 +1,6 @@
 "use client";
 
 import TagInput from "./TagInput";
-import AIGenerateButton from "./AIGenerateButton";
 
 interface Step5Data {
   subjectAreas: string[];
@@ -11,7 +10,6 @@ interface Step5Data {
 interface Step5SubjectsFeaturesProps {
   data: Step5Data;
   onChange: (data: Partial<Step5Data>) => void;
-  formData: any;
 }
 
 const SUBJECT_SUGGESTIONS = [
@@ -26,7 +24,7 @@ const SUBJECT_SUGGESTIONS = [
   "Social Work",
 ];
 
-export default function Step5SubjectsFeatures({ data, onChange, formData }: Step5SubjectsFeaturesProps) {
+export default function Step5SubjectsFeatures({ data, onChange }: Step5SubjectsFeaturesProps) {
   return (
     <div className="space-y-5">
       <div>
@@ -35,12 +33,6 @@ export default function Step5SubjectsFeatures({ data, onChange, formData }: Step
           What academic subjects are covered and what makes this program stand out?
         </p>
       </div>
-
-      <AIGenerateButton
-        step={5}
-        formData={formData}
-        onGenerated={onChange}
-      />
 
       <div className="space-y-4">
         {/* Subject Areas */}
@@ -83,16 +75,17 @@ export default function Step5SubjectsFeatures({ data, onChange, formData }: Step
         <div>
           <label className="block text-sm font-medium text-gray-700">
             Program Highlights{" "}
-            <span className="text-gray-400 font-normal">(optional)</span>
+            <span className="text-gray-400 font-normal">(optional, max 5)</span>
           </label>
           <p className="mt-0.5 text-xs text-gray-500">
-            Key bullet points that make this program appealing. These will be featured prominently.
+            Up to 5 key bullet points that make this program appealing. These will be featured prominently.
           </p>
           <div className="mt-1">
             <TagInput
               tags={data.highlights}
               onChange={(tags) => onChange({ highlights: tags })}
               placeholder="e.g. Small class sizes, Weekly field trips..."
+              maxTags={5}
             />
           </div>
         </div>

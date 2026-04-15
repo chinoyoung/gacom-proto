@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import TagInput from "./TagInput";
-import AIGenerateButton from "./AIGenerateButton";
 
 interface Step7Data {
   providerLogo: string;
@@ -13,7 +12,6 @@ interface Step7Data {
 interface Step7MediaProps {
   data: Step7Data;
   onChange: (data: Partial<Step7Data>) => void;
-  formData: any;
 }
 
 function isValidUrl(url: string): boolean {
@@ -48,7 +46,7 @@ function ImagePreview({ url, alt }: { url: string; alt: string }) {
   );
 }
 
-export default function Step7Media({ data, onChange, formData }: Step7MediaProps) {
+export default function Step7Media({ data, onChange }: Step7MediaProps) {
   const [coverImageError, setCoverImageError] = useState(false);
   const [logoError, setLogoError] = useState(false);
 
@@ -70,12 +68,6 @@ export default function Step7Media({ data, onChange, formData }: Step7MediaProps
           Add images to make your listing visually compelling. Paste image URLs below.
         </p>
       </div>
-
-      <AIGenerateButton
-        step={7}
-        formData={formData}
-        onGenerated={onChange}
-      />
 
       <div className="space-y-5">
         {/* Provider Logo */}

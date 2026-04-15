@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import AIGenerateButton from "./AIGenerateButton";
+import { Sparkles } from "lucide-react";
 
 const IMPORT_STATUS_MESSAGES = [
   "Scanning website...",
@@ -34,10 +34,9 @@ interface Step1BasicInfoProps {
   data: Step1Data;
   onChange: (data: Partial<Step1Data>) => void;
   onImport: (data: Record<string, any>) => void;
-  formData: any;
 }
 
-export default function Step1BasicInfo({ data, onChange, onImport, formData }: Step1BasicInfoProps) {
+export default function Step1BasicInfo({ data, onChange, onImport }: Step1BasicInfoProps) {
   // Track whether the slug has been manually edited
   const slugManuallyEdited = useRef(data.slug !== "" && data.slug !== generateSlug(data.title));
 
@@ -144,14 +143,19 @@ export default function Step1BasicInfo({ data, onChange, onImport, formData }: S
       </div>
 
       {/* URL Import */}
-      <div className="rounded-md border border-gray-200 bg-gray-50 p-4">
-        <label className="block text-sm font-medium text-gray-700">
-          Import from URL
-        </label>
-        <p className="mt-0.5 text-xs text-gray-500">
-          Paste a program page URL to auto-fill fields across all steps.
-        </p>
-        <div className="mt-2 flex gap-2">
+      <div className="rounded-lg border border-cobalt-500/20 bg-cobalt-500/5 p-5">
+        <div className="flex items-start gap-3">
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-cobalt-500/15">
+            <Sparkles className="w-4 h-4 text-cobalt-500" />
+          </div>
+          <div className="min-w-0 flex-1">
+            <p className="text-sm font-semibold text-cobalt-500">Import from URL</p>
+            <p className="mt-0.5 text-xs text-cobalt-400">
+              AI will scrape the page and extract program details like title, location, pricing, eligibility, and more — filling out all steps for you.
+            </p>
+          </div>
+        </div>
+        <div className="mt-3 flex gap-2">
           <input
             type="url"
             value={importUrl}
@@ -160,7 +164,7 @@ export default function Step1BasicInfo({ data, onChange, onImport, formData }: S
               if (importError) setImportError("");
             }}
             placeholder="https://university.edu/study-abroad/program"
-            className="block w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder-gray-400 shadow-sm focus:border-cobalt-500 focus:outline-none focus:ring-2 focus:ring-cobalt-500"
+            className="block w-full rounded-md border border-cobalt-500/25 bg-white px-3 py-2 text-sm text-gray-900 placeholder-gray-400 shadow-sm focus:border-cobalt-500 focus:outline-none focus:ring-2 focus:ring-cobalt-500"
             disabled={isImporting}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
@@ -180,7 +184,7 @@ export default function Step1BasicInfo({ data, onChange, onImport, formData }: S
         </div>
         {isImporting && (
           <div className="mt-3">
-            <div className="relative h-7 w-full overflow-hidden rounded-md bg-gray-200">
+            <div className="relative h-7 w-full overflow-hidden rounded-md bg-cobalt-500/20">
               <div
                 className="absolute inset-y-0 left-0 rounded-md bg-cobalt-600 transition-all duration-300 ease-out"
                 style={{ width: `${importProgress}%` }}
@@ -199,12 +203,6 @@ export default function Step1BasicInfo({ data, onChange, onImport, formData }: S
           <p className="mt-2 text-sm text-red-600">{importError}</p>
         )}
       </div>
-
-      <AIGenerateButton
-        step={1}
-        formData={formData}
-        onGenerated={onChange}
-      />
 
       <div className="space-y-4">
         {/* Program Title */}

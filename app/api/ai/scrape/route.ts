@@ -132,6 +132,11 @@ function validateAndCleanFields(fields: Record<string, unknown>): Record<string,
     }
   }
 
+  // Enforce maximum of 5 highlights
+  if (Array.isArray(cleaned.highlights)) {
+    cleaned.highlights = (cleaned.highlights as string[]).slice(0, 5);
+  }
+
   if (Array.isArray(fields.photos)) {
     const validPhotos = (fields.photos as unknown[]).filter(
       (item): item is string => typeof item === "string" && isValidHttpsUrl(item)

@@ -1,5 +1,4 @@
 "use client";
-import AIGenerateButton from "./AIGenerateButton";
 
 interface Step2Data {
   city: string;
@@ -11,7 +10,6 @@ interface Step2Data {
 interface Step2LocationProps {
   data: Step2Data;
   onChange: (data: Partial<Step2Data>) => void;
-  formData: any;
 }
 
 const TERM_OPTIONS = [
@@ -22,7 +20,7 @@ const TERM_OPTIONS = [
   { value: "year_round", label: "Year-Round" },
 ];
 
-export default function Step2Location({ data, onChange, formData }: Step2LocationProps) {
+export default function Step2Location({ data, onChange }: Step2LocationProps) {
   const toggleTerm = (value: string) => {
     const updated = data.terms.includes(value)
       ? data.terms.filter((t) => t !== value)
@@ -38,12 +36,6 @@ export default function Step2Location({ data, onChange, formData }: Step2Locatio
           Where is the program located and when does it run?
         </p>
       </div>
-
-      <AIGenerateButton
-        step={2}
-        formData={formData}
-        onGenerated={onChange}
-      />
 
       <div className="space-y-4">
         {/* City */}

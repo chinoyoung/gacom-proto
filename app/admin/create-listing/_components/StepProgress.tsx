@@ -4,6 +4,7 @@ interface StepProgressProps {
   currentStep: number;
   onStepClick?: (step: number) => void;
   formData?: any;
+  isEditing?: boolean;
 }
 
 const STEPS = [
@@ -17,7 +18,7 @@ const STEPS = [
   { number: 8, label: "Review & Publish" },
 ];
 
-export default function StepProgress({ currentStep, onStepClick, formData }: StepProgressProps) {
+export default function StepProgress({ currentStep, onStepClick, formData, isEditing }: StepProgressProps) {
   const isStepFulfilled = (stepNumber: number) => {
     if (!formData) return false;
     switch (stepNumber) {
@@ -50,7 +51,7 @@ export default function StepProgress({ currentStep, onStepClick, formData }: Ste
           const isCompleted = step.number < currentStep;
           const isActive = step.number === currentStep;
           const isFulfilled = isStepFulfilled(step.number);
-          const isClickable = onStepClick && (isCompleted || isFulfilled || step.number === 1);
+          const isClickable = onStepClick && (isEditing || isCompleted || isFulfilled || step.number === 1);
 
           return (
             <div key={step.number} className="flex flex-1 items-start">
@@ -72,7 +73,9 @@ export default function StepProgress({ currentStep, onStepClick, formData }: Ste
                         ? "border-cobalt-500 bg-white text-cobalt-500"
                         : isFulfilled
                           ? "border-green-500 bg-white text-green-500"
-                          : "border-gray-300 bg-white text-gray-400",
+                          : isEditing
+                            ? "border-gray-400 bg-white text-gray-600"
+                            : "border-gray-300 bg-white text-gray-400",
                   ].join(" ")}
                 >
                   {isCompleted ? (
@@ -90,7 +93,7 @@ export default function StepProgress({ currentStep, onStepClick, formData }: Ste
                 <span
                   className={[
                     "mt-1 w-20 text-[10px] font-bold uppercase tracking-wider text-center leading-tight",
-                    isActive || isCompleted ? "text-cobalt-500" : isFulfilled ? "text-green-600" : "text-gray-400",
+                    isActive || isCompleted ? "text-cobalt-500" : isFulfilled ? "text-green-600" : isEditing ? "text-gray-600" : "text-gray-400",
                   ].join(" ")}
                 >
                   {step.label}
@@ -102,7 +105,7 @@ export default function StepProgress({ currentStep, onStepClick, formData }: Ste
                 <div
                   className={[
                     "h-0.5 flex-1 mt-4 mx-1",
-                    isCompleted ? "bg-cobalt-500" : isFulfilled ? "bg-green-500" : "bg-gray-200",
+                    isCompleted ? "bg-cobalt-500" : isFulfilled ? "bg-green-500" : isEditing ? "bg-gray-300" : "bg-gray-200",
                   ].join(" ")}
                 />
               )}

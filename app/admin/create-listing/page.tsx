@@ -291,7 +291,6 @@ function CreateListingContent() {
             }}
             onChange={updateFormData}
             onImport={updateFormData}
-            formData={formData}
           />
         );
       case 2:
@@ -304,7 +303,6 @@ function CreateListingContent() {
               duration: formData.duration,
             }}
             onChange={updateFormData}
-            formData={formData}
           />
         );
       case 3:
@@ -316,7 +314,6 @@ function CreateListingContent() {
               ageRequirement: formData.ageRequirement,
             }}
             onChange={updateFormData}
-            formData={formData}
           />
         );
       case 4:
@@ -327,7 +324,6 @@ function CreateListingContent() {
               whatsIncluded: formData.whatsIncluded,
             }}
             onChange={updateFormData}
-            formData={formData}
           />
         );
       case 5:
@@ -338,7 +334,6 @@ function CreateListingContent() {
               highlights: formData.highlights,
             }}
             onChange={updateFormData}
-            formData={formData}
           />
         );
       case 6:
@@ -355,7 +350,6 @@ function CreateListingContent() {
               creditsAvailable: formData.creditsAvailable,
             }}
             onChange={updateFormData}
-            formData={formData}
           />
         );
       case 7:
@@ -367,7 +361,6 @@ function CreateListingContent() {
               photos: formData.photos,
             }}
             onChange={updateFormData}
-            formData={formData}
           />
         );
       case 8:
@@ -430,6 +423,7 @@ function CreateListingContent() {
             currentStep={currentStep}
             onStepClick={(step) => setCurrentStep(step)}
             formData={formData}
+            isEditing={!!editId || !!editSlug}
           />
         </div>
 

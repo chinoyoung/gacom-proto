@@ -11,13 +11,18 @@ export default function ProgramsManager() {
     const programs = useQuery(api.programs.listPrograms, {});
     const deleteProgram = useMutation(api.programs.deleteProgram);
     const [searchQuery, setSearchQuery] = useState("");
+    const [statusFilter, setStatusFilter] = useState<"all" | "published" | "draft">("all");
     const [currentPage, setCurrentPage] = useState(1);
     const ITEMS_PER_PAGE = 10;
 
-    const filteredPrograms = programs?.filter((p) =>
-        p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        p.provider.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    const filteredPrograms = programs?.filter((p) => {
+        const matchesSearch =
+            p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            p.provider.toLowerCase().includes(searchQuery.toLowerCase());
+        const matchesStatus =
+            statusFilter === "all" || p.status === statusFilter;
+        return matchesSearch && matchesStatus;
+    });
 
     const totalPages = Math.ceil((filteredPrograms?.length ?? 0) / ITEMS_PER_PAGE);
     const paginatedPrograms = filteredPrograms?.slice(
@@ -63,6 +68,35 @@ export default function ProgramsManager() {
                         <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">Published</span>
                     </div>
                 </div>
+            </div>
+
+            {/* Status Filter */}
+            <div className="flex gap-1 bg-gray-100 p-1 rounded-lg w-fit">
+                {([
+                    { value: "all", label: "All", count: programs?.length ?? 0 },
+                    { value: "published", label: "Published", count: programs?.filter(p => p.status === "published").length ?? 0 },
+                    { value: "draft", label: "Draft", count: programs?.filter(p => p.status === "draft").length ?? 0 },
+                ] as const).map(({ value, label, count }) => (
+                    <button
+                        key={value}
+                        onClick={() => {
+                            setStatusFilter(value);
+                            setCurrentPage(1);
+                        }}
+                        className={`px-4 py-1.5 rounded-md text-sm font-medium transition-colors cursor-pointer ${
+                            statusFilter === value
+                                ? "bg-white text-gray-900 shadow-sm"
+                                : "text-gray-500 hover:text-gray-700"
+                        }`}
+                    >
+                        {label}
+                        <span className={`ml-1.5 text-xs ${
+                            statusFilter === value ? "text-gray-500" : "text-gray-400"
+                        }`}>
+                            {count}
+                        </span>
+                    </button>
+                ))}
             </div>
 
             {/* Programs Table */}

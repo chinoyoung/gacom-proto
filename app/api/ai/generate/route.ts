@@ -40,7 +40,7 @@ export async function POST(req: Request) {
                 break;
             case 5:
                 fieldList = "{ subjectAreas, highlights }";
-                stepInstructions = "Suggest relevant academic subjects for subjectAreas (array) and 4-6 compelling highlights (array of strings).";
+                stepInstructions = "Suggest relevant academic subjects for subjectAreas (array) and up to 5 compelling highlights (array of strings).";
                 break;
             case 6:
                 fieldList = "{ cost, applicationDeadline, contactEmail, contactPhone, applyUrl, housingType, languageOfInstruction, creditsAvailable }";

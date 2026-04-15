@@ -1,7 +1,6 @@
 "use client";
 
 import TagInput from "./TagInput";
-import AIGenerateButton from "./AIGenerateButton";
 
 interface Step4Data {
   description: string;
@@ -11,10 +10,9 @@ interface Step4Data {
 interface Step4ProgramDetailsProps {
   data: Step4Data;
   onChange: (data: Partial<Step4Data>) => void;
-  formData: any;
 }
 
-export default function Step4ProgramDetails({ data, onChange, formData }: Step4ProgramDetailsProps) {
+export default function Step4ProgramDetails({ data, onChange }: Step4ProgramDetailsProps) {
   return (
     <div className="space-y-5">
       <div>
@@ -23,12 +21,6 @@ export default function Step4ProgramDetails({ data, onChange, formData }: Step4P
           Describe the program and what students will experience.
         </p>
       </div>
-
-      <AIGenerateButton
-        step={4}
-        formData={formData}
-        onGenerated={onChange}
-      />
 
       <div className="space-y-4">
         {/* Program Description */}

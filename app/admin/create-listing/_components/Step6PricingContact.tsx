@@ -1,5 +1,4 @@
 "use client";
-import AIGenerateButton from "./AIGenerateButton";
 
 interface Step6Data {
   cost: string;
@@ -15,10 +14,9 @@ interface Step6Data {
 interface Step6PricingContactProps {
   data: Step6Data;
   onChange: (data: Partial<Step6Data>) => void;
-  formData: any;
 }
 
-export default function Step6PricingContact({ data, onChange, formData }: Step6PricingContactProps) {
+export default function Step6PricingContact({ data, onChange }: Step6PricingContactProps) {
   return (
     <div className="space-y-5">
       <div>
@@ -27,12 +25,6 @@ export default function Step6PricingContact({ data, onChange, formData }: Step6P
           Cost information, deadlines, and how prospective students can reach you.
         </p>
       </div>
-
-      <AIGenerateButton
-        step={6}
-        formData={formData}
-        onGenerated={onChange}
-      />
 
       <div className="space-y-6">
         {/* Pricing Section */}

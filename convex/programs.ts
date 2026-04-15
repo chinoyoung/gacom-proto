@@ -139,3 +139,24 @@ export const deleteProgram = mutation({
     await ctx.db.delete(id);
   },
 });
+
+// ─── One-time Admin Utilities ─────────────────────────────────────────────────
+
+export const trimHighlights = mutation({
+  args: {},
+  handler: async (ctx) => {
+    const programs = await ctx.db.query("programs").collect();
+    let updated = 0;
+
+    for (const program of programs) {
+      if (program.highlights && program.highlights.length > 5) {
+        await ctx.db.patch(program._id, {
+          highlights: program.highlights.slice(0, 5),
+        });
+        updated++;
+      }
+    }
+
+    return { updated, total: programs.length };
+  },
+});
