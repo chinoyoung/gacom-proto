@@ -1,0 +1,221 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e4]:
+      - link "GoAbroad Logo" [ref=e6] [cursor=pointer]:
+        - /url: /
+        - img "GoAbroad Logo" [ref=e7]
+      - navigation [ref=e8]:
+        - link "Program Types" [ref=e9] [cursor=pointer]:
+          - /url: "#"
+          - text: Program Types
+          - img [ref=e10]
+        - link "Travel Resources" [ref=e12] [cursor=pointer]:
+          - /url: "#"
+          - text: Travel Resources
+          - img [ref=e13]
+        - link "How it Works" [ref=e15] [cursor=pointer]:
+          - /url: "#"
+        - link "Get Program Matches" [ref=e16] [cursor=pointer]:
+          - /url: "#"
+  - navigation [ref=e18]
+  - contentinfo [ref=e99]:
+    - generic [ref=e100]:
+      - generic [ref=e101]:
+        - generic [ref=e102]:
+          - heading "Explore By Program Type" [level=3] [ref=e103]
+          - list [ref=e104]:
+            - listitem [ref=e105]:
+              - link "Study Abroad" [ref=e106] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e107]:
+              - link "Volunteer Abroad" [ref=e108] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e109]:
+              - link "Intern Abroad" [ref=e110] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e111]:
+              - link "Teach Abroad" [ref=e112] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e113]:
+              - link "TEFL Courses" [ref=e114] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e115]:
+              - link "Gap Year" [ref=e116] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e117]:
+              - link "Degrees Abroad" [ref=e118] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e119]:
+              - link "High School Abroad" [ref=e120] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e121]:
+              - link "Language Schools" [ref=e122] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e123]:
+              - link "Adventure Travel" [ref=e124] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e125]:
+              - link "Jobs Abroad" [ref=e126] [cursor=pointer]:
+                - /url: "#"
+        - generic [ref=e127]:
+          - heading "Tools for Travelers" [level=3] [ref=e128]
+          - list [ref=e129]:
+            - listitem [ref=e130]:
+              - link "MyGoAbroad" [ref=e131] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e132]:
+              - link "Get a Travel eSIM" [ref=e133] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e134]:
+              - link "Get Travel Insurance" [ref=e135] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e136]:
+              - link "Apply for Deals" [ref=e137] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e138]:
+              - link "Help Me Pick a Program" [ref=e139] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e140]:
+              - link "How It Works" [ref=e141] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e142]:
+              - link "Travel Articles" [ref=e143] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e144]:
+              - link "Travel Resources" [ref=e145] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e146]:
+              - link "Scholarships" [ref=e147] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e148]:
+              - link "Travel Fundraising" [ref=e149] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e150]:
+              - link "Program Reviews" [ref=e151] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e152]:
+              - link "Alumni & Staff Interviews" [ref=e153] [cursor=pointer]:
+                - /url: "#"
+        - generic [ref=e154]:
+          - heading "Travel Resources" [level=3] [ref=e155]
+          - list [ref=e156]:
+            - listitem [ref=e157]:
+              - link "AI Program Finder" [ref=e158] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e159]:
+              - link "Book Flights" [ref=e160] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e161]:
+              - link "Accommodations" [ref=e162] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e163]:
+              - link "Travel Insurance" [ref=e164] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e165]:
+              - link "Passport & Visas" [ref=e166] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e167]:
+              - link "Embassy Information" [ref=e168] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e169]:
+              - link "Travel Credit Cards & Financing" [ref=e170] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e171]:
+              - link "Mobile Data & SIM Cards" [ref=e172] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e173]:
+              - link "Programs for Spanish Speakers" [ref=e174] [cursor=pointer]:
+                - /url: "#"
+        - generic [ref=e175]:
+          - heading "Partnerships" [level=3] [ref=e176]
+          - list [ref=e177]:
+            - listitem [ref=e178]:
+              - link "Advertise With Us" [ref=e179] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e180]:
+              - link "Create An Account" [ref=e181] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e182]:
+              - link "Client Account Login" [ref=e183] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e184]:
+              - link "Who We Work With" [ref=e185] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e186]:
+              - link "Program Verification" [ref=e187] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e188]:
+              - link "Market in Spanish" [ref=e189] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e190]:
+              - link "Contact Our Team" [ref=e191] [cursor=pointer]:
+                - /url: "#"
+        - generic [ref=e192]:
+          - heading "Who We Are" [level=3] [ref=e193]
+          - list [ref=e194]:
+            - listitem [ref=e195]:
+              - link "About" [ref=e196] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e197]:
+              - link "Meet Our Team" [ref=e198] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e199]:
+              - link "Careers" [ref=e200] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e201]:
+              - link "Corporate Blog" [ref=e202] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e203]:
+              - link "Innovation Awards" [ref=e204] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e205]:
+              - link "GoAbroad Foundation" [ref=e206] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e207]:
+              - link "Contact Us" [ref=e208] [cursor=pointer]:
+                - /url: "#"
+      - generic [ref=e209]:
+        - generic [ref=e210]:
+          - heading "Subscribe to our newsletter" [level=3] [ref=e211]
+          - generic [ref=e212]:
+            - textbox "Email Address" [ref=e213]
+            - button "Subscribe" [ref=e214]
+        - generic [ref=e215]:
+          - heading "Connect with us" [level=4] [ref=e216]
+          - generic [ref=e217]:
+            - link "facebook" [ref=e218] [cursor=pointer]:
+              - /url: "#"
+              - img [ref=e219]
+            - link "twitter" [ref=e221] [cursor=pointer]:
+              - /url: "#"
+              - img [ref=e222]
+            - link "instagram" [ref=e224] [cursor=pointer]:
+              - /url: "#"
+              - img [ref=e225]
+            - link "youtube" [ref=e228] [cursor=pointer]:
+              - /url: "#"
+              - img [ref=e229]
+            - link "pinterest" [ref=e232] [cursor=pointer]:
+              - /url: "#"
+              - img [ref=e233]
+            - link "linkedin" [ref=e235] [cursor=pointer]:
+              - /url: "#"
+              - img [ref=e236]
+            - link "tiktok" [ref=e240] [cursor=pointer]:
+              - /url: "#"
+              - img [ref=e241]
+      - generic [ref=e243]:
+        - img "GoAbroad Logo" [ref=e245]
+        - generic [ref=e246]:
+          - generic [ref=e247]:
+            - link "Terms of Use & Privacy" [ref=e248] [cursor=pointer]:
+              - /url: "#"
+            - link "Legal" [ref=e249] [cursor=pointer]:
+              - /url: "#"
+            - link "Sitemap" [ref=e250] [cursor=pointer]:
+              - /url: "#"
+          - generic [ref=e251]: Meaningful Travel Starts Here
+          - generic [ref=e252]: © Copyright 1998 - 2026 GoAbroad.com ®
+  - button "Switch design version" [ref=e254] [cursor=pointer]: "Design: Inquiry"
+  - button "Open Next.js Dev Tools" [ref=e260] [cursor=pointer]:
+    - img [ref=e261]
