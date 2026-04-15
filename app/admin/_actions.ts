@@ -31,3 +31,9 @@ export async function toggleSuperadmin(userId: string, currentStatus: boolean) {
 
     revalidatePath("/admin");
 }
+
+export async function deleteUser(userId: string) {
+    const client = await clerkClient();
+    await client.users.deleteUser(userId);
+    revalidatePath("/admin");
+}

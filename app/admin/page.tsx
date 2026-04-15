@@ -22,7 +22,7 @@ export default function AdminDashboard() {
                 <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
                     <div>
                         <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">Admin Dashboard</h1>
-                        <p className="mt-2 text-gray-500">Manage all study abroad programs and editorial content.</p>
+                        <p className="mt-2 text-gray-500">Prototype admin panel for demo purposes only. Data shown here is for display and testing.</p>
                     </div>
                     {activeTab === "programs" ? (
                         <Link

@@ -2,9 +2,10 @@
 
 import { useQuery, useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import { Plus, Edit2, Trash2, Loader2, Save, X, Search } from "lucide-react";
+import { Plus, Edit2, Trash2, Loader2, Save, X, Search, ChevronLeft, ChevronRight } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Id } from "@/convex/_generated/dataModel";
+import { useUser } from "@clerk/nextjs";
 import AIGenerateButton from "../create-listing/_components/AIGenerateButton";
 
 export default function ArticlesManager({
@@ -18,9 +19,12 @@ export default function ArticlesManager({
     const createArticle = useMutation(api.articles.createArticle);
     const updateArticle = useMutation(api.articles.updateArticle);
     const deleteArticle = useMutation(api.articles.deleteArticle);
+    const { user } = useUser();
 
     const [isEditing, setIsEditing] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
+    const [currentPage, setCurrentPage] = useState(1);
+    const ITEMS_PER_PAGE = 10;
     const [editingId, setEditingId] = useState<Id<"articles"> | null>(null);
     const [formData, setFormData] = useState({
         title: "",
@@ -41,6 +45,12 @@ export default function ArticlesManager({
     const filteredArticles = articles?.filter((a) =>
         a.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         a.author.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
+    const totalPages = Math.ceil((filteredArticles?.length ?? 0) / ITEMS_PER_PAGE);
+    const paginatedArticles = filteredArticles?.slice(
+        (currentPage - 1) * ITEMS_PER_PAGE,
+        currentPage * ITEMS_PER_PAGE
     );
 
     const resetForm = () => {
@@ -74,6 +84,7 @@ export default function ArticlesManager({
             ...formData,
             tags: formData.tags.split(",").map(t => t.trim()).filter(Boolean),
             slug: formData.title.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, ''),
+            createdBy: user?.fullName ?? user?.firstName ?? undefined,
         };
 
         try {
@@ -106,7 +117,10 @@ export default function ArticlesManager({
                             placeholder="Search articles..."
                             className="w-full pl-10 pr-4 py-2 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-cobalt-500 focus:border-transparent transition-all shadow-sm"
                             value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
+                            onChange={(e) => {
+                                    setSearchQuery(e.target.value);
+                                    setCurrentPage(1);
+                                }}
                         />
                     </div>
                     <div className="flex gap-4">
@@ -286,24 +300,25 @@ export default function ArticlesManager({
                                 <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-widest">Article</th>
                                 <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-widest">Author</th>
                                 <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-widest">Tags</th>
+                                <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-widest">By</th>
                                 <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-widest text-right">Actions</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-100">
                             {articles === undefined ? (
                                 <tr>
-                                    <td colSpan={4} className="px-6 py-12 text-center">
+                                    <td colSpan={5} className="px-6 py-12 text-center">
                                         <Loader2 className="w-8 h-8 text-cobalt-600 animate-spin mx-auto" />
                                     </td>
                                 </tr>
                             ) : filteredArticles?.length === 0 ? (
                                 <tr>
-                                    <td colSpan={4} className="px-6 py-12 text-center text-gray-500">
+                                    <td colSpan={5} className="px-6 py-12 text-center text-gray-500">
                                         No articles found.
                                     </td>
                                 </tr>
                             ) : (
-                                filteredArticles?.map((article) => (
+                                paginatedArticles?.map((article) => (
                                     <tr key={article._id} className="hover:bg-gray-50 transition-colors">
                                         <td className="px-6 py-4 font-bold text-gray-900">{article.title}</td>
                                         <td className="px-6 py-4 text-sm text-gray-600">{article.author}</td>
@@ -313,6 +328,9 @@ export default function ArticlesManager({
                                                     <span key={t} className="px-2 py-0.5 bg-gray-100 text-gray-600 rounded text-xs font-bold uppercase">{t}</span>
                                                 ))}
                                             </div>
+                                        </td>
+                                        <td className="px-6 py-4">
+                                            <span className="text-sm text-gray-500">{article.createdBy ?? "—"}</span>
                                         </td>
                                         <td className="px-6 py-4">
                                             <div className="flex justify-end gap-2">
@@ -335,6 +353,32 @@ export default function ArticlesManager({
                             )}
                         </tbody>
                     </table>
+                    {filteredArticles && filteredArticles.length > ITEMS_PER_PAGE && (
+                        <div className="flex items-center justify-between px-6 py-4 border-t border-gray-200 bg-gray-50">
+                            <p className="text-sm text-gray-500">
+                                Showing {(currentPage - 1) * ITEMS_PER_PAGE + 1}–{Math.min(currentPage * ITEMS_PER_PAGE, filteredArticles.length)} of {filteredArticles.length}
+                            </p>
+                            <div className="flex items-center gap-2">
+                                <button
+                                    onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                                    disabled={currentPage === 1}
+                                    className="p-2 rounded-lg border border-gray-200 text-gray-600 hover:bg-white disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                                >
+                                    <ChevronLeft className="w-4 h-4" />
+                                </button>
+                                <span className="text-sm font-medium text-gray-700 px-2">
+                                    {currentPage} / {totalPages}
+                                </span>
+                                <button
+                                    onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                                    disabled={currentPage === totalPages}
+                                    className="p-2 rounded-lg border border-gray-200 text-gray-600 hover:bg-white disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                                >
+                                    <ChevronRight className="w-4 h-4" />
+                                </button>
+                            </div>
+                        </div>
+                    )}
                 </div>
             )}
         </div>

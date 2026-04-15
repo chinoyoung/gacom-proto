@@ -59,6 +59,7 @@ export const createReview = mutation({
     communityRating: v.number(),
     photo: v.optional(v.string()),
     status: v.union(v.literal("draft"), v.literal("published")),
+    createdBy: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
     return await ctx.db.insert("reviews", args);

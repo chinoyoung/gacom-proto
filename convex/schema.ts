@@ -48,6 +48,7 @@ export default defineSchema({
 
     // Timestamps
     updatedAt: v.optional(v.number()),
+    createdBy: v.optional(v.string()),
   })
     .index("by_status", ["status"])
     .index("by_country", ["country"])
@@ -60,6 +61,7 @@ export default defineSchema({
     tags: v.array(v.string()),
     coverImage: v.optional(v.string()),
     slug: v.string(),
+    createdBy: v.optional(v.string()),
   }).index("by_slug", ["slug"]),
 
   reviews: defineTable({
@@ -79,6 +81,7 @@ export default defineSchema({
     communityRating: v.number(),
     photo: v.optional(v.string()), // reviewer/experience photo URL
     status: v.union(v.literal("draft"), v.literal("published")),
+    createdBy: v.optional(v.string()),
   })
     .index("by_program", ["programId"])
     .index("by_status", ["status"])

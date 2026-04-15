@@ -5,6 +5,7 @@ import { Suspense } from "react";
 import { useState, useCallback, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useMutation, useQuery } from "convex/react";
+import { useUser } from "@clerk/nextjs";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 
@@ -106,6 +107,7 @@ function CreateListingContent() {
   const programById = useQuery(api.programs.getProgram, editId ? { id: editId } : "skip");
   const programBySlug = useQuery(api.programs.getBySlug, editSlug && !editId ? { slug: editSlug } : "skip");
   const existingProgram = programById ?? programBySlug;
+  const { user } = useUser();
   const createProgram = useMutation(api.programs.createProgram);
   const updateProgram = useMutation(api.programs.updateProgram);
 
@@ -213,6 +215,7 @@ function CreateListingContent() {
           provider: formData.provider,
           hostInstitution: formData.hostInstitution || undefined,
           slug: formData.slug || undefined,
+          createdBy: user?.fullName ?? user?.firstName ?? undefined,
         });
         setProgramId(id);
       } else if (programId) {

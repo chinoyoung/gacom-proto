@@ -3,7 +3,7 @@
 import { useQuery, useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import Link from "next/link";
-import { Plus, Edit2, Trash2, ExternalLink, Search, Loader2 } from "lucide-react";
+import { Plus, Edit2, Trash2, ExternalLink, Search, Loader2, ChevronLeft, ChevronRight } from "lucide-react";
 import { useState } from "react";
 import { Id } from "@/convex/_generated/dataModel";
 
@@ -11,10 +11,18 @@ export default function ProgramsManager() {
     const programs = useQuery(api.programs.listPrograms, {});
     const deleteProgram = useMutation(api.programs.deleteProgram);
     const [searchQuery, setSearchQuery] = useState("");
+    const [currentPage, setCurrentPage] = useState(1);
+    const ITEMS_PER_PAGE = 10;
 
     const filteredPrograms = programs?.filter((p) =>
         p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         p.provider.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
+    const totalPages = Math.ceil((filteredPrograms?.length ?? 0) / ITEMS_PER_PAGE);
+    const paginatedPrograms = filteredPrograms?.slice(
+        (currentPage - 1) * ITEMS_PER_PAGE,
+        currentPage * ITEMS_PER_PAGE
     );
 
     const handleDelete = async (id: Id<"programs">) => {
@@ -39,7 +47,10 @@ export default function ProgramsManager() {
                         placeholder="Search by title or provider..."
                         className="w-full pl-10 pr-4 py-2 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-cobalt-500 focus:border-transparent transition-all shadow-sm"
                         value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
+                        onChange={(e) => {
+                            setSearchQuery(e.target.value);
+                            setCurrentPage(1);
+                        }}
                     />
                 </div>
                 <div className="flex gap-4">
@@ -60,16 +71,15 @@ export default function ProgramsManager() {
                     <thead>
                         <tr className="bg-gray-50 border-b border-gray-200">
                             <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-widest">Program</th>
-                            <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-widest">Provider</th>
-                            <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-widest">Location</th>
                             <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-widest">Status</th>
+                            <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-widest">By</th>
                             <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-widest text-right">Actions</th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-100">
                         {programs === undefined ? (
                             <tr>
-                                <td colSpan={5} className="px-6 py-24 text-center">
+                                <td colSpan={4} className="px-6 py-24 text-center">
                                     <div className="flex flex-col items-center gap-3">
                                         <Loader2 className="w-8 h-8 text-cobalt-600 animate-spin" />
                                         <p className="text-sm font-medium text-gray-500">Loading programs...</p>
@@ -78,22 +88,16 @@ export default function ProgramsManager() {
                             </tr>
                         ) : filteredPrograms?.length === 0 ? (
                             <tr>
-                                <td colSpan={5} className="px-6 py-12 text-center text-gray-500">
+                                <td colSpan={4} className="px-6 py-12 text-center text-gray-500">
                                     No programs found matching your search.
                                 </td>
                             </tr>
                         ) : (
-                            filteredPrograms?.map((program) => (
+                            paginatedPrograms?.map((program) => (
                                 <tr key={program._id} className="hover:bg-gray-50 transition-colors group">
                                     <td className="px-6 py-4">
                                         <div className="font-bold text-gray-900">{program.title}</div>
                                         <div className="text-xs text-gray-400 mt-0.5">Slug: {program.slug}</div>
-                                    </td>
-                                    <td className="px-6 py-4">
-                                        <span className="text-sm font-medium text-gray-600">{program.provider}</span>
-                                    </td>
-                                    <td className="px-6 py-4">
-                                        <span className="text-sm text-gray-600">{program.city}, {program.country}</span>
                                     </td>
                                     <td className="px-6 py-4">
                                         <span className={`inline-flex px-2 py-1 rounded text-xs font-bold uppercase tracking-wider ${program.status === 'published'
@@ -102,6 +106,9 @@ export default function ProgramsManager() {
                                             }`}>
                                             {program.status}
                                         </span>
+                                    </td>
+                                    <td className="px-6 py-4">
+                                        <span className="text-sm text-gray-500">{program.createdBy ?? "—"}</span>
                                     </td>
                                     <td className="px-6 py-4">
                                         <div className="flex justify-end gap-2">
@@ -134,6 +141,32 @@ export default function ProgramsManager() {
                         )}
                     </tbody>
                 </table>
+                {filteredPrograms && filteredPrograms.length > ITEMS_PER_PAGE && (
+                    <div className="flex items-center justify-between px-6 py-4 border-t border-gray-200 bg-gray-50">
+                        <p className="text-sm text-gray-500">
+                            Showing {(currentPage - 1) * ITEMS_PER_PAGE + 1}–{Math.min(currentPage * ITEMS_PER_PAGE, filteredPrograms.length)} of {filteredPrograms.length}
+                        </p>
+                        <div className="flex items-center gap-2">
+                            <button
+                                onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                                disabled={currentPage === 1}
+                                className="p-2 rounded-lg border border-gray-200 text-gray-600 hover:bg-white disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                            >
+                                <ChevronLeft className="w-4 h-4" />
+                            </button>
+                            <span className="text-sm font-medium text-gray-700 px-2">
+                                {currentPage} / {totalPages}
+                            </span>
+                            <button
+                                onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                                disabled={currentPage === totalPages}
+                                className="p-2 rounded-lg border border-gray-200 text-gray-600 hover:bg-white disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                            >
+                                <ChevronRight className="w-4 h-4" />
+                            </button>
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     );

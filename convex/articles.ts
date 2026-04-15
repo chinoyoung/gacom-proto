@@ -23,6 +23,7 @@ export const createArticle = mutation({
         tags: v.array(v.string()),
         coverImage: v.optional(v.string()),
         slug: v.string(),
+        createdBy: v.optional(v.string()),
     },
     handler: async (ctx, args) => {
         return await ctx.db.insert("articles", args);

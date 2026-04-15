@@ -56,6 +56,7 @@ export const createProgram = mutation({
     provider: v.string(),
     hostInstitution: v.optional(v.string()),
     slug: v.optional(v.string()),
+    createdBy: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
     return await ctx.db.insert("programs", {
@@ -63,6 +64,7 @@ export const createProgram = mutation({
       provider: args.provider,
       hostInstitution: args.hostInstitution,
       slug: args.slug ?? generateSlug(args.title),
+      createdBy: args.createdBy,
       status: "draft",
       // Location (required fields with defaults)
       city: "",
