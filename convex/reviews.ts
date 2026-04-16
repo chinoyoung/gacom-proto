@@ -60,6 +60,8 @@ export const createReview = mutation({
     photo: v.optional(v.string()),
     status: v.union(v.literal("draft"), v.literal("published")),
     createdBy: v.optional(v.string()),
+    pros: v.optional(v.array(v.string())),
+    cons: v.optional(v.array(v.string())),
   },
   handler: async (ctx, args) => {
     return await ctx.db.insert("reviews", args);
@@ -84,6 +86,8 @@ export const updateReview = mutation({
     communityRating: v.optional(v.number()),
     photo: v.optional(v.string()),
     status: v.optional(v.union(v.literal("draft"), v.literal("published"))),
+    pros: v.optional(v.array(v.string())),
+    cons: v.optional(v.array(v.string())),
   },
   handler: async (ctx, { id, ...fields }) => {
     // Remove undefined values before patching

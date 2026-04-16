@@ -30,11 +30,8 @@ export function DesignVersionSwitcher({ pageId }: DesignVersionSwitcherProps) {
   const firstVersion = versions[0];
 
   return (
-    <div className="fixed bottom-20 left-1/2 -translate-x-1/2 z-[60] sm:bottom-6">
+    <div className="fixed bottom-[130px] left-1/2 -translate-x-1/2 z-[60] sm:bottom-[74px]">
       <div className="bg-slate-900 shadow-lg rounded-full px-1.5 py-1.5 flex gap-1 items-center">
-        <span className="text-[11px] font-medium text-slate-400 pl-2.5 pr-1 uppercase tracking-wide select-none">
-          Design
-        </span>
         {versions.map((v) => {
           const isActive = v.id === version;
           const isDefault = v.id === firstVersion.id;

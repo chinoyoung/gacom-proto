@@ -20,6 +20,11 @@ export const PAGE_VERSIONS: Record<string, PageVersionConfig> = {
         description: "GoAbroad-style layout with banner hero and sticky tabs",
       },
       {
+        id: "v1.5",
+        label: "Version 1.5",
+        description: "Enhanced V1 with pricing breakdown, reviews improvements, and inquiry form",
+      },
+      {
         id: "v2",
         label: "Version 2",
         description: "The original layout with split hero and sidebar",

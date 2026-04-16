@@ -11,21 +11,23 @@ import { StickyHeader } from "./StickyHeader";
 import { StickyBottomNav, NAV_LINKS } from "./StickyBottomNav";
 import { HeroSection } from "./HeroSection";
 import { DescriptionSection } from "./DescriptionSection";
+import { PricingSection } from "./PricingSection";
 import { ReviewsSection } from "./ReviewsSection";
 import { ProgramDetailsSection } from "./ProgramDetailsSection";
 import { buildFaqs, FAQsSection, InterviewsSection, ProgramsSection } from "./SupportSections";
+import { InquiryFormSection } from "./InquiryFormSection";
 
-interface V1DetailPageProps {
+interface V1_5DetailPageProps {
   program: Program;
   reviews: any[] | undefined;
   avgRating: number;
 }
 
-export default function V1DetailPage({
+export default function V1_5DetailPage({
   program,
   reviews,
   avgRating,
-}: V1DetailPageProps) {
+}: V1_5DetailPageProps) {
   const reviewCount = reviews?.length ?? 0;
   const faqs = buildFaqs(program);
 
@@ -93,26 +95,35 @@ export default function V1DetailPage({
       <StickyBottomNav visible={bottomNavVisible} activeHash={activeHash} />
 
       {/* Hero (includes breadcrumbs) */}
-      <HeroSection program={program} />
+      <HeroSection
+        program={program}
+        avgRating={avgRating}
+        reviewCount={reviewCount}
+        programCount={programCount}
+      />
 
-      {/* Description (two-column) */}
+      {/* Description (two-column with sidebar) */}
       <section
         ref={registerSection("#overview")}
-        className="w-full mx-auto max-w-7xl mt-8"
+        className="w-full mx-auto max-w-7xl mt-4"
       >
-        <DescriptionSection
-          program={program}
-          avgRating={avgRating}
-          reviewCount={reviewCount}
-          programCount={programCount}
-        />
+        <DescriptionSection program={program} />
+      </section>
+
+      {/* Pricing */}
+      <section
+        id="pricing"
+        ref={registerSection("#pricing")}
+        className="w-full max-w-7xl mx-auto mt-4 lg:mt-8"
+      >
+        <PricingSection program={program} />
       </section>
 
       {/* Reviews */}
       <section
         id="reviews"
         ref={registerSection("#reviews")}
-        className="w-full max-w-7xl mx-auto mt-20"
+        className="w-full max-w-7xl mx-auto mt-4 lg:mt-8"
       >
         <ReviewsSection
           reviews={reviews}
@@ -125,7 +136,7 @@ export default function V1DetailPage({
       <section
         id="details"
         ref={registerSection("#details")}
-        className="w-full max-w-7xl mx-auto mt-20"
+        className="w-full max-w-7xl mx-auto mt-4 lg:mt-8"
       >
         <ProgramDetailsSection program={program} />
       </section>
@@ -135,9 +146,9 @@ export default function V1DetailPage({
         <section
           id="faqs"
           ref={registerSection("#faqs")}
-          className="w-full max-w-7xl mx-auto mt-20 px-4 xl:px-0"
+          className="w-full max-w-7xl mx-auto mt-4 lg:mt-8"
         >
-          <div className="bg-slate-50 rounded-md py-8 px-4">
+          <div className="bg-slate-50 rounded-md py-8">
             <FAQsSection faqs={faqs} />
           </div>
         </section>
@@ -147,22 +158,31 @@ export default function V1DetailPage({
       <section
         id="interviews"
         ref={registerSection("#interviews")}
-        className="w-full max-w-7xl mx-auto mt-20"
+        className="w-full max-w-7xl mx-auto mt-4 lg:mt-8"
       >
         <InterviewsSection />
+      </section>
+
+      {/* Inquiry Form */}
+      <section
+        id="inquiry"
+        ref={registerSection("#inquiry")}
+        className="w-full max-w-7xl mx-auto mt-4 lg:mt-8"
+      >
+        <InquiryFormSection program={program} />
       </section>
 
       {/* Related Programs */}
       <section
         id="programs"
         ref={registerSection("#programs")}
-        className="w-full max-w-7xl mx-auto mt-20"
+        className="w-full max-w-7xl mx-auto mt-4 lg:mt-8"
       >
         <ProgramsSection currentProgramId={program._id} />
       </section>
 
       {/* Articles */}
-      <section className="w-full max-w-7xl mx-auto mt-20 px-4 xl:px-0 [&>section]:mt-0 [&>section]:pt-0 [&>section]:border-t-0">
+      <section className="w-full max-w-7xl mx-auto mt-4 lg:mt-8 px-4 xl:px-0 [&>section]:mt-0 [&>section]:pt-0 [&>section]:border-t-0">
         <ProgramArticles />
       </section>
 

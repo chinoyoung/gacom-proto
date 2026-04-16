@@ -46,6 +46,21 @@ export default defineSchema({
     coverImage: v.optional(v.string()),
     photos: v.array(v.string()),
 
+    // Expanded Pricing
+    startingPrice: v.optional(v.number()),
+    isFree: v.optional(v.boolean()),
+    costVariations: v.optional(v.array(v.object({ label: v.string(), price: v.number() }))),
+    paymentTerms: v.optional(v.array(v.string())),
+    refundPolicy: v.optional(v.string()),
+    refundPolicyUrl: v.optional(v.string()),
+    depositFee: v.optional(v.number()),
+
+    // Listing Details
+    exclusions: v.optional(v.array(v.string())),
+    optionalInclusions: v.optional(v.array(v.string())),
+    programTags: v.optional(v.array(v.string())),
+    yearFounded: v.optional(v.number()),
+
     // Timestamps
     updatedAt: v.optional(v.number()),
     createdBy: v.optional(v.string()),
@@ -82,6 +97,8 @@ export default defineSchema({
     photo: v.optional(v.string()), // reviewer/experience photo URL
     status: v.union(v.literal("draft"), v.literal("published")),
     createdBy: v.optional(v.string()),
+    pros: v.optional(v.array(v.string())),
+    cons: v.optional(v.array(v.string())),
   })
     .index("by_program", ["programId"])
     .index("by_status", ["status"])

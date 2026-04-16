@@ -29,4 +29,19 @@ export interface Program {
   photos: string[];
   updatedAt?: number;
   _creationTime: number;
+
+  // Expanded Pricing
+  startingPrice?: number;
+  isFree?: boolean;
+  costVariations?: { label: string; price: number }[];
+  paymentTerms?: string[];
+  refundPolicy?: string;
+  refundPolicyUrl?: string;
+  depositFee?: number;
+
+  // Listing Details
+  exclusions?: string[];
+  optionalInclusions?: string[];
+  programTags?: string[];
+  yearFounded?: number;
 }
