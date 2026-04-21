@@ -6,7 +6,6 @@ import { api } from "@/convex/_generated/api";
 
 import type { Program } from "../../_components/types";
 import ProgramArticles from "../../_components/ProgramArticles";
-
 import { StickyHeader } from "./StickyHeader";
 import { StickyBottomNav, NAV_LINKS } from "./StickyBottomNav";
 import { HeroSection } from "./HeroSection";

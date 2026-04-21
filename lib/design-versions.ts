@@ -11,6 +11,14 @@ export interface PageVersionConfig {
 }
 
 export const PAGE_VERSIONS: Record<string, PageVersionConfig> = {
+  "marketplace-partner": {
+    pageId: "marketplace-partner",
+    versions: [
+      { id: "v1", label: "Version 1", description: "Split hero with image on right" },
+      { id: "v2", label: "Version 2", description: "Full-width hero with image strip" },
+    ],
+    defaultVersion: "v1",
+  },
   "program-detail": {
     pageId: "program-detail",
     versions: [

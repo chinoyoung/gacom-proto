@@ -39,19 +39,17 @@ export function HeroSection({ program }: { program: Program }) {
   return (
     <>
       <Breadcrumbs program={program} />
-      <section id="overview" className="w-full flex flex-col items-center">
-        <div className="w-full max-w-7xl px-4 xl:px-0">
-          {program.coverImage ? (
+      {program.coverImage && (
+        <section id="overview" className="w-full flex flex-col items-center">
+          <div className="w-full max-w-7xl px-4 xl:px-0">
             <img
               className="w-full object-cover h-[220px] md:h-[400px] rounded-md"
               src={program.coverImage}
               alt={`Cover photo for ${program.title}`}
             />
-          ) : (
-            <div className="w-full h-[220px] md:h-[400px] bg-cobalt-700 rounded-md" />
-          )}
-        </div>
-      </section>
+          </div>
+        </section>
+      )}
     </>
   );
 }

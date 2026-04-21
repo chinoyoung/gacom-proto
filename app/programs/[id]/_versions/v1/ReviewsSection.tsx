@@ -6,8 +6,6 @@ import {
   CheckCircle,
   ChevronLeft,
   ChevronRight,
-  ChevronDown,
-  MessageCircle,
 } from "lucide-react";
 
 export const REVIEWS_PER_PAGE = 5;
@@ -37,7 +35,6 @@ export function ReviewsSection({
   const [sort, setSort] = useState<ReviewSort>("recent");
   const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
   const [page, setPage] = useState(1);
-  const [showRatingDetails, setShowRatingDetails] = useState(false);
 
   const reviewList = reviews ?? [];
 
@@ -115,52 +112,46 @@ export function ReviewsSection({
         </div>
       </div>
 
-      {/* Rating summary box */}
-      <div className="flex flex-col items-center md:flex-row md:items-start text-xl lg:text-2xl p-4 bg-white justify-between border border-gray-200 rounded-md font-bold gap-2">
-        <div className="grid grid-cols-2 gap-4 lg:gap-8 mb-2 w-full md:w-auto lg:mb-0 shrink-0">
-          <div>
-            <h3>Overall Rating</h3>
-            <div className="flex items-center text-lg lg:text-xl gap-1">
-              {avgRating > 0 ? avgRating.toFixed(2) : "—"}
-              <Star fill="currentColor" className="text-lg text-sun-500 w-5 h-5" />
+      {/* Rating summary card */}
+      <div className="border border-gray-200 rounded-md p-4 sm:p-6 bg-white">
+        <div className="grid grid-cols-1 sm:grid-cols-[auto_1fr] gap-6 sm:gap-10">
+          {/* Left — overall score */}
+          <div className="flex flex-col items-center justify-center sm:border-r sm:border-slate-100 sm:pr-10">
+            <span className="text-5xl font-extrabold text-slate-900 leading-none">
+              {avgRating > 0 ? avgRating.toFixed(1) : "—"}
+            </span>
+            <div className="flex items-center gap-0.5 mt-3">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <Star
+                  key={star}
+                  className={`w-5 h-5 ${avgRating / 2 >= star ? "text-sun-500 fill-current" : "text-slate-300"}`}
+                />
+              ))}
             </div>
+            <p className="text-sm text-slate-500 mt-2">
+              Based on {reviewList.length} {reviewList.length === 1 ? "review" : "reviews"}
+            </p>
           </div>
-          <div>
-            <h3>Total Reviews</h3>
-            <div className="flex items-center text-lg lg:text-xl gap-2">
-              <strong>{reviewList.length}</strong>
-              <MessageCircle className="w-5 h-5" />
-            </div>
-          </div>
-        </div>
-        <div className="flex items-center md:items-end flex-col w-full">
-          <button
-            onClick={() => setShowRatingDetails((v) => !v)}
-            className="text-sm border border-gray-200 rounded-md w-full py-2.5 px-5 bg-white gap-2 items-center flex justify-center cursor-pointer"
-          >
-            {showRatingDetails ? "Hide rating details" : "Show rating details"}
-            <ChevronDown
-              className={`w-4 h-4 transition-transform ${
-                showRatingDetails ? "rotate-180" : ""
-              }`}
-            />
-          </button>
-          {showRatingDetails && (
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-xs md:text-sm shrink-0 bg-white border border-gray-200 px-4 py-6 rounded-md w-full mt-2">
+
+          {/* Right — category bars */}
+          {reviewList.length > 0 && (
+            <div className="flex flex-col gap-3 justify-center">
               {categoryRatings.map((cat) => (
-                <div key={cat.label} className="flex flex-col gap-1">
-                  <span className="font-bold">{cat.label}</span>
-                  <div className="flex gap-1 items-center">
-                    {renderStars(cat.avg)}
-                    <span>{cat.avg.toFixed(1)}</span>
+                <div key={cat.label} className="flex items-center gap-3">
+                  <span className="text-xs text-slate-500 w-32 shrink-0">{cat.label}</span>
+                  <div className="flex-1 h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-cobalt-400 rounded-full"
+                      style={{ width: `${(cat.avg / 10) * 100}%` }}
+                    />
                   </div>
+                  <span className="text-xs font-semibold text-slate-700 w-6 text-right shrink-0">
+                    {cat.avg.toFixed(1)}
+                  </span>
                 </div>
               ))}
             </div>
           )}
-          <button className="rounded-md bg-roman-500 text-white font-bold text-sm mt-4 w-full py-2.5 md:hidden cursor-pointer">
-            Review this Program
-          </button>
         </div>
       </div>
 

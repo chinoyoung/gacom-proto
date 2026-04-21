@@ -18,17 +18,15 @@ export function StickyHeader({
     >
       <div className="flex items-center justify-between w-full max-w-7xl">
         <div className="gap-4 items-center hidden lg:flex">
-          <div className="h-[50px] bg-slate-200 p-1 rounded-md shrink-0">
-            {program.providerLogo ? (
+          {program.providerLogo && (
+            <div className="h-[50px] bg-slate-200 p-1 rounded-md shrink-0">
               <img
                 className="w-full h-full rounded-md"
                 src={program.providerLogo}
-                alt="logo"
+                alt={`${program.provider} logo`}
               />
-            ) : (
-              <div className="w-full h-full rounded-md bg-cobalt-200" />
-            )}
-          </div>
+            </div>
+          )}
           <p className="font-bold text-lg">{program.provider}</p>
           <div className="flex gap-2">
             <span className="items-center flex text-base font-bold gap-2">

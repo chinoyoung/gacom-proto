@@ -82,17 +82,15 @@ export function DescriptionSection({
         {/* Provider info + CTAs */}
         <div className="flex flex-col gap-4 items-start">
           <div className="flex items-center gap-4">
-            <div className="h-[65px] max-w-[65px] md:max-w-[75px] object-cover md:h-[75px] bg-slate-200 p-1 rounded-md shrink-0">
-              {program.providerLogo ? (
+            {program.providerLogo && (
+              <div className="h-[65px] max-w-[65px] md:max-w-[75px] object-cover md:h-[75px] bg-slate-200 p-1 rounded-md shrink-0">
                 <img
                   className="w-full h-full rounded-md object-cover"
                   src={program.providerLogo}
                   alt={`${program.provider} logo`}
                 />
-              ) : (
-                <div className="w-full h-full rounded-md bg-cobalt-300" />
-              )}
-            </div>
+              </div>
+            )}
             <div className="flex flex-col gap-1">
               <h1 className="font-bold text-base md:text-xl leading-6 text-neutral-900">
                 {program.title}
