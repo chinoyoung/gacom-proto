@@ -6602,7 +6602,8 @@
                   "lineHeight": 1.6,
                   "textAlign": "center",
                   "fontFamily": "Inter",
-                  "fontSize": 20
+                  "fontSize": 20,
+                  "fontWeight": "normal"
                 },
                 {
                   "type": "frame",
@@ -6772,7 +6773,8 @@
                       "content": "The GoAbroad Marketplace is a curated hub where travelers can access everything they need for their trip — from eSIMs to insurance. As a partner, you can serve your travelers better and earn along the way.",
                       "lineHeight": 1.7,
                       "fontFamily": "Inter",
-                      "fontSize": 18
+                      "fontSize": 18,
+                      "fontWeight": "normal"
                     }
                   ]
                 },
@@ -6843,7 +6845,8 @@
                               "content": "Give travelers access to trusted services in one convenient platform.",
                               "lineHeight": 1.6,
                               "fontFamily": "Inter",
-                              "fontSize": 15
+                              "fontSize": 15,
+                              "fontWeight": "normal"
                             }
                           ]
                         }
@@ -6908,7 +6911,8 @@
                               "content": "Global connectivity and protection for travelers worldwide.",
                               "lineHeight": 1.6,
                               "fontFamily": "Inter",
-                              "fontSize": 15
+                              "fontSize": 15,
+                              "fontWeight": "normal"
                             }
                           ]
                         }
@@ -6973,7 +6977,8 @@
                               "content": "Earn commission by recommending trusted travel services to your participants or audience.",
                               "lineHeight": 1.6,
                               "fontFamily": "Inter",
-                              "fontSize": 15
+                              "fontSize": 15,
+                              "fontWeight": "normal"
                             }
                           ]
                         }
@@ -7026,7 +7031,8 @@
                   "content": "Two strategic ways to partner with us",
                   "textAlign": "center",
                   "fontFamily": "Inter",
-                  "fontSize": 18
+                  "fontSize": 18,
+                  "fontWeight": "normal"
                 }
               ]
             },
@@ -7105,7 +7111,8 @@
                       "content": "For study abroad providers, universities, NGOs, and organizations looking to offer trusted travel services to their participants while earning referral commissions.",
                       "lineHeight": 1.65,
                       "fontFamily": "Inter",
-                      "fontSize": 15
+                      "fontSize": 15,
+                      "fontWeight": "normal"
                     }
                   ]
                 },
@@ -7177,7 +7184,8 @@
                       "content": "For content creators, bloggers, and travel influencers who want to recommend trusted travel essentials to their audience and earn along the way.",
                       "lineHeight": 1.65,
                       "fontFamily": "Inter",
-                      "fontSize": 15
+                      "fontSize": 15,
+                      "fontWeight": "normal"
                     }
                   ]
                 }
@@ -7225,7 +7233,8 @@
                   "fill": "$foreground-secondary",
                   "content": "Products your travelers actually need",
                   "fontFamily": "Inter",
-                  "fontSize": 18
+                  "fontSize": 18,
+                  "fontWeight": "normal"
                 }
               ]
             },
@@ -7280,7 +7289,8 @@
                       "content": "Seamless mobile data access in 215+ countries, no physical SIM, no app required.",
                       "lineHeight": 1.6,
                       "fontFamily": "Inter",
-                      "fontSize": 16
+                      "fontSize": 16,
+                      "fontWeight": "normal"
                     },
                     {
                       "type": "frame",
@@ -7297,7 +7307,8 @@
                           "fill": "$foreground-primary",
                           "content": "✓  Save up to 80% on roaming",
                           "fontFamily": "Inter",
-                          "fontSize": 15
+                          "fontSize": 15,
+                          "fontWeight": "normal"
                         },
                         {
                           "type": "text",
@@ -7306,7 +7317,8 @@
                           "fill": "$foreground-primary",
                           "content": "✓  215+ countries & regions",
                           "fontFamily": "Inter",
-                          "fontSize": 15
+                          "fontSize": 15,
+                          "fontWeight": "normal"
                         },
                         {
                           "type": "text",
@@ -7315,7 +7327,8 @@
                           "fill": "$foreground-primary",
                           "content": "✓  Activate in minutes",
                           "fontFamily": "Inter",
-                          "fontSize": 15
+                          "fontSize": 15,
+                          "fontWeight": "normal"
                         },
                         {
                           "type": "text",
@@ -7324,7 +7337,8 @@
                           "fill": "$foreground-primary",
                           "content": "✓  Custom coupon codes",
                           "fontFamily": "Inter",
-                          "fontSize": 15
+                          "fontSize": 15,
+                          "fontWeight": "normal"
                         },
                         {
                           "type": "text",
@@ -7333,7 +7347,8 @@
                           "fill": "$foreground-primary",
                           "content": "✓  Transparent earnings dashboard",
                           "fontFamily": "Inter",
-                          "fontSize": 15
+                          "fontSize": 15,
+                          "fontWeight": "normal"
                         }
                       ]
                     }
@@ -7377,7 +7392,8 @@
                       "content": "Peace of mind with reliable worldwide coverage and flexible plans for any trip.",
                       "lineHeight": 1.6,
                       "fontFamily": "Inter",
-                      "fontSize": 16
+                      "fontSize": 16,
+                      "fontWeight": "normal"
                     },
                     {
                       "type": "frame",
@@ -7394,7 +7410,8 @@
                           "fill": "$foreground-primary",
                           "content": "✓  Medical & evacuation support",
                           "fontFamily": "Inter",
-                          "fontSize": 15
+                          "fontSize": 15,
+                          "fontWeight": "normal"
                         },
                         {
                           "type": "text",
@@ -7403,7 +7420,8 @@
                           "fill": "$foreground-primary",
                           "content": "✓  215+ countries covered",
                           "fontFamily": "Inter",
-                          "fontSize": 15
+                          "fontSize": 15,
+                          "fontWeight": "normal"
                         },
                         {
                           "type": "text",
@@ -7412,7 +7430,8 @@
                           "fill": "$foreground-primary",
                           "content": "✓  24/7 virtual health access",
                           "fontFamily": "Inter",
-                          "fontSize": 15
+                          "fontSize": 15,
+                          "fontWeight": "normal"
                         },
                         {
                           "type": "text",
@@ -7421,7 +7440,8 @@
                           "fill": "$foreground-primary",
                           "content": "✓  Flexible plan lengths",
                           "fontFamily": "Inter",
-                          "fontSize": 15
+                          "fontSize": 15,
+                          "fontWeight": "normal"
                         },
                         {
                           "type": "text",
@@ -7430,7 +7450,8 @@
                           "fill": "$foreground-primary",
                           "content": "✓  Simplified online claims",
                           "fontFamily": "Inter",
-                          "fontSize": 15
+                          "fontSize": 15,
+                          "fontWeight": "normal"
                         },
                         {
                           "type": "text",
@@ -7439,7 +7460,8 @@
                           "fill": "$foreground-primary",
                           "content": "✓  Real-time claims status",
                           "fontFamily": "Inter",
-                          "fontSize": 15
+                          "fontSize": 15,
+                          "fontWeight": "normal"
                         }
                       ]
                     }
@@ -7505,7 +7527,8 @@
                   "content": "Ready to partner with us? Choose the path that fits you best.",
                   "lineHeight": 1.5,
                   "fontFamily": "Inter",
-                  "fontSize": 16
+                  "fontSize": 16,
+                  "fontWeight": "normal"
                 }
               ]
             },
@@ -7620,7 +7643,8 @@
                   "content": "When an organization becomes a Marketplace partner, they’re not just adding a feature — they’re adding real value for their participants while unlocking a new revenue stream for themselves.",
                   "lineHeight": 1.6,
                   "fontFamily": "Inter",
-                  "fontSize": 16
+                  "fontSize": 16,
+                  "fontWeight": "normal"
                 }
               ]
             },
@@ -7698,7 +7722,8 @@
                               "content": "Provide your participants with essential travel tools they’ll actually use — eSIMs, insurance, and more.",
                               "lineHeight": 1.5,
                               "fontFamily": "Inter",
-                              "fontSize": 15
+                              "fontSize": 15,
+                              "fontWeight": "normal"
                             }
                           ]
                         }
@@ -7763,7 +7788,8 @@
                               "content": "Get started in minutes with a simple onboarding process. No technical integration required.",
                               "lineHeight": 1.5,
                               "fontFamily": "Inter",
-                              "fontSize": 15
+                              "fontSize": 15,
+                              "fontWeight": "normal"
                             }
                           ]
                         }
@@ -7838,7 +7864,8 @@
                               "content": "Monitor referrals, commissions, and performance through a transparent earnings dashboard.",
                               "lineHeight": 1.5,
                               "fontFamily": "Inter",
-                              "fontSize": 15
+                              "fontSize": 15,
+                              "fontWeight": "normal"
                             }
                           ]
                         }
@@ -7903,7 +7930,8 @@
                               "content": "Receive commission every time one of your travelers makes a purchase through the Marketplace.",
                               "lineHeight": 1.5,
                               "fontFamily": "Inter",
-                              "fontSize": 15
+                              "fontSize": 15,
+                              "fontWeight": "normal"
                             }
                           ]
                         }
@@ -7960,7 +7988,8 @@
                       "content": "Book a live demo with the GoAbroad Marketplace team and see exactly how our partnership program works.",
                       "lineHeight": 1.5,
                       "fontFamily": "Inter",
-                      "fontSize": 15
+                      "fontSize": 15,
+                      "fontWeight": "normal"
                     }
                   ]
                 },
@@ -8049,7 +8078,8 @@
                   "content": "Join a community of travel creators who share products that genuinely help international travelers — and earn while you do it.",
                   "lineHeight": 1.6,
                   "fontFamily": "Inter",
-                  "fontSize": 16
+                  "fontSize": 16,
+                  "fontWeight": "normal"
                 }
               ]
             },
@@ -8127,7 +8157,8 @@
                               "content": "Earn a competitive commission each time someone in your audience purchases through your link.",
                               "lineHeight": 1.5,
                               "fontFamily": "Inter",
-                              "fontSize": 15
+                              "fontSize": 15,
+                              "fontWeight": "normal"
                             }
                           ]
                         }
@@ -8192,7 +8223,8 @@
                               "content": "Get unique, branded coupon codes that make it easy to track referrals and reward your followers.",
                               "lineHeight": 1.5,
                               "fontFamily": "Inter",
-                              "fontSize": 15
+                              "fontSize": 15,
+                              "fontWeight": "normal"
                             }
                           ]
                         }
@@ -8267,7 +8299,8 @@
                               "content": "You’re never on your own. Our team provides personalized support and resources to help you succeed.",
                               "lineHeight": 1.5,
                               "fontFamily": "Inter",
-                              "fontSize": 15
+                              "fontSize": 15,
+                              "fontWeight": "normal"
                             }
                           ]
                         }
@@ -8332,7 +8365,8 @@
                               "content": "We look for creators whose followers are eager to explore the world — a natural fit for travel essentials.",
                               "lineHeight": 1.5,
                               "fontFamily": "Inter",
-                              "fontSize": 15
+                              "fontSize": 15,
+                              "fontWeight": "normal"
                             }
                           ]
                         }
@@ -8389,7 +8423,8 @@
                       "content": "Book a live demo with the GoAbroad Marketplace team and see exactly how our ambassador program works.",
                       "lineHeight": 1.5,
                       "fontFamily": "Inter",
-                      "fontSize": 15
+                      "fontSize": 15,
+                      "fontWeight": "normal"
                     }
                   ]
                 },

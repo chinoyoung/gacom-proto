@@ -5,7 +5,7 @@ import { useDesignVersion } from "@/lib/use-design-version";
 import V1PartnerPage from "./_versions/v1/V1PartnerPage";
 import V2PartnerPage from "./_versions/v2/V2PartnerPage";
 
-function PartnerPageInner() {
+function PartnerPageContent() {
   const { version } = useDesignVersion("marketplace-partner");
 
   switch (version) {
@@ -19,7 +19,7 @@ function PartnerPageInner() {
 export default function PartnerPage() {
   return (
     <Suspense>
-      <PartnerPageInner />
+      <PartnerPageContent />
     </Suspense>
   );
 }
