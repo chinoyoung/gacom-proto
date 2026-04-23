@@ -6,7 +6,7 @@ import { esimFeatures, insuranceFeatures } from "./constants";
 export default function V1Products() {
   return (
     <section id="products" aria-labelledby="products-heading" className="scroll-mt-36 bg-white px-4 sm:px-6 md:px-12 lg:px-20 py-16 md:py-24">
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-4xl mx-auto">
         <div className="mb-14">
           <h2 id="products-heading" className="text-3xl font-bold text-neutral-800 leading-tight tracking-tight mb-2">What You&#39;ll Offer</h2>
           <p className="text-lg font-medium text-slate-500 mb-3">Products your travelers actually need</p>
@@ -36,7 +36,7 @@ export default function V1Products() {
               <p className="text-sm text-slate-600 leading-relaxed">
                 Seamless mobile data access in 215+ countries, no physical SIM, no app required.
               </p>
-              <ul className="flex flex-col gap-2 mt-1">
+              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-1">
                 {esimFeatures.map((f) => (
                   <li key={f} className="flex items-center gap-2.5">
                     <Check className="w-4 h-4 text-cobalt-500 shrink-0" />
@@ -66,7 +66,7 @@ export default function V1Products() {
               <p className="text-sm text-slate-600 leading-relaxed">
                 Peace of mind with reliable worldwide coverage and flexible plans for any trip.
               </p>
-              <ul className="flex flex-col gap-2 mt-1">
+              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-1">
                 {insuranceFeatures.map((f) => (
                   <li key={f} className="flex items-center gap-2.5">
                     <Check className="w-4 h-4 text-cobalt-500 shrink-0" />

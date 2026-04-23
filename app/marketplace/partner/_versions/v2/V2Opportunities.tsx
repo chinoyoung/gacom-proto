@@ -7,7 +7,7 @@ export default function V2Opportunities() {
       aria-labelledby="opportunities-heading"
       className="scroll-mt-36 bg-slate-50 px-4 sm:px-6 md:px-12 lg:px-20 py-16 md:py-24"
     >
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-4xl mx-auto">
         <div className="text-center max-w-2xl mx-auto mb-12">
           <h2
             id="opportunities-heading"

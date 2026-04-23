@@ -5,7 +5,7 @@ import { Building2, Megaphone } from "lucide-react";
 export default function V1Opportunities() {
   return (
     <section id="opportunities" aria-labelledby="opportunities-heading" className="scroll-mt-36 bg-cobalt-500 px-4 sm:px-6 md:px-12 lg:px-20 py-16 md:py-24">
-      <div className="max-w-7xl mx-auto flex flex-col items-center text-center">
+      <div className="max-w-4xl mx-auto flex flex-col items-center text-center">
         <h2 id="opportunities-heading" className="text-3xl font-bold text-white leading-tight tracking-tight mb-4">Partnership Opportunities</h2>
         <p className="text-sm font-semibold uppercase tracking-widest text-white/50 mb-5">Two strategic ways to partner with us</p>
         <p className="text-sm text-white/60 max-w-2xl leading-relaxed mb-12">

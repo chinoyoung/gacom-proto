@@ -10,7 +10,7 @@ export default function V2Products() {
       aria-labelledby="products-heading"
       className="scroll-mt-36 bg-white px-4 sm:px-6 md:px-12 lg:px-20 py-16 md:py-24"
     >
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-4xl mx-auto">
         <div className="text-center max-w-2xl mx-auto mb-14">
           <h2
             id="products-heading"
