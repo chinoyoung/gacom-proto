@@ -9,6 +9,7 @@
  */
 
 import type * as articles from "../articles.js";
+import type * as comments from "../comments.js";
 import type * as programs from "../programs.js";
 import type * as reviews from "../reviews.js";
 
@@ -20,6 +21,7 @@ import type {
 
 declare const fullApi: ApiFromModules<{
   articles: typeof articles;
+  comments: typeof comments;
   programs: typeof programs;
   reviews: typeof reviews;
 }>;

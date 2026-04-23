@@ -3,6 +3,7 @@
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import ProgramCard from "@/components/ProgramCard";
+import { CommentAnchor } from "@/components/comments/CommentAnchor";
 
 interface RelatedProgramsProps {
     currentProgramId: string;
@@ -38,7 +39,8 @@ export default function RelatedPrograms({ currentProgramId, subjectAreas }: Rela
     if (relatedPrograms.length === 0) return null;
 
     return (
-        <section className="mt-20 pt-10 border-t border-slate-200 pb-12">
+        <CommentAnchor id="related">
+          <section className="mt-20 pt-10 border-t border-slate-200 pb-12">
             <div className="max-w-7xl mx-auto">
                 <h2 className="text-2xl font-bold text-slate-900 mb-6">Other Programs You Might Like</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -47,6 +49,7 @@ export default function RelatedPrograms({ currentProgramId, subjectAreas }: Rela
                     ))}
                 </div>
             </div>
-        </section>
+          </section>
+        </CommentAnchor>
     );
 }

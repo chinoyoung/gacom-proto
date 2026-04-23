@@ -5,6 +5,7 @@ import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { ChevronDown, ChevronUp, Star } from "lucide-react";
+import { CommentAnchor } from "@/components/comments/CommentAnchor";
 
 interface ProgramReviewsProps {
   programId: string;
@@ -262,10 +263,11 @@ export default function ProgramReviews({ programId }: ProgramReviewsProps) {
   });
 
   return (
-    <section
-      aria-labelledby="reviews-heading"
-      className="pt-10 border-t border-slate-100"
-    >
+    <CommentAnchor id="reviews">
+      <section
+        aria-labelledby="reviews-heading"
+        className="pt-10 border-t border-slate-100"
+      >
       {/* Header row */}
       <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-6">
         <div>
@@ -335,6 +337,7 @@ export default function ProgramReviews({ programId }: ProgramReviewsProps) {
           </div>
         </>
       )}
-    </section>
+      </section>
+    </CommentAnchor>
   );
 }

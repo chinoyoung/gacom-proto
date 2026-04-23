@@ -1,6 +1,7 @@
 "use client";
 
 import type { Program } from "./types";
+import { CommentAnchor } from "@/components/comments/CommentAnchor";
 
 interface ProgramOverviewProps {
   program: Program;
@@ -14,7 +15,8 @@ export default function ProgramOverview({ program }: ProgramOverviewProps) {
     .filter(Boolean);
 
   return (
-    <section aria-labelledby="overview-heading">
+    <CommentAnchor id="overview">
+      <section aria-labelledby="overview-heading">
       <h2
         id="overview-heading"
         className="text-2xl font-bold text-slate-900 mb-6"
@@ -35,5 +37,6 @@ export default function ProgramOverview({ program }: ProgramOverviewProps) {
       )}
 
     </section>
+    </CommentAnchor>
   );
 }

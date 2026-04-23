@@ -70,3 +70,10 @@ body {
 .cl-internal-1dauvpw {
     display: none !important;
 }
+
+/* Comment mode — outline the anchored section under the cursor so users know what they're targeting */
+body.comment-mode [data-comment-anchor]:hover {
+    outline: 2px dashed var(--color-fern-500);
+    outline-offset: -2px;
+    background-color: color-mix(in srgb, var(--color-fern-500) 4%, transparent);
+}

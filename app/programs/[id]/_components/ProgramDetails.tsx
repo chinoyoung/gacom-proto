@@ -11,6 +11,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import type { Program } from "./types";
+import { CommentAnchor } from "@/components/comments/CommentAnchor";
 
 interface DetailItemProps {
   icon: React.ReactNode;
@@ -97,7 +98,8 @@ export default function ProgramDetails({ program }: { program: Program }) {
   ];
 
   return (
-    <section aria-labelledby="program-details-heading">
+    <CommentAnchor id="details">
+      <section aria-labelledby="program-details-heading">
       {/* Section title */}
       <h2
         id="program-details-heading"
@@ -118,5 +120,6 @@ export default function ProgramDetails({ program }: { program: Program }) {
         ))}
       </div>
     </section>
+    </CommentAnchor>
   );
 }

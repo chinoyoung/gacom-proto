@@ -1,6 +1,7 @@
 "use client";
 
 import type { Program } from "./types";
+import { CommentAnchor } from "@/components/comments/CommentAnchor";
 
 interface QuickDetailsProps {
   program: Program;
@@ -325,7 +326,8 @@ export default function QuickDetails({ program }: QuickDetailsProps) {
   });
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden sticky top-6 self-start">
+    <CommentAnchor id="quick-details">
+      <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden sticky top-6 self-start">
       {/* Header */}
       <div className="px-5 py-4 bg-cobalt-500">
         <h2 className="text-sm font-semibold text-white tracking-wide uppercase">
@@ -383,5 +385,6 @@ export default function QuickDetails({ program }: QuickDetailsProps) {
         </div>
       )}
     </div>
+    </CommentAnchor>
   );
 }

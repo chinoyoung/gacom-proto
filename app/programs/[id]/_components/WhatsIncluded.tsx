@@ -1,6 +1,7 @@
 "use client";
 
 import type { Program } from "./types";
+import { CommentAnchor } from "@/components/comments/CommentAnchor";
 
 interface WhatsIncludedProps {
   program: Program;
@@ -10,7 +11,8 @@ export default function WhatsIncluded({ program }: WhatsIncludedProps) {
   if (program.whatsIncluded.length === 0) return null;
 
   return (
-    <section aria-labelledby="included-heading">
+    <CommentAnchor id="whats-included">
+      <section aria-labelledby="included-heading">
       <h2
         id="included-heading"
         className="text-2xl font-bold text-slate-900 mb-6"
@@ -41,5 +43,6 @@ export default function WhatsIncluded({ program }: WhatsIncludedProps) {
         ))}
       </ul>
     </section>
+    </CommentAnchor>
   );
 }

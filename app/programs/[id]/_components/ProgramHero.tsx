@@ -14,6 +14,7 @@ import {
   CheckCircle,
 } from "lucide-react";
 import type { Program } from "./types";
+import { CommentAnchor } from "@/components/comments/CommentAnchor";
 
 interface ProgramHeroProps {
   program: Program;
@@ -42,7 +43,8 @@ export default function ProgramHero({ program }: ProgramHeroProps) {
   ) as string[];
 
   return (
-    <>
+    <CommentAnchor id="hero">
+      <>
       {/* ------------------------------------------------------------------ */}
       {/* Hero Main                                                            */}
       {/* ------------------------------------------------------------------ */}
@@ -246,7 +248,8 @@ export default function ProgramHero({ program }: ProgramHeroProps) {
           </div>
         </div>
       )}
-    </>
+      </>
+    </CommentAnchor>
   );
 }
 

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import ArticleCard from "@/components/ArticleCard";
+import { CommentAnchor } from "@/components/comments/CommentAnchor";
 
 export default function ProgramArticles() {
     const articles = useQuery(api.articles.listArticles);
@@ -27,7 +28,8 @@ export default function ProgramArticles() {
     const displayedArticles = articles.slice(0, 3);
 
     return (
-        <section className="mt-20 pt-10 border-t border-slate-200">
+        <CommentAnchor id="articles">
+          <section className="mt-20 pt-10 border-t border-slate-200">
             <div className="max-w-7xl mx-auto">
                 <div className="flex items-center justify-between mb-6">
                     <h2 className="text-2xl font-bold text-slate-900">Expert Guides & Advice</h2>
@@ -41,6 +43,7 @@ export default function ProgramArticles() {
                     ))}
                 </div>
             </div>
-        </section>
+          </section>
+        </CommentAnchor>
     );
 }

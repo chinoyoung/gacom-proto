@@ -1,6 +1,7 @@
 "use client";
 
 import type { Program } from "./types";
+import { CommentAnchor } from "@/components/comments/CommentAnchor";
 
 interface ProgramHighlightsProps {
   program: Program;
@@ -24,7 +25,8 @@ export default function ProgramHighlights({ program }: ProgramHighlightsProps) {
   if (program.highlights.length === 0) return null;
 
   return (
-    <section aria-labelledby="highlights-heading">
+    <CommentAnchor id="highlights">
+      <section aria-labelledby="highlights-heading">
       <h2 id="highlights-heading" className="text-2xl font-bold text-slate-900 mb-6">
         Program Highlights
       </h2>
@@ -42,5 +44,6 @@ export default function ProgramHighlights({ program }: ProgramHighlightsProps) {
         ))}
       </ul>
     </section>
+    </CommentAnchor>
   );
 }

@@ -103,4 +103,29 @@ export default defineSchema({
     .index("by_program", ["programId"])
     .index("by_status", ["status"])
     .index("by_program_status", ["programId", "status"]),
+
+  commentThreads: defineTable({
+    pageKey: v.string(),
+    anchorId: v.string(),
+    relX: v.number(),
+    relY: v.number(),
+    status: v.union(v.literal("open"), v.literal("resolved")),
+    createdBy: v.string(),
+    createdByName: v.string(),
+    createdByImage: v.optional(v.string()),
+    resolvedBy: v.optional(v.string()),
+    resolvedAt: v.optional(v.number()),
+    updatedAt: v.number(),
+  })
+    .index("by_pageKey", ["pageKey"])
+    .index("by_pageKey_status", ["pageKey", "status"]),
+
+  commentMessages: defineTable({
+    threadId: v.id("commentThreads"),
+    body: v.string(),
+    authorId: v.string(),
+    authorName: v.string(),
+    authorImage: v.optional(v.string()),
+    editedAt: v.optional(v.number()),
+  }).index("by_thread", ["threadId"]),
 });

@@ -2,6 +2,7 @@
 
 import { Star } from "lucide-react";
 import { Program } from "./types";
+import { CommentAnchor } from "@/components/comments/CommentAnchor";
 
 interface WhyChooseProgramProps {
   program: Program;
@@ -56,7 +57,8 @@ export default function WhyChooseProgram({
   const credits = formatCredits(program.creditsAvailable);
 
   return (
-    <section className="bg-slate-50 rounded-xl p-6 md:p-10">
+    <CommentAnchor id="why-choose">
+      <section className="bg-slate-50 rounded-xl p-6 md:p-10">
       <div className="text-center mb-8">
         <h2 className="text-xl font-bold text-slate-900 mb-2">
           Why Students Choose This Program
@@ -93,5 +95,6 @@ export default function WhyChooseProgram({
         </div>
       </div>
     </section>
+    </CommentAnchor>
   );
 }
