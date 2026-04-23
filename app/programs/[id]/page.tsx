@@ -10,7 +10,6 @@ import LoadingSkeleton from "./_components/LoadingSkeleton";
 import ProgramNotFound from "./_components/ProgramNotFound";
 import V1DetailPage from "./_versions/v1/V1DetailPage";
 import V2DetailPage from "./_versions/v2/V2DetailPage";
-import ModernDetailPage from "./_versions/modern/ModernDetailPage";
 import InquiryDetailPage from "./_versions/inquiry/InquiryDetailPage";
 import V1_5DetailPage from "./_versions/v1.5/V1_5DetailPage";
 
@@ -51,8 +50,6 @@ export default function ProgramDetailPage() {
   switch (version) {
     case "v2":
       return <V2DetailPage program={program} reviews={reviews} avgRating={avgRating} />;
-    case "modern":
-      return <ModernDetailPage program={program} reviews={reviews} avgRating={avgRating} />;
     case "inquiry":
       return <InquiryDetailPage program={program} reviews={reviews} avgRating={avgRating} />;
     case "v1.5":

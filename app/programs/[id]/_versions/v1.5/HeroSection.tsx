@@ -77,7 +77,13 @@ export function HeroSection({
     program.programTags && program.programTags.length > 0
       ? program.programTags
       : null;
-  const placeholderTags = ["Adventure", "Cultural", "Study Abroad"];
+  const placeholderTags = [
+    "Adventure",
+    "Cultural",
+    "Study Abroad",
+    "Language Immersion",
+    "Academic Credit",
+  ];
 
   const photos = program.photos ?? [];
 
@@ -160,13 +166,9 @@ export function HeroSection({
               {/* Years in Operation badge */}
               <span className="inline-flex items-center gap-1.5 rounded-full bg-neutral-100 py-1.5 px-3">
                 <Clock className="w-3.5 h-3.5 text-neutral-500" aria-hidden="true" />
-                {yearsInOperation != null ? (
-                  <span className="text-xs font-semibold text-neutral-600">
-                    {yearsInOperation} Years
-                  </span>
-                ) : (
-                  <span className="text-xs font-semibold text-neutral-400">Est. —</span>
-                )}
+                <span className="text-xs font-semibold text-neutral-600">
+                  {yearsInOperation != null ? `${yearsInOperation} Years` : "15 Years"}
+                </span>
               </span>
 
               {/* Last Updated badge */}
@@ -196,9 +198,8 @@ export function HeroSection({
                 Starting from {formatPrice(program.startingPrice)}
               </p>
             ) : (
-              <p className="text-base text-neutral-400">
-                Starting from $X,XXX{" "}
-                <span className="text-xs font-normal">(placeholder)</span>
+              <p className="text-base font-semibold text-neutral-800">
+                Starting from $2,500
               </p>
             )}
 
@@ -216,17 +217,12 @@ export function HeroSection({
                 : placeholderTags.map((tag) => (
                     <span
                       key={tag}
-                      className="text-xs px-2.5 py-1 rounded-full bg-neutral-100 text-neutral-400 font-medium"
+                      className="text-xs px-2.5 py-1 rounded-full bg-cobalt-500/[0.06] text-cobalt-600 font-medium"
                     >
                       {tag}
                     </span>
                   ))}
             </div>
-
-            {/* Description excerpt */}
-            <p className="text-base text-neutral-500 leading-relaxed">
-              {descriptionExcerpt}
-            </p>
 
             {/* CTA buttons */}
             <div className="flex items-center gap-3 flex-wrap">

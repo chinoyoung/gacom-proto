@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import { ChevronRight, MessageSquare, Heart } from "lucide-react";
+import { ChevronRight, Heart, Quote } from "lucide-react";
 import type { Program } from "../../_components/types";
 
 export function buildFaqs(program: Program): { question: string; answer: string }[] {
@@ -96,18 +96,64 @@ export function FAQsSection({ faqs }: { faqs: { question: string; answer: string
   );
 }
 
+const MOCK_INTERVIEWS = [
+  {
+    name: "Maria Santos",
+    role: "Alumna, Summer 2025",
+    avatar: "https://i.pravatar.cc/80?img=47",
+    excerpt:
+      "Living with my host family completely transformed how I understood the culture. I came home fluent — but more importantly, with a second family.",
+  },
+  {
+    name: "James Okafor",
+    role: "Alumnus, Spring 2025",
+    avatar: "https://i.pravatar.cc/80?img=12",
+    excerpt:
+      "The weekend excursions were the highlight. Our program director planned everything down to the smallest detail and it made all the difference.",
+  },
+  {
+    name: "Dr. Elena Rossi",
+    role: "Program Director",
+    avatar: "https://i.pravatar.cc/80?img=32",
+    excerpt:
+      "We design every cohort experience around student growth — not tourism. After ten years, we still tailor the program for each new group.",
+  },
+];
+
 export function InterviewsSection() {
   return (
     <div className="flex flex-col px-4 xl:px-0 gap-4">
       <div>
         <h2 className="flex items-center text-2xl font-bold gap-2">Interviews</h2>
-        <p className="text-sm">Read interviews from alumni or staff</p>
+        <p className="text-sm">Read interviews from alumni and staff</p>
       </div>
-      <div className="bg-slate-50 border border-gray-200 rounded-md p-6 text-center">
-        <MessageSquare className="w-8 h-8 mx-auto mb-2 text-slate-300" />
-        <p className="text-sm text-slate-500">
-          Interviews coming soon. Check back for stories from program alumni and staff.
-        </p>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {MOCK_INTERVIEWS.map((interview, i) => (
+          <div
+            key={i}
+            className="bg-slate-50 border border-gray-200 rounded-md p-5 flex flex-col gap-3"
+          >
+            <Quote className="w-5 h-5 text-cobalt-500" />
+            <p className="text-sm text-neutral-700 leading-relaxed">
+              &ldquo;{interview.excerpt}&rdquo;
+            </p>
+            <div className="flex items-center gap-3 mt-auto pt-3 border-t border-gray-200">
+              <img
+                src={interview.avatar}
+                alt={interview.name}
+                className="w-10 h-10 rounded-full object-cover"
+              />
+              <div>
+                <p className="text-sm font-bold">{interview.name}</p>
+                <p className="text-xs text-neutral-500">{interview.role}</p>
+              </div>
+            </div>
+            <button className="text-xs text-cobalt-500 font-bold flex items-center gap-1 cursor-pointer hover:underline">
+              Read full interview
+              <ChevronRight className="w-3 h-3" />
+            </button>
+          </div>
+        ))}
       </div>
     </div>
   );

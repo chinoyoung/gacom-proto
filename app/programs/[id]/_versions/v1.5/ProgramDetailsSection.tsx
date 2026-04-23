@@ -157,17 +157,16 @@ export function ProgramDetailsSection({ program }: { program: Program }) {
                 </span>
               ))
             ) : (
-              <div className="flex flex-wrap gap-1.5">
-                {["Adventure", "Cultural", "LGBTQI+"].map((tag) => (
+              ["Adventure", "Cultural", "LGBTQI+ Friendly", "Eco-Conscious"].map(
+                (tag) => (
                   <span
                     key={tag}
-                    className="text-xs border border-slate-300 text-slate-300 rounded px-2 py-0.5 italic"
+                    className="text-xs bg-white border border-slate-200 text-slate-600 rounded px-2 py-0.5"
                   >
                     {tag}
                   </span>
-                ))}
-                <span className="text-xs text-slate-300 italic self-center">(placeholder)</span>
-              </div>
+                )
+              )
             )}
           </div>
         </div>

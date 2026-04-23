@@ -119,7 +119,7 @@ export function ProgramsSection({ currentProgramId }: { currentProgramId: string
   });
 
   const programs = (allPrograms ?? [])
-    .filter((p: any) => p._id !== currentProgramId)
+    .filter((p) => p._id !== currentProgramId)
     .slice(0, 3);
 
   return (
@@ -133,7 +133,7 @@ export function ProgramsSection({ currentProgramId }: { currentProgramId: string
         </div>
       </div>
       <div className="flex flex-col gap-6 w-full md:grid lg:grid-cols-3 sm:grid-cols-2">
-        {programs.map((prog: any) => (
+        {programs.map((prog) => (
           <div key={prog._id} className="flex flex-col">
             {/* Image with save button */}
             <div className="relative w-full h-[175px] rounded-t-md overflow-hidden bg-cobalt-200">

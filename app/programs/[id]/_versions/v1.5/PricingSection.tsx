@@ -10,12 +10,15 @@ function formatPrice(price: number): string {
 const PLACEHOLDER_COST_VARIATIONS = [
   { label: "2 Weeks", price: 2500 },
   { label: "4 Weeks", price: 4800 },
+  { label: "8 Weeks", price: 8900 },
+  { label: "Semester (12 Weeks)", price: 12500 },
 ];
 
 const PLACEHOLDER_PAYMENT_TERMS = [
   "Payment Plan",
-  "Scholarships",
+  "Scholarships Available",
   "Upfront Deposit",
+  "Credit Card Accepted",
 ];
 
 export function PricingSection({ program }: { program: Program }) {
@@ -39,25 +42,22 @@ export function PricingSection({ program }: { program: Program }) {
   } else if (hasStartingPrice) {
     priceDisplay = formatPrice(program.startingPrice!);
   } else {
-    priceDisplay = (
-      <>
-        $2,500{" "}
-        <span className="text-base font-normal text-slate-400">
-          (placeholder)
-        </span>
-      </>
-    );
+    priceDisplay = "$2,500";
   }
 
   return (
-    <section className="px-4 xl:px-0 py-4">
-      <div className="bg-slate-50 border border-gray-200 rounded-md p-4 md:p-6 flex flex-col gap-6">
-        {/* Section header */}
-        <div className="flex items-center gap-2">
-          <DollarSign className="w-5 h-5 text-cobalt-500 shrink-0" />
-          <h2 className="text-xl font-bold">Pricing & Fees</h2>
-        </div>
+    <div className="flex flex-col px-4 xl:px-0 gap-4">
+      <div>
+        <h2 className="flex items-center text-2xl font-bold gap-2">
+          <DollarSign className="w-6 h-6 text-cobalt-500" />
+          Pricing & Fees
+        </h2>
+        <p className="text-sm text-neutral-500 mt-1">
+          Everything you need to know about costs and payment
+        </p>
+      </div>
 
+      <div className="bg-slate-50 border border-gray-200 rounded-md p-4 md:p-6 flex flex-col gap-6">
         {/* Starting price */}
         <div className="flex flex-col gap-1 pb-6 border-b border-gray-200">
           <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
@@ -79,18 +79,9 @@ export function PricingSection({ program }: { program: Program }) {
             ).map((variation, i) => (
               <div
                 key={i}
-                className={`flex items-center justify-between py-2.5 text-sm ${
-                  !hasCostVariations ? "text-slate-400" : "text-neutral-700"
-                }`}
+                className="flex items-center justify-between py-2.5 text-sm text-neutral-700"
               >
-                <span>
-                  {variation.label}
-                  {!hasCostVariations && (
-                    <span className="ml-1.5 text-xs text-slate-400">
-                      (placeholder)
-                    </span>
-                  )}
-                </span>
+                <span>{variation.label}</span>
                 <span className="font-medium tabular-nums">
                   {formatPrice(variation.price)}
                 </span>
@@ -109,16 +100,9 @@ export function PricingSection({ program }: { program: Program }) {
             ).map((term, i) => (
               <span
                 key={i}
-                className={`text-xs px-2.5 py-1 rounded border ${
-                  hasPaymentTerms
-                    ? "bg-white border-gray-200 text-neutral-700"
-                    : "bg-white border-gray-200 text-slate-400"
-                }`}
+                className="text-xs px-2.5 py-1 rounded border bg-white border-gray-200 text-neutral-700"
               >
                 {term}
-                {!hasPaymentTerms && (
-                  <span className="ml-1 text-slate-400">(placeholder)</span>
-                )}
               </span>
             ))}
           </div>
@@ -134,9 +118,9 @@ export function PricingSection({ program }: { program: Program }) {
               {formatPrice(program.depositFee!)} Application Fee
             </p>
           ) : (
-            <p className="text-sm text-slate-400">
-              $250 Application Fee{" "}
-              <span className="text-xs">(placeholder)</span>
+            <p className="text-sm text-neutral-700">
+              $250 non-refundable application fee, credited toward program cost
+              upon enrollment
             </p>
           )}
         </div>
@@ -162,13 +146,14 @@ export function PricingSection({ program }: { program: Program }) {
               )}
             </div>
           ) : (
-            <p className="text-sm text-slate-400">
-              Full refund up to 30 days before start date{" "}
-              <span className="text-xs">(placeholder)</span>
+            <p className="text-sm text-neutral-700 leading-relaxed">
+              Full refund available up to 60 days before the program start
+              date. 50% refund between 30–60 days prior. No refunds within 30
+              days of start, though credits toward future programs may apply.
             </p>
           )}
         </div>
       </div>
-    </section>
+    </div>
   );
 }

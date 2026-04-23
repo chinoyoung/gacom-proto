@@ -14,22 +14,26 @@ import {
   ChevronRight,
   ChevronLeft,
   X,
-  Star,
-  FileText,
   Heart,
+  Clock,
+  ChevronDown,
+  Send,
+  ShieldCheck,
+  MessageCircle,
+  XCircle,
 } from "lucide-react";
+
+const FILLER_EXCLUSIONS = [
+  "International airfare and travel insurance",
+  "Personal expenses and souvenirs",
+  "Visa fees and vaccinations",
+];
 import type { Program } from "../../_components/types";
 
 export function DescriptionSection({
   program,
-  avgRating,
-  reviewCount,
-  programCount,
 }: {
   program: Program;
-  avgRating: number;
-  reviewCount: number;
-  programCount: number;
 }) {
   const [expanded, setExpanded] = useState(false);
   const [showAllSubjects, setShowAllSubjects] = useState(false);
@@ -99,27 +103,6 @@ export function DescriptionSection({
                 by:{" "}
                 <span className="font-bold text-neutral-800">{program.provider}</span>
               </p>
-              <div className="grid grid-cols-2 gap-1 md:flex md:gap-4 text-xs text-neutral-700 mt-2 font-bold">
-                <span className="flex gap-1 items-center">
-                  <Star
-                    fill="currentColor"
-                    className="text-lg text-sun-500 w-4 h-4"
-                  />
-                  {avgRating > 0 ? avgRating.toFixed(2) : "—"} ({reviewCount})
-                </span>
-                <span className="flex gap-1 items-center">
-                  <CheckCircle className="text-base text-fern-500 w-4 h-4" />
-                  Verified
-                </span>
-                <span className="flex gap-1 items-center">
-                  <FileText className="text-lg text-cobalt-500 w-4 h-4" />
-                  {programCount} Programs
-                </span>
-                <span className="flex gap-1 items-center cursor-pointer">
-                  <Heart className="text-lg text-roman-500 w-4 h-4" />
-                  Save
-                </span>
-              </div>
             </div>
           </div>
           <div className="flex w-full gap-2 md:gap-4">
@@ -136,6 +119,13 @@ export function DescriptionSection({
             </button>
             <button className="bg-cobalt-500 text-white lg:block h-10 text-xs md:text-sm font-bold rounded-md px-5 cursor-pointer">
               Apply Now
+            </button>
+            <button
+              aria-label="Save program"
+              className="bg-white text-roman-500 h-10 text-xs md:text-sm font-bold rounded-md px-4 cursor-pointer flex items-center gap-1.5 hover:bg-slate-50 transition-colors"
+            >
+              <Heart className="w-4 h-4" />
+              Save
             </button>
           </div>
         </div>
@@ -180,20 +170,51 @@ export function DescriptionSection({
             </div>
           )}
 
-          {/* What's Included */}
-          {program.whatsIncluded.length > 0 && (
-            <div className="bg-slate-50 border border-gray-200 rounded-md flex flex-col gap-2 md:gap-4 p-4">
-              <h3 className="font-bold text-lg">What&apos;s Included</h3>
-              <div className="flex flex-col gap-2 md:gap-4 text-sm">
-                {program.whatsIncluded.map((item, i) => (
-                  <p key={i} className="flex gap-2 items-start">
-                    <CheckCircle className="shrink-0 w-4 h-4 mt-0.5 text-fern-500" />
-                    {item}
-                  </p>
-                ))}
+          {/* What's Included / Exclusions */}
+          {(() => {
+            const exclusions =
+              program.exclusions && program.exclusions.length > 0
+                ? program.exclusions
+                : FILLER_EXCLUSIONS;
+            const hasIncluded = program.whatsIncluded.length > 0;
+            const hasExclusions = exclusions.length > 0;
+            if (!hasIncluded && !hasExclusions) return null;
+
+            return (
+              <div className="bg-slate-50 border border-gray-200 rounded-md flex flex-col p-4 divide-y divide-gray-200">
+                {hasIncluded && (
+                  <div className="flex flex-col gap-2 md:gap-4 pb-4">
+                    <h3 className="font-bold text-lg">What&apos;s Included</h3>
+                    <div className="flex flex-col gap-2 md:gap-4 text-sm">
+                      {program.whatsIncluded.map((item, i) => (
+                        <p key={i} className="flex gap-2 items-start">
+                          <CheckCircle className="shrink-0 w-4 h-4 mt-0.5 text-fern-500" />
+                          {item}
+                        </p>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {hasExclusions && (
+                  <div
+                    className={`flex flex-col gap-2 md:gap-4 ${
+                      hasIncluded ? "pt-4" : ""
+                    }`}
+                  >
+                    <h3 className="font-bold text-lg">Exclusions</h3>
+                    <div className="flex flex-col gap-2 md:gap-4 text-sm">
+                      {exclusions.map((item, i) => (
+                        <p key={i} className="flex gap-2 items-start">
+                          <XCircle className="shrink-0 w-4 h-4 mt-0.5 text-roman-500" />
+                          {item}
+                        </p>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
-            </div>
-          )}
+            );
+          })()}
 
           {/* Gallery */}
           {photos.length > 0 && (
@@ -264,12 +285,16 @@ export function DescriptionSection({
               </div>
             </div>
 
-            {/* Cost */}
+            {/* Starting Price */}
             <div className="border-b border-gray-200 px-2 flex items-start text-sm gap-2 pb-4">
               <DollarSign className="w-4 h-4 shrink-0 mt-0.5 text-cobalt-500" />
               <div>
-                <p className="font-bold">Cost Per Week</p>
-                <p>{program.cost ?? "Contact Provider"}</p>
+                <p className="font-bold">Starting Price</p>
+                <p>
+                  {program.startingPrice != null
+                    ? `$${program.startingPrice.toLocaleString()}`
+                    : program.cost ?? "Contact Provider"}
+                </p>
               </div>
             </div>
 
@@ -312,12 +337,12 @@ export function DescriptionSection({
               </div>
             )}
 
-            {/* Guidelines */}
+            {/* Nationalities */}
             {program.eligibleNationalities.length > 0 && (
               <div className="border-b border-gray-200 px-2 flex items-start text-sm gap-2 pb-4">
                 <UserCheck className="w-4 h-4 shrink-0 mt-0.5 text-cobalt-500" />
                 <div>
-                  <p className="font-bold">Guidelines</p>
+                  <p className="font-bold">Nationalities</p>
                   <p>{program.eligibleNationalities.join(", ")}</p>
                 </div>
               </div>
@@ -331,12 +356,113 @@ export function DescriptionSection({
               See all program details
               <ArrowDown className="w-4 h-4" />
             </a>
+
+            {program.updatedAt && (
+              <p className="text-xs text-neutral-500 flex items-center justify-center gap-1.5">
+                <Clock className="w-3 h-3" />
+                Updated{" "}
+                {new Date(program.updatedAt).toLocaleDateString("en-US", {
+                  month: "short",
+                  day: "numeric",
+                  year: "numeric",
+                })}
+              </p>
+            )}
           </div>
 
           {/* Recognitions card */}
           <div className="flex flex-col gap-4 w-full shrink-0 bg-slate-50 rounded-md p-4 overflow-clip border border-gray-200">
             <h3 className="text-xl font-bold">Recognitions</h3>
             <p className="text-sm text-slate-500">Awards and recognitions will appear here.</p>
+          </div>
+
+          {/* Inquire about this program */}
+          <div className="flex flex-col w-full shrink-0 bg-white rounded-md border-2 border-cobalt-500 overflow-hidden">
+            <div className="bg-cobalt-500 text-white px-4 py-3 flex items-center gap-2">
+              <MessageCircle className="w-5 h-5" />
+              <h3 className="text-lg font-bold">Inquire About This Program</h3>
+            </div>
+
+            <div className="flex flex-col gap-4 p-4">
+              <p className="text-sm text-neutral-600">
+                Get in touch with{" "}
+                <span className="font-bold text-neutral-900">
+                  {program.provider}
+                </span>{" "}
+                directly.
+              </p>
+
+              <div className="flex gap-3">
+              <div className="flex-1 flex flex-col gap-1.5">
+                <label className="text-xs font-bold text-neutral-800">
+                  First Name
+                </label>
+                <input
+                  type="text"
+                  placeholder="John"
+                  className="h-10 rounded-md bg-slate-100 px-3 text-sm text-neutral-900 placeholder:text-neutral-400 outline-none focus:ring-2 focus:ring-cobalt-300"
+                />
+              </div>
+              <div className="flex-1 flex flex-col gap-1.5">
+                <label className="text-xs font-bold text-neutral-800">
+                  Last Name
+                </label>
+                <input
+                  type="text"
+                  placeholder="Doe"
+                  className="h-10 rounded-md bg-slate-100 px-3 text-sm text-neutral-900 placeholder:text-neutral-400 outline-none focus:ring-2 focus:ring-cobalt-300"
+                />
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-1.5">
+              <label className="text-xs font-bold text-neutral-800">
+                Email Address
+              </label>
+              <input
+                type="email"
+                placeholder="john@example.com"
+                className="h-10 rounded-md bg-slate-100 px-3 text-sm text-neutral-900 placeholder:text-neutral-400 outline-none focus:ring-2 focus:ring-cobalt-300"
+              />
+            </div>
+
+            <div className="flex flex-col gap-1.5">
+              <label className="text-xs font-bold text-neutral-800">
+                I&apos;m interested in...
+              </label>
+              <div className="h-10 rounded-md bg-slate-100 px-3 flex items-center justify-between cursor-pointer">
+                <span className="text-sm text-neutral-500">
+                  Study Abroad Programs
+                </span>
+                <ChevronDown className="w-4 h-4 text-neutral-400 shrink-0" />
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-1.5">
+              <label className="text-xs font-bold text-neutral-800">
+                Your Message
+              </label>
+              <textarea
+                placeholder="Tell us about your goals..."
+                className="h-24 rounded-md bg-slate-100 p-3 text-sm text-neutral-900 placeholder:text-neutral-400 outline-none resize-none focus:ring-2 focus:ring-cobalt-300"
+              />
+            </div>
+
+            <button
+              type="button"
+              className="w-full flex items-center justify-center gap-2 bg-cobalt-500 hover:bg-cobalt-600 text-white text-sm font-bold rounded-md py-2.5 cursor-pointer transition-colors"
+            >
+              <Send className="w-4 h-4" />
+              Send Inquiry
+            </button>
+
+              <div className="flex items-center justify-center gap-1.5">
+                <ShieldCheck className="w-3.5 h-3.5 text-neutral-400 shrink-0" />
+                <span className="text-xs text-neutral-400">
+                  Your information is secure.
+                </span>
+              </div>
+            </div>
           </div>
         </div>
 

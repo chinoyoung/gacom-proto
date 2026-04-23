@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Globe, ArrowRight, LayoutDashboard, PenTool, FileText } from 'lucide-react';
+import { Globe, ArrowRight, LayoutDashboard, PenTool, FileText, Handshake } from 'lucide-react';
 import AdminHeader from '@/components/AdminHeader';
 import AdminFooter from '@/components/AdminFooter';
 
@@ -46,6 +46,12 @@ export default function Home() {
                 icon={PenTool}
                 title="Create Listing"
                 description="Multi-step form for drafting and publishing new program listings."
+              />
+              <ModuleListItem
+                href="/marketplace/partner"
+                icon={Handshake}
+                title="Partner Marketplace"
+                description="Landing page for recruiting ambassadors and program partners."
               />
               <ModuleListItem
                 href="#"

@@ -110,13 +110,24 @@ export default function V1_5DetailPage({
         <DescriptionSection program={program} />
       </section>
 
-      {/* Pricing */}
-      <section
-        id="pricing"
-        ref={registerSection("#pricing")}
-        className="w-full max-w-7xl mx-auto mt-4 lg:mt-8"
-      >
-        <PricingSection program={program} />
+      {/* Pricing + Inquiry (side by side on lg+) */}
+      <section className="w-full max-w-7xl mx-auto mt-4 lg:mt-8">
+        <div className="flex flex-col lg:flex-row lg:gap-6 lg:items-start">
+          <div
+            id="pricing"
+            ref={registerSection("#pricing")}
+            className="flex-1 min-w-0"
+          >
+            <PricingSection program={program} />
+          </div>
+          <div
+            id="inquiry"
+            ref={registerSection("#inquiry")}
+            className="lg:w-[400px] shrink-0"
+          >
+            <InquiryFormSection program={program} />
+          </div>
+        </div>
       </section>
 
       {/* Reviews */}
@@ -161,15 +172,6 @@ export default function V1_5DetailPage({
         className="w-full max-w-7xl mx-auto mt-4 lg:mt-8"
       >
         <InterviewsSection />
-      </section>
-
-      {/* Inquiry Form */}
-      <section
-        id="inquiry"
-        ref={registerSection("#inquiry")}
-        className="w-full max-w-7xl mx-auto mt-4 lg:mt-8"
-      >
-        <InquiryFormSection program={program} />
       </section>
 
       {/* Related Programs */}

@@ -38,7 +38,7 @@ export default function V2Hero() {
           </ol>
         </nav>
 
-        <div className="flex flex-col md:flex-row md:items-center gap-10 md:gap-16 py-14 md:py-20">
+        <div className="flex flex-col md:flex-row md:items-center gap-8 md:gap-16 py-10 md:py-8">
           {/* Left: text content */}
           <div className="flex-1 flex flex-col items-center md:items-start text-center md:text-left">
             <h1 className="text-4xl md:text-5xl font-bold text-neutral-900 leading-tight max-w-3xl mb-5">
@@ -70,7 +70,7 @@ export default function V2Hero() {
             <img
               src="/illustrations/partnership.svg"
               alt="Two people shaking hands as business partners"
-              className="w-full max-w-sm md:max-w-none h-auto max-h-[420px] object-contain"
+              className="w-full max-w-xs md:max-w-none h-auto max-h-[320px] object-contain"
             />
           </div>
         </div>

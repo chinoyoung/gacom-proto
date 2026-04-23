@@ -45,7 +45,7 @@ export default function V2WhyAmbassador() {
             <img
               src="/illustrations/influencer.svg"
               alt="Illustration of a travel creator sharing content"
-              className="w-full max-w-xs md:max-w-none h-auto rounded-lg"
+              className="w-full max-w-xs md:max-w-none h-auto rounded-lg bg-roman-200/30 p-5"
             />
           </div>
         </div>

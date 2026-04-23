@@ -39,7 +39,7 @@ export default function V1Hero() {
         </nav>
 
         <div className="flex flex-col md:flex-row md:items-stretch">
-          <div className="flex-1 py-14 md:py-20 md:pr-12 flex flex-col items-center md:items-start text-center md:text-left">
+          <div className="flex-1 py-10 md:py-12 md:pr-12 flex flex-col items-center md:items-start text-center md:text-left">
             <h1 className="text-4xl md:text-5xl font-bold text-neutral-900 leading-tight max-w-3xl mb-5">
               Become a Marketplace Partner
             </h1>
@@ -63,7 +63,7 @@ export default function V1Hero() {
               </a>
             </div>
           </div>
-          <div className="w-full md:w-[45%] md:self-stretch shrink-0 pb-6 md:py-10">
+          <div className="w-full md:w-[45%] md:self-stretch shrink-0 pb-6 md:py-8">
             <img
               src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1200&q=80"
               alt="Two travelers looking at a phone together while exploring abroad"

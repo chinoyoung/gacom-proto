@@ -65,8 +65,8 @@ export default function V2Products() {
             </div>
             <div className="flex-1 p-8 md:p-10 flex flex-col gap-5">
               <div className="flex items-center gap-3">
-                <div className="w-9 h-9 bg-cobalt-500/10 rounded-lg flex items-center justify-center shrink-0">
-                  <ShieldCheck className="w-4.5 h-4.5 text-cobalt-500" />
+                <div className="w-9 h-9 bg-roman-500/10 rounded-lg flex items-center justify-center shrink-0">
+                  <ShieldCheck className="w-4.5 h-4.5 text-roman-500" />
                 </div>
                 <h3 className="text-xl font-semibold text-neutral-800">Travel Insurance</h3>
               </div>
@@ -76,7 +76,7 @@ export default function V2Products() {
               <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 {insuranceFeatures.map((f) => (
                   <li key={f} className="flex items-center gap-2.5">
-                    <Check className="w-4 h-4 text-cobalt-500 shrink-0" />
+                    <Check className="w-4 h-4 text-roman-500 shrink-0" />
                     <span className="text-sm text-slate-700">{f}</span>
                   </li>
                 ))}

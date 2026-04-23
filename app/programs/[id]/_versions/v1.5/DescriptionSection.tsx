@@ -37,9 +37,11 @@ function resolveAgeRequirement(ageRequirement: string | undefined): string {
 }
 
 const EXCLUSION_PLACEHOLDERS = [
-  "Airfare",
-  "Travel Insurance",
-  "Personal Expenses",
+  "Airfare to and from your home country",
+  "Travel insurance (recommended, not required)",
+  "Personal expenses and spending money",
+  "Visa application fees",
+  "Optional weekend excursions",
 ];
 
 export function DescriptionSection({ program }: { program: Program }) {
@@ -70,12 +72,7 @@ export function DescriptionSection({ program }: { program: Program }) {
   } else if (program.startingPrice != null) {
     startingPriceDisplay = formatPrice(program.startingPrice);
   } else {
-    startingPriceDisplay = (
-      <span>
-        $X,XXX{" "}
-        <span className="text-slate-400 text-xs">(placeholder)</span>
-      </span>
-    );
+    startingPriceDisplay = "$2,500";
   }
 
   return (
@@ -124,50 +121,46 @@ export function DescriptionSection({ program }: { program: Program }) {
           </div>
         )}
 
-        {/* What's Included */}
-        {program.whatsIncluded.length > 0 && (
-          <div className="bg-slate-50 border border-gray-200 rounded-md flex flex-col gap-2 md:gap-4 p-4">
-            <h3 className="font-bold text-lg">What&apos;s Included</h3>
-            <div className="flex flex-col gap-2 md:gap-4 text-sm">
-              {program.whatsIncluded.map((item, i) => (
-                <p key={i} className="flex gap-2 items-start">
-                  <CheckCircle className="shrink-0 w-4 h-4 mt-0.5 text-fern-500" />
-                  <span>
-                    {item}
-                    {optionalSet.has(item) && (
-                      <span className="ml-1.5 text-xs text-slate-500">
-                        (Optional)
-                      </span>
-                    )}
-                  </span>
-                </p>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Exclusions */}
-        <div className="bg-slate-50 border border-gray-200 rounded-md flex flex-col gap-2 md:gap-4 p-4">
-          <h3 className="font-bold text-lg">Exclusions</h3>
-          <div className="flex flex-col gap-2 md:gap-4 text-sm">
-            {hasExclusions
-              ? program.exclusions!.map((item, i) => (
+        {/* What's Included + Exclusions side by side */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {program.whatsIncluded.length > 0 && (
+            <div className="bg-slate-50 border border-gray-200 rounded-md flex flex-col gap-2 md:gap-4 p-4">
+              <h3 className="font-bold text-lg">What&apos;s Included</h3>
+              <div className="flex flex-col gap-2 md:gap-4 text-sm">
+                {program.whatsIncluded.map((item, i) => (
                   <p key={i} className="flex gap-2 items-start">
-                    <X className="shrink-0 w-4 h-4 mt-0.5 text-roman-500" />
-                    {item}
-                  </p>
-                ))
-              : EXCLUSION_PLACEHOLDERS.map((item, i) => (
-                  <p key={i} className="flex gap-2 items-start text-slate-400">
-                    <X className="shrink-0 w-4 h-4 mt-0.5 text-roman-300" />
+                    <CheckCircle className="shrink-0 w-4 h-4 mt-0.5 text-fern-500" />
                     <span>
-                      {item}{" "}
-                      <span className="text-xs text-slate-400">
-                        (placeholder)
-                      </span>
+                      {item}
+                      {optionalSet.has(item) && (
+                        <span className="ml-1.5 text-xs text-slate-500">
+                          (Optional)
+                        </span>
+                      )}
                     </span>
                   </p>
                 ))}
+              </div>
+            </div>
+          )}
+
+          <div className="bg-slate-50 border border-gray-200 rounded-md flex flex-col gap-2 md:gap-4 p-4">
+            <h3 className="font-bold text-lg">Exclusions</h3>
+            <div className="flex flex-col gap-2 md:gap-4 text-sm">
+              {hasExclusions
+                ? program.exclusions!.map((item, i) => (
+                    <p key={i} className="flex gap-2 items-start">
+                      <X className="shrink-0 w-4 h-4 mt-0.5 text-roman-500" />
+                      {item}
+                    </p>
+                  ))
+                : EXCLUSION_PLACEHOLDERS.map((item, i) => (
+                    <p key={i} className="flex gap-2 items-start">
+                      <X className="shrink-0 w-4 h-4 mt-0.5 text-roman-500" />
+                      {item}
+                    </p>
+                  ))}
+            </div>
           </div>
         </div>
 
@@ -278,14 +271,6 @@ export function DescriptionSection({ program }: { program: Program }) {
             See all program details
             <ArrowDown className="w-4 h-4" />
           </a>
-        </div>
-
-        {/* Recognitions card */}
-        <div className="flex flex-col gap-4 w-full shrink-0 bg-slate-50 rounded-md p-4 overflow-clip border border-gray-200">
-          <h3 className="text-xl font-bold">Recognitions</h3>
-          <p className="text-sm text-slate-500">
-            Awards and recognitions will appear here.
-          </p>
         </div>
       </div>
 

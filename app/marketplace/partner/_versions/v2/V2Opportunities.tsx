@@ -49,11 +49,11 @@ export default function V2Opportunities() {
             <img
               src="/illustrations/influencer.svg"
               alt="Illustration of a travel creator sharing content with their audience"
-              className="w-full h-56 object-contain bg-cobalt-50/60 p-6"
+              className="w-full h-56 object-contain bg-roman-200/30 p-6"
             />
             <div className="p-8 flex flex-col gap-3">
               <div>
-                <p className="text-xs font-semibold text-cobalt-500 uppercase tracking-wide mb-1">
+                <p className="text-xs font-semibold text-roman-500 uppercase tracking-wide mb-1">
                   Travel Influencers &amp; Creators
                 </p>
                 <h3 className="text-xl font-bold text-neutral-900">Ambassador</h3>

@@ -10,13 +10,14 @@ import { StickyHeader } from "./StickyHeader";
 import { StickyBottomNav, NAV_LINKS } from "./StickyBottomNav";
 import { HeroSection } from "./HeroSection";
 import { DescriptionSection } from "./DescriptionSection";
-import { ReviewsSection } from "./ReviewsSection";
+import { ReviewsSection, type Review } from "./ReviewsSection";
 import { ProgramDetailsSection } from "./ProgramDetailsSection";
 import { buildFaqs, FAQsSection, InterviewsSection, ProgramsSection } from "./SupportSections";
+import TrustBar from "./TrustBar";
 
 interface V1DetailPageProps {
   program: Program;
-  reviews: any[] | undefined;
+  reviews: Review[] | undefined;
   avgRating: number;
 }
 
@@ -94,17 +95,22 @@ export default function V1DetailPage({
       {/* Hero (includes breadcrumbs) */}
       <HeroSection program={program} />
 
-      {/* Description (two-column) */}
-      <section
-        ref={registerSection("#overview")}
-        className="w-full mx-auto max-w-7xl mt-8"
-      >
-        <DescriptionSection
+      {/* Trust bar: stats row below hero */}
+      <div className="w-full mx-auto max-w-7xl mt-6 px-4 xl:px-0">
+        <TrustBar
           program={program}
           avgRating={avgRating}
           reviewCount={reviewCount}
           programCount={programCount}
         />
+      </div>
+
+      {/* Description (two-column) */}
+      <section
+        ref={registerSection("#overview")}
+        className="w-full mx-auto max-w-7xl mt-8"
+      >
+        <DescriptionSection program={program} />
       </section>
 
       {/* Reviews */}

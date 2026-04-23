@@ -26,7 +26,34 @@ function renderStars(ratingOutOf10: number) {
   ));
 }
 
-function ProsCons() {
+const MOCK_PROS_CONS: { pros: string[]; cons: string[] }[] = [
+  {
+    pros: [
+      "Incredible cultural immersion",
+      "Supportive, knowledgeable staff",
+      "Well-organized excursions",
+    ],
+    cons: ["Packed schedule with limited free time"],
+  },
+  {
+    pros: [
+      "Small class sizes",
+      "Amazing host family experience",
+      "Great value for the price",
+    ],
+    cons: ["Housing was a longer commute than expected"],
+  },
+  {
+    pros: [
+      "Life-changing experience",
+      "Made friends from all over the world",
+    ],
+    cons: ["Language barrier was challenging at first", "Wi-Fi was unreliable"],
+  },
+];
+
+function ProsCons({ seed }: { seed: number }) {
+  const data = MOCK_PROS_CONS[seed % MOCK_PROS_CONS.length];
   return (
     <div className="mt-3 pt-3 border-t border-slate-100 grid grid-cols-1 sm:grid-cols-2 gap-3">
       {/* Pros */}
@@ -34,11 +61,13 @@ function ProsCons() {
         <div className="flex items-center gap-1.5 mb-1">
           <ThumbsUp className="w-3.5 h-3.5 text-fern-500" />
           <span className="text-xs font-bold text-fern-600">Pros</span>
-          <span className="text-xs text-slate-400 italic">(placeholder)</span>
         </div>
         <ul className="flex flex-col gap-0.5">
-          <li className="text-xs text-slate-400 italic">Great cultural immersion</li>
-          <li className="text-xs text-slate-400 italic">Supportive program staff</li>
+          {data.pros.map((pro, i) => (
+            <li key={i} className="text-xs text-neutral-700">
+              {pro}
+            </li>
+          ))}
         </ul>
       </div>
 
@@ -47,10 +76,13 @@ function ProsCons() {
         <div className="flex items-center gap-1.5 mb-1">
           <ThumbsDown className="w-3.5 h-3.5 text-roman-500" />
           <span className="text-xs font-bold text-roman-600">Cons</span>
-          <span className="text-xs text-slate-400 italic">(placeholder)</span>
         </div>
         <ul className="flex flex-col gap-0.5">
-          <li className="text-xs text-slate-400 italic">Limited free time</li>
+          {data.cons.map((con, i) => (
+            <li key={i} className="text-xs text-neutral-700">
+              {con}
+            </li>
+          ))}
         </ul>
       </div>
     </div>
@@ -229,7 +261,7 @@ export function ReviewsSection({
       ) : (
         <>
           <div className="flex flex-col gap-4">
-            {pageReviews.map((review) => {
+            {pageReviews.map((review, idx) => {
               const isExpanded = expandedIds.has(review._id);
               const body: string = review.body ?? review.reviewBody ?? "";
               const isLong = body.length > 280;
@@ -294,7 +326,7 @@ export function ReviewsSection({
                         </div>
                       )}
 
-                      <ProsCons />
+                      <ProsCons seed={idx} />
                     </div>
                   </div>
                 </div>
