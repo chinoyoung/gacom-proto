@@ -124,7 +124,7 @@ export function HeroSection({
 
   return (
     <>
-      <section id="overview" className="w-full bg-white py-12">
+      <section id="overview" className="w-full bg-slate-100 py-12">
         <div className="max-w-7xl mx-auto px-4 xl:px-0 flex flex-col-reverse gap-10 lg:flex-row lg:items-start">
           {/* ── Left column: text content ─────────────────────── */}
           <div className="flex-1 flex flex-col gap-5">
@@ -163,18 +163,39 @@ export function HeroSection({
                 </span>
               )}
 
+              {/* Review count badge */}
+              {reviewCount > 0 && (
+                <a
+                  href="#reviews"
+                  className="inline-flex items-center gap-1.5 rounded-full bg-cobalt-500/[0.08] py-1.5 px-3 hover:bg-cobalt-500/[0.14] transition-colors"
+                >
+                  <MessageCircle
+                    className="w-3.5 h-3.5 text-cobalt-500"
+                    aria-hidden="true"
+                  />
+                  <span className="text-xs font-semibold text-cobalt-600">
+                    {reviewCount} {reviewCount === 1 ? "review" : "reviews"}
+                  </span>
+                </a>
+              )}
+
               {/* Years in Operation badge */}
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-neutral-100 py-1.5 px-3">
-                <Clock className="w-3.5 h-3.5 text-neutral-500" aria-hidden="true" />
-                <span className="text-xs font-semibold text-neutral-600">
-                  {yearsInOperation != null ? `${yearsInOperation} Years` : "15 Years"}
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-fern-500/[0.08] py-1.5 px-3">
+                <Clock className="w-3.5 h-3.5 text-fern-500" aria-hidden="true" />
+                <span className="text-xs font-semibold text-fern-600">
+                  {yearsInOperation != null
+                    ? `${yearsInOperation} years of service`
+                    : "15 years of service"}
                 </span>
               </span>
 
               {/* Last Updated badge */}
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-neutral-100 py-1.5 px-3">
-                <CalendarClock className="w-3.5 h-3.5 text-neutral-500" aria-hidden="true" />
-                <span className="text-xs font-semibold text-neutral-600">
+              <span className="inline-flex items-center gap-1.5 py-1.5 px-1">
+                <CalendarClock
+                  className="w-3.5 h-3.5 text-neutral-400"
+                  aria-hidden="true"
+                />
+                <span className="text-xs text-neutral-500">
                   {lastUpdatedLabel}
                 </span>
               </span>
