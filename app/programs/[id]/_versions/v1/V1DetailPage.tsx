@@ -14,6 +14,7 @@ import { ReviewsSection, type Review } from "./ReviewsSection";
 import { ProgramDetailsSection } from "./ProgramDetailsSection";
 import { buildFaqs, FAQsSection, InterviewsSection, ProgramsSection } from "./SupportSections";
 import TrustBar from "./TrustBar";
+import { BottomInquirySection } from "./BottomInquirySection";
 
 interface V1DetailPageProps {
   program: Program;
@@ -81,7 +82,7 @@ export default function V1DetailPage({
   }, []);
 
   return (
-    <main className="flex flex-col text-neutral-800 mb-12">
+    <main className="flex flex-col text-neutral-800">
       {/* Sticky header (fixed top) */}
       <StickyHeader
         program={program}
@@ -167,12 +168,14 @@ export default function V1DetailPage({
       </section>
 
       {/* Articles */}
-      <section className="w-full max-w-7xl mx-auto mt-20 px-4 xl:px-0 [&>section]:mt-0 [&>section]:pt-0 [&>section]:border-t-0">
+      <section className="w-full max-w-7xl mx-auto px-4 xl:px-0 [&>section]:mt-0 [&>section]:pt-0 [&>section]:border-t-0">
         <ProgramArticles />
       </section>
 
+      {/* Bottom full-width inquiry */}
+      <BottomInquirySection program={program} />
+
       {/* Bottom padding to clear sticky nav */}
-      <div className="h-20" />
     </main>
   );
 }
