@@ -7,6 +7,7 @@ import { MoreHorizontal, Check, RotateCcw, Trash2 } from "lucide-react";
 import { api } from "@/convex/_generated/api";
 import { PAGE_ANCHOR_ID, computeScreenCoords } from "./anchor-math";
 import { useCommentLayer } from "./useCommentLayer";
+import { useDevice } from "./use-device";
 import type { CommentThread } from "./types";
 
 interface ThreadPopoverProps {
@@ -27,6 +28,8 @@ function formatRelative(ts: number): string {
 export function ThreadPopover({ thread }: ThreadPopoverProps) {
   const { setActiveThreadId } = useCommentLayer();
   const { user } = useUser();
+  const device = useDevice();
+  const isMobile = device === "mobile";
   const addMessage = useMutation(api.comments.addMessage);
   const resolve = useMutation(api.comments.resolveThread);
   const reopen = useMutation(api.comments.reopenThread);
@@ -97,7 +100,7 @@ export function ThreadPopover({ thread }: ThreadPopoverProps) {
     return () => document.removeEventListener("mousedown", handleOutside);
   }, [setActiveThreadId]);
 
-  if (!position) return null;
+  if (!isMobile && !position) return null;
 
   async function submitReply(e: React.FormEvent) {
     e.preventDefault();
@@ -111,13 +114,28 @@ export function ThreadPopover({ thread }: ThreadPopoverProps) {
     }
   }
 
+  const mobileWrapperClass =
+    "pointer-events-auto fixed z-[70] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2";
+  const desktopWrapperStyle = position
+    ? { left: `${position.x}px`, top: `${position.y + 8}px` }
+    : undefined;
+
   return (
     <div
       ref={containerRef}
-      className="pointer-events-auto fixed z-[70]"
-      style={{ left: `${position.x}px`, top: `${position.y + 8}px` }}
+      className={
+        isMobile ? mobileWrapperClass : "pointer-events-auto fixed z-[70]"
+      }
+      style={isMobile ? undefined : desktopWrapperStyle}
     >
-      <div className="bg-white rounded-xl shadow-lg border border-slate-200 w-80 max-h-[60vh] flex flex-col">
+      <div
+        className={[
+          "bg-white rounded-xl shadow-lg border border-slate-200 flex flex-col",
+          isMobile
+            ? "w-[90vw] max-w-sm max-h-[70vh]"
+            : "w-80 max-h-[60vh]",
+        ].join(" ")}
+      >
         <div className="flex items-center justify-between px-3 py-2 border-b border-slate-100">
           <span className="text-xs font-semibold text-slate-600">
             {thread.status === "resolved" ? "Resolved" : "Open"}

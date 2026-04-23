@@ -5,11 +5,14 @@ import { useMutation } from "convex/react";
 import { useUser } from "@clerk/nextjs";
 import { api } from "@/convex/_generated/api";
 import { useCommentLayer } from "./useCommentLayer";
+import { useDevice } from "./use-device";
 
 export function NewCommentComposer() {
   const { pageKey, draftPin, setDraftPin, setMode, setActiveThreadId } =
     useCommentLayer();
   const { user } = useUser();
+  const device = useDevice();
+  const isMobile = device === "mobile";
   const createThread = useMutation(api.comments.createThread);
   const [body, setBody] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -39,15 +42,23 @@ export function NewCommentComposer() {
 
   return (
     <div
-      className="pointer-events-auto fixed z-[70]"
-      style={{
-        left: `${draftPin.clientX}px`,
-        top: `${draftPin.clientY + 8}px`,
-      }}
+      className={
+        isMobile
+          ? "pointer-events-auto fixed z-[70] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+          : "pointer-events-auto fixed z-[70]"
+      }
+      style={
+        isMobile
+          ? undefined
+          : { left: `${draftPin.clientX}px`, top: `${draftPin.clientY + 8}px` }
+      }
     >
       <form
         onSubmit={submit}
-        className="bg-white rounded-xl shadow-lg border border-slate-200 p-3 w-72"
+        className={[
+          "bg-white rounded-xl shadow-lg border border-slate-200 p-3",
+          isMobile ? "w-[90vw] max-w-sm" : "w-72",
+        ].join(" ")}
       >
         <div className="flex items-center gap-2 mb-2">
           {user?.imageUrl && (
