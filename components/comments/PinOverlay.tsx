@@ -1,14 +1,18 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import type { Id } from "@/convex/_generated/dataModel";
 import { PAGE_ANCHOR_ID, computeScreenCoords } from "./anchor-math";
 import { CommentPin } from "./CommentPin";
-import { useCommentLayer } from "./useCommentLayer";
+import { CommentLayerContext } from "./useCommentLayer";
 import type { CommentThread } from "./types";
 
 interface PinOverlayProps {
   threads: CommentThread[];
+  /** When provided, called instead of the context's setActiveThreadId. For use inside iframe. */
+  onPinClick?: (threadId: Id<"commentThreads">, clientX: number, clientY: number) => void;
+  /** Controlled active thread id — used when onPinClick is provided. */
+  activeThreadId?: Id<"commentThreads"> | null;
 }
 
 type PositionedPin = {
@@ -29,8 +33,15 @@ function findAnchorRect(anchorId: string): DOMRect | null {
   return el ? el.getBoundingClientRect() : null;
 }
 
-export function PinOverlay({ threads }: PinOverlayProps) {
-  const { activeThreadId, setActiveThreadId } = useCommentLayer();
+export function PinOverlay({ threads, onPinClick, activeThreadId: activeThreadIdProp }: PinOverlayProps) {
+  // Guard: context may be absent when mounted inside the iframe (no CommentLayerProvider).
+  const ctx = useContext(CommentLayerContext);
+  const contextActiveThreadId = ctx?.activeThreadId ?? null;
+  const contextSetActiveThreadId = ctx?.setActiveThreadId;
+
+  // When onPinClick is provided, use the controlled prop; otherwise use context.
+  const activeThreadId = onPinClick !== undefined ? (activeThreadIdProp ?? null) : contextActiveThreadId;
+
   const [tick, setTick] = useState(0);
 
   const uniqueAnchorIds = useMemo(
@@ -96,7 +107,13 @@ export function PinOverlay({ threads }: PinOverlayProps) {
               thread={p.thread}
               index={p.index}
               isActive={p.thread._id === activeThreadId}
-              onClick={() => handlePinClick(p.thread._id, activeThreadId, setActiveThreadId)}
+              onClick={(clientX, clientY) => {
+                if (onPinClick) {
+                  onPinClick(p.thread._id, clientX, clientY);
+                } else {
+                  handlePinClick(p.thread._id, activeThreadId, contextSetActiveThreadId!);
+                }
+              }}
             />
           </div>
         ))}

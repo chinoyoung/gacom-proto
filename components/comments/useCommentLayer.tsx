@@ -17,13 +17,15 @@ interface CommentLayerState {
   setMode: (mode: CommentMode) => void;
   activeThreadId: Id<"commentThreads"> | null;
   setActiveThreadId: (id: Id<"commentThreads"> | null) => void;
+  activeThreadCoords: { clientX: number; clientY: number } | null;
+  setActiveThreadCoords: (coords: { clientX: number; clientY: number } | null) => void;
   draftPin: DraftPin | null;
   setDraftPin: (pin: DraftPin | null) => void;
   panelOpen: boolean;
   setPanelOpen: (open: boolean) => void;
 }
 
-const CommentLayerContext = createContext<CommentLayerState | null>(null);
+export const CommentLayerContext = createContext<CommentLayerState | null>(null);
 
 export function CommentLayerProvider({
   pageKey,
@@ -35,6 +37,10 @@ export function CommentLayerProvider({
   const [mode, setMode] = useState<CommentMode>("view");
   const [activeThreadId, setActiveThreadId] =
     useState<Id<"commentThreads"> | null>(null);
+  const [activeThreadCoords, setActiveThreadCoords] = useState<{
+    clientX: number;
+    clientY: number;
+  } | null>(null);
   const [draftPin, setDraftPin] = useState<DraftPin | null>(null);
   const [panelOpen, setPanelOpen] = useState(false);
 
@@ -42,6 +48,7 @@ export function CommentLayerProvider({
     setMode(next);
     if (next === "view") {
       setDraftPin(null);
+      setActiveThreadCoords(null);
     }
   }, []);
 
@@ -52,12 +59,14 @@ export function CommentLayerProvider({
       setMode: setModeWithReset,
       activeThreadId,
       setActiveThreadId,
+      activeThreadCoords,
+      setActiveThreadCoords,
       draftPin,
       setDraftPin,
       panelOpen,
       setPanelOpen,
     }),
-    [pageKey, mode, setModeWithReset, activeThreadId, draftPin, panelOpen],
+    [pageKey, mode, setModeWithReset, activeThreadId, activeThreadCoords, draftPin, panelOpen],
   );
 
   return (

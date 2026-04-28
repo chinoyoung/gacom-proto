@@ -77,3 +77,25 @@ body.comment-mode [data-comment-anchor]:hover {
     outline-offset: -2px;
     background-color: color-mix(in srgb, var(--color-fern-500) 4%, transparent);
 }
+
+.scrollbar-hide {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+html[data-embed="1"],
+html[data-embed="1"] body,
+html[data-embed="1"] body * {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+html[data-embed="1"]::-webkit-scrollbar,
+html[data-embed="1"] body::-webkit-scrollbar,
+html[data-embed="1"] body *::-webkit-scrollbar {
+  display: none;
+}

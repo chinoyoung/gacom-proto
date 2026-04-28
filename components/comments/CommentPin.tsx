@@ -6,7 +6,7 @@ interface CommentPinProps {
   thread: CommentThread;
   index: number;
   isActive: boolean;
-  onClick: () => void;
+  onClick: (clientX: number, clientY: number) => void;
 }
 
 export function CommentPin({ thread, index, isActive, onClick }: CommentPinProps) {
@@ -22,7 +22,7 @@ export function CommentPin({ thread, index, isActive, onClick }: CommentPinProps
     <button
       onClick={(e) => {
         e.stopPropagation();
-        onClick();
+        onClick(e.clientX, e.clientY);
       }}
       className={[
         "pointer-events-auto absolute -translate-x-1/2 -translate-y-full flex items-center justify-center w-7 h-7 rounded-full rounded-bl-none text-white text-xs font-bold ring-2 ring-white shadow-[0_4px_14px_rgba(15,23,42,0.35)] transition-transform hover:scale-125 cursor-pointer",

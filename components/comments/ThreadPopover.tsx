@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useMutation } from "convex/react";
 import { Show, SignInButton, useUser } from "@clerk/nextjs";
 import { MoreHorizontal, Check, RotateCcw, Trash2 } from "lucide-react";
 import { api } from "@/convex/_generated/api";
 import { PAGE_ANCHOR_ID, computeScreenCoords } from "./anchor-math";
+import { CommentLayerContext } from "./useCommentLayer";
 import { useCommentLayer } from "./useCommentLayer";
 import { useDevice } from "./use-device";
 import type { CommentThread } from "./types";
@@ -44,11 +45,20 @@ export function ThreadPopover({ thread }: ThreadPopoverProps) {
   const currentUserId = user?.id;
   const isAuthor = currentUserId === thread.createdBy;
 
-  const [position, setPosition] = useState<{ x: number; y: number } | null>(
-    null,
-  );
+  // When canvas mode is active, the anchor element lives inside the iframe and
+  // cannot be queried from the parent DOM. In that case, use `activeThreadCoords`
+  // from context (set by CommentCanvasChrome when a pin-click is translated from
+  // iframe-local to canvas-local coords). Fall back to DOM-based position lookup
+  // for embed/legacy mode where the anchor is accessible.
+  const ctx = useContext(CommentLayerContext);
+  const activeThreadCoords = ctx?.activeThreadCoords ?? null;
+
+  const [domPosition, setDomPosition] = useState<{ x: number; y: number } | null>(null);
 
   useEffect(() => {
+    // Skip DOM-based position lookup when canvas-mode coords are available.
+    if (activeThreadCoords) return;
+
     const selector =
       thread.anchorId === PAGE_ANCHOR_ID
         ? null
@@ -59,7 +69,7 @@ export function ThreadPopover({ thread }: ThreadPopoverProps) {
         ? document.querySelector<HTMLElement>(selector)
         : document.body;
       if (!el) {
-        setPosition(null);
+        setDomPosition(null);
         return;
       }
       const rect = el.getBoundingClientRect();
@@ -68,7 +78,7 @@ export function ThreadPopover({ thread }: ThreadPopoverProps) {
         thread.relX,
         thread.relY,
       );
-      setPosition({ x, y });
+      setDomPosition({ x, y });
     }
 
     recompute();
@@ -87,7 +97,7 @@ export function ThreadPopover({ thread }: ThreadPopoverProps) {
       window.removeEventListener("scroll", recompute, { capture: true });
       window.removeEventListener("resize", recompute);
     };
-  }, [thread]);
+  }, [thread, activeThreadCoords]);
 
   useEffect(() => {
     function handleOutside(e: MouseEvent) {
@@ -99,6 +109,11 @@ export function ThreadPopover({ thread }: ThreadPopoverProps) {
     document.addEventListener("mousedown", handleOutside);
     return () => document.removeEventListener("mousedown", handleOutside);
   }, [setActiveThreadId]);
+
+  // Resolve the final position: canvas coords take priority over DOM-based coords.
+  const position = activeThreadCoords
+    ? { x: activeThreadCoords.clientX, y: activeThreadCoords.clientY }
+    : domPosition;
 
   if (!isMobile && !position) return null;
 

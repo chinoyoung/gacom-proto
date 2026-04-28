@@ -14,8 +14,8 @@ export const PAGE_VERSIONS: Record<string, PageVersionConfig> = {
   "marketplace-partner": {
     pageId: "marketplace-partner",
     versions: [
-      { id: "v1", label: "Version 1", description: "Split hero with image on right" },
-      { id: "v2", label: "Version 2", description: "Friendly redesign with illustrations" },
+      { id: "v1", label: "v1", description: "Split hero with image on right" },
+      { id: "v2", label: "v2", description: "Friendly redesign with illustrations" },
     ],
     defaultVersion: "v1",
   },
@@ -24,22 +24,22 @@ export const PAGE_VERSIONS: Record<string, PageVersionConfig> = {
     versions: [
       {
         id: "default",
-        label: "Quick Updates",
+        label: "v1",
         description: "GoAbroad-style layout with banner hero and sticky tabs",
       },
       {
         id: "v1.5",
-        label: "Version 1.5",
+        label: "v2",
         description: "Enhanced V1 with pricing breakdown, reviews improvements, and inquiry form",
       },
       {
         id: "v2",
-        label: "Version 2",
+        label: "v3",
         description: "The original layout with split hero and sidebar",
       },
       {
         id: "inquiry",
-        label: "Inquiry",
+        label: "v4",
         description: "Two-column layout with integrated inquiry form",
       },
     ],
