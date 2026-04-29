@@ -17,9 +17,9 @@ export default function V1PartnerPage() {
       <V1InPageNav />
       <V1ValueProps />
       <V1Opportunities />
-      <V1Products />
       <V1WhyAffiliate />
       <V1WhyAmbassador />
+      <V1Products />
       <V1GetStarted />
     </main>
   );

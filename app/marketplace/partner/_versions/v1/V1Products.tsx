@@ -6,7 +6,7 @@ import { esimFeatures, insuranceFeatures } from "./constants";
 export default function V1Products() {
   return (
     <section id="products" aria-labelledby="products-heading" className="scroll-mt-36 bg-white px-4 sm:px-6 md:px-12 lg:px-20 py-16 md:py-24">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-5xl mx-auto">
         <div className="mb-14">
           <h2 id="products-heading" className="text-3xl font-bold text-neutral-800 leading-tight tracking-tight mb-2">What You&#39;ll Offer</h2>
           <p className="text-lg font-medium text-slate-500 mb-3">Products your travelers actually need</p>
@@ -28,8 +28,8 @@ export default function V1Products() {
             </div>
             <div className="w-full md:w-1/2 flex flex-col gap-4">
               <div className="flex items-center gap-3">
-                <div className="w-9 h-9 bg-cobalt-500/10 rounded-lg flex items-center justify-center shrink-0">
-                  <Smartphone className="w-4.5 h-4.5 text-cobalt-500" />
+                <div className="w-9 h-9 bg-roman-500/10 rounded-lg flex items-center justify-center shrink-0">
+                  <Smartphone className="w-4.5 h-4.5 text-roman-500" />
                 </div>
                 <h3 className="text-lg font-semibold text-neutral-800">Travel eSIM</h3>
               </div>
@@ -39,11 +39,18 @@ export default function V1Products() {
               <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-1">
                 {esimFeatures.map((f) => (
                   <li key={f} className="flex items-center gap-2.5">
-                    <Check className="w-4 h-4 text-cobalt-500 shrink-0" />
+                    <Check className="w-4 h-4 text-roman-500 shrink-0" />
                     <span className="text-sm text-slate-700">{f}</span>
                   </li>
                 ))}
               </ul>
+              <a
+                href="#"
+                aria-label="Learn more about Travel eSIM"
+                className="inline-flex items-center justify-center bg-roman-500 text-white font-semibold px-5 py-2.5 rounded-lg hover:bg-roman-600 transition-colors text-sm self-start mt-2"
+              >
+                Learn more about eSIM
+              </a>
             </div>
           </div>
 
@@ -74,6 +81,13 @@ export default function V1Products() {
                   </li>
                 ))}
               </ul>
+              <a
+                href="#"
+                aria-label="Learn more about Travel Insurance"
+                className="inline-flex items-center justify-center bg-cobalt-500 text-white font-semibold px-5 py-2.5 rounded-lg hover:bg-cobalt-600 transition-colors text-sm self-start mt-2"
+              >
+                Learn more about Insurance
+              </a>
             </div>
           </div>
         </div>

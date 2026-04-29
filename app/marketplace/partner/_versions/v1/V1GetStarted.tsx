@@ -10,7 +10,7 @@ export default function V1GetStarted() {
           Ready to partner with us?
         </h2>
         <p className="text-base text-white/90 leading-relaxed mb-10">
-          Choose the path that fits you best. Fill out the form and our team will be in touch.
+          Select a partnership opportunity below to submit your details and our team will be in touch
         </p>
         <div className="flex flex-col sm:flex-row justify-center gap-3">
           <a
