@@ -45,7 +45,8 @@ export default function V1Products() {
                 ))}
               </ul>
               <a
-                href="#"
+                target="_blank"
+                href="https://www.goabroad.com/mygoabroad/esim"
                 aria-label="Learn more about Travel eSIM"
                 className="inline-flex items-center justify-center bg-roman-500 text-white font-semibold px-5 py-2.5 rounded-lg hover:bg-roman-600 transition-colors text-sm self-start mt-2"
               >
@@ -82,7 +83,8 @@ export default function V1Products() {
                 ))}
               </ul>
               <a
-                href="#"
+                target="_blank"
+                href="https://www.goabroad.com/mygoabroad/insurance"
                 aria-label="Learn more about Travel Insurance"
                 className="inline-flex items-center justify-center bg-cobalt-500 text-white font-semibold px-5 py-2.5 rounded-lg hover:bg-cobalt-600 transition-colors text-sm self-start mt-2"
               >
