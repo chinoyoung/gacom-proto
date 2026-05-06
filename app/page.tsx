@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Globe, ArrowRight, LayoutDashboard, PenTool, Handshake } from 'lucide-react';
+import { Globe, ArrowRight, LayoutDashboard, PenTool, Handshake, Smartphone, Palette } from 'lucide-react';
 import AdminHeader from '@/components/AdminHeader';
 import AdminFooter from '@/components/AdminFooter';
 
@@ -48,6 +48,18 @@ export default function Home() {
                 icon={Handshake}
                 title="Partner Marketplace"
                 description="Landing page for recruiting ambassadors and program partners. Feedback wanted on messaging hierarchy and the call-to-action."
+              />
+              <ModuleListItem
+                href="/marketplace/esim"
+                icon={Smartphone}
+                title="eSIM Marketplace"
+                description="Travel eSIM landing page — destinations, plans, and how-it-works. Two design variants available; toggle via the version switcher to compare v1 and v2."
+              />
+              <ModuleListItem
+                href="/brand"
+                icon={Palette}
+                title="Brand Guidelines"
+                description="The design system reference — colors, typography, components, and spacing rules. Source of truth for visual decisions across prototypes."
               />
             </div>
           </div>

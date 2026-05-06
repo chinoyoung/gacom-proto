@@ -8,8 +8,17 @@ Please always consider the mobile version of the app.
 Let's be mindful of our design language and use it consistently.
     - We don't oveuse gradients, shadows, or other effects.
     - We don't overly round corners.
-    - We don't very large buttons.
+    - We don't use very large buttons.
     - We use a simple, clean design language.
+
+## Branding & Design System
+
+When designing or modifying any page, component, or visual element, **always consult the brand guidelines first**:
+
+- **`BRANDING.md`** (repo root) — the written reference: color palette with hex values, typography scale, component class snippets, spacing rules, do/don't.
+- **`/brand`** (live page at `app/brand/`) — the rendered reference: same content as `BRANDING.md` but with live components you can copy patterns from.
+
+Before writing any new UI, read `BRANDING.md` to pick the right tokens (colors, type sizes, spacing, button styles, icon tile patterns, section rhythm). Match the existing system rather than inventing new values. If a design need doesn't fit the system, flag it explicitly rather than silently introducing a new pattern.
 
 ## Design Versioning System
 
