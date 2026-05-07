@@ -130,7 +130,7 @@ function DestinationCard({ dest }: { dest: Destination }) {
           {dest.flag}
         </span>
         {isRegion && (
-          <span className="text-[10px] font-semibold uppercase tracking-wider text-cobalt-600 bg-cobalt-50 px-2 py-0.5 rounded-full">
+          <span className="text-[10px] font-semibold uppercase tracking-wider text-neutral-900 bg-sun-500 px-2 py-0.5 rounded-full">
             Region
           </span>
         )}

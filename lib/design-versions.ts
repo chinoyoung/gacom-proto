@@ -23,7 +23,6 @@ export const PAGE_VERSIONS: Record<string, PageVersionConfig> = {
     pageId: "marketplace-esim",
     versions: [
       { id: "v1", label: "v1", description: "Brand-aligned default following BRANDING.md" },
-      { id: "orig", label: "Orig", description: "Original eSIM landing page" },
     ],
     defaultVersion: "v1",
   },

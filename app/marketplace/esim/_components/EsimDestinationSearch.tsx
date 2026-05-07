@@ -138,7 +138,7 @@ export default function EsimDestinationSearch({
                         <span className="flex items-center gap-2">
                           <span className="font-medium truncate">{dest.name}</span>
                           {dest.type === "region" && (
-                            <span className="text-[10px] font-semibold uppercase tracking-wider text-cobalt-600 bg-cobalt-50 px-1.5 py-0.5 rounded-full shrink-0">
+                            <span className="text-[10px] font-semibold uppercase tracking-wider text-neutral-900 bg-sun-500 px-1.5 py-0.5 rounded-full shrink-0">
                               Region
                             </span>
                           )}

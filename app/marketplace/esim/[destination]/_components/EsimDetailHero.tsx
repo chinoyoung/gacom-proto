@@ -45,12 +45,12 @@ export default function EsimDetailHero({ destination }: { destination: Destinati
   }
 
   return (
-    <section className="bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section aria-labelledby="esim-detail-heading" className="bg-slate-100">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 lg:px-0">
         <nav aria-label="Breadcrumb" className="pt-6 pb-2">
           <Link
             href="/marketplace/esim"
-            className="sm:hidden inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-cobalt-600 transition-colors"
+            className="sm:hidden inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-cobalt-600 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 rounded"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
@@ -59,43 +59,64 @@ export default function EsimDetailHero({ destination }: { destination: Destinati
           </Link>
           <ol className="hidden sm:flex items-center gap-1.5 text-sm text-slate-500 flex-wrap">
             <li>
-              <Link href="/" className="hover:text-cobalt-600 transition-colors">
+              <Link
+                href="/"
+                className="hover:text-cobalt-600 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 rounded"
+              >
                 Home
               </Link>
             </li>
             <li aria-hidden="true" className="text-slate-300">/</li>
             <li>
-              <Link href="/marketplace/esim" className="hover:text-cobalt-600 transition-colors">
-                GoAbroad eSIM
+              <Link
+                href="/marketplace"
+                className="hover:text-cobalt-600 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 rounded"
+              >
+                Marketplace
+              </Link>
+            </li>
+            <li aria-hidden="true" className="text-slate-300">/</li>
+            <li>
+              <Link
+                href="/marketplace/esim"
+                className="hover:text-cobalt-600 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 rounded"
+              >
+                eSIM
               </Link>
             </li>
             <li aria-hidden="true" className="text-slate-300">/</li>
             <li className="text-slate-700 font-medium" aria-current="page">
-              {destination.name} eSIM
+              {destination.name}
             </li>
           </ol>
         </nav>
 
-        <div className="py-8 md:py-12">
-          <div className="flex items-center gap-4 mb-3">
-            <span className="text-4xl md:text-5xl" aria-hidden="true">{destination.flag}</span>
-            <div>
+        <div className="py-10 md:py-16">
+          <p className="text-sm font-semibold uppercase tracking-widest text-cobalt-500 mb-3">
+            Travel eSIM
+          </p>
+          <div className="flex items-start gap-4 mb-3">
+            <span className="text-5xl md:text-6xl leading-none" aria-hidden="true">{destination.flag}</span>
+            <div className="pt-1">
               <div className="flex items-center gap-2 flex-wrap">
-                <h1 className="text-3xl md:text-4xl font-bold text-neutral-900">
+                <h1
+                  id="esim-detail-heading"
+                  className="text-4xl md:text-5xl font-bold text-neutral-900 leading-tight"
+                >
                   {destination.name} eSIM
                 </h1>
                 {destination.type === "region" && (
-                  <span className="text-[10px] font-semibold uppercase tracking-wider text-cobalt-600 bg-cobalt-50 px-2 py-0.5 rounded-full">
+                  <span className="text-[10px] font-semibold uppercase tracking-wider text-neutral-900 bg-sun-500 px-2 py-0.5 rounded-full">
                     Region
                   </span>
                 )}
               </div>
               {destination.type === "region" && destination.coverageNote && (
-                <p className="text-sm text-slate-500 mt-1">Covers {destination.coverageNote}</p>
+                <p className="text-sm text-slate-500 mt-2">Covers {destination.coverageNote}</p>
               )}
             </div>
           </div>
-          <p className="text-base text-slate-600 max-w-3xl mb-8">
+          <p className="text-base leading-relaxed text-slate-600 max-w-3xl mb-10">
             {destination.description}
           </p>
 
@@ -114,7 +135,7 @@ export default function EsimDetailHero({ destination }: { destination: Destinati
                         type="button"
                         onClick={() => updateSelection(idx, packageIdx)}
                         aria-pressed={selected}
-                        className={`px-4 py-2 rounded-full border text-sm font-semibold transition-colors ${
+                        className={`px-4 py-2 rounded-full border text-sm font-semibold transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 ${
                           selected
                             ? "bg-white border-cobalt-500 text-cobalt-600 ring-1 ring-cobalt-500"
                             : "bg-white border-slate-200 text-slate-700 hover:border-slate-300"
@@ -140,7 +161,7 @@ export default function EsimDetailHero({ destination }: { destination: Destinati
                         type="button"
                         onClick={() => updateSelection(durationIdx, idx)}
                         aria-pressed={selected}
-                        className={`px-4 py-2 rounded-full border text-sm font-semibold transition-colors ${
+                        className={`px-4 py-2 rounded-full border text-sm font-semibold transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 ${
                           selected
                             ? "bg-white border-cobalt-500 text-cobalt-600 ring-1 ring-cobalt-500"
                             : "bg-white border-slate-200 text-slate-700 hover:border-slate-300"
@@ -156,7 +177,7 @@ export default function EsimDetailHero({ destination }: { destination: Destinati
 
             <div className="flex flex-col sm:flex-row lg:flex-col xl:flex-row items-start sm:items-end lg:items-end xl:items-end gap-4 lg:gap-6">
               <div>
-                <div className="text-xs font-semibold uppercase tracking-wide text-slate-500 mb-1">
+                <div className="text-xs font-semibold uppercase tracking-widest text-slate-500 mb-1">
                   Total
                 </div>
                 <div className="text-3xl md:text-4xl font-bold text-neutral-900">
@@ -167,13 +188,13 @@ export default function EsimDetailHero({ destination }: { destination: Destinati
               <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
                 <button
                   type="button"
-                  className="inline-flex items-center justify-center border border-cobalt-500 text-cobalt-600 hover:bg-cobalt-50/40 font-semibold px-6 py-3 rounded-full text-sm transition-colors"
+                  className="inline-flex items-center justify-center border border-slate-300 text-neutral-800 hover:bg-white hover:border-slate-400 font-semibold px-7 py-3 rounded-lg text-sm transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500"
                 >
                   Add to Cart
                 </button>
                 <button
                   type="button"
-                  className="inline-flex items-center justify-center bg-cobalt-500 hover:bg-cobalt-600 text-white font-semibold px-6 py-3 rounded-full text-sm transition-colors"
+                  className="inline-flex items-center justify-center bg-cobalt-500 hover:bg-cobalt-600 text-white font-semibold px-7 py-3 rounded-lg text-sm transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500"
                 >
                   Buy Now
                 </button>

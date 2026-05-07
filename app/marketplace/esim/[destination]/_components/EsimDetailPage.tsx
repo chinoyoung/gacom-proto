@@ -3,9 +3,9 @@
 import { Suspense } from "react";
 import type { Destination } from "../../_data/destinations";
 import EsimDetailHero from "./EsimDetailHero";
-import OrigEsimWhyChoose from "../../_versions/orig/OrigEsimWhyChoose";
+import V1EsimWhyChoose from "../../_versions/v1/V1EsimWhyChoose";
 import EsimDetailHowItWorks from "./EsimDetailHowItWorks";
-import OrigEsimFAQ from "../../_versions/orig/OrigEsimFAQ";
+import V1EsimFAQ from "../../_versions/v1/V1EsimFAQ";
 import EsimReadyCTA from "./EsimReadyCTA";
 
 export default function EsimDetailPage({ destination }: { destination: Destination }) {
@@ -14,9 +14,9 @@ export default function EsimDetailPage({ destination }: { destination: Destinati
       <Suspense fallback={<section className="bg-white min-h-[420px]" aria-hidden="true" />}>
         <EsimDetailHero destination={destination} />
       </Suspense>
-      <OrigEsimWhyChoose />
+      <V1EsimWhyChoose />
       <EsimDetailHowItWorks />
-      <OrigEsimFAQ />
+      <V1EsimFAQ />
       <EsimReadyCTA destination={destination} />
     </main>
   );

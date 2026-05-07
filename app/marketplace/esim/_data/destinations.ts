@@ -255,18 +255,18 @@ export const destinations: Destination[] = [
   country("new-zealand", "New Zealand", "🇳🇿", "$6.49", 6.49, "Fast mobile data across New Zealand on Spark and Vodafone NZ. Coverage on both islands and remote regions."),
 ];
 
-const POPULAR_COUNTRY_SLUGS = [
+const POPULAR_SLUGS = [
   "japan",
   "italy",
   "france",
   "spain",
-  "united-kingdom",
+  "europe",
   "thailand",
   "usa",
   "mexico",
 ] as const;
 
-export const popularDestinations: Destination[] = POPULAR_COUNTRY_SLUGS
+export const popularDestinations: Destination[] = POPULAR_SLUGS
   .map((slug) => destinations.find((d) => d.slug === slug))
   .filter((d): d is Destination => d !== undefined);
 
