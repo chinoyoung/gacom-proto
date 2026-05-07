@@ -23,9 +23,9 @@ export default function V1EsimHowItWorks() {
     <section
       id="how-it-works"
       aria-labelledby="how-it-works-heading"
-      className="scroll-mt-36 bg-slate-50 px-4 sm:px-6 md:px-12 lg:px-20 py-16 md:py-24"
+      className="scroll-mt-36 bg-slate-50 py-16 md:py-24"
     >
-      <div className="max-w-5xl mx-auto">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 lg:px-0">
         <div className="flex flex-col md:flex-row gap-12 md:gap-20">
           <div className="flex-1 max-w-md">
             <p className="text-sm font-semibold uppercase tracking-widest text-cobalt-500 mb-3">

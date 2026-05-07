@@ -1,16 +1,48 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import type { Destination } from "../../_data/destinations";
 
+function durationToSlug(label: string) {
+  return label.toLowerCase().replace(/\s+/g, "-");
+}
+
+function packageToSlug(size: string) {
+  return size.toLowerCase().replace(/\s+/g, "");
+}
+
+const DEFAULT_DURATION_IDX = 1;
+const DEFAULT_PACKAGE_IDX = 2;
+
 export default function EsimDetailHero({ destination }: { destination: Destination }) {
-  const [durationIdx, setDurationIdx] = useState(1);
-  const [packageIdx, setPackageIdx] = useState(2);
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const router = useRouter();
+
+  const durationParam = searchParams.get("duration");
+  const dataParam = searchParams.get("data");
+
+  const matchedDurationIdx = destination.durations.findIndex(
+    (d) => durationToSlug(d.label) === durationParam,
+  );
+  const matchedPackageIdx = destination.packages.findIndex(
+    (p) => packageToSlug(p.size) === dataParam,
+  );
+
+  const durationIdx = matchedDurationIdx >= 0 ? matchedDurationIdx : DEFAULT_DURATION_IDX;
+  const packageIdx = matchedPackageIdx >= 0 ? matchedPackageIdx : DEFAULT_PACKAGE_IDX;
 
   const duration = destination.durations[durationIdx];
   const pkg = destination.packages[packageIdx];
   const total = (pkg.price * duration.multiplier).toFixed(2);
+
+  function updateSelection(nextDurationIdx: number, nextPackageIdx: number) {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("duration", durationToSlug(destination.durations[nextDurationIdx].label));
+    params.set("data", packageToSlug(destination.packages[nextPackageIdx].size));
+    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+  }
 
   return (
     <section className="bg-white">
@@ -47,9 +79,21 @@ export default function EsimDetailHero({ destination }: { destination: Destinati
         <div className="py-8 md:py-12">
           <div className="flex items-center gap-4 mb-3">
             <span className="text-4xl md:text-5xl" aria-hidden="true">{destination.flag}</span>
-            <h1 className="text-3xl md:text-4xl font-bold text-neutral-900">
-              {destination.name} eSIM
-            </h1>
+            <div>
+              <div className="flex items-center gap-2 flex-wrap">
+                <h1 className="text-3xl md:text-4xl font-bold text-neutral-900">
+                  {destination.name} eSIM
+                </h1>
+                {destination.type === "region" && (
+                  <span className="text-[10px] font-semibold uppercase tracking-wider text-cobalt-600 bg-cobalt-50 px-2 py-0.5 rounded-full">
+                    Region
+                  </span>
+                )}
+              </div>
+              {destination.type === "region" && destination.coverageNote && (
+                <p className="text-sm text-slate-500 mt-1">Covers {destination.coverageNote}</p>
+              )}
+            </div>
           </div>
           <p className="text-base text-slate-600 max-w-3xl mb-8">
             {destination.description}
@@ -68,7 +112,7 @@ export default function EsimDetailHero({ destination }: { destination: Destinati
                       <button
                         key={d.label}
                         type="button"
-                        onClick={() => setDurationIdx(idx)}
+                        onClick={() => updateSelection(idx, packageIdx)}
                         aria-pressed={selected}
                         className={`px-4 py-2 rounded-full border text-sm font-semibold transition-colors ${
                           selected
@@ -94,7 +138,7 @@ export default function EsimDetailHero({ destination }: { destination: Destinati
                       <button
                         key={p.size}
                         type="button"
-                        onClick={() => setPackageIdx(idx)}
+                        onClick={() => updateSelection(durationIdx, idx)}
                         aria-pressed={selected}
                         className={`px-4 py-2 rounded-full border text-sm font-semibold transition-colors ${
                           selected

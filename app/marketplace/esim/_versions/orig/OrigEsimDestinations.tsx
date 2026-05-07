@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { destinations } from "../../_data/destinations";
+import { popularDestinations } from "../../_data/destinations";
 
 export default function OrigEsimDestinations() {
   return (
@@ -17,7 +17,7 @@ export default function OrigEsimDestinations() {
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-          {destinations.map((dest) => (
+          {popularDestinations.map((dest) => (
             <Link
               key={dest.slug}
               href={`/marketplace/esim/${dest.slug}`}

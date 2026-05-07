@@ -1,11 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { Search } from "lucide-react";
+import EsimDestinationSearch from "../../_components/EsimDestinationSearch";
 
 export default function V1EsimHero() {
   return (
-    <section className="bg-slate-100 overflow-hidden">
+    <section className="bg-slate-100 relative z-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 lg:px-0">
         <nav aria-label="Breadcrumb" className="pt-6 pb-2">
           <Link
@@ -53,17 +53,7 @@ export default function V1EsimHero() {
             <p className="text-lg text-slate-600 max-w-xl leading-relaxed mb-10">
               Get instant mobile data in 200+ countries. No physical SIM, no roaming fees, no hassle. Activate in minutes and travel with confidence.
             </p>
-            <form role="search" onSubmit={(e) => e.preventDefault()} className="w-full max-w-md">
-              <div className="relative">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" aria-hidden="true" />
-                <input
-                  type="search"
-                  placeholder="Search by country or destination"
-                  aria-label="Search by country or destination"
-                  className="w-full pl-12 pr-4 py-3.5 border border-slate-300 rounded-lg bg-white text-sm text-neutral-800 placeholder:text-slate-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus:border-cobalt-500 transition-colors"
-                />
-              </div>
-            </form>
+            <EsimDestinationSearch />
           </div>
           <div className="w-full md:w-[45%] md:self-stretch shrink-0 pb-6 md:py-8">
             <img

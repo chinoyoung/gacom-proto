@@ -46,9 +46,9 @@ export default function V1EsimWhyChoose() {
     <section
       id="why-choose"
       aria-labelledby="why-choose-heading"
-      className="scroll-mt-36 bg-white px-4 sm:px-6 md:px-12 lg:px-20 py-16 md:py-24"
+      className="scroll-mt-36 bg-white py-16 md:py-24"
     >
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-12 md:gap-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 lg:px-0 flex flex-col md:flex-row gap-12 md:gap-20">
         <div className="flex-1 max-w-md">
           <p className="text-sm font-semibold uppercase tracking-widest text-cobalt-500 mb-3">
             Why GoAbroad eSIM

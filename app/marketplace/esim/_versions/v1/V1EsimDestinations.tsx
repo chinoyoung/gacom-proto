@@ -2,16 +2,16 @@
 
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { destinations } from "../../_data/destinations";
+import { popularDestinations } from "../../_data/destinations";
 
 export default function V1EsimDestinations() {
   return (
     <section
       id="destinations"
       aria-labelledby="destinations-heading"
-      className="scroll-mt-36 bg-cobalt-500 px-4 sm:px-6 md:px-12 lg:px-20 py-16 md:py-24"
+      className="scroll-mt-36 bg-cobalt-500 py-16 md:py-24"
     >
-      <div className="max-w-5xl mx-auto flex flex-col items-center text-center">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 lg:px-0 flex flex-col items-center text-center">
         <p className="text-sm font-semibold uppercase tracking-widest text-white/50 mb-3">
           Popular Destinations
         </p>
@@ -26,7 +26,7 @@ export default function V1EsimDestinations() {
         </p>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 w-full text-left">
-          {destinations.map((dest) => (
+          {popularDestinations.map((dest) => (
             <Link
               key={dest.slug}
               href={`/marketplace/esim/${dest.slug}`}
