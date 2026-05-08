@@ -4,6 +4,7 @@ import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Search } from "lucide-react";
 import { destinations } from "../_data/destinations";
+import { DestinationFlag } from "./DestinationFlag";
 
 interface EsimDestinationSearchProps {
   className?: string;
@@ -127,13 +128,11 @@ export default function EsimDestinationSearch({
                       navigateTo(dest.slug);
                     }}
                     className={`flex items-center justify-between gap-3 px-4 py-2.5 cursor-pointer text-sm ${
-                      isActive ? "bg-cobalt-50 text-cobalt-700" : "text-neutral-800"
+                      isActive ? "bg-cobalt-500/10 text-cobalt-700" : "text-neutral-800"
                     }`}
                   >
                     <span className="flex items-center gap-3 min-w-0">
-                      <span className="text-xl leading-none" aria-hidden="true">
-                        {dest.flag}
-                      </span>
+                      <DestinationFlag destination={dest} size="md" />
                       <span className="min-w-0 flex flex-col">
                         <span className="flex items-center gap-2">
                           <span className="font-medium truncate">{dest.name}</span>

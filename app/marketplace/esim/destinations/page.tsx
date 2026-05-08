@@ -70,25 +70,35 @@ export default function AllEsimDestinationsPage() {
             </ol>
           </nav>
 
-          <div className="py-10 md:py-14">
-            <p className="text-sm font-semibold uppercase tracking-widest text-cobalt-500 mb-3">
-              Travel eSIM
-            </p>
-            <h1 className="text-4xl md:text-5xl font-bold text-neutral-900 leading-tight mb-4">
-              All eSIM Destinations
-            </h1>
-            <p className="text-lg text-slate-600 max-w-2xl leading-relaxed mb-8">
-              Browse every country and region we cover. Pick a single country or grab a regional plan for multi-country trips.
-            </p>
-            <EsimDestinationSearch />
-            <p className="mt-5 text-sm text-slate-500">
-              {destinations.length} plans · {regionDestinations.length} regional, {countryDestinations.length} countries
-            </p>
+          <div className="flex flex-col md:flex-row md:items-stretch">
+            <div className="flex-1 py-10 md:py-12 md:pr-12 flex flex-col items-center md:items-start text-center md:text-left">
+              <p className="text-sm font-semibold uppercase tracking-widest text-cobalt-500 mb-4">
+                Travel eSIM
+              </p>
+              <h1 className="text-4xl md:text-5xl font-bold text-neutral-900 leading-tight max-w-3xl mb-5">
+                All eSIM Destinations
+              </h1>
+              <p className="text-lg text-slate-600 max-w-xl leading-relaxed mb-8">
+                Browse every country and region we cover. Pick a single country or grab a regional plan for multi-country trips.
+              </p>
+              <EsimDestinationSearch />
+              <p className="mt-5 text-sm text-slate-500">
+                {destinations.length} plans · {regionDestinations.length} regional, {countryDestinations.length} countries
+              </p>
+            </div>
+            <div className="w-full md:w-[45%] md:self-stretch shrink-0 pb-6 md:py-8">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1200&q=80"
+                alt="World map and travel essentials laid out on a desk"
+                className="w-full h-[300px] object-cover rounded-lg"
+              />
+            </div>
           </div>
         </div>
       </section>
 
-      <section className="bg-slate-50 py-12 md:py-16">
+      <section className="bg-slate-50 py-16 md:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 lg:px-0">
           <Suspense fallback={<div className="min-h-[400px]" aria-hidden="true" />}>
             <AllDestinationsTabs />

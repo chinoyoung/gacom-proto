@@ -99,3 +99,71 @@ html[data-embed="1"] body::-webkit-scrollbar,
 html[data-embed="1"] body *::-webkit-scrollbar {
   display: none;
 }
+
+/* eSIM date picker — enlarged, brand-themed react-day-picker */
+.esim-datepicker-popover .rdp-root {
+  --rdp-accent-color: var(--color-cobalt-500);
+  --rdp-accent-background-color: color-mix(in srgb, var(--color-cobalt-500) 12%, transparent);
+  --rdp-today-color: var(--color-cobalt-500);
+  --rdp-day-height: 48px;
+  --rdp-day-width: 48px;
+  --rdp-day_button-height: 44px;
+  --rdp-day_button-width: 44px;
+  --rdp-day_button-border-radius: 8px;
+  --rdp-disabled-opacity: 0.35;
+  --rdp-outside-opacity: 0.5;
+  --rdp-weekday-opacity: 1;
+  --rdp-font-family: inherit;
+  font-size: 0.95rem;
+  color: var(--color-neutral-800, #1f2937);
+}
+
+.esim-datepicker-popover .rdp-month_caption {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.esim-datepicker-popover .rdp-weekday {
+  color: var(--color-slate-500, #64748b);
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.esim-datepicker-popover .rdp-day_button:hover:not([disabled]):not(.rdp-selected .rdp-day_button) {
+  background-color: var(--color-slate-100, #f1f5f9);
+}
+
+/* Range mode — 2-month layout, tighter cells, distinct middle days */
+.esim-datepicker-popover .esim-range-picker {
+  --rdp-day-height: 40px;
+  --rdp-day-width: 40px;
+  --rdp-day_button-height: 36px;
+  --rdp-day_button-width: 36px;
+}
+
+.esim-datepicker-popover .esim-range-picker .rdp-months {
+  gap: 1.5rem;
+}
+
+.esim-datepicker-popover .esim-range-picker .rdp-range_middle .rdp-day_button {
+  background-color: color-mix(in srgb, var(--color-cobalt-500) 12%, transparent);
+  color: var(--color-cobalt-700);
+  border-radius: 0;
+}
+
+.esim-datepicker-popover .esim-range-picker .rdp-range_start .rdp-day_button,
+.esim-datepicker-popover .esim-range-picker .rdp-range_end .rdp-day_button {
+  background-color: var(--color-cobalt-500);
+  color: white;
+}
+
+@media (max-width: 640px) {
+  .esim-datepicker-popover .esim-range-picker {
+    --rdp-day-height: 36px;
+    --rdp-day-width: 36px;
+    --rdp-day_button-height: 32px;
+    --rdp-day_button-width: 32px;
+  }
+}

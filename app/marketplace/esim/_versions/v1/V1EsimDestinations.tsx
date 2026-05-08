@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { popularDestinations } from "../../_data/destinations";
+import { DestinationFlag } from "../../_components/DestinationFlag";
 
 export default function V1EsimDestinations() {
   return (
@@ -35,9 +36,7 @@ export default function V1EsimDestinations() {
                 className="group bg-white rounded-xl border border-slate-200 p-6 flex flex-col gap-3 hover:border-cobalt-200 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
               >
                 <div className="flex items-start justify-between gap-2">
-                  <span className="text-4xl leading-none" aria-hidden="true">
-                    {dest.flag}
-                  </span>
+                  <DestinationFlag destination={dest} size="lg" />
                   {isRegion && (
                     <span className="text-[10px] font-semibold uppercase tracking-wider text-neutral-900 bg-sun-500 px-2 py-0.5 rounded-full">
                       Region

@@ -5,9 +5,11 @@ import { ArrowRight } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
   countryDestinations,
+  destinations,
   regionDestinations,
   type Destination,
 } from "../_data/destinations";
+import { DestinationFlag } from "./DestinationFlag";
 
 type Tab = "all" | "regions" | "countries";
 
@@ -31,6 +33,10 @@ const sortedCountries = [...countryDestinations].sort((a, b) =>
   a.name.localeCompare(b.name),
 );
 
+const sortedAll = [...destinations].sort((a, b) =>
+  a.name.localeCompare(b.name),
+);
+
 export default function AllDestinationsTabs() {
   const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -51,12 +57,20 @@ export default function AllDestinationsTabs() {
     router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
   }
 
-  const showRegions = active === "all" || active === "regions";
-  const showCountries = active === "all" || active === "countries";
+  const visibleDestinations =
+    active === "regions"
+      ? sortedRegions
+      : active === "countries"
+        ? sortedCountries
+        : sortedAll;
 
   return (
     <div>
-      <div className="flex flex-wrap gap-2 mb-8" role="tablist" aria-label="Filter destinations">
+      <div
+        className="flex flex-wrap gap-2 mb-10"
+        role="tablist"
+        aria-label="Filter destinations"
+      >
         {TABS.map((t) => {
           const isActive = active === t.id;
           return (
@@ -66,14 +80,18 @@ export default function AllDestinationsTabs() {
               role="tab"
               aria-selected={isActive}
               onClick={() => setTab(t.id)}
-              className={`inline-flex items-center gap-2 px-4 py-2 rounded-full border text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 ${
+              className={`inline-flex items-center gap-2 px-4 py-2 rounded-full border text-sm font-semibold transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 ${
                 isActive
                   ? "bg-cobalt-500 border-cobalt-500 text-white"
                   : "bg-white border-slate-200 text-slate-700 hover:border-slate-300"
               }`}
             >
               {t.label}
-              <span className={`text-xs font-semibold ${isActive ? "text-white/80" : "text-slate-500"}`}>
+              <span
+                className={`text-xs font-semibold ${
+                  isActive ? "text-white/80" : "text-slate-500"
+                }`}
+              >
                 {t.count}
               </span>
             </button>
@@ -81,39 +99,13 @@ export default function AllDestinationsTabs() {
         })}
       </div>
 
-      {showRegions && (
-        <div className={showCountries ? "mb-12" : ""}>
-          {active === "all" && (
-            <h2 className="text-xl md:text-2xl font-bold text-neutral-900 mb-4">
-              Regional Plans
-            </h2>
-          )}
-          <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {sortedRegions.map((dest) => (
-              <li key={dest.slug}>
-                <DestinationCard dest={dest} />
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-
-      {showCountries && (
-        <div>
-          {active === "all" && (
-            <h2 className="text-xl md:text-2xl font-bold text-neutral-900 mb-4">
-              Countries
-            </h2>
-          )}
-          <ul className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {sortedCountries.map((dest) => (
-              <li key={dest.slug}>
-                <DestinationCard dest={dest} />
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+      <ul className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        {visibleDestinations.map((dest) => (
+          <li key={dest.slug}>
+            <DestinationCard dest={dest} />
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
@@ -123,12 +115,10 @@ function DestinationCard({ dest }: { dest: Destination }) {
   return (
     <Link
       href={`/marketplace/esim/${dest.slug}`}
-      className="group h-full bg-white rounded-xl border border-slate-200 p-6 flex flex-col gap-3 hover:border-cobalt-300 hover:shadow-sm transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500"
+      className="group h-full bg-white rounded-xl border border-slate-200 p-6 flex flex-col gap-3 hover:border-cobalt-300 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500"
     >
       <div className="flex items-start justify-between gap-2">
-        <span className="text-4xl leading-none" aria-hidden="true">
-          {dest.flag}
-        </span>
+        <DestinationFlag destination={dest} size="lg" />
         {isRegion && (
           <span className="text-[10px] font-semibold uppercase tracking-wider text-neutral-900 bg-sun-500 px-2 py-0.5 rounded-full">
             Region
@@ -136,10 +126,10 @@ function DestinationCard({ dest }: { dest: Destination }) {
         )}
       </div>
       <div>
-        <h3 className="text-base font-semibold text-neutral-800 leading-tight">
+        <h3 className="text-lg font-semibold text-neutral-800 leading-tight">
           {dest.name}
         </h3>
-        <p className="text-sm text-slate-500 mt-0.5">
+        <p className="text-sm leading-relaxed text-slate-500 mt-0.5">
           {isRegion && dest.coverageNote ? `${dest.coverageNote} · ` : ""}from {dest.fromPrice}
         </p>
       </div>
