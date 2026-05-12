@@ -18,7 +18,7 @@ export default function AllEsimDestinationsPage() {
   return (
     <main className="text-neutral-800">
       <section className="bg-slate-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 lg:px-0">
+        <div className="max-w-7xl mx-auto px-6">
           <nav aria-label="Breadcrumb" className="pt-6 pb-2">
             <Link
               href="/marketplace/esim"
@@ -99,7 +99,7 @@ export default function AllEsimDestinationsPage() {
       </section>
 
       <section className="bg-slate-50 py-16 md:py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 lg:px-0">
+        <div className="max-w-7xl mx-auto px-6">
           <Suspense fallback={<div className="min-h-[400px]" aria-hidden="true" />}>
             <AllDestinationsTabs />
           </Suspense>

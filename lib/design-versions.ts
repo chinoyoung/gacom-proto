@@ -33,6 +33,13 @@ export const PAGE_VERSIONS: Record<string, PageVersionConfig> = {
     ],
     defaultVersion: "v1",
   },
+  "marketplace-insurance": {
+    pageId: "marketplace-insurance",
+    versions: [
+      { id: "v1", label: "v1", description: "Brand-aligned default following BRANDING.md" },
+    ],
+    defaultVersion: "v1",
+  },
   "program-detail": {
     pageId: "program-detail",
     versions: [
