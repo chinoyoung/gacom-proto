@@ -14,6 +14,7 @@ For the live interactive reference, see `/brand`.
 - **Mobile-first, always.** Design the 375px breakpoint first, then scale up. Every layout decision must work on mobile before desktop.
 - **Standard tokens, not hex.** Use only the brand color tokens defined in `app/globals.css`. Never hardcode hex values in `className` strings.
 - **Clarity over cleverness.** Use familiar patterns and explicit labels. Predictable interfaces reduce friction and build trust.
+- **Smooth anchor scroll.** `<html className="scroll-smooth">` is set globally in `app/layout.tsx` — any `#hash` link smoothly scrolls. Sections targeted by in-page nav need `scroll-mt-36`.
 
 ---
 
@@ -92,29 +93,49 @@ All type uses the system sans-serif (Geist Sans). No custom font sizes outside t
 
 ### Buttons
 
+All interactive buttons need `cursor-pointer` (Tailwind v4 doesn't apply it by default on `<button>`). Disabled buttons use `cursor-not-allowed`.
+
 ```
 Primary (cobalt):
-bg-cobalt-500 text-white font-semibold px-7 py-3 rounded-lg hover:bg-cobalt-600 transition-colors text-sm
+bg-cobalt-500 text-white font-semibold px-7 py-3 rounded-lg hover:bg-cobalt-600 cursor-pointer transition-colors text-sm
 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500
 
 Secondary (border):
 border border-slate-300 text-neutral-800 font-semibold px-7 py-3 rounded-lg
-hover:bg-white hover:border-slate-400 transition-colors text-sm
+hover:bg-white hover:border-slate-400 cursor-pointer transition-colors text-sm
 
 Roman (ambassador/warm):
-bg-roman-500 text-white font-semibold px-7 py-3 rounded-lg hover:bg-roman-600 transition-colors text-sm
+bg-roman-500 text-white font-semibold px-7 py-3 rounded-lg hover:bg-roman-600 cursor-pointer transition-colors text-sm
 
 Sun accent (small):
-bg-sun-500 text-white font-semibold px-5 py-2.5 rounded-lg hover:bg-sun-600 transition-colors text-sm
+bg-sun-500 text-white font-semibold px-5 py-2.5 rounded-lg hover:bg-sun-600 cursor-pointer transition-colors text-sm
 
 White-on-dark (CTA sections):
-bg-white text-cobalt-700 font-semibold px-7 py-3 rounded-lg ring-1 ring-white/30 hover:bg-slate-100 transition-colors text-sm
+bg-white text-cobalt-700 font-semibold px-7 py-3 rounded-lg ring-1 ring-white/30 hover:bg-slate-100 cursor-pointer transition-colors text-sm
 
 Disabled:
 bg-slate-100 text-slate-400 font-semibold px-7 py-3 rounded-lg cursor-not-allowed text-sm
 ```
 
+### Selectable Cards (form choices)
+
+For multi-choice form buttons (e.g., Coverage Type, US Citizen Yes/No in the insurance form). Tinted background marks the selected state.
+
+```
+Selected:
+border-cobalt-500 bg-cobalt-500/5 text-cobalt-700
+
+Unselected:
+border-slate-200 text-slate-600 hover:border-slate-300
+
+Shared:
+px-3 py-2.5 rounded-lg border cursor-pointer transition-colors
+focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500
+```
+
 ### Icon Tiles
+
+Default size is `w-10 h-10` with `w-5 h-5` icon. Use the smaller `w-8 h-8` / `w-4 h-4` variant inside compact rows (e.g., stat lists, inline metadata). Color follows the surrounding accent.
 
 ```
 Cobalt tile:
@@ -132,6 +153,36 @@ w-10 h-10 bg-sun-500/15 rounded-lg flex items-center justify-center shrink-0
 Fern tile:
 w-10 h-10 bg-fern-500/10 rounded-lg flex items-center justify-center shrink-0
   icon: w-5 h-5 text-fern-600
+
+Compact tile (in stat rows):
+w-8 h-8 bg-cobalt-500/10 rounded-lg flex items-center justify-center shrink-0
+  icon: w-4 h-4 text-cobalt-500
+```
+
+### Status Indicators (check / X)
+
+Always render included/excluded status as a tinted circle with a small icon. Plain ungrounded icons feel weak next to the typography scale.
+
+```
+Included (fern circle):
+w-5 h-5 rounded-full bg-fern-500/10 inline-flex items-center justify-center
+  icon: w-3.5 h-3.5 text-fern-600 strokeWidth={3} (Check from lucide-react)
+
+Excluded (roman circle):
+w-5 h-5 rounded-full bg-roman-500/10 inline-flex items-center justify-center
+  icon: w-3.5 h-3.5 text-roman-500 strokeWidth={3} (X from lucide-react)
+
+Pair with `<span className="sr-only">Included / Not included</span>` for accessibility.
+Default lucide stroke (2) reads as a hairline at this size — `strokeWidth={3}` keeps the mark crisp.
+```
+
+### Tier Badges
+
+Solid pill labels mark plan or product tiers. Background uses the tier accent, text is white. Keep them small and one-line.
+
+```
+inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold text-white
++ tier-specific bg: bg-roman-500 / bg-sun-500 / bg-cobalt-500 / bg-slate-400
 ```
 
 ### Cards
@@ -142,6 +193,62 @@ bg-white rounded-xl p-6 border border-slate-200
 
 Subsection card (in bg-slate-50 sections):
 bg-white rounded-lg border border-slate-200 p-8
+```
+
+When a comparison/data table sits beside cards in the same section, give its wrapper `p-6` so its outer padding matches the cards' rhythm — cell padding (`py-3 px-4`) is unchanged.
+
+### Stat Row
+
+A compact label + value row prefixed by a small icon tile. Used in summary cards (e.g., Quote Details on the insurance quote page) to surface key facts without heavy framing.
+
+```
+<div className="flex items-start gap-3">
+  <span className="w-8 h-8 rounded-lg bg-cobalt-500/10 flex items-center justify-center shrink-0 mt-0.5">
+    <Icon className="w-4 h-4 text-cobalt-500" />
+  </span>
+  <div className="min-w-0">
+    <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">{label}</p>
+    <p className="text-sm font-bold text-neutral-800 mt-0.5 leading-snug">{value}</p>
+  </div>
+</div>
+```
+
+### Featured Stat Card
+
+A highlighted stat sitting alongside Stat Rows when one fact deserves more weight (e.g., Duration on the quote page). Uses the cobalt tint family for prominence without competing with primary CTAs.
+
+```
+bg-cobalt-500/10 border border-cobalt-500/20 rounded-lg px-5 py-4 flex flex-col gap-1
+  Eyebrow row: <Icon w-4 h-4 text-cobalt-600 /> + <span className="text-xs font-semibold uppercase tracking-wider text-cobalt-700">
+  Value:       text-2xl font-bold text-neutral-800
+  Caption:     text-xs text-slate-500 leading-relaxed
+```
+
+### Modal Dialog
+
+Used for in-place edits and detail views (e.g., Edit Information, View Plan Details on the insurance quote page).
+
+```
+Backdrop:
+fixed inset-0 z-50 flex items-start sm:items-center justify-center p-4 sm:p-6
+bg-neutral-900/50 overflow-y-auto
++ click-outside closes (compare e.target === e.currentTarget)
+
+Card:
+relative w-full max-w-lg bg-white rounded-xl border border-slate-200
++ for long content: max-h-[calc(100vh-4rem)] overflow-hidden flex flex-col
+  (scroll inside a child <div className="overflow-y-auto ...">)
+
+Close button (top-right corner):
+absolute top-2 right-2 z-10 w-9 h-9 inline-flex items-center justify-center rounded-lg
+text-slate-500 hover:bg-slate-100 hover:text-neutral-800 cursor-pointer transition-colors
+focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500
+
+Behavior:
+- aria-modal="true", aria-labelledby="<title-id>"
+- ESC closes (document keydown listener while open)
+- Body scroll locks while open (`document.body.style.overflow = "hidden"`)
+- Restore previous overflow on close
 ```
 
 ### Numbered Lists
@@ -157,6 +264,14 @@ w-10 h-10 bg-cobalt-500 rounded-lg flex items-center justify-center shrink-0 mt-
 Title: text-lg font-semibold text-neutral-800 mb-1
 Body: text-sm text-slate-500 leading-relaxed
 ```
+
+### Shared Components
+
+When a pattern is used in 2+ features, lift it to `components/` (not a route's `_components/`).
+
+| Component | Path | Use |
+|---|---|---|
+| `DateRangePicker` | `components/DateRangePicker.tsx` | Trip start/end picker. Single button trigger with `start → end` and total days, popover calendar (react-day-picker). Used by esim hero and insurance quote form. |
 
 ---
 
@@ -211,19 +326,23 @@ Top-to-bottom order per page:
 - Keep section padding consistent: `px-4 sm:px-6 md:px-12 lg:px-20 py-16 md:py-24`.
 - Add `aria-labelledby` to every section pointing at its `h2` id.
 - Use `focus-visible:ring-2 focus-visible:ring-cobalt-500` on interactive elements.
+- Add `cursor-pointer` to every clickable `<button>` (Tailwind v4 doesn't apply it by default).
 - Keep buttons modest: `px-7 py-3` or `px-5 py-2.5`.
-- Use `rounded-lg` for most elements; `rounded-xl` for cards only.
+- Use `rounded-lg` for most elements; `rounded-xl` for cards only; `rounded-full` only on tier badges and status indicator circles.
+- Render included/excluded status as tinted circles (see Status Indicators), not bare icons.
 - Write alt text on all images.
+- Lift any pattern used in 2+ features to `components/`.
 
 ### Don't
 
 - Hardcode hex colors in `className` strings.
 - Add gradients unless strictly necessary.
 - Use oversized buttons or excessive padding.
-- Over-round corners (`rounded-full` on non-pill elements, `rounded-2xl` on cards).
+- Over-round corners (`rounded-2xl` on cards).
 - Add `box-shadow` outside of the existing utility set.
 - Introduce new color values not defined in `globals.css`.
 - Skip mobile layouts or test only at wide viewports.
+- Open a feature-private component (`route/_components/`) from another route — extract it first.
 
 ---
 

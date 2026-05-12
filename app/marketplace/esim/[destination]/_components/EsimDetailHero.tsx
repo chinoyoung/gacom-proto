@@ -6,7 +6,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { RefreshCw, Smartphone, Wifi, Zap } from "lucide-react";
 import EsimBuyModal from "./EsimBuyModal";
 import EsimCoverageModal from "./EsimCoverageModal";
-import EsimDateRangePicker from "./EsimDateRangePicker";
+import DateRangePicker from "@/components/DateRangePicker";
 import { DestinationFlag } from "../../_components/DestinationFlag";
 import type { Destination } from "../../_data/destinations";
 
@@ -238,7 +238,7 @@ export default function EsimDetailHero({ destination }: { destination: Destinati
                 <div className="block text-sm font-semibold text-neutral-900 mb-2">
                   Travel dates
                 </div>
-                <EsimDateRangePicker
+                <DateRangePicker
                   startValue={start}
                   endValue={end}
                   min={today}

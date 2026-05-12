@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Check, X } from "lucide-react";
+import { Check, ChevronsUp, X } from "lucide-react";
 import { insurancePlans, comparisonRows } from "../../_data/plans";
 
 export default function V1InsurancePlans() {
@@ -75,7 +75,7 @@ export default function V1InsurancePlans() {
           ))}
         </div>
 
-        <div className="mt-8 bg-white rounded-xl border border-slate-200 overflow-x-auto w-full">
+        <div className="mt-8 bg-white rounded-xl border border-slate-200 overflow-x-auto w-full p-6">
           <table className="w-full text-left min-w-2xl table-fixed">
             <thead>
               <tr className="border-b border-slate-200">
@@ -121,10 +121,12 @@ export default function V1InsurancePlans() {
                     if (row.excluded?.includes(plan.id)) {
                       return (
                         <td key={plan.id} className="py-3 px-4 text-center">
-                          <X
-                            className="w-4 h-4 text-roman-500 inline-block"
+                          <span
+                            className="w-5 h-5 rounded-full bg-roman-500/10 inline-flex items-center justify-center"
                             aria-hidden="true"
-                          />
+                          >
+                            <X className="w-3.5 h-3.5 text-roman-500" strokeWidth={3} />
+                          </span>
                           <span className="sr-only">Not included</span>
                         </td>
                       );
@@ -133,10 +135,11 @@ export default function V1InsurancePlans() {
                       return (
                         <td key={plan.id} className="py-3 px-4 text-center">
                           <span
-                            className="inline-block px-1.5 py-0.5 rounded text-[11px] font-semibold uppercase tracking-wider bg-fern-500/15 text-fern-700"
+                            className="inline-flex items-center gap-1 text-xs font-semibold text-fern-700"
                             aria-hidden="true"
                           >
-                            2x
+                            <ChevronsUp className="w-3.5 h-3.5" />
+                            2x the coverage limit
                           </span>
                           <span className="sr-only">Included, 2x the coverage limit</span>
                         </td>
@@ -144,10 +147,12 @@ export default function V1InsurancePlans() {
                     }
                     return (
                       <td key={plan.id} className="py-3 px-4 text-center">
-                        <Check
-                          className="w-4 h-4 text-fern-600 inline-block"
+                        <span
+                          className="w-5 h-5 rounded-full bg-fern-500/10 inline-flex items-center justify-center"
                           aria-hidden="true"
-                        />
+                        >
+                          <Check className="w-3.5 h-3.5 text-fern-600" strokeWidth={3} />
+                        </span>
                         <span className="sr-only">Included</span>
                       </td>
                     );

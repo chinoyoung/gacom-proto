@@ -1,13 +1,40 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import { ChevronDown } from "lucide-react";
+import DateRangePicker from "@/components/DateRangePicker";
 import { countries } from "../_data/countries";
 
 type CoverageType = "non-us" | "us";
 type CitizenType = "yes" | "no";
 
-export default function InsuranceQuoteForm() {
+function todayISO(): string {
+  const d = new Date();
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
+}
+
+function addDaysISO(iso: string, days: number): string {
+  const d = new Date(iso + "T00:00:00");
+  d.setDate(d.getDate() + days);
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
+}
+
+const DEFAULT_TRIP_DAYS = 14;
+
+interface InsuranceQuoteFormProps {
+  onSubmitted?: () => void;
+  bare?: boolean;
+}
+
+export default function InsuranceQuoteForm({ onSubmitted, bare }: InsuranceQuoteFormProps = {}) {
+  const router = useRouter();
   const [destination, setDestination] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(-1);
@@ -15,6 +42,9 @@ export default function InsuranceQuoteForm() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [coverageType, setCoverageType] = useState<CoverageType>("non-us");
   const [usCitizen, setUsCitizen] = useState<CitizenType>("yes");
+  const today = todayISO();
+  const [startDate, setStartDate] = useState(today);
+  const [endDate, setEndDate] = useState(addDaysISO(today, DEFAULT_TRIP_DAYS - 1));
 
   const filtered = useMemo(() => {
     const q = destination.trim().toLowerCase();
@@ -57,16 +87,21 @@ export default function InsuranceQuoteForm() {
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const plansSection = document.getElementById("plans");
-    if (plansSection) {
-      plansSection.scrollIntoView({ behavior: "smooth" });
+    if (onSubmitted) {
+      onSubmitted();
+      return;
     }
+    router.push("/marketplace/insurance/quote");
   }
 
   return (
     <form
       onSubmit={handleSubmit}
-      className="w-full bg-white border border-slate-200 rounded-xl p-5"
+      className={
+        bare
+          ? "w-full"
+          : "w-full bg-white border border-slate-200 rounded-xl p-5"
+      }
     >
       <div className="flex flex-col gap-4">
         <div>
@@ -148,30 +183,15 @@ export default function InsuranceQuoteForm() {
           <p className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5">
             Travel dates
           </p>
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <label htmlFor="departure-date" className="sr-only">
-                Departure date
-              </label>
-              <input
-                id="departure-date"
-                type="date"
-                aria-label="Departure date"
-                className="w-full px-3 py-3 border border-slate-300 rounded-lg bg-white text-sm text-neutral-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus:border-cobalt-500 transition-colors"
-              />
-            </div>
-            <div>
-              <label htmlFor="return-date" className="sr-only">
-                Return date
-              </label>
-              <input
-                id="return-date"
-                type="date"
-                aria-label="Return date"
-                className="w-full px-3 py-3 border border-slate-300 rounded-lg bg-white text-sm text-neutral-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus:border-cobalt-500 transition-colors"
-              />
-            </div>
-          </div>
+          <DateRangePicker
+            startValue={startDate}
+            endValue={endDate}
+            min={today}
+            onChange={({ start, end }) => {
+              setStartDate(start);
+              setEndDate(end);
+            }}
+          />
         </div>
 
         <div>
@@ -182,7 +202,7 @@ export default function InsuranceQuoteForm() {
             <button
               type="button"
               onClick={() => setCoverageType("non-us")}
-              className={`px-3 py-2.5 rounded-lg border text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 ${
+              className={`px-3 py-2.5 rounded-lg border text-left cursor-pointer transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 ${
                 coverageType === "non-us"
                   ? "border-cobalt-500 bg-cobalt-500/5 text-cobalt-700"
                   : "border-slate-200 text-slate-600 hover:border-slate-300"
@@ -196,7 +216,7 @@ export default function InsuranceQuoteForm() {
             <button
               type="button"
               onClick={() => setCoverageType("us")}
-              className={`px-3 py-2.5 rounded-lg border text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 ${
+              className={`px-3 py-2.5 rounded-lg border text-left cursor-pointer transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 ${
                 coverageType === "us"
                   ? "border-cobalt-500 bg-cobalt-500/5 text-cobalt-700"
                   : "border-slate-200 text-slate-600 hover:border-slate-300"
@@ -218,7 +238,7 @@ export default function InsuranceQuoteForm() {
             <button
               type="button"
               onClick={() => setUsCitizen("yes")}
-              className={`px-3 py-2.5 rounded-lg border text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 ${
+              className={`px-3 py-2.5 rounded-lg border text-sm font-semibold cursor-pointer transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 ${
                 usCitizen === "yes"
                   ? "border-cobalt-500 bg-cobalt-500/5 text-cobalt-700"
                   : "border-slate-200 text-slate-600 hover:border-slate-300"
@@ -229,7 +249,7 @@ export default function InsuranceQuoteForm() {
             <button
               type="button"
               onClick={() => setUsCitizen("no")}
-              className={`px-3 py-2.5 rounded-lg border text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 ${
+              className={`px-3 py-2.5 rounded-lg border text-sm font-semibold cursor-pointer transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 ${
                 usCitizen === "no"
                   ? "border-cobalt-500 bg-cobalt-500/5 text-cobalt-700"
                   : "border-slate-200 text-slate-600 hover:border-slate-300"
@@ -242,7 +262,7 @@ export default function InsuranceQuoteForm() {
 
         <button
           type="submit"
-          className="w-full bg-cobalt-500 text-white font-semibold px-7 py-3 rounded-lg hover:bg-cobalt-600 transition-colors text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500"
+          className="w-full bg-cobalt-500 text-white font-semibold px-7 py-3 rounded-lg hover:bg-cobalt-600 cursor-pointer transition-colors text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500"
         >
           Get Quote
         </button>

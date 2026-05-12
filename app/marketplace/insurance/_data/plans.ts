@@ -23,6 +23,169 @@ export interface ComparisonRow {
   excluded?: PlanId[];
 }
 
+export interface PlanDetailRow {
+  label: string;
+  value: string | string[];
+}
+
+export interface PlanDetails {
+  description: string;
+  rows: PlanDetailRow[];
+}
+
+const sharedDescription =
+  "For all clients, we review existing claims data (if available for new clients) and current policy details to explain where claims are occurring and suggest plan modifications to better support your participants.";
+
+export const planDetails: Record<PlanId, PlanDetails> = {
+  "premium-plus": {
+    description: sharedDescription,
+    rows: [
+      { label: "Deductible", value: "$0" },
+      { label: "Coverage Limit", value: "$1,000,000" },
+      { label: "Coinsurance", value: "100% Coinsurance" },
+      { label: "Urgent Care Visit Copayment", value: "$25" },
+      { label: "Walk in Clinic Visit Copayment", value: "$10" },
+      {
+        label: "Emergency Room Visit",
+        value: ["Injury: $0 deductible", "Illness: $250 deductible, waived if admitted"],
+      },
+      { label: "Hospitalization Room & Board + Intensive Care", value: "100%" },
+      { label: "Emergency Medical Evacuation", value: "$100,000" },
+      { label: "Repatriation for Medical Treatment", value: "$50,000" },
+      { label: "Emergency Reunion", value: "$30,000" },
+      { label: "Terrorism Benefits", value: "$50,000 Maximum Limit" },
+      { label: "Political Evacuation & Repatriation", value: "$10,000" },
+      { label: "Return of Mortal Remains", value: "$50,000" },
+      { label: "Accidental Death & Dismemberment", value: "$25,000" },
+      {
+        label: "Dental Care",
+        value: [
+          "Period of Coverage Limit: $350 (Treatment due to Unexpected pain to sound, natural teeth)",
+          "Period of Coverage Limit per Injury: $500 (Non-emergency Treatment by a Dental Provider due to an Accident)",
+        ],
+      },
+      { label: "Teladoc Health Services", value: "Included" },
+      { label: "DialCare Telemedicine Simplified", value: "Included" },
+      {
+        label: "Baggage Theft & Loss",
+        value: ["$1,500 Maximum Limit", "$250 per item limit"],
+      },
+      {
+        label: "Personal Liability",
+        value: [
+          "Combined Maximum Limit: $25,000",
+          "Injury to third person:",
+          "• Per Injury Deductible: $100",
+          "Damage to third person's property:",
+          "• Per damage Deductible: $100",
+        ],
+      },
+    ],
+  },
+  premium: {
+    description: sharedDescription,
+    rows: [
+      { label: "Deductible", value: "$100" },
+      { label: "Coverage Limit", value: "$500,000" },
+      { label: "Coinsurance", value: "100% Coinsurance" },
+      { label: "Urgent Care Visit Copayment", value: "$25" },
+      { label: "Walk in Clinic Visit Copayment", value: "$10" },
+      {
+        label: "Emergency Room Visit",
+        value: ["Injury: $0 deductible", "Illness: $250 deductible, waived if admitted"],
+      },
+      { label: "Hospitalization Room & Board + Intensive Care", value: "100%" },
+      { label: "Emergency Medical Evacuation", value: "$50,000" },
+      { label: "Repatriation for Medical Treatment", value: "$25,000" },
+      { label: "Emergency Reunion", value: "$15,000" },
+      { label: "Terrorism Benefits", value: "$25,000 Maximum Limit" },
+      { label: "Political Evacuation & Repatriation", value: "$10,000" },
+      { label: "Return of Mortal Remains", value: "$25,000" },
+      { label: "Accidental Death & Dismemberment", value: "$15,000" },
+      {
+        label: "Dental Care",
+        value: [
+          "Period of Coverage Limit: $350 (Treatment due to Unexpected pain to sound, natural teeth)",
+          "Period of Coverage Limit per Injury: $500 (Non-emergency Treatment by a Dental Provider due to an Accident)",
+        ],
+      },
+      { label: "Teladoc Health Services", value: "Included" },
+      { label: "DialCare Telemedicine Simplified", value: "Included" },
+      {
+        label: "Baggage Theft & Loss",
+        value: ["$1,000 Maximum Limit", "$250 per item limit"],
+      },
+      {
+        label: "Personal Liability",
+        value: [
+          "Combined Maximum Limit: $25,000",
+          "Injury to third person:",
+          "• Per Injury Deductible: $100",
+          "Damage to third person's property:",
+          "• Per damage Deductible: $100",
+        ],
+      },
+    ],
+  },
+  standard: {
+    description: sharedDescription,
+    rows: [
+      { label: "Deductible", value: "$50" },
+      { label: "Coverage Limit", value: "$250,000" },
+      { label: "Coinsurance", value: "100% Coinsurance" },
+      { label: "Urgent Care Visit Copayment", value: "$50" },
+      { label: "Walk in Clinic Visit Copayment", value: "$25" },
+      {
+        label: "Emergency Room Visit",
+        value: ["Injury: $50 deductible", "Illness: $250 deductible, waived if admitted"],
+      },
+      { label: "Hospitalization Room & Board + Intensive Care", value: "100%" },
+      { label: "Emergency Medical Evacuation", value: "$25,000" },
+      { label: "Repatriation for Medical Treatment", value: "$10,000" },
+      { label: "Emergency Reunion", value: "$5,000" },
+      { label: "Terrorism Benefits", value: "Not included" },
+      { label: "Political Evacuation & Repatriation", value: "$10,000" },
+      { label: "Return of Mortal Remains", value: "$15,000" },
+      { label: "Accidental Death & Dismemberment", value: "$10,000" },
+      { label: "Dental Care", value: "Not included" },
+      { label: "Teladoc Health Services", value: "Included" },
+      { label: "DialCare Telemedicine Simplified", value: "Included" },
+      {
+        label: "Baggage Theft & Loss",
+        value: ["$500 Maximum Limit", "$100 per item limit"],
+      },
+      { label: "Personal Liability", value: "Not included" },
+    ],
+  },
+  saver: {
+    description: sharedDescription,
+    rows: [
+      { label: "Deductible", value: "$100" },
+      { label: "Coverage Limit", value: "$100,000" },
+      { label: "Coinsurance", value: "80% Coinsurance" },
+      { label: "Urgent Care Visit Copayment", value: "$50" },
+      { label: "Walk in Clinic Visit Copayment", value: "$25" },
+      {
+        label: "Emergency Room Visit",
+        value: ["Injury: $100 deductible", "Illness: $250 deductible, waived if admitted"],
+      },
+      { label: "Hospitalization Room & Board + Intensive Care", value: "100%" },
+      { label: "Emergency Medical Evacuation", value: "$10,000" },
+      { label: "Repatriation for Medical Treatment", value: "$5,000" },
+      { label: "Emergency Reunion", value: "$5,000" },
+      { label: "Terrorism Benefits", value: "Not included" },
+      { label: "Political Evacuation & Repatriation", value: "$10,000" },
+      { label: "Return of Mortal Remains", value: "$10,000" },
+      { label: "Accidental Death & Dismemberment", value: "$5,000" },
+      { label: "Dental Care", value: "Not included" },
+      { label: "Teladoc Health Services", value: "Included" },
+      { label: "DialCare Telemedicine Simplified", value: "Included" },
+      { label: "Baggage Theft & Loss", value: "Not included" },
+      { label: "Personal Liability", value: "Not included" },
+    ],
+  },
+};
+
 export const insurancePlans: InsurancePlan[] = [
   {
     id: "premium-plus",
