@@ -6,6 +6,7 @@ import { useState } from "react";
 import { usePathname } from "next/navigation";
 import { ChevronDown, Menu, X, LayoutDashboard } from "lucide-react";
 import { SignInButton, UserButton, Show, useUser } from "@clerk/nextjs";
+import { useDesignVersion } from "@/lib/use-design-version";
 
 const navLinks = [
     { name: "Program Types", href: "#", hasDropdown: true },
@@ -23,6 +24,10 @@ export default function Header() {
     const editProgramHref = programEditMatch
         ? `/admin/create-listing?slug=${programEditMatch[1]}`
         : null;
+
+    // V5 provides its own StickyProgramHeader; hide the site header to avoid stacking.
+    const { version } = useDesignVersion(programEditMatch ? "program-detail" : "__none__");
+    if (programEditMatch && version === "v5") return null;
 
     return (
         <header className="sticky top-0 z-50 w-full bg-white border-b border-slate-100 shadow-sm">

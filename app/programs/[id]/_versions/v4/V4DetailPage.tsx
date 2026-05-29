@@ -27,7 +27,7 @@ import PricingBar from "./PricingBar";
 import InquiryReviews from "./InquiryReviews";
 import InquiryFormSection from "./InquiryFormSection";
 
-interface InquiryDetailPageProps {
+interface V4DetailPageProps {
   program: Program;
   reviews: any[] | undefined;
   avgRating: number;
@@ -88,11 +88,11 @@ function buildDetailItems(program: Program): DetailItem[] {
   return items.filter(Boolean) as DetailItem[];
 }
 
-export default function InquiryDetailPage({
+export default function V4DetailPage({
   program,
   reviews,
   avgRating,
-}: InquiryDetailPageProps) {
+}: V4DetailPageProps) {
   const descriptionParagraphs = program.description
     ? program.description.split(/\n\n+/).filter(Boolean)
     : [];

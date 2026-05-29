@@ -26,13 +26,13 @@ function RatingStars({ rating }: { rating: number }) {
     <div className="flex flex-col items-center gap-1">
       <p className="text-2xl font-bold text-slate-800">
         {rating.toFixed(1)}
-        <span className="text-base font-semibold text-slate-400">/10</span>
+        <span className="text-base font-semibold text-slate-400">/5</span>
       </p>
       <div className="flex items-center gap-0.5">
         {[1, 2, 3, 4, 5].map((star) => {
-          const starValue = star * 2;
+          const starValue = star;
           const filled = rating >= starValue;
-          const half = !filled && rating >= starValue - 1;
+          const half = !filled && rating >= starValue - 0.5;
           return (
             <Star
               key={star}

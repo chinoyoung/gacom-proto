@@ -86,8 +86,8 @@ export default defineSchema({
     date: v.string(), // e.g. "February 04, 2025"
     reviewTitle: v.string(),
     body: v.string(),
-    overallRating: v.number(), // 1–10
-    // Category ratings (each 1–10)
+    overallRating: v.number(), // 1–5
+    // Category ratings (each 1–5)
     academicsRating: v.number(),
     livingSituationRating: v.number(),
     culturalImmersionRating: v.number(),

@@ -4,13 +4,13 @@ import {
   DollarSign,
   Star,
   MessageSquare,
-  Award,
+  Building2,
   FileText,
   BadgeCheck,
 } from "lucide-react";
 import type { Program } from "../../_components/types";
 
-interface TrustBarProps {
+interface V5TrustBarProps {
   program: Program;
   avgRating: number;
   reviewCount: number;
@@ -25,12 +25,12 @@ interface StatItem {
   label: string;
 }
 
-export default function TrustBar({
+export default function V5TrustBar({
   program,
   avgRating,
   reviewCount,
   programCount,
-}: TrustBarProps) {
+}: V5TrustBarProps) {
   const ratingValue = avgRating > 0 ? `${avgRating.toFixed(1)} / 5` : "N/A";
   const priceValue =
     program.startingPrice != null
@@ -38,10 +38,10 @@ export default function TrustBar({
       : program.cost ?? "Contact";
 
   const currentYear = new Date().getFullYear();
-  const years =
+  const establishedYear =
     program.yearFounded && program.yearFounded <= currentYear
-      ? currentYear - program.yearFounded
-      : 12;
+      ? program.yearFounded
+      : currentYear - 12;
 
   const stats: StatItem[] = [
     {
@@ -60,7 +60,7 @@ export default function TrustBar({
     },
     {
       icon: Star,
-      iconClass: "text-sun-500",
+      iconClass: "text-sun-500 fill-current",
       bgClass: "bg-sun-500/10",
       value: ratingValue,
       label: "Student rating",
@@ -80,16 +80,16 @@ export default function TrustBar({
       label: programCount === 1 ? "Program" : "Programs",
     },
     {
-      icon: Award,
+      icon: Building2,
       iconClass: "text-cobalt-500",
       bgClass: "bg-cobalt-500/10",
-      value: `${years} ${years === 1 ? "yr" : "yrs"}`,
-      label: "In service",
+      value: establishedYear.toString(),
+      label: "Year established",
     },
   ];
 
   return (
-    <div className="w-full border rounded-lg border-gray-200 py-4">
+    <div className="w-full bg-white border rounded-lg border-gray-200 py-4">
       {/* Desktop: horizontal row with dividers */}
       <div className="hidden sm:flex items-center justify-around">
         {stats.map((stat, index) => {

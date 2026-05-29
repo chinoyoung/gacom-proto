@@ -14,7 +14,7 @@ export function useDesignVersion(pageId: string): {
   const config = getVersionConfig(pageId);
   const versions = config?.versions ?? [];
   const version = resolveVersion(pageId, vParam);
-  const isDefault = version === (config?.defaultVersion ?? "default");
+  const isDefault = version === (config?.defaultVersion ?? "v1");
 
   return { version, versions, isDefault };
 }

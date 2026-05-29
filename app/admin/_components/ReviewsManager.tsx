@@ -20,13 +20,13 @@ const baseFormData = {
     date: "",
     reviewTitle: "",
     body: "",
-    overallRating: 10,
-    academicsRating: 10,
-    livingSituationRating: 10,
-    culturalImmersionRating: 10,
-    programAdministrationRating: 10,
-    healthAndSafetyRating: 10,
-    communityRating: 10,
+    overallRating: 5,
+    academicsRating: 5,
+    livingSituationRating: 5,
+    culturalImmersionRating: 5,
+    programAdministrationRating: 5,
+    healthAndSafetyRating: 5,
+    communityRating: 5,
     photo: "",
     status: "published" as "draft" | "published",
 };
@@ -338,12 +338,12 @@ export default function ReviewsManager({ isCreating, onCancelCreate }: ReviewsMa
                             <div className="space-y-6">
                                 {/* Overall Rating */}
                                 <div className="max-w-xs">
-                                    <label className={labelClass}>Overall Rating (1–10)</label>
+                                    <label className={labelClass}>Overall Rating (1–5)</label>
                                     <input
                                         type="number"
                                         min={1}
-                                        max={10}
-                                        step={0.5}
+                                        max={5}
+                                        step={1}
                                         required
                                         className={inputClass}
                                         value={formData.overallRating}
@@ -359,12 +359,12 @@ export default function ReviewsManager({ isCreating, onCancelCreate }: ReviewsMa
                                 {/* Category Ratings — 2-col grid */}
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                     <div>
-                                        <label className={labelClass}>Academics (1–10)</label>
+                                        <label className={labelClass}>Academics (1–5)</label>
                                         <input
                                             type="number"
                                             min={1}
-                                            max={10}
-                                            step={0.5}
+                                            max={5}
+                                            step={1}
                                             required
                                             className={inputClass}
                                             value={formData.academicsRating}
@@ -377,12 +377,12 @@ export default function ReviewsManager({ isCreating, onCancelCreate }: ReviewsMa
                                         />
                                     </div>
                                     <div>
-                                        <label className={labelClass}>Living Situation (1–10)</label>
+                                        <label className={labelClass}>Living Situation (1–5)</label>
                                         <input
                                             type="number"
                                             min={1}
-                                            max={10}
-                                            step={0.5}
+                                            max={5}
+                                            step={1}
                                             required
                                             className={inputClass}
                                             value={formData.livingSituationRating}
@@ -395,12 +395,12 @@ export default function ReviewsManager({ isCreating, onCancelCreate }: ReviewsMa
                                         />
                                     </div>
                                     <div>
-                                        <label className={labelClass}>Cultural Immersion (1–10)</label>
+                                        <label className={labelClass}>Cultural Immersion (1–5)</label>
                                         <input
                                             type="number"
                                             min={1}
-                                            max={10}
-                                            step={0.5}
+                                            max={5}
+                                            step={1}
                                             required
                                             className={inputClass}
                                             value={formData.culturalImmersionRating}
@@ -413,12 +413,12 @@ export default function ReviewsManager({ isCreating, onCancelCreate }: ReviewsMa
                                         />
                                     </div>
                                     <div>
-                                        <label className={labelClass}>Program Administration (1–10)</label>
+                                        <label className={labelClass}>Program Administration (1–5)</label>
                                         <input
                                             type="number"
                                             min={1}
-                                            max={10}
-                                            step={0.5}
+                                            max={5}
+                                            step={1}
                                             required
                                             className={inputClass}
                                             value={formData.programAdministrationRating}
@@ -431,12 +431,12 @@ export default function ReviewsManager({ isCreating, onCancelCreate }: ReviewsMa
                                         />
                                     </div>
                                     <div>
-                                        <label className={labelClass}>Health &amp; Safety (1–10)</label>
+                                        <label className={labelClass}>Health &amp; Safety (1–5)</label>
                                         <input
                                             type="number"
                                             min={1}
-                                            max={10}
-                                            step={0.5}
+                                            max={5}
+                                            step={1}
                                             required
                                             className={inputClass}
                                             value={formData.healthAndSafetyRating}
@@ -449,12 +449,12 @@ export default function ReviewsManager({ isCreating, onCancelCreate }: ReviewsMa
                                         />
                                     </div>
                                     <div>
-                                        <label className={labelClass}>Community (1–10)</label>
+                                        <label className={labelClass}>Community (1–5)</label>
                                         <input
                                             type="number"
                                             min={1}
-                                            max={10}
-                                            step={0.5}
+                                            max={5}
+                                            step={1}
                                             required
                                             className={inputClass}
                                             value={formData.communityRating}

@@ -1,21 +1,21 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
+import { useState, useEffect, useCallback, useRef } from "react";
+import { useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
 
 import type { Program } from "../../_components/types";
-import ProgramHero from "../../_components/ProgramHero";
-import QuickDetails from "../../_components/QuickDetails";
-import ProgramOverview from "../../_components/ProgramOverview";
-import WhatsIncluded from "../../_components/WhatsIncluded";
-import ProgramHighlights from "../../_components/ProgramHighlights";
-import ProgramReviews from "../../_components/ProgramReviews";
-import WhyChooseProgram from "../../_components/WhyChooseProgram";
-import RelatedPrograms from "../../_components/RelatedPrograms";
 import ProgramArticles from "../../_components/ProgramArticles";
-import ProgramDetails from "../../_components/ProgramDetails";
-import StickyProgramHeader from "../../_components/StickyProgramHeader";
-import MobileStickyBar from "../../_components/MobileStickyBar";
+
+import { StickyHeader } from "./StickyHeader";
+import { StickyBottomNav, NAV_LINKS } from "./StickyBottomNav";
+import { HeroSection } from "./HeroSection";
+import { DescriptionSection } from "./DescriptionSection";
+import { PricingSection } from "./PricingSection";
+import { ReviewsSection } from "./ReviewsSection";
+import { ProgramDetailsSection } from "./ProgramDetailsSection";
+import { buildFaqs, FAQsSection, InterviewsSection, ProgramsSection } from "./SupportSections";
+import { InquiryFormSection } from "./InquiryFormSection";
 
 interface V2DetailPageProps {
   program: Program;
@@ -28,141 +28,168 @@ export default function V2DetailPage({
   reviews,
   avgRating,
 }: V2DetailPageProps) {
-  const [saved, setSaved] = useState(false);
-  const heroRef = useRef<HTMLDivElement>(null);
-  const [stickyVisible, setStickyVisible] = useState(false);
+  const reviewCount = reviews?.length ?? 0;
+  const faqs = buildFaqs(program);
+
+  // Query all programs for hero program count
+  const allPrograms = useQuery(api.programs.listPrograms, {
+    status: "published",
+  });
+  const programCount = allPrograms?.length ?? 0;
+
+  // Sticky header: show when scrollY > 600, hide near bottom
+  const [stickyHeaderVisible, setStickyHeaderVisible] = useState(false);
+  // Sticky bottom nav: show when scrollY > 500
+  const [bottomNavVisible, setBottomNavVisible] = useState(false);
+  // Active hash for bottom nav
+  const [activeHash, setActiveHash] = useState("#overview");
+
+  // Section refs for active hash detection
+  const sectionRefs = useRef<Record<string, HTMLElement | null>>({});
+
+  const registerSection = useCallback(
+    (hash: string) => (el: HTMLElement | null) => {
+      sectionRefs.current[hash] = el;
+    },
+    []
+  );
 
   useEffect(() => {
-    const el = heroRef.current;
-    if (!el) return;
+    function onScroll() {
+      const scrollY = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight;
+      const winHeight = window.innerHeight;
+      const nearBottom = scrollY + winHeight >= docHeight - 100;
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        // Show sticky header when the hero is no longer intersecting
-        setStickyVisible(!entry.isIntersecting);
-      },
-      { threshold: 0 }
-    );
+      setStickyHeaderVisible(scrollY > 600 && !nearBottom);
+      setBottomNavVisible(scrollY > 500);
 
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [program]);
+      // Determine active section
+      let currentHash = "#overview";
+      for (const link of NAV_LINKS) {
+        const el = sectionRefs.current[link.hash];
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          if (rect.top <= 120) {
+            currentHash = link.hash;
+          }
+        }
+      }
+      setActiveHash(currentHash);
+    }
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
-    <>
-      <StickyProgramHeader
+    <main className="flex flex-col text-neutral-800 mb-12">
+      {/* Sticky header (fixed top) */}
+      <StickyHeader
         program={program}
-        visible={stickyVisible}
-        saved={saved}
-        onToggleSave={() => setSaved((v) => !v)}
+        avgRating={avgRating}
+        visible={stickyHeaderVisible}
       />
 
-      <main className="pb-20 lg:pb-0">
-        {/* Breadcrumbs — full width above hero, not on hero background */}
-        <nav aria-label="Breadcrumb" className="max-w-7xl mx-auto px-4 sm:px-6 pt-4 mb-3">
-          {/* Mobile: simple back link */}
-          <Link
-            href="/programs"
-            className="sm:hidden inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-cobalt-600 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 rounded"
+      {/* Sticky bottom nav */}
+      <StickyBottomNav visible={bottomNavVisible} activeHash={activeHash} />
+
+      {/* Hero (includes breadcrumbs) */}
+      <HeroSection
+        program={program}
+        avgRating={avgRating}
+        reviewCount={reviewCount}
+        programCount={programCount}
+      />
+
+      {/* Description (two-column with sidebar) */}
+      <section
+        ref={registerSection("#overview")}
+        className="w-full mx-auto max-w-7xl mt-4"
+      >
+        <DescriptionSection program={program} />
+      </section>
+
+      {/* Pricing + Inquiry (side by side on lg+) */}
+      <section className="w-full max-w-7xl mx-auto mt-4 lg:mt-8">
+        <div className="flex flex-col lg:flex-row lg:gap-6 lg:items-start">
+          <div
+            id="pricing"
+            ref={registerSection("#pricing")}
+            className="flex-1 min-w-0"
           >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24" aria-hidden="true">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-            </svg>
-            Back to Programs
-          </Link>
-
-          {/* Desktop: full breadcrumb trail */}
-          <ol className="hidden sm:flex items-center gap-1.5 text-sm text-slate-500 flex-wrap">
-            <li>
-              <Link
-                href="/"
-                className="hover:text-cobalt-600 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 rounded"
-              >
-                Home
-              </Link>
-            </li>
-            <li aria-hidden="true" className="text-slate-300">/</li>
-            <li>
-              <Link
-                href="/programs"
-                className="hover:text-cobalt-600 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 rounded"
-              >
-                Programs
-              </Link>
-            </li>
-            <li aria-hidden="true" className="text-slate-300">/</li>
-            <li>
-              <Link
-                href={`/programs?city=${encodeURIComponent(program.city)}`}
-                className="hover:text-cobalt-600 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 rounded"
-              >
-                {program.city}
-              </Link>
-            </li>
-            <li aria-hidden="true" className="text-slate-300">/</li>
-            <li
-              className="text-slate-700 font-medium truncate max-w-60"
-              aria-current="page"
-            >
-              {program.title}
-            </li>
-          </ol>
-        </nav>
-
-        {/* Full-width hero — observed to trigger sticky header */}
-        <div ref={heroRef}>
-          <ProgramHero program={program} />
-        </div>
-
-        {/* Page content */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16">
-          <div className="flex flex-col lg:flex-row gap-8 lg:items-start">
-
-            {/* ── Left column ── */}
-            <div className="flex-1 min-w-0 space-y-20">
-              {/* 1. Overview — context first */}
-              <ProgramOverview program={program} />
-
-              {/* 2. Highlights — key selling points */}
-              <ProgramHighlights program={program} />
-
-              {/* 3. What's Included — concrete value up front */}
-              <WhatsIncluded program={program} />
-            </div>
-
-            {/* ── Right sidebar ── */}
-            <div className="w-full lg:w-[400px] shrink-0 lg:sticky lg:top-6 lg:self-start space-y-4">
-              {/* Quick details second — supporting info */}
-              <QuickDetails program={program} />
-            </div>
-
+            <PricingSection program={program} />
           </div>
-
-          {/* Full-width sections — below the sidebar */}
-          <div className="space-y-20 mt-20">
-            <ProgramDetails program={program} />
-
-            {/* 4. Reviews */}
-            <ProgramReviews programId={program._id} />
-
-            {/* 5. Why Students Choose This Program */}
-            <WhyChooseProgram
-              program={program}
-              avgRating={avgRating}
-              totalReviews={reviews?.length ?? 0}
-            />
+          <div
+            id="inquiry"
+            ref={registerSection("#inquiry")}
+            className="lg:w-[400px] shrink-0"
+          >
+            <InquiryFormSection program={program} />
           </div>
-
-          {/* Related Articles Section */}
-          <ProgramArticles />
-
-          {/* Related Programs Section */}
-          <RelatedPrograms currentProgramId={program._id} subjectAreas={program.subjectAreas ?? []} />
         </div>
-      </main>
+      </section>
 
-      {/* Mobile sticky apply bar */}
-      <MobileStickyBar program={program} />
-    </>
+      {/* Reviews */}
+      <section
+        id="reviews"
+        ref={registerSection("#reviews")}
+        className="w-full max-w-7xl mx-auto mt-4 lg:mt-8"
+      >
+        <ReviewsSection
+          reviews={reviews}
+          avgRating={avgRating}
+          provider={program.provider}
+        />
+      </section>
+
+      {/* Program Details */}
+      <section
+        id="details"
+        ref={registerSection("#details")}
+        className="w-full max-w-7xl mx-auto mt-4 lg:mt-8"
+      >
+        <ProgramDetailsSection program={program} />
+      </section>
+
+      {/* FAQs */}
+      {faqs.length > 0 && (
+        <section
+          id="faqs"
+          ref={registerSection("#faqs")}
+          className="w-full max-w-7xl mx-auto mt-4 lg:mt-8"
+        >
+          <div className="bg-slate-50 rounded-md py-8">
+            <FAQsSection faqs={faqs} />
+          </div>
+        </section>
+      )}
+
+      {/* Interviews */}
+      <section
+        id="interviews"
+        ref={registerSection("#interviews")}
+        className="w-full max-w-7xl mx-auto mt-4 lg:mt-8"
+      >
+        <InterviewsSection />
+      </section>
+
+      {/* Related Programs */}
+      <section
+        id="programs"
+        ref={registerSection("#programs")}
+        className="w-full max-w-7xl mx-auto mt-4 lg:mt-8"
+      >
+        <ProgramsSection currentProgramId={program._id} />
+      </section>
+
+      {/* Articles */}
+      <section className="w-full max-w-7xl mx-auto mt-4 lg:mt-8 px-4 xl:px-0 [&>section]:mt-0 [&>section]:pt-0 [&>section]:border-t-0">
+        <ProgramArticles />
+      </section>
+
+      {/* Bottom padding to clear sticky nav */}
+      <div className="h-20" />
+    </main>
   );
 }

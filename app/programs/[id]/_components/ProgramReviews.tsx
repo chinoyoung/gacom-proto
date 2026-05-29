@@ -77,7 +77,7 @@ function ReviewCard({ review }: ReviewCardProps) {
           <span className="flex items-center gap-1.5 text-sun-500">
             <span className="text-sun-500 text-lg">★</span>
             <span className="font-bold text-lg">{review.overallRating}</span>
-            <span className="text-xs text-slate-400 font-normal">/10</span>
+            <span className="text-xs text-slate-400 font-normal">/5</span>
           </span>
           <button
             type="button"
@@ -172,8 +172,8 @@ function SummaryCard({
           </span>
           <div className="flex items-center gap-0.5 mt-3">
             {[1, 2, 3, 4, 5].map((star) => {
-              const filled = avgRating / 2 >= star;
-              const half = !filled && avgRating / 2 >= star - 0.5;
+              const filled = avgRating >= star;
+              const half = !filled && avgRating >= star - 0.5;
               return (
                 <Star
                   key={star}
@@ -199,7 +199,7 @@ function SummaryCard({
                 <div className="flex-1 h-1.5 bg-slate-100 rounded-full overflow-hidden">
                   <div
                     className="h-full bg-cobalt-400 rounded-full"
-                    style={{ width: `${(value / 10) * 100}%` }}
+                    style={{ width: `${(value / 5) * 100}%` }}
                   />
                 </div>
                 <span className="text-xs font-semibold text-slate-700 w-6 text-right shrink-0">

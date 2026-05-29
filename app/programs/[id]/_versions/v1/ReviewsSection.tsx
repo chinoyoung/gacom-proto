@@ -202,7 +202,7 @@ export function ReviewsSection({
               {[1, 2, 3, 4, 5].map((star) => (
                 <Star
                   key={star}
-                  className={`w-5 h-5 ${avgRating / 2 >= star ? "text-sun-500 fill-current" : "text-slate-300"}`}
+                  className={`w-5 h-5 ${avgRating >= star ? "text-sun-500 fill-current" : "text-slate-300"}`}
                 />
               ))}
             </div>
@@ -220,7 +220,7 @@ export function ReviewsSection({
                   <div className="flex-1 h-1.5 bg-slate-100 rounded-full overflow-hidden">
                     <div
                       className="h-full bg-cobalt-400 rounded-full"
-                      style={{ width: `${(cat.avg / 10) * 100}%` }}
+                      style={{ width: `${(cat.avg / 5) * 100}%` }}
                     />
                   </div>
                   <span className="text-xs font-semibold text-slate-700 w-6 text-right shrink-0">
@@ -352,7 +352,7 @@ export function ReviewsSection({
                                       <div
                                         className="h-full bg-cobalt-400 rounded-full"
                                         style={{
-                                          width: `${((cat.value ?? 0) / 10) * 100}%`,
+                                          width: `${((cat.value ?? 0) / 5) * 100}%`,
                                         }}
                                       />
                                     </div>

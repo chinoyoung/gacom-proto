@@ -98,8 +98,7 @@ export default function InquiryReviews({
 }: InquiryReviewsProps) {
   const reviewCount = reviews?.length ?? 0;
 
-  // Normalize rating: if the scale is out of 10, convert to out of 5
-  const normalizedRating = avgRating > 5 ? avgRating / 2 : avgRating;
+  const normalizedRating = avgRating;
 
   // Build display review list — use real data if available, otherwise placeholders
   const displayReviews: (typeof PLACEHOLDER_REVIEWS)[0][] =
@@ -108,7 +107,7 @@ export default function InquiryReviews({
           id: r._id,
           name: r.reviewerName ?? "Anonymous",
           meta: r.date ?? "",
-          rating: r.overallRating > 5 ? r.overallRating / 2 : r.overallRating,
+          rating: r.overallRating,
           body: r.body ?? "",
         }))
       : PLACEHOLDER_REVIEWS;

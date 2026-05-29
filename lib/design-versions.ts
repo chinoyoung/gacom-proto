@@ -44,27 +44,32 @@ export const PAGE_VERSIONS: Record<string, PageVersionConfig> = {
     pageId: "program-detail",
     versions: [
       {
-        id: "default",
+        id: "v1",
         label: "v1",
         description: "GoAbroad-style layout with banner hero and sticky tabs",
       },
       {
-        id: "v1.5",
+        id: "v2",
         label: "v2",
         description: "Enhanced V1 with pricing breakdown, reviews improvements, and inquiry form",
       },
       {
-        id: "v2",
+        id: "v3",
         label: "v3",
         description: "The original layout with split hero and sidebar",
       },
       {
-        id: "inquiry",
+        id: "v4",
         label: "v4",
         description: "Two-column layout with integrated inquiry form",
       },
+      {
+        id: "v5",
+        label: "v5",
+        description: "Mix of v1–v4 addressing stakeholder feedback (May 2026)",
+      },
     ],
-    defaultVersion: "default",
+    defaultVersion: "v1",
   },
 };
 
@@ -77,7 +82,7 @@ export function resolveVersion(
   vParam: string | null
 ): string {
   const config = getVersionConfig(pageId);
-  if (!config) return "default";
+  if (!config) return "v1";
 
   if (vParam && config.versions.some((v) => v.id === vParam)) {
     return vParam;

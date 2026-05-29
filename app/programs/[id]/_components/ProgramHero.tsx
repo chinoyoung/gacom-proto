@@ -31,7 +31,7 @@ function formatUpdatedAt(ts: number): string {
 }
 
 // Static values for prototype
-const STATIC_RATING = "8.4 / 10";
+const STATIC_RATING = "4.2 / 5";
 const STATIC_REVIEWS = "103 reviews";
 export default function ProgramHero({ program }: ProgramHeroProps) {
   const [lightboxIdx, setLightboxIdx] = useState<number | null>(null);
