@@ -21,8 +21,8 @@ interface DetailItemProps {
 
 function DetailItem({ icon, label, value }: DetailItemProps) {
   return (
-    <div className="flex items-start gap-3">
-      <div className="shrink-0 text-cobalt-500 mt-0.5">{icon}</div>
+    <div className="flex items-start gap-3 bg-slate-50 border border-slate-200 rounded-md px-4 py-4">
+      <div className="shrink-0 text-cobalt-500 mt-1">{icon}</div>
       <div className="flex flex-col gap-1 min-w-0">
         <span className="text-xs uppercase tracking-widest text-zinc-400 font-semibold">
           {label}
@@ -109,7 +109,7 @@ export default function ProgramDetails({ program }: { program: Program }) {
       </h2>
 
       {/* Details grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-4">
         {detailItems.map((item) => (
           <DetailItem
             key={item.label}
