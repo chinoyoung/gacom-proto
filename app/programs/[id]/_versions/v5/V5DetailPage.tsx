@@ -13,7 +13,7 @@ import RelatedPrograms from "../../_components/RelatedPrograms";
 import ProgramArticles from "../../_components/ProgramArticles";
 
 import TrustBar from "./V5TrustBar";
-import { buildFaqs, FAQsSection, InterviewsSection } from "../v1/SupportSections";
+import { buildFaqs, InterviewsSection } from "../v1/SupportSections";
 import { BottomInquirySection } from "../v1/BottomInquirySection";
 
 import V5Hero from "./V5Hero";
@@ -24,6 +24,7 @@ import V5WhatsIncluded from "./V5WhatsIncluded";
 import V5Sidebar from "./V5Sidebar";
 import V5MediaGallery from "./V5MediaGallery";
 import V5Reviews, { type Review } from "./V5Reviews";
+import V5FAQ from "./V5FAQ";
 import V5Recognitions from "./V5Recognitions";
 import V5HelpSection from "./V5HelpSection";
 
@@ -146,13 +147,7 @@ export default function V5DetailPage({
         </section>
 
         {/* FAQs */}
-        {faqs.length > 0 && (
-          <section id="faqs" className="w-full max-w-7xl mx-auto mt-20 px-4 xl:px-0">
-            <div className="bg-slate-50 rounded-md py-8 px-4">
-              <FAQsSection faqs={faqs} />
-            </div>
-          </section>
-        )}
+        <V5FAQ faqs={faqs} />
 
         {/* Interviews */}
         <section id="interviews" className="w-full max-w-7xl mx-auto mt-20 px-4 xl:px-0">
