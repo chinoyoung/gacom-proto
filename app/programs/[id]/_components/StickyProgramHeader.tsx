@@ -69,7 +69,7 @@ export default function StickyProgramHeader({
         <div className="flex items-center gap-3 shrink-0">
           <button
             type="button"
-            className="inline-flex justify-center items-center px-5 py-2 border border-cobalt-500 text-cobalt-500 font-semibold text-sm rounded-lg hover:bg-cobalt-500/5 transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2"
+            className="inline-flex justify-center items-center px-5 py-2 border border-cobalt-500 text-cobalt-500 font-semibold text-sm rounded-md hover:bg-cobalt-500/5 transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2"
           >
             Inquire Here
           </button>
@@ -79,7 +79,7 @@ export default function StickyProgramHeader({
               href={program.applyUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex justify-center items-center gap-2 px-5 py-2 bg-cobalt-500 text-white font-semibold text-sm rounded-lg hover:bg-cobalt-600 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2"
+              className="inline-flex justify-center items-center gap-2 px-5 py-2 bg-cobalt-500 text-white font-semibold text-sm rounded-md hover:bg-cobalt-600 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2"
             >
               Visit Website
               <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
@@ -87,7 +87,7 @@ export default function StickyProgramHeader({
           ) : (
             <button
               type="button"
-              className="inline-flex justify-center items-center gap-2 px-5 py-2 bg-cobalt-500 text-white font-semibold text-sm rounded-lg hover:bg-cobalt-600 transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2"
+              className="inline-flex justify-center items-center gap-2 px-5 py-2 bg-cobalt-500 text-white font-semibold text-sm rounded-md hover:bg-cobalt-600 transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2"
             >
               Visit Website
               <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
@@ -97,7 +97,7 @@ export default function StickyProgramHeader({
           <button
             type="button"
             onClick={onToggleSave}
-            className={`inline-flex justify-center items-center px-3 py-2 rounded-lg border transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2 ${saved
+            className={`inline-flex justify-center items-center px-3 py-2 rounded-md border transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2 ${saved
               ? "bg-roman-50 border-roman-300 text-roman-500"
               : "bg-white border-slate-300 text-slate-600 hover:border-slate-400"
               }`}

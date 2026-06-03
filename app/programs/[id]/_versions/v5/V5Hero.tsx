@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { MapPin, Star, Heart, Clock, Calendar, Languages, GraduationCap, Home } from "lucide-react";
+import { MapPin, Star, Heart, Clock, Calendar, Languages, GraduationCap, Home, ArrowRight } from "lucide-react";
 import type { Program } from "../../_components/types";
 
 interface V5HeroProps {
@@ -78,12 +78,16 @@ export default function V5Hero({
         </nav>
 
         {/* Hero content */}
-        <div className="mt-6 flex flex-col lg:flex-row gap-8 items-stretch">
+        <div className="mt-6 flex flex-col lg:flex-row gap-8 lg:gap-12 items-stretch">
           {/* Left */}
           <div className={`${hasRightMedia ? "flex-1 min-w-0" : "flex-1"} flex flex-col lg:justify-center lg:min-h-[20rem]`}>
             {/* Top group */}
             <div>
-              <div className="flex items-center gap-3">
+              <h1 className="text-2xl md:text-3xl lg:text-[2.25rem] font-bold text-slate-900 leading-[1.15] tracking-tight">
+                {program.title}
+              </h1>
+
+              <div className="mt-4 flex items-center gap-3">
                 {program.providerLogo && (
                   <div className="h-11 w-11 border border-slate-200 rounded-md overflow-hidden shrink-0 bg-white flex items-center justify-center">
                     <img
@@ -99,10 +103,6 @@ export default function V5Hero({
                   </p>
                 </div>
               </div>
-
-              <h1 className="mt-3 text-2xl md:text-3xl lg:text-[2.25rem] font-bold text-slate-900 leading-[1.15] tracking-tight">
-                {program.title}
-              </h1>
 
               <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-slate-600">
                 {avgRating > 0 && (
@@ -141,7 +141,7 @@ export default function V5Hero({
             <div className="mt-5 flex flex-wrap gap-3">
               <button
                 type="button"
-                className="h-10 px-5 bg-cobalt-500 text-white text-sm font-semibold rounded-md hover:bg-cobalt-600 transition-colors cursor-pointer"
+                className="inline-flex items-center h-10 px-5 bg-white border border-cobalt-500 text-cobalt-500 text-sm font-semibold rounded-md hover:bg-cobalt-500/5 transition-colors cursor-pointer"
               >
                 Inquire Here
               </button>
@@ -149,9 +149,10 @@ export default function V5Hero({
                 href={program.applyUrl ?? "#"}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center h-10 px-5 bg-white border border-cobalt-500 text-cobalt-500 text-sm font-semibold rounded-md hover:bg-cobalt-500/5 transition-colors"
+                className="inline-flex items-center gap-2 h-10 px-5 bg-cobalt-500 text-white text-sm font-semibold rounded-md hover:bg-cobalt-600 transition-colors"
               >
                 Visit Website
+                <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
               </a>
               <button
                 type="button"
@@ -174,11 +175,11 @@ export default function V5Hero({
 
           {/* Right: media */}
           {hasRightMedia && (
-            <div className="w-full lg:w-[520px] shrink-0">
+            <div className="w-full lg:w-[560px] shrink-0">
               {hasEnoughPhotos && (
                 <>
                   <div
-                    className="w-full h-[280px] lg:h-[300px] rounded-md overflow-hidden cursor-pointer"
+                    className="w-full h-[300px] lg:h-[380px] rounded-md overflow-hidden cursor-pointer"
                     onClick={() => document.getElementById("gallery")?.scrollIntoView({ behavior: "smooth" })}
                   >
                     <img
@@ -187,7 +188,7 @@ export default function V5Hero({
                       className="w-full h-full object-cover"
                     />
                   </div>
-                  <div className="grid grid-cols-4 gap-2 mt-2">
+                  <div className="flex gap-2 mt-2">
                     {photos.slice(0, 4).map((photo, i) => {
                       const isLastWithOverflow = i === 3 && photos.length > 5;
                       return (
@@ -195,7 +196,7 @@ export default function V5Hero({
                           key={i}
                           type="button"
                           onClick={() => document.getElementById("gallery")?.scrollIntoView({ behavior: "smooth" })}
-                          className="relative aspect-square rounded-md overflow-hidden cursor-pointer hover:opacity-90 transition-opacity"
+                          className="relative w-16 h-16 lg:w-[72px] lg:h-[72px] shrink-0 rounded-md overflow-hidden cursor-pointer hover:opacity-90 transition-opacity"
                           aria-label={`View photo ${i + 1}`}
                         >
                           <img src={photo} alt={`Photo ${i + 1}`} className="w-full h-full object-cover" />
@@ -216,7 +217,7 @@ export default function V5Hero({
                   <img
                     src={program.coverImage ?? photos[0]}
                     alt={program.title}
-                    className="w-full h-[280px] lg:h-[320px] object-cover"
+                    className="w-full h-[300px] lg:h-[380px] object-cover"
                   />
                   <a
                     href="#gallery"
@@ -235,7 +236,7 @@ export default function V5Hero({
                 <img
                   src={program.coverImage!}
                   alt={program.title}
-                  className="w-full h-[280px] lg:h-[320px] object-cover rounded-md"
+                  className="w-full h-[300px] lg:h-[380px] object-cover rounded-md"
                 />
               )}
             </div>
