@@ -9,6 +9,7 @@ import {
   ChevronUp,
   X,
 } from "lucide-react";
+import V5AiSummary from "./V5AiSummary";
 
 export type Review = {
   _id: string;
@@ -52,9 +53,13 @@ interface V5ReviewsProps {
   reviews: Review[] | undefined;
   avgRating: number;
   provider: string;
+  aiSummary?: {
+    text: string;
+    reviewCount: number;
+  };
 }
 
-export default function V5Reviews({ reviews, avgRating, provider }: V5ReviewsProps) {
+export default function V5Reviews({ reviews, avgRating, provider, aiSummary }: V5ReviewsProps) {
   const [sort, setSort] = useState<ReviewSort>("recent");
   const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
   const [expandedRatingIds, setExpandedRatingIds] = useState<Set<string>>(new Set());
@@ -261,6 +266,9 @@ export default function V5Reviews({ reviews, avgRating, provider }: V5ReviewsPro
           </div>
         )}
       </div>
+
+      {/* AI review summary */}
+      <V5AiSummary summary={aiSummary} />
 
       {/* Review cards */}
       {reviewList.length === 0 ? (

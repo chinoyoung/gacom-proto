@@ -173,3 +173,75 @@ export const trimHighlights = mutation({
     return { updated, total: programs.length };
   },
 });
+
+// ─── AI Summary ────────────────────────────────────────────────────────────
+
+export const setAiSummary = mutation({
+  args: {
+    programId: v.id("programs"),
+    text: v.string(),
+  },
+  handler: async (ctx, { programId, text }) => {
+    const publishedReviews = await ctx.db
+      .query("reviews")
+      .withIndex("by_program_status", (q) =>
+        q.eq("programId", programId).eq("status", "published")
+      )
+      .collect();
+
+    const now = Date.now();
+    await ctx.db.patch(programId, {
+      aiSummary: {
+        text,
+        generatedAt: now,
+        reviewCount: publishedReviews.length,
+      },
+      updatedAt: now,
+    });
+    return programId;
+  },
+});
+
+// One-time: seed hand-written AI summaries onto demo programs.
+// Tailored text for the Barcelona demo program; a themes-based generic
+// paragraph for any other published program that has >= 3 published reviews.
+export const seedAiSummaries = mutation({
+  args: {},
+  handler: async (ctx) => {
+    const BARCELONA =
+      "Students consistently highlight the immersive language environment and welcoming host families, with cultural immersion and community rated highest. Most found the program administration responsive and the academics well-structured, though a few noted the living situation varies by neighborhood and the early pace can feel intense. The recurring theme across reviews is strong personal growth and lasting friendships, with many recommending a full semester for the richest experience.";
+
+    const GENERIC =
+      "Across reviews, past participants most often praise the supportive staff and the cultural immersion, with day-to-day support and community rated highly. Several mention the living situation and onboarding pace as the main things to plan for. The common thread is meaningful personal growth, and most reviewers say they'd recommend the program to a friend.";
+
+    const programs = await ctx.db
+      .query("programs")
+      .withIndex("by_status", (q) => q.eq("status", "published"))
+      .collect();
+
+    const now = Date.now();
+    let updated = 0;
+    for (const program of programs) {
+      const reviews = await ctx.db
+        .query("reviews")
+        .withIndex("by_program_status", (q) =>
+          q.eq("programId", program._id).eq("status", "published")
+        )
+        .collect();
+
+      const isBarcelona = /barcelona/i.test(program.title);
+      if (!isBarcelona && reviews.length < 3) continue;
+
+      await ctx.db.patch(program._id, {
+        aiSummary: {
+          text: isBarcelona ? BARCELONA : GENERIC,
+          generatedAt: now,
+          reviewCount: reviews.length,
+        },
+        updatedAt: now,
+      });
+      updated++;
+    }
+    return { updated, total: programs.length };
+  },
+});

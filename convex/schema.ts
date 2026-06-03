@@ -61,6 +61,15 @@ export default defineSchema({
     programTags: v.optional(v.array(v.string())),
     yearFounded: v.optional(v.number()),
 
+    // AI Review Summary (seeded for prototype)
+    aiSummary: v.optional(
+      v.object({
+        text: v.string(),
+        generatedAt: v.number(),
+        reviewCount: v.number(),
+      })
+    ),
+
     // Timestamps
     updatedAt: v.optional(v.number()),
     createdBy: v.optional(v.string()),

@@ -1,21 +1,22 @@
 "use client";
 
-import { Heart, ArrowRight } from "lucide-react";
+import { Heart, ArrowRight, Star } from "lucide-react";
 import type { Program } from "./types";
-
-const STICKY_RATING = 8.41;
-const STICKY_REVIEW_COUNT = 103;
 
 export default function StickyProgramHeader({
   program,
   visible,
   saved,
   onToggleSave,
+  avgRating,
+  reviewCount,
 }: {
   program: Program;
   visible: boolean;
   saved: boolean;
   onToggleSave: () => void;
+  avgRating?: number;
+  reviewCount?: number;
 }) {
   return (
     <div
@@ -45,11 +46,23 @@ export default function StickyProgramHeader({
             {program.title}
           </p>
 
-          <span className="shrink-0 flex items-center gap-1 text-xs text-sun-700 font-medium">
-            <span className="text-sun-500" aria-hidden="true">★</span>
-            {STICKY_RATING}
-            <span className="text-slate-500 font-normal">· {STICKY_REVIEW_COUNT} reviews</span>
-          </span>
+          {avgRating != null && reviewCount != null && avgRating > 0 && (
+            <span className="shrink-0 flex items-center gap-1.5 text-xs font-medium flex-wrap">
+              <span className="flex items-center gap-0.5">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <Star
+                    key={star}
+                    className={`w-3.5 h-3.5 ${
+                      avgRating >= star ? "text-sun-500 fill-current" : "text-slate-300"
+                    }`}
+                    aria-hidden="true"
+                  />
+                ))}
+              </span>
+              <span className="text-sun-700">{avgRating.toFixed(1)}</span>
+              <span className="text-slate-500 font-normal">· {reviewCount} {reviewCount === 1 ? "review" : "reviews"}</span>
+            </span>
+          )}
         </div>
 
         {/* Right: CTAs */}

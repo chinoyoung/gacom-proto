@@ -44,4 +44,11 @@ export interface Program {
   optionalInclusions?: string[];
   programTags?: string[];
   yearFounded?: number;
+
+  // AI Review Summary (seeded)
+  aiSummary?: {
+    text: string;
+    generatedAt: number;
+    reviewCount: number;
+  };
 }

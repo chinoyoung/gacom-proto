@@ -70,6 +70,8 @@ export default function V5DetailPage({
         visible={stickyVisible}
         saved={saved}
         onToggleSave={() => setSaved((v) => !v)}
+        avgRating={avgRating}
+        reviewCount={reviewCount}
       />
 
       <main className="pb-20 text-neutral-800">
@@ -139,6 +141,7 @@ export default function V5DetailPage({
             reviews={reviews}
             avgRating={avgRating}
             provider={program.provider}
+            aiSummary={program.aiSummary}
           />
         </section>
 
