@@ -71,6 +71,21 @@ export const PAGE_VERSIONS: Record<string, PageVersionConfig> = {
     ],
     defaultVersion: "v1",
   },
+  "provider-detail": {
+    pageId: "provider-detail",
+    versions: [
+      { id: "v1", label: "v1", description: "Provider profile page" },
+    ],
+    defaultVersion: "v1",
+  },
+  "mygoabroad": {
+    pageId: "mygoabroad",
+    versions: [
+      { id: "v1", label: "v1", description: "Direct copy of the live MyGoAbroad page" },
+      { id: "v2", label: "v2", description: "Redesigned to match the marketplace design language" },
+    ],
+    defaultVersion: "v1",
+  },
 };
 
 export function getVersionConfig(pageId: string): PageVersionConfig | null {

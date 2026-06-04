@@ -12,6 +12,7 @@ function isCanvasRoute(pathname: string): boolean {
   if (pathname === "/marketplace/partner") return true;
   if (pathname === "/marketplace/esim") return true;
   if (/^\/marketplace\/esim\/[^/]+$/.test(pathname)) return true;
+  if (pathname === "/mygoabroad") return true;
   return false;
 }
 

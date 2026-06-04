@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { slugify } from "@/lib/slug";
 import { MapPin, Star, Heart, Clock, Calendar, Languages, GraduationCap, Home, ArrowRight } from "lucide-react";
 import type { Program } from "../../_components/types";
 
@@ -99,7 +100,13 @@ export default function V5Hero({
                 )}
                 <div className="flex flex-col min-w-0">
                   <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">
-                    Provided by <span className="text-cobalt-500">{program.provider}</span>
+                    Provided by{" "}
+                    <Link
+                      href={`/providers/${slugify(program.provider)}`}
+                      className="text-cobalt-500 hover:underline"
+                    >
+                      {program.provider}
+                    </Link>
                   </p>
                 </div>
               </div>

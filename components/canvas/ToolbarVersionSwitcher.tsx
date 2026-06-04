@@ -6,9 +6,11 @@ import type { DesignVersion } from "@/lib/design-versions";
 
 function pageIdForPath(pathname: string): string | null {
   if (/^\/programs\/[^/]+$/.test(pathname)) return "program-detail";
+  if (/^\/providers\/[^/]+$/.test(pathname)) return "provider-detail";
   if (pathname === "/marketplace/partner") return "marketplace-partner";
   if (pathname === "/marketplace/esim") return "marketplace-esim";
   if (/^\/marketplace\/esim\/[^/]+$/.test(pathname)) return "marketplace-esim-detail";
+  if (pathname === "/mygoabroad") return "mygoabroad";
   return null;
 }
 

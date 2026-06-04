@@ -76,7 +76,34 @@ export default defineSchema({
   })
     .index("by_status", ["status"])
     .index("by_country", ["country"])
-    .index("by_slug", ["slug"]),
+    .index("by_slug", ["slug"])
+    .index("by_provider", ["provider"]),
+
+  providers: defineTable({
+    name: v.string(),
+    slug: v.string(),
+    logo: v.optional(v.string()),
+    coverImage: v.optional(v.string()),
+    tagline: v.optional(v.string()),
+    about: v.optional(v.string()),
+    whyChoosePoints: v.array(v.string()),
+    headquarters: v.optional(v.string()),
+    yearFounded: v.optional(v.number()),
+    website: v.optional(v.string()),
+    socialLinks: v.array(v.object({ platform: v.string(), url: v.string() })),
+    photos: v.array(v.string()),
+    awards: v.array(
+      v.object({
+        name: v.string(),
+        result: v.string(),
+        year: v.optional(v.string()),
+      })
+    ),
+    faqs: v.array(v.object({ question: v.string(), answer: v.string() })),
+    status: v.union(v.literal("draft"), v.literal("published")),
+  })
+    .index("by_slug", ["slug"])
+    .index("by_status", ["status"]),
 
   articles: defineTable({
     title: v.string(),
