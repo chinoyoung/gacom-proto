@@ -20,6 +20,7 @@ export type Review = {
   body?: string;
   reviewBody?: string;
   photo?: string;
+  photos?: string[];
   overallRating?: number;
   academicsRating?: number;
   livingSituationRating?: number;
@@ -43,10 +44,25 @@ const INITIAL_REVIEWS_LIMIT = 3;
 type ReviewSort = "recent" | "highest" | "lowest";
 
 function getReviewPhotos(review: Review): string[] {
+  if (Array.isArray(review.photos) && review.photos.length > 0) {
+    return review.photos;
+  }
   if (typeof review.photo === "string" && review.photo) {
     return [review.photo];
   }
   return [];
+}
+
+// DEMO ONLY: fabricates review photos for the prototype — remove before production.
+function getDemoReviewPhotos(review: Review, index: number): string[] {
+  const real = getReviewPhotos(review);
+  const count = 2 + (index % 5); // cycles 2,3,4,5,6
+  if (count <= real.length) return real.slice(0, count);
+  const result = [...real];
+  for (let i = real.length; i < count; i++) {
+    result.push(`https://picsum.photos/seed/${review._id}-${i}/300/300`);
+  }
+  return result;
 }
 
 interface V5ReviewsProps {
@@ -106,6 +122,32 @@ export default function V5Reviews({ reviews, avgRating, provider, aiSummary }: V
   const ratedCategories = categoryRatings.filter((c) => c.avg > 0);
   const sortedCategories = [...ratedCategories].sort((a, b) => b.avg - a.avg);
   const visibleCategories = showAllCategories ? sortedCategories : sortedCategories.slice(0, 3);
+
+  // Summary card columns: Overall rating + Distribution · Top categories.
+  const showTopCategories = ratedCategories.length > 0;
+  const summaryGridCols = showTopCategories ? "md:grid-cols-2" : "grid-cols-1";
+
+  const ratingHeadline = (
+    <div className="flex items-center flex-wrap gap-3">
+      <span className="text-4xl sm:text-5xl font-extrabold text-slate-900 leading-none">
+        {avgRating > 0 ? avgRating.toFixed(1) : "—"}
+        <span className="text-2xl sm:text-3xl font-bold text-slate-400 ml-1">/5</span>
+      </span>
+      <div className="flex items-center gap-0.5">
+        {[1, 2, 3, 4, 5].map((star) => (
+          <Star
+            key={star}
+            className={`w-6 h-6 ${
+              avgRating >= star ? "text-sun-500 fill-current" : "text-slate-300"
+            }`}
+          />
+        ))}
+      </div>
+      <span className="bg-cobalt-500/10 text-cobalt-600 text-xs font-semibold px-3 py-1 rounded-full">
+        {reviewList.length} {reviewList.length === 1 ? "review" : "reviews"}
+      </span>
+    </div>
+  );
 
   const distribution = [5, 4, 3, 2, 1].map((stars) => {
     const label = `${stars}`;
@@ -169,31 +211,15 @@ export default function V5Reviews({ reviews, avgRating, provider, aiSummary }: V
 
       {/* Summary card */}
       <div className="border border-slate-200 rounded-md p-5 sm:p-6 bg-white">
-        {/* Headline: rating + stars + reviews pill */}
-        <div className="flex items-center flex-wrap gap-3">
-          <span className="text-4xl sm:text-5xl font-extrabold text-slate-900 leading-none">
-            {avgRating > 0 ? avgRating.toFixed(1) : "—"}
-            <span className="text-2xl sm:text-3xl font-bold text-slate-400 ml-1">/5</span>
-          </span>
-          <div className="flex items-center gap-0.5">
-            {[1, 2, 3, 4, 5].map((star) => (
-              <Star
-                key={star}
-                className={`w-6 h-6 ${
-                  avgRating >= star ? "text-sun-500 fill-current" : "text-slate-300"
-                }`}
-              />
-            ))}
-          </div>
-          <span className="bg-cobalt-500/10 text-cobalt-600 text-xs font-semibold px-3 py-1 rounded-full">
-            {reviewList.length} {reviewList.length === 1 ? "review" : "reviews"}
-          </span>
-        </div>
+        {/* Headline shown on its own only when there are no reviews;
+            otherwise it's grouped with the Distribution column below. */}
+        {reviewList.length === 0 && ratingHeadline}
 
         {reviewList.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-6">
-            {/* Distribution */}
+          <div className={`grid grid-cols-1 ${summaryGridCols} gap-8`}>
+            {/* Overall rating + Distribution */}
             <div>
+              <div className="mb-5">{ratingHeadline}</div>
               {reviewList.length >= 5 ? (
                 <>
                   <h3 className="text-sm font-bold text-slate-900 mb-3">Distribution</h3>
@@ -231,6 +257,11 @@ export default function V5Reviews({ reviews, avgRating, provider, aiSummary }: V
             {/* Top categories */}
             {ratedCategories.length > 0 && (
               <div>
+                {/* Invisible spacer matching the rating headline so this column's
+                    heading lines up with "Distribution" on desktop. */}
+                <div className="hidden md:block invisible mb-5" aria-hidden="true">
+                  {ratingHeadline}
+                </div>
                 <h3 className="text-sm font-bold text-slate-900 mb-3">Top categories</h3>
                 <div className="flex flex-col gap-2">
                   {visibleCategories.map((cat) => (
@@ -308,7 +339,7 @@ export default function V5Reviews({ reviews, avgRating, provider, aiSummary }: V
           )}
 
           <div className="flex flex-col gap-4">
-            {visibleReviews.map((review) => {
+            {visibleReviews.map((review, reviewIndex) => {
               const isExpanded = expandedIds.has(review._id);
               const isRatingExpanded = expandedRatingIds.has(review._id);
               const body: string = review.body ?? review.reviewBody ?? "";
@@ -434,29 +465,45 @@ export default function V5Reviews({ reviews, avgRating, provider, aiSummary }: V
                         </div>
 
                         {(() => {
-                          const photos = getReviewPhotos(review);
+                          const photos = getDemoReviewPhotos(review, reviewIndex);
                           if (!photos.length) return null;
+                          const tiles = photos.slice(0, 3);
+                          const overflow = photos.length - 3;
                           return (
                             <div className="flex flex-col gap-2">
                               <p className="text-[11px] font-bold uppercase tracking-wide text-neutral-500">
                                 Photos
                               </p>
-                              <div className="flex gap-2">
-                                {photos.map((src, i) => (
-                                  <button
-                                    type="button"
-                                    key={i}
-                                    onClick={() => setLightbox({ photos, index: i })}
-                                    className="w-16 h-16 rounded-md overflow-hidden cursor-pointer hover:opacity-90 transition-opacity shrink-0"
-                                    aria-label={`Open review photo ${i + 1}`}
-                                  >
-                                    <img
-                                      src={src}
-                                      alt={`Review photo ${i + 1}`}
-                                      className="w-full h-full object-cover"
-                                    />
-                                  </button>
-                                ))}
+                              <div className="flex gap-2 flex-wrap">
+                                {tiles.map((src, i) => {
+                                  const isOverflowTile = i === 2 && overflow > 0;
+                                  return (
+                                    <button
+                                      type="button"
+                                      key={i}
+                                      onClick={() => setLightbox({ photos, index: i })}
+                                      className="relative w-16 h-16 rounded-md overflow-hidden cursor-pointer hover:opacity-90 transition-opacity shrink-0"
+                                      aria-label={
+                                        isOverflowTile
+                                          ? `Open photo gallery (${overflow} more)`
+                                          : `Open review photo ${i + 1}`
+                                      }
+                                    >
+                                      <img
+                                        src={src}
+                                        alt={`Review photo ${i + 1}`}
+                                        className="w-full h-full object-cover"
+                                      />
+                                      {isOverflowTile && (
+                                        <div className="absolute inset-0 bg-black/60 flex items-center justify-center rounded-md">
+                                          <span className="text-white text-sm font-bold leading-none">
+                                            +{overflow}
+                                          </span>
+                                        </div>
+                                      )}
+                                    </button>
+                                  );
+                                })}
                               </div>
                             </div>
                           );
