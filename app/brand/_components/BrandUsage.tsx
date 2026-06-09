@@ -25,7 +25,7 @@ export default function BrandUsage() {
             Read BRANDING.md
           </a>
           <a
-            href="/marketplace/partner"
+            href="/mygoabroad/partnerships"
             className="inline-flex items-center justify-center bg-roman-500 text-white font-semibold px-7 py-3 rounded-lg hover:bg-roman-600 transition-colors w-full sm:w-auto text-center text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500"
           >
             View partner page

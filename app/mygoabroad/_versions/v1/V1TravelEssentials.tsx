@@ -1,5 +1,6 @@
 import { ArrowRight } from "lucide-react";
 import { MYG_ESSENTIALS, MYG_LINKS } from "../../_shared/content";
+import V1EsimForm from "./V1EsimForm";
 
 export default function V1TravelEssentials() {
   const { insurance, esim } = MYG_ESSENTIALS;
@@ -45,30 +46,7 @@ export default function V1TravelEssentials() {
           <p className="text-base text-slate-600 leading-relaxed">{esim.body2}</p>
           <img src={esim.partnerLogo} alt="celitech logo" className="h-6 w-auto mt-2 object-contain" />
         </div>
-        <div className="rounded-xl border border-slate-200 bg-white p-6 flex flex-col gap-4 shadow-sm">
-          <p className="text-sm font-semibold text-slate-700">Find a data plan</p>
-          <div className="flex flex-col gap-1">
-            <label htmlFor="myg-esim-country" className="text-xs font-medium text-slate-500">
-              Destination
-            </label>
-            <div
-              id="myg-esim-country"
-              className="h-11 px-3 rounded-md border border-slate-200 bg-slate-50 flex items-center text-sm text-slate-400"
-            >
-              Select a country
-            </div>
-          </div>
-          <div className="flex items-center justify-between rounded-md bg-slate-50 px-3 py-2">
-            <span className="text-sm text-slate-500">Total</span>
-            <span className="text-base font-bold text-slate-900">$0.00</span>
-          </div>
-          <button
-            type="button"
-            className="inline-flex items-center justify-center h-11 bg-cobalt-500 hover:bg-cobalt-600 text-white text-sm font-semibold rounded-md transition-colors cursor-pointer"
-          >
-            Buy Data Plan
-          </button>
-        </div>
+        <V1EsimForm />
       </div>
     </div>
   );

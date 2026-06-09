@@ -44,7 +44,7 @@ export default function EsimDestinationSearch({
 
   function navigateTo(slug: string) {
     setIsOpen(false);
-    router.push(`/marketplace/esim/${slug}`);
+    router.push(`/mygoabroad/esim/${slug}`);
   }
 
   function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {

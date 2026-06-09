@@ -11,7 +11,7 @@ describe("pageNameForPath", () => {
   });
 
   it("matches the partner marketplace", () => {
-    expect(pageNameForPath("/marketplace/partner")).toBe("Partner Marketplace");
+    expect(pageNameForPath("/mygoabroad/partnerships")).toBe("Partner Marketplace");
   });
 
   it("falls back to Prototype for unknown paths", () => {

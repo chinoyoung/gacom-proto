@@ -2,7 +2,7 @@ export const MYG_LINKS = {
   signup: "https://www.goabroad.com",
   signin: "https://www.goabroad.com",
   search: "https://www.goabroad.com",
-  resources: "https://www.goabroad.com/resources",
+  resources: "/mygoabroad",
 };
 
 export const MYG_IMAGES = {
@@ -96,45 +96,132 @@ export const MYG_SIGNUP = {
   img: MYG_IMAGES.signup,
 };
 
+/** A plain text segment within a paragraph. */
+type TextSegment = string;
+
+/** A linked segment within a paragraph — renders as an inline anchor. */
+export interface LinkSegment {
+  text: string;
+  href: string;
+}
+
+/** One paragraph's worth of content: a sequence of text and/or inline link segments. */
+export type ParagraphSegments = (TextSegment | LinkSegment)[];
+
+/** A "Read: <title>" article link shown after a paragraph. */
+export interface ReadLink {
+  label: string;
+  href: string;
+}
+
+/** A directory shortcut link shown in the 2-col grid (FAQ 1). */
+export interface DirectoryLink {
+  label: string;
+  href: string;
+}
+
 export interface MyGFaq {
   question: string;
-  answer: string;
+  /** Main body paragraphs (each is a sequence of text/link segments). */
+  paragraphs: ParagraphSegments[];
+  /** Optional 2-column grid of directory links (FAQ 1). */
+  directoryLinks?: DirectoryLink[];
+  /** Optional "Read:" article links appended after the paragraphs (FAQ 3, FAQ 5). */
+  readLinks?: ReadLink[];
+  /** Optional ordered-list steps (FAQ 7). */
+  steps?: string[];
 }
 
 export const MYG_FAQS: MyGFaq[] = [
   {
     question: "What is GoAbroad.com?",
-    answer:
-      "GoAbroad.com is an established and comprehensive website that has been serving meaningful travelers since 1997. We are a search engine for meaningful travel programs, focusing on 11 directories or program types, including Study Abroad, Internships Abroad, Teach Abroad and Volunteer Abroad. Our mission is to inspire and enable meaningful travel experiences. Browse & Explore our search directories: Study Abroad, Volunteer Abroad, Intern Abroad, Teach Abroad, TEFL Courses, Gap Year, Degrees Abroad, High School Abroad, Language Schools, Adventure Travel, Jobs Abroad.",
+    paragraphs: [
+      [
+        "GoAbroad.com is an established and comprehensive website that has been serving meaningful travelers since 1997. We are a search engine for meaningful travel programs, focusing on 11 directories or program types, including Study Abroad, Internships Abroad, Teach Abroad and Volunteer Abroad. Our mission is to inspire and enable meaningful travel experiences. Browse & Explore our search directories:",
+      ],
+    ],
+    directoryLinks: [
+      { label: "Study Abroad", href: "https://www.goabroad.com/study-abroad" },
+      { label: "Volunteer Abroad", href: "https://www.goabroad.com/volunteer-abroad" },
+      { label: "Intern Abroad", href: "https://www.goabroad.com/internships-abroad" },
+      { label: "Teach Abroad", href: "https://www.goabroad.com/teach-abroad" },
+      { label: "TEFL Courses", href: "https://www.goabroad.com/tefl-courses-abroad" },
+      { label: "Gap Year", href: "https://www.goabroad.com/gap-year" },
+      { label: "Degrees Abroad", href: "https://www.goabroad.com/degrees-abroad" },
+      { label: "High School Abroad", href: "https://www.goabroad.com/high-school-abroad" },
+      { label: "Language Schools", href: "https://www.goabroad.com/language-schools" },
+      { label: "Adventure Travel", href: "https://www.goabroad.com/adventure-travel" },
+      { label: "Jobs Abroad", href: "https://jobs.goabroad.com" },
+    ],
   },
   {
     question: "What is MyGoAbroad?",
-    answer:
-      "MyGoAbroad is a personal account on GoAbroad that enables users to browse, search, save and compare programs, travel resources and more. We are committed to providing users with thoughtful, useful information and products that will take them from dreaming of travel to getting on a plane to having the experience of a lifetime.",
+    paragraphs: [
+      [
+        "MyGoAbroad is a personal account on GoAbroad that enables users to browse, search, save and compare programs, travel resources and more. We are committed to providing users with thoughtful, useful information and products that will take them from dreaming of travel to getting on a plane to having the experience of a lifetime.",
+      ],
+    ],
   },
   {
     question: "What is meaningful travel?",
-    answer:
-      "Wondering how to make your travel meaningful, or what it is in the first place? To us, meaningful travel is participating in something more than just being a tourist. It means immersing yourself in the culture of another country, making meaningful connections with people in the communities you visit, and ideally making a lasting, positive impact on the places you travel. Read: 24 Perspectives & Thoughts on Meaningful Travel.",
+    paragraphs: [
+      [
+        "Wondering how to make your travel meaningful, or what it is in the first place? To us, meaningful travel is participating in something more than just being a tourist. It means immersing yourself in the culture of another country, making meaningful connections with people in the communities you visit, and ideally making a lasting, positive impact on the places you travel.",
+      ],
+    ],
+    readLinks: [
+      {
+        label: "24 Perspectives & Thoughts on Meaningful Travel",
+        href: "https://www.goabroad.com/articles/24-thoughts-on-travel",
+      },
+    ],
   },
   {
     question: "How can I get a travel scholarship, discount or deal for my trip?",
-    answer:
-      "We're so glad you asked! When you sign up for MyGoAbroad, you'll be able to submit an application for travel scholarships, discounts, and deals on programs abroad (think study abroad, internships abroad, volunteer abroad, teach abroad, TEFL courses, and more!). Based on the details in your application, we'll give you access to instant offers for travel scholarships and deals that meet your interests and eligibility!",
+    paragraphs: [
+      [
+        "We're so glad you asked! When you sign up for MyGoAbroad, you'll be able to submit an application for travel scholarships, discounts, and deals on programs abroad (think study abroad, internships abroad, volunteer abroad, teach abroad, TEFL courses, and more!). Based on the details in your application, we'll give you access to instant offers for travel scholarships and deals that meet your interests and eligibility!",
+      ],
+    ],
   },
   {
     question: "How do I choose a program abroad?",
-    answer:
-      `Great question! And while there isn't one singular “right” answer, the best way is to first think about WHAT you want to do and WHERE you want to go (if you need help, browse our homepage or our expert articles!). Then do yourself a favor and search on GoAbroad so you don't miss any of the options out there. Save your favorites in MyGoAbroad, compare side by side, and narrow it down to your perfect program! Read: How to Pick the Right Program Abroad for You. Read: How to Choose Where to Study Abroad.`,
+    paragraphs: [
+      [
+        `Great question! And while there isn't one singular “right” answer, the best way is to first think about WHAT you want to do and WHERE you want to go (if you need help, `,
+        { text: "browse our homepage", href: "https://www.goabroad.com" },
+        " or our ",
+        { text: "expert articles", href: "https://www.goabroad.com/articles" },
+        "!). Then do yourself a favor and search on GoAbroad so you don't miss any of the options out there. Save your favorites in MyGoAbroad, compare side by side, and narrow it down to your perfect program!",
+      ],
+    ],
+    readLinks: [
+      {
+        label: "How to Pick the Right Program Abroad for You",
+        href: "https://www.goabroad.com/articles/how-to-pick-a-travel-program-1",
+      },
+      {
+        label: "How to Choose Where to Study Abroad",
+        href: "https://www.goabroad.com/articles/study-abroad/where-to-study-abroad",
+      },
+    ],
   },
   {
     question: "What's the best way to compare travel programs?",
-    answer:
-      `The easiest way to compare travel programs is within your MyGoAbroad account! Simply search for programs that meet your needs and interests, save or favorite them, then click “See All & Compare” in your MyGoAbroad account. Voila—you'll be able to see your favorite programs side-by-side for a simple and informative comparison.`,
+    paragraphs: [
+      [
+        `The easiest way to compare travel programs is within your MyGoAbroad account! Simply search for programs that meet your needs and interests, save or favorite them, then click “See All & Compare” in your MyGoAbroad account. Voila—you'll be able to see your favorite programs side-by-side for a simple and informative comparison.`,
+      ],
+    ],
   },
   {
     question: "How to plan a trip with MyGoAbroad?",
-    answer:
-      `Start by finding programs that interest you. You can do this by using the search and browse tools on GoAbroad or by requesting program matches from our online advisors. Pro Tip: Head over to “Deals” and apply for a scholarship or deal to see if you can save money on one of your favorite programs (or better yet find a new one that ticks all the boxes!). Next, save your favorite programs to your MyGoAbroad account by clicking on the heart icon. Once you've saved your favorites, head over to “Saved” in your MyGoAbroad account to revisit the programs that you like best. Click “See All & Compare” to select programs to compare side-by-side. Choose which programs you want to apply to or book! Come back to MyGoAbroad to browse, compare, and search for the rest of your travel planning needs—that includes flights, travel insurance, accommodations, and more!`,
+    paragraphs: [],
+    steps: [
+      `Start by finding programs that interest you. You can do this by using the search and browse tools on GoAbroad or by requesting program matches from our online advisors. Pro Tip: Head over to “Deals” and apply for a scholarship or deal to see if you can save money on one of your favorite programs (or better yet find a new one that ticks all the boxes!).`,
+      `Next, save your favorite programs to your MyGoAbroad account by clicking on the heart icon. Once you’ve saved your favorites, head over to “Saved” in your MyGoAbroad account to revisit the programs that you like best. Click “See All & Compare” to select programs to compare side-by-side (this is the best way to compare travel programs so you can see all the details!).`,
+      "Choose which programs you want to apply to or book!",
+      "Come back to MyGoAbroad to browse, compare, and search for the rest of your travel planning needs—that includes flights, travel insurance, accommodations, and more!",
+    ],
   },
 ];

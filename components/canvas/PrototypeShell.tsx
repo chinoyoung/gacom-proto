@@ -9,9 +9,9 @@ import { CanvasShell } from "./CanvasShell";
 
 function isCanvasRoute(pathname: string): boolean {
   if (/^\/programs\/[^/]+$/.test(pathname)) return true;
-  if (pathname === "/marketplace/partner") return true;
-  if (pathname === "/marketplace/esim") return true;
-  if (/^\/marketplace\/esim\/[^/]+$/.test(pathname)) return true;
+  if (pathname === "/mygoabroad/partnerships") return true;
+  if (pathname === "/mygoabroad/esim") return true;
+  if (/^\/mygoabroad\/esim\/[^/]+$/.test(pathname)) return true;
   if (pathname === "/mygoabroad") return true;
   return false;
 }

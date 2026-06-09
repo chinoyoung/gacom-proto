@@ -6,7 +6,7 @@ interface PageNameEntry {
 const ENTRIES: PageNameEntry[] = [
   { pattern: /^\/programs\/[^/]+$/, name: "Program Detail" },
   { pattern: /^\/programs$/, name: "Program Directory" },
-  { pattern: /^\/marketplace\/partner$/, name: "Partner Marketplace" },
+  { pattern: /^\/mygoabroad\/partnerships$/, name: "Partner Marketplace" },
   { pattern: /^\/mygoabroad$/, name: "MyGoAbroad" },
 ];
 

@@ -32,7 +32,7 @@ export default function V1EsimDestinations() {
             return (
               <Link
                 key={dest.slug}
-                href={`/marketplace/esim/${dest.slug}`}
+                href={`/mygoabroad/esim/${dest.slug}`}
                 className="group bg-white rounded-xl border border-slate-200 p-6 flex flex-col gap-3 hover:border-cobalt-200 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
               >
                 <div className="flex items-start justify-between gap-2">
@@ -62,7 +62,7 @@ export default function V1EsimDestinations() {
 
         <div className="mt-10">
           <Link
-            href="/marketplace/esim/destinations"
+            href="/mygoabroad/esim/destinations"
             className="inline-flex items-center gap-2 text-white/80 hover:text-white font-semibold text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white rounded"
           >
             View all destinations

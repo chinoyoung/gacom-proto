@@ -114,7 +114,7 @@ function DestinationCard({ dest }: { dest: Destination }) {
   const isRegion = dest.type === "region";
   return (
     <Link
-      href={`/marketplace/esim/${dest.slug}`}
+      href={`/mygoabroad/esim/${dest.slug}`}
       className="group h-full bg-white rounded-xl border border-slate-200 p-6 flex flex-col gap-3 hover:border-cobalt-300 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500"
     >
       <div className="flex items-start justify-between gap-2">

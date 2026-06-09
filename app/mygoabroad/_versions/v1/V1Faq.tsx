@@ -2,7 +2,91 @@
 
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
-import { MYG_FAQS } from "../../_shared/content";
+import {
+  MYG_FAQS,
+  type MyGFaq,
+  type ParagraphSegments,
+  type LinkSegment,
+} from "../../_shared/content";
+
+function isLinkSegment(seg: string | LinkSegment): seg is LinkSegment {
+  return typeof seg === "object" && seg !== null && "href" in seg;
+}
+
+function RenderParagraph({ segments }: { segments: ParagraphSegments }) {
+  return (
+    <p className="text-slate-700 leading-relaxed">
+      {segments.map((seg, i) =>
+        isLinkSegment(seg) ? (
+          <a
+            key={i}
+            href={seg.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-cobalt-500 no-underline hover:underline"
+          >
+            {seg.text}
+          </a>
+        ) : (
+          <span key={i}>{seg}</span>
+        )
+      )}
+    </p>
+  );
+}
+
+function FaqAnswer({ faq }: { faq: MyGFaq }) {
+  return (
+    <div className="pb-5 flex flex-col gap-3">
+      {faq.paragraphs.map((segments, i) => (
+        <RenderParagraph key={i} segments={segments} />
+      ))}
+
+      {faq.directoryLinks && faq.directoryLinks.length > 0 && (
+        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1 list-none p-0 m-0">
+          {faq.directoryLinks.map((link) => (
+            <li key={link.href}>
+              <a
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-cobalt-500 no-underline hover:underline text-sm"
+              >
+                {link.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      {faq.steps && faq.steps.length > 0 && (
+        <ol className="list-decimal pl-5 flex flex-col gap-2 text-slate-700 leading-relaxed">
+          {faq.steps.map((step, i) => (
+            <li key={i}>{step}</li>
+          ))}
+        </ol>
+      )}
+
+      {faq.readLinks && faq.readLinks.length > 0 && (
+        <div className="flex flex-col gap-1">
+          {faq.readLinks.map((link) => (
+            <p key={link.href} className="text-slate-700 leading-relaxed">
+              Read:{" "}
+              <a
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-cobalt-500 no-underline hover:underline"
+              >
+                {link.label}
+              </a>
+            </p>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default function V1Faq() {
   const [openIdx, setOpenIdx] = useState<number | null>(null);
@@ -32,9 +116,7 @@ export default function V1Faq() {
                 aria-hidden="true"
               />
             </button>
-            {isOpen && (
-              <p className="pb-5 text-slate-700 leading-relaxed whitespace-pre-wrap">{faq.answer}</p>
-            )}
+            {isOpen && <FaqAnswer faq={faq} />}
           </div>
         );
       })}

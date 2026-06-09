@@ -27,7 +27,7 @@ export default function EsimReadyCTA({ destination }: { destination: Destination
             Buy {destination.name} eSIM
           </button>
           <a
-            href="/marketplace/esim/destinations"
+            href="/mygoabroad/esim/destinations"
             className="inline-flex items-center justify-center border border-white/40 text-white hover:bg-white/10 font-semibold px-7 py-3 rounded-lg text-sm transition-colors w-full sm:w-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
           >
             View All Plans

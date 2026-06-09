@@ -21,7 +21,7 @@ export default function AllEsimDestinationsPage() {
         <div className="max-w-7xl mx-auto px-6">
           <nav aria-label="Breadcrumb" className="pt-6 pb-2">
             <Link
-              href="/marketplace/esim"
+              href="/mygoabroad/esim"
               className="sm:hidden inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-cobalt-600 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 rounded"
             >
               <svg
@@ -57,7 +57,7 @@ export default function AllEsimDestinationsPage() {
               <li aria-hidden="true" className="text-slate-300">/</li>
               <li>
                 <Link
-                  href="/marketplace/esim"
+                  href="/mygoabroad/esim"
                   className="hover:text-cobalt-600 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 rounded"
                 >
                   eSIM

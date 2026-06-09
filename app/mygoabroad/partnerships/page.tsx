@@ -6,7 +6,7 @@ import V1PartnerPage from "./_versions/v1/V1PartnerPage";
 import V2PartnerPage from "./_versions/v2/V2PartnerPage";
 
 function PartnerPageContent() {
-  const { version } = useDesignVersion("marketplace-partner");
+  const { version } = useDesignVersion("mygoabroad-partnerships");
 
   switch (version) {
     case "v2":

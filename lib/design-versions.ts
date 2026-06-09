@@ -11,23 +11,23 @@ export interface PageVersionConfig {
 }
 
 export const PAGE_VERSIONS: Record<string, PageVersionConfig> = {
-  "marketplace-partner": {
-    pageId: "marketplace-partner",
+  "mygoabroad-partnerships": {
+    pageId: "mygoabroad-partnerships",
     versions: [
       { id: "v1", label: "v1", description: "Split hero with image on right" },
       { id: "v2", label: "v2", description: "Friendly redesign with illustrations" },
     ],
     defaultVersion: "v1",
   },
-  "marketplace-esim": {
-    pageId: "marketplace-esim",
+  "mygoabroad-esim": {
+    pageId: "mygoabroad-esim",
     versions: [
       { id: "v1", label: "v1", description: "Brand-aligned default following BRANDING.md" },
     ],
     defaultVersion: "v1",
   },
-  "marketplace-esim-detail": {
-    pageId: "marketplace-esim-detail",
+  "mygoabroad-esim-detail": {
+    pageId: "mygoabroad-esim-detail",
     versions: [
       { id: "v1", label: "v1", description: "Destination eSIM detail page" },
     ],
