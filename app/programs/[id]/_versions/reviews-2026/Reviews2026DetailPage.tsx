@@ -12,33 +12,35 @@ import ProgramDetails from "../../_components/ProgramDetails";
 import RelatedPrograms from "../../_components/RelatedPrograms";
 import ProgramArticles from "../../_components/ProgramArticles";
 
-import TrustBar from "./V5TrustBar";
+import TrustBar from "../v5/V5TrustBar";
 import { buildFaqs, InterviewsSection } from "../v1/SupportSections";
 import { BottomInquirySection } from "../v1/BottomInquirySection";
 
-import V5Hero from "./V5Hero";
-import V5Overview from "./V5Overview";
-import V5AnchorCTA from "./V5AnchorCTA";
-import V5Highlights from "./V5Highlights";
-import V5WhatsIncluded from "./V5WhatsIncluded";
-import V5Sidebar from "./V5Sidebar";
-import V5MediaGallery from "./V5MediaGallery";
-import V5Reviews, { type Review } from "./V5Reviews";
-import V5FAQ from "./V5FAQ";
-import V5Recognitions from "./V5Recognitions";
-import V5HelpSection from "./V5HelpSection";
+import V5Hero from "../v5/V5Hero";
+import V5Overview from "../v5/V5Overview";
+import V5AnchorCTA from "../v5/V5AnchorCTA";
+import V5Highlights from "../v5/V5Highlights";
+import V5WhatsIncluded from "../v5/V5WhatsIncluded";
+import V5Sidebar from "../v5/V5Sidebar";
+import V5MediaGallery from "../v5/V5MediaGallery";
+import V5FAQ from "../v5/V5FAQ";
+import V5Recognitions from "../v5/V5Recognitions";
+import V5HelpSection from "../v5/V5HelpSection";
+import type { Review } from "../../_components/types";
 
-interface V5DetailPageProps {
+import Reviews2026Section from "./Reviews2026Section";
+
+interface Reviews2026DetailPageProps {
   program: Program;
   reviews: Review[] | undefined;
   avgRating: number;
 }
 
-export default function V5DetailPage({
+export default function Reviews2026DetailPage({
   program,
   reviews,
   avgRating,
-}: V5DetailPageProps) {
+}: Reviews2026DetailPageProps) {
   const reviewCount = reviews?.length ?? 0;
   const faqs = buildFaqs(program);
 
@@ -136,14 +138,12 @@ export default function V5DetailPage({
           </section>
         )}
 
-        {/* Reviews */}
-        <section id="reviews" className="w-full max-w-7xl mx-auto mt-20 px-4 xl:px-0">
-          <V5Reviews
-            programId={program._id}
+        {/* Reviews 2026 — redesigned placeholder */}
+        <section id="reviews" className="w-full max-w-7xl mx-auto mt-20 px-4 xl:px-0 scroll-mt-36">
+          <Reviews2026Section
+            program={program}
             reviews={reviews}
             avgRating={avgRating}
-            provider={program.provider}
-            aiSummary={program.aiSummary}
           />
         </section>
 

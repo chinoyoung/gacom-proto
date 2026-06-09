@@ -3,7 +3,7 @@
 import { useQuery, useMutation } from "convex/react";
 import { useUser } from "@clerk/nextjs";
 import { api } from "@/convex/_generated/api";
-import { Edit2, Trash2, Loader2, Save, X, Search, Star, ChevronLeft, ChevronRight } from "lucide-react";
+import { Edit2, Trash2, Loader2, Save, X, Search, Star, ChevronLeft, ChevronRight, Layers } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Id } from "@/convex/_generated/dataModel";
 import AIGenerateButton from "../create-listing/_components/AIGenerateButton";
@@ -29,6 +29,12 @@ const baseFormData = {
     communityRating: 5,
     photo: "",
     status: "published" as "draft" | "published",
+    // New fields — held as hidden passthrough state; set by the AI generator
+    helpfulCount: undefined as number | undefined,
+    highlight: undefined as string | undefined,
+    advice: undefined as string | undefined,
+    identityTags: undefined as string[] | undefined,
+    media: undefined as string[] | undefined,
 };
 
 function getInitialFormData() {
@@ -41,6 +47,7 @@ export default function ReviewsManager({ isCreating, onCancelCreate }: ReviewsMa
     const createReview = useMutation(api.reviews.createReview);
     const updateReview = useMutation(api.reviews.updateReview);
     const deleteReview = useMutation(api.reviews.deleteReview);
+    const seedMockReviews = useMutation(api.reviews.seedMockReviews);
     const { user } = useUser();
 
     const [isEditing, setIsEditing] = useState(false);
@@ -49,6 +56,8 @@ export default function ReviewsManager({ isCreating, onCancelCreate }: ReviewsMa
     const [currentPage, setCurrentPage] = useState(1);
     const ITEMS_PER_PAGE = 10;
     const [formData, setFormData] = useState(getInitialFormData);
+    const [seedProgramId, setSeedProgramId] = useState("");
+    const [isSeeding, setIsSeeding] = useState(false);
 
     // Sync isCreating prop with internal isEditing state
     useEffect(() => {
@@ -101,6 +110,11 @@ export default function ReviewsManager({ isCreating, onCancelCreate }: ReviewsMa
             communityRating: review.communityRating,
             photo: review.photo ?? "",
             status: review.status,
+            helpfulCount: review.helpfulCount,
+            highlight: review.highlight,
+            advice: review.advice,
+            identityTags: review.identityTags,
+            media: review.media,
         });
         setIsEditing(true);
     };
@@ -134,6 +148,12 @@ export default function ReviewsManager({ isCreating, onCancelCreate }: ReviewsMa
             photo: formData.photo || undefined,
             status: formData.status,
             createdBy: user?.fullName ?? user?.firstName ?? undefined,
+            // New fields — passed through from AI generator or edit load
+            helpfulCount: formData.helpfulCount,
+            highlight: formData.highlight || undefined,
+            advice: formData.advice || undefined,
+            identityTags: formData.identityTags,
+            media: formData.media,
         };
 
         try {
@@ -155,6 +175,26 @@ export default function ReviewsManager({ isCreating, onCancelCreate }: ReviewsMa
         }
     };
 
+    const handleSeed = async () => {
+        if (!seedProgramId) {
+            alert("Select a program to seed reviews for.");
+            return;
+        }
+        if (!confirm(`Seed mock reviews for this program? Re-seeding replaces any previously seeded mock reviews and overwrites the AI summary and topic tags. Hand-created reviews are untouched.`)) return;
+        setIsSeeding(true);
+        try {
+            const result = await seedMockReviews({
+                programId: seedProgramId as Id<"programs">,
+            });
+            alert(`Done! Seeded ${result.seeded} reviews and updated AI summary + topic tags.`);
+        } catch (err) {
+            console.error("Seed failed:", err);
+            alert("Seeding failed. Check the console for details.");
+        } finally {
+            setIsSeeding(false);
+        }
+    };
+
     const programTitleById = (id: string) =>
         programs?.find((p) => p._id === id)?.title ?? "Unknown Program";
 
@@ -166,31 +206,69 @@ export default function ReviewsManager({ isCreating, onCancelCreate }: ReviewsMa
     return (
         <div className="animate-in fade-in duration-500">
             {!isEditing && (
-                <div className="mb-8 flex flex-col md:flex-row gap-4 items-center justify-between">
-                    <div className="relative w-full md:w-96">
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                        <input
-                            type="text"
-                            placeholder="Search reviews..."
-                            className="w-full pl-10 pr-4 py-2 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-cobalt-500 focus:border-transparent transition-all shadow-sm"
-                            value={searchQuery}
-                            onChange={(e) => {
-                                setSearchQuery(e.target.value);
-                                setCurrentPage(1);
-                            }}
-                        />
-                    </div>
-                    <div className="flex gap-4">
-                        <div className="bg-white px-4 py-2 rounded-lg border border-gray-200 shadow-sm">
-                            <span className="text-xs font-bold text-gray-400 uppercase tracking-widest block">
-                                Total Reviews
-                            </span>
-                            <span className="text-xl font-extrabold text-gray-900">
-                                {reviews?.length ?? 0}
-                            </span>
+                <>
+                    <div className="mb-6 flex flex-col md:flex-row gap-4 items-center justify-between">
+                        <div className="relative w-full md:w-96">
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                            <input
+                                type="text"
+                                placeholder="Search reviews..."
+                                className="w-full pl-10 pr-4 py-2 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-cobalt-500 focus:border-transparent transition-all shadow-sm"
+                                value={searchQuery}
+                                onChange={(e) => {
+                                    setSearchQuery(e.target.value);
+                                    setCurrentPage(1);
+                                }}
+                            />
+                        </div>
+                        <div className="flex gap-4">
+                            <div className="bg-white px-4 py-2 rounded-lg border border-gray-200 shadow-sm">
+                                <span className="text-xs font-bold text-gray-400 uppercase tracking-widest block">
+                                    Total Reviews
+                                </span>
+                                <span className="text-xl font-extrabold text-gray-900">
+                                    {reviews?.length ?? 0}
+                                </span>
+                            </div>
                         </div>
                     </div>
-                </div>
+
+                    {/* Bulk seed panel */}
+                    <div className="mb-8 flex flex-col sm:flex-row gap-3 items-stretch sm:items-center p-4 bg-gray-50 border border-gray-200 rounded-lg">
+                        <Layers className="hidden sm:block w-5 h-5 text-gray-400 shrink-0" />
+                        <span className="text-sm font-bold text-gray-600 shrink-0">Seed mock reviews</span>
+                        <select
+                            className="flex-1 px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-cobalt-500 transition-all"
+                            value={seedProgramId}
+                            onChange={(e) => setSeedProgramId(e.target.value)}
+                        >
+                            <option value="">Select a program…</option>
+                            {programs?.map((p) => (
+                                <option key={p._id} value={p._id}>
+                                    {p.title}
+                                </option>
+                            ))}
+                        </select>
+                        <button
+                            type="button"
+                            onClick={handleSeed}
+                            disabled={isSeeding || !seedProgramId}
+                            className="inline-flex items-center gap-2 px-5 py-2 bg-cobalt-600 text-white rounded-lg text-sm font-bold hover:bg-cobalt-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed active:scale-95"
+                        >
+                            {isSeeding ? (
+                                <>
+                                    <Loader2 className="w-4 h-4 animate-spin" />
+                                    Seeding…
+                                </>
+                            ) : (
+                                <>
+                                    <Layers className="w-4 h-4" />
+                                    Seed mock reviews
+                                </>
+                            )}
+                        </button>
+                    </div>
+                </>
             )}
 
             {isEditing ? (
@@ -296,6 +374,12 @@ export default function ReviewsManager({ isCreating, onCancelCreate }: ReviewsMa
                                         ...(fields.programAdministrationRating != null && { programAdministrationRating: fields.programAdministrationRating }),
                                         ...(fields.healthAndSafetyRating != null && { healthAndSafetyRating: fields.healthAndSafetyRating }),
                                         ...(fields.communityRating != null && { communityRating: fields.communityRating }),
+                                        // New fields — carry through from generator
+                                        ...(fields.helpfulCount != null && { helpfulCount: fields.helpfulCount }),
+                                        ...(fields.highlight !== undefined && { highlight: fields.highlight }),
+                                        ...(fields.advice !== undefined && { advice: fields.advice }),
+                                        ...(fields.identityTags !== undefined && { identityTags: fields.identityTags }),
+                                        ...(fields.media !== undefined && { media: fields.media }),
                                     }));
                                 }}
                                 className="mb-6"

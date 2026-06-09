@@ -135,6 +135,18 @@ export const updateProgram = mutation({
     optionalInclusions: v.optional(v.array(v.string())),
     programTags: v.optional(v.array(v.string())),
     yearFounded: v.optional(v.number()),
+    // AI Review Summary
+    aiSummary: v.optional(
+      v.object({
+        text: v.string(),
+        generatedAt: v.number(),
+        reviewCount: v.number(),
+      })
+    ),
+    // Cached topic tags
+    topicTags: v.optional(
+      v.array(v.object({ label: v.string(), count: v.number() }))
+    ),
   },
   handler: async (ctx, { id, ...fields }) => {
     // Remove undefined values before patching

@@ -1,3 +1,35 @@
+// Shared Review type (matches shape used by V5Reviews and reviews-2026)
+export type Review = {
+  _id: string;
+  _creationTime: number;
+  reviewTitle?: string;
+  reviewerName?: string;
+  reviewerCountry?: string;
+  body?: string;
+  reviewBody?: string;
+  photo?: string;
+  photos?: string[];
+  overallRating?: number;
+  academicsRating?: number;
+  livingSituationRating?: number;
+  culturalImmersionRating?: number;
+  programAdministrationRating?: number;
+  healthAndSafetyRating?: number;
+  communityRating?: number;
+  /** Number of "helpful" votes. Present in Convex schema; used by reviews-2026. */
+  helpfulCount?: number;
+  /** Standout highlight quote surfaced by the reviewer. */
+  highlight?: string;
+  /** Advice the reviewer would give future participants. */
+  advice?: string;
+  /** Self-reported identity tags (e.g. ["First-gen", "LGBTQ+"]). */
+  identityTags?: string[];
+  /** URLs of reviewer-uploaded media. */
+  media?: string[];
+  /** ISO date string or human-readable date (e.g. "March 15, 2025"). Matches Convex schema `date: v.string()`. */
+  date?: string;
+};
+
 // Shared Program type matching the Convex schema
 export interface Program {
   _id: string;
@@ -51,4 +83,7 @@ export interface Program {
     generatedAt: number;
     reviewCount: number;
   };
+
+  // Topic tags (denormalized from reviews; seeded for prototype)
+  topicTags?: { label: string; count: number }[];
 }

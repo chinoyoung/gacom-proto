@@ -70,6 +70,11 @@ export default defineSchema({
       })
     ),
 
+    // Cached topic tags (denormalized from reviews; seeded by hand for the prototype, not auto-maintained)
+    topicTags: v.optional(
+      v.array(v.object({ label: v.string(), count: v.number() }))
+    ),
+
     // Timestamps
     updatedAt: v.optional(v.number()),
     createdBy: v.optional(v.string()),
@@ -130,11 +135,17 @@ export default defineSchema({
     programAdministrationRating: v.number(),
     healthAndSafetyRating: v.number(),
     communityRating: v.number(),
-    photo: v.optional(v.string()), // reviewer/experience photo URL
+    photo: v.optional(v.string()), // reviewer/experience photo URL (legacy; superseded by media)
     status: v.union(v.literal("draft"), v.literal("published")),
     createdBy: v.optional(v.string()),
     pros: v.optional(v.array(v.string())),
     cons: v.optional(v.array(v.string())),
+    // New fields for reviews redesign
+    helpfulCount: v.optional(v.number()), // count of "Helpful" votes
+    highlight: v.optional(v.string()), // short highlight excerpt
+    advice: v.optional(v.string()), // advice for future travellers
+    identityTags: v.optional(v.array(v.string())), // e.g. "Solo traveler", "First-timer"
+    media: v.optional(v.array(v.string())), // multiple media URLs (supersedes photo)
   })
     .index("by_program", ["programId"])
     .index("by_status", ["status"])

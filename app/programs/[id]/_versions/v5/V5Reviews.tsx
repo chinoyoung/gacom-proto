@@ -7,9 +7,15 @@ import {
   ChevronRight,
   ChevronDown,
   ChevronUp,
+  ThumbsUp,
   X,
 } from "lucide-react";
+import { useQuery, useMutation } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import type { Id } from "@/convex/_generated/dataModel";
+// programId is stored as string in the Program type; cast to Convex Id where needed.
 import V5AiSummary from "./V5AiSummary";
+import ReviewSummary2026 from "../reviews-2026/ReviewSummary2026";
 
 export type Review = {
   _id: string;
@@ -28,6 +34,7 @@ export type Review = {
   programAdministrationRating?: number;
   healthAndSafetyRating?: number;
   communityRating?: number;
+  helpfulCount?: number;
 };
 
 const CATEGORY_FIELDS = [
@@ -65,8 +72,61 @@ function getDemoReviewPhotos(review: Review, index: number): string[] {
   return result;
 }
 
+// ── Per-card Helpful button ───────────────────────────────────────────────────
+
+interface HelpfulButtonProps {
+  review: Review;
+}
+
+function HelpfulButton({ review }: HelpfulButtonProps) {
+  const [voted, setVoted] = useState(false);
+  const markHelpful = useMutation(api.reviews.markHelpful);
+
+  const displayedCount = (review.helpfulCount ?? 0) + (voted ? 1 : 0);
+
+  async function handleHelpful() {
+    if (voted) return;
+    setVoted(true);
+    try {
+      await markHelpful({ reviewId: review._id as Id<"reviews"> });
+    } catch {
+      setVoted(false);
+    }
+  }
+
+  return (
+    <button
+      type="button"
+      onClick={handleHelpful}
+      disabled={voted}
+      aria-label={voted ? "Marked as helpful" : "Mark as helpful"}
+      className={[
+        "inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-md border transition-colors",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-1",
+        voted
+          ? "bg-fern-50 border-fern-200 text-fern-700 cursor-not-allowed"
+          : "bg-white border-slate-200 text-slate-600 hover:border-slate-300 hover:bg-slate-50 cursor-pointer",
+      ].join(" ")}
+    >
+      <ThumbsUp className="w-3.5 h-3.5" aria-hidden="true" />
+      Helpful
+      {displayedCount > 0 && (
+        <span className="tabular-nums">({displayedCount})</span>
+      )}
+    </button>
+  );
+}
+
+// ── Main component ────────────────────────────────────────────────────────────
+
 interface V5ReviewsProps {
+  programId: string;
   reviews: Review[] | undefined;
+  /**
+   * Accepted for orchestrator parity — page.tsx passes avgRating to every
+   * section variant so the switch statement stays uniform. Live stats here
+   * come from api.reviews.getReviewStats (Convex live query), not this prop.
+   */
   avgRating: number;
   provider: string;
   aiSummary?: {
@@ -75,13 +135,24 @@ interface V5ReviewsProps {
   };
 }
 
-export default function V5Reviews({ reviews, avgRating, provider, aiSummary }: V5ReviewsProps) {
+export default function V5Reviews({
+  programId,
+  reviews,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  avgRating: _avgRating, // acknowledged; live stats sourced from getReviewStats
+  provider,
+  aiSummary,
+}: V5ReviewsProps) {
   const [sort, setSort] = useState<ReviewSort>("recent");
+  const [selectedStar, setSelectedStar] = useState<number | null>(null);
   const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
-  const [expandedRatingIds, setExpandedRatingIds] = useState<Set<string>>(new Set());
-  const [showAllCategories, setShowAllCategories] = useState(false);
   const [showAll, setShowAll] = useState(false);
   const [lightbox, setLightbox] = useState<{ photos: string[]; index: number } | null>(null);
+
+  // Live stats from Convex — drives ReviewSummary2026
+  const stats = useQuery(api.reviews.getReviewStats, {
+    programId: programId as Id<"programs">,
+  });
 
   const closeLightbox = useCallback(() => setLightbox(null), []);
   const prevPhoto = useCallback(() => {
@@ -108,58 +179,23 @@ export default function V5Reviews({ reviews, avgRating, provider, aiSummary }: V
 
   const reviewList = reviews ?? [];
 
-  const categoryRatings = CATEGORY_FIELDS.map((cat) => {
-    const values = reviewList
-      .map((r) => r[cat.key])
-      .filter((v): v is number => typeof v === "number");
-    const avg =
-      values.length > 0
-        ? values.reduce((sum, v) => sum + v, 0) / values.length
-        : 0;
-    return { label: cat.label, avg };
-  });
+  // ── Star filter — applied before sort/pagination ──────────────────────────
+  function handleSelectStar(star: number | null) {
+    setSelectedStar(star);
+    setShowAll(false); // reset view-all window on filter change
+  }
 
-  const ratedCategories = categoryRatings.filter((c) => c.avg > 0);
-  const sortedCategories = [...ratedCategories].sort((a, b) => b.avg - a.avg);
-  const visibleCategories = showAllCategories ? sortedCategories : sortedCategories.slice(0, 3);
+  const afterStarFilter =
+    selectedStar === null
+      ? reviewList
+      : reviewList.filter(
+          (r) =>
+            typeof r.overallRating === "number" &&
+            Math.round(r.overallRating) === selectedStar
+        );
 
-  // Summary card columns: Overall rating + Distribution · Top categories.
-  const showTopCategories = ratedCategories.length > 0;
-  const summaryGridCols = showTopCategories ? "md:grid-cols-2" : "grid-cols-1";
-
-  const ratingHeadline = (
-    <div className="flex items-center flex-wrap gap-3">
-      <span className="text-4xl sm:text-5xl font-extrabold text-slate-900 leading-none">
-        {avgRating > 0 ? avgRating.toFixed(1) : "—"}
-        <span className="text-2xl sm:text-3xl font-bold text-slate-400 ml-1">/5</span>
-      </span>
-      <div className="flex items-center gap-0.5">
-        {[1, 2, 3, 4, 5].map((star) => (
-          <Star
-            key={star}
-            className={`w-6 h-6 ${
-              avgRating >= star ? "text-sun-500 fill-current" : "text-slate-300"
-            }`}
-          />
-        ))}
-      </div>
-      <span className="bg-cobalt-500/10 text-cobalt-600 text-xs font-semibold px-3 py-1 rounded-full">
-        {reviewList.length} {reviewList.length === 1 ? "review" : "reviews"}
-      </span>
-    </div>
-  );
-
-  const distribution = [5, 4, 3, 2, 1].map((stars) => {
-    const label = `${stars}`;
-    const count = reviewList.filter(
-      (r) => typeof r.overallRating === "number" && Math.round(r.overallRating) === stars
-    ).length;
-    const bar = "bg-sun-500";
-    return { stars, label, count, bar };
-  });
-  const maxDistCount = Math.max(1, ...distribution.map((d) => d.count));
-
-  const sorted = [...reviewList].sort((a, b) => {
+  // ── Sort ──────────────────────────────────────────────────────────────────
+  const sorted = [...afterStarFilter].sort((a, b) => {
     if (sort === "recent") return b._creationTime - a._creationTime;
     if (sort === "highest") return (b.overallRating ?? 0) - (a.overallRating ?? 0);
     if (sort === "lowest") return (a.overallRating ?? 0) - (b.overallRating ?? 0);
@@ -180,15 +216,6 @@ export default function V5Reviews({ reviews, avgRating, provider, aiSummary }: V
     });
   };
 
-  const toggleExpandRating = (id: string) => {
-    setExpandedRatingIds((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
-  };
-
   return (
     <div className="flex flex-col gap-4">
       {/* Header */}
@@ -199,104 +226,17 @@ export default function V5Reviews({ reviews, avgRating, provider, aiSummary }: V
             Hear what past participants have to say about {provider}
           </p>
         </div>
-        <div className="flex gap-3 items-center shrink-0">
-          <button
-            type="button"
-            className="hidden lg:inline-flex items-center justify-center h-10 px-5 bg-roman-500 text-white text-sm font-semibold rounded-md cursor-pointer hover:bg-roman-600 transition-colors"
-          >
-            Review this Program
-          </button>
-        </div>
       </div>
 
-      {/* Summary card */}
-      <div className="border border-slate-200 rounded-md p-5 sm:p-6 bg-white">
-        {/* Headline shown on its own only when there are no reviews;
-            otherwise it's grouped with the Distribution column below. */}
-        {reviewList.length === 0 && ratingHeadline}
-
-        {reviewList.length > 0 && (
-          <div className={`grid grid-cols-1 ${summaryGridCols} gap-8`}>
-            {/* Overall rating + Distribution */}
-            <div>
-              <div className="mb-5">{ratingHeadline}</div>
-              {reviewList.length >= 5 ? (
-                <>
-                  <h3 className="text-sm font-bold text-slate-900 mb-3">Distribution</h3>
-                  <div className="flex flex-col gap-2">
-                    {distribution.map(({ stars, label, count, bar }) => (
-                      <div key={stars} className="flex items-center gap-3">
-                        <span className="text-xs font-semibold text-slate-700 w-12 text-right shrink-0">
-                          {label}
-                        </span>
-                        <div className="flex-1 h-2 bg-slate-100 rounded-full overflow-hidden">
-                          <div
-                            className={`h-full ${bar} rounded-full`}
-                            style={{ width: `${(count / maxDistCount) * 100}%` }}
-                          />
-                        </div>
-                        <span className="text-xs font-medium text-slate-500 w-8 text-right shrink-0">
-                          {count}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </>
-              ) : (
-                <div className="bg-slate-50 border border-slate-200 rounded-md p-4">
-                  <p className="text-sm text-slate-700 font-medium">
-                    Based on {reviewList.length} {reviewList.length === 1 ? "review" : "reviews"}
-                  </p>
-                  <p className="text-xs text-slate-500 mt-1">
-                    We&apos;ll show a full rating breakdown once more students share their experience.
-                  </p>
-                </div>
-              )}
-            </div>
-
-            {/* Top categories */}
-            {ratedCategories.length > 0 && (
-              <div>
-                {/* Invisible spacer matching the rating headline so this column's
-                    heading lines up with "Distribution" on desktop. */}
-                <div className="hidden md:block invisible mb-5" aria-hidden="true">
-                  {ratingHeadline}
-                </div>
-                <h3 className="text-sm font-bold text-slate-900 mb-3">Top categories</h3>
-                <div className="flex flex-col gap-2">
-                  {visibleCategories.map((cat) => (
-                    <div key={cat.label} className="flex items-center gap-3">
-                      <span className="text-sm text-slate-700 flex-1 min-w-0 truncate">
-                        {cat.label}
-                      </span>
-                      <div className="w-24 sm:w-32 h-2 bg-slate-100 rounded-full overflow-hidden shrink-0">
-                        <div
-                          className="h-full bg-sun-500 rounded-full"
-                          style={{ width: `${(cat.avg / 5) * 100}%` }}
-                        />
-                      </div>
-                      <span className="text-xs font-semibold text-slate-700 w-8 text-right shrink-0">
-                        {cat.avg.toFixed(1)}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-                {sortedCategories.length > 3 && (
-                  <button
-                    type="button"
-                    onClick={() => setShowAllCategories((v) => !v)}
-                    className="text-sm font-semibold text-cobalt-500 hover:underline cursor-pointer mt-3"
-                  >
-                    {showAllCategories
-                      ? "Show fewer categories"
-                      : `Show all ${sortedCategories.length} categories`}
-                  </button>
-                )}
-              </div>
-            )}
-          </div>
-        )}
-      </div>
+      {/* Summary block — ReviewSummary2026 replaces v5's old summary card */}
+      {stats && (
+        <ReviewSummary2026
+          stats={stats}
+          provider={provider}
+          selectedStar={selectedStar}
+          onSelectStar={handleSelectStar}
+        />
+      )}
 
       {/* AI review summary */}
       <V5AiSummary summary={aiSummary} />
@@ -318,243 +258,238 @@ export default function V5Reviews({ reviews, avgRating, provider, aiSummary }: V
         </div>
       ) : (
         <>
-          {reviewList.length > 0 && (
-            <div className="flex items-center justify-between gap-3">
-              <p className="text-sm text-slate-500">
-                {hasMoreThanLimit && !showAll
-                  ? `Showing ${visibleReviews.length} of ${reviewList.length} reviews`
-                  : `Showing ${reviewList.length} ${reviewList.length === 1 ? "review" : "reviews"}`}
-              </p>
-              <select
-                value={sort}
-                onChange={(e) => { setSort(e.target.value as ReviewSort); }}
-                aria-label="Sort reviews"
-                className="text-sm border border-slate-200 rounded-md px-2.5 h-10 text-slate-600 bg-white cursor-pointer"
-              >
-                <option value="recent">Recent</option>
-                <option value="highest">Highest Rated</option>
-                <option value="lowest">Lowest Rated</option>
-              </select>
-            </div>
-          )}
-
-          <div className="flex flex-col gap-4">
-            {visibleReviews.map((review, reviewIndex) => {
-              const isExpanded = expandedIds.has(review._id);
-              const isRatingExpanded = expandedRatingIds.has(review._id);
-              const body: string = review.body ?? review.reviewBody ?? "";
-              const isLong = body.length > 280;
-              const reviewCategoryRatings = CATEGORY_FIELDS.map((cat) => ({
-                label: cat.label,
-                value: typeof review[cat.key] === "number" ? review[cat.key] : null,
-              })).filter((c) => c.value != null);
-
-              return (
-                <div
-                  key={review._id}
-                  className="flex shrink-0 flex-col bg-white border border-slate-200 p-5 rounded-md relative overflow-visible"
-                >
-                  <div className="flex flex-col gap-4">
-                    <div className="flex items-start justify-between gap-4">
-                      <div className="flex items-center gap-3 min-w-0">
-                        <div className="w-10 h-10 rounded-full bg-cobalt-500 text-white font-bold text-sm flex items-center justify-center shrink-0">
-                          {(review.reviewerName ?? "A").charAt(0).toUpperCase()}
-                        </div>
-                        <div className="flex flex-col min-w-0">
-                          <span className="font-bold text-sm text-neutral-900 truncate">
-                            {review.reviewerName ?? "Anonymous"}
-                          </span>
-                          <span className="text-xs text-neutral-500 truncate">
-                            {review.reviewerCountry && <>{review.reviewerCountry} · </>}
-                            Reviewed{" "}
-                            {new Date(review._creationTime).toLocaleDateString("en-US", {
-                              month: "short",
-                              year: "numeric",
-                            })}
-                          </span>
-                        </div>
-                      </div>
-                      {review.overallRating != null && (
-                        <div className="relative shrink-0">
-                          <button
-                            type="button"
-                            onClick={() => toggleExpandRating(review._id)}
-                            disabled={reviewCategoryRatings.length === 0}
-                            aria-expanded={isRatingExpanded}
-                            aria-label={
-                              reviewCategoryRatings.length === 0
-                                ? "Overall rating"
-                                : isRatingExpanded
-                                  ? "Hide rating breakdown"
-                                  : "Show rating breakdown"
-                            }
-                            className={`flex items-center gap-1 rounded-md px-2 py-1 transition-colors ${
-                              reviewCategoryRatings.length > 0
-                                ? "bg-slate-100 hover:bg-slate-200 cursor-pointer"
-                                : "bg-slate-100"
-                            }`}
-                          >
-                            <Star fill="currentColor" className="text-sun-500 w-4 h-4" />
-                            <span className="font-bold text-sm">
-                              {Number(review.overallRating).toFixed(1)}
-                            </span>
-                            {reviewCategoryRatings.length > 0 &&
-                              (isRatingExpanded ? (
-                                <ChevronUp className="w-3 h-3 text-neutral-500" />
-                              ) : (
-                                <ChevronDown className="w-3 h-3 text-neutral-500" />
-                              ))}
-                          </button>
-                          {isRatingExpanded && reviewCategoryRatings.length > 0 && (
-                            <div
-                              role="dialog"
-                              className="absolute right-0 top-full mt-2 w-72 bg-white border border-slate-200 rounded-md shadow-lg p-4 z-20 flex flex-col gap-2.5"
-                            >
-                              {reviewCategoryRatings.map((cat) => (
-                                <div key={cat.label} className="flex items-center gap-3">
-                                  <span className="text-xs text-slate-500 w-28 shrink-0">{cat.label}</span>
-                                  <div className="flex-1 h-1.5 bg-slate-200 rounded-full overflow-hidden">
-                                    <div
-                                      className="h-full bg-sun-500 rounded-full"
-                                      style={{ width: `${((cat.value ?? 0) / 5) * 100}%` }}
-                                    />
-                                  </div>
-                                  <span className="text-xs font-semibold text-slate-700 w-8 text-right shrink-0">
-                                    {Number(cat.value).toFixed(1)}
-                                  </span>
-                                </div>
-                              ))}
-                            </div>
-                          )}
-                        </div>
-                      )}
-                    </div>
-
-                    <h3 className="text-lg font-bold text-neutral-900 leading-snug">
-                      {review.reviewTitle ?? "Program Review"}
-                    </h3>
-
-                    <div className="flex flex-col md:flex-row gap-5 md:gap-6 pt-4 border-t border-slate-100">
-                      {/* Left: experience + photos */}
-                      <div className="flex flex-col gap-3 md:flex-1 min-w-0">
-                        <div className="flex flex-col gap-2">
-                          <p className="text-[11px] font-bold uppercase tracking-wide text-neutral-500">
-                            Experience
-                          </p>
-                          <p
-                            className={`text-sm leading-relaxed text-neutral-700 ${
-                              !isExpanded && isLong ? "line-clamp-3" : ""
-                            }`}
-                          >
-                            {body}
-                          </p>
-                          {isLong && (
-                            <button
-                              type="button"
-                              onClick={() => toggleExpand(review._id)}
-                              className="text-xs text-cobalt-500 font-bold cursor-pointer hover:underline self-start text-left flex items-center gap-1"
-                            >
-                              {isExpanded ? "Hide full review" : "Read full review"}
-                              {isExpanded ? (
-                                <ChevronUp className="w-3 h-3" />
-                              ) : (
-                                <ChevronDown className="w-3 h-3" />
-                              )}
-                            </button>
-                          )}
-                        </div>
-
-                        {(() => {
-                          const photos = getDemoReviewPhotos(review, reviewIndex);
-                          if (!photos.length) return null;
-                          const tiles = photos.slice(0, 3);
-                          const overflow = photos.length - 3;
-                          return (
-                            <div className="flex flex-col gap-2">
-                              <p className="text-[11px] font-bold uppercase tracking-wide text-neutral-500">
-                                Photos
-                              </p>
-                              <div className="flex gap-2 flex-wrap">
-                                {tiles.map((src, i) => {
-                                  const isOverflowTile = i === 2 && overflow > 0;
-                                  return (
-                                    <button
-                                      type="button"
-                                      key={i}
-                                      onClick={() => setLightbox({ photos, index: i })}
-                                      className="relative w-16 h-16 rounded-md overflow-hidden cursor-pointer hover:opacity-90 transition-opacity shrink-0"
-                                      aria-label={
-                                        isOverflowTile
-                                          ? `Open photo gallery (${overflow} more)`
-                                          : `Open review photo ${i + 1}`
-                                      }
-                                    >
-                                      <img
-                                        src={src}
-                                        alt={`Review photo ${i + 1}`}
-                                        className="w-full h-full object-cover"
-                                      />
-                                      {isOverflowTile && (
-                                        <div className="absolute inset-0 bg-black/60 flex items-center justify-center rounded-md">
-                                          <span className="text-white text-sm font-bold leading-none">
-                                            +{overflow}
-                                          </span>
-                                        </div>
-                                      )}
-                                    </button>
-                                  );
-                                })}
-                              </div>
-                            </div>
-                          );
-                        })()}
-                      </div>
-
-                      {/* Right: per-review category scorecard */}
-                      <div className="flex flex-col gap-4 md:w-[28rem] md:shrink-0 bg-slate-50 border border-slate-200 rounded-md p-4">
-                        <p className="text-xs font-bold uppercase tracking-wide text-slate-500">This reviewer&apos;s ratings</p>
-                        {reviewCategoryRatings.length === 0 ? (
-                          <p className="text-xs text-slate-500 italic">No category ratings available</p>
-                        ) : (
-                          <div className="flex flex-col gap-2.5">
-                            {reviewCategoryRatings.map((cat) => (
-                              <div key={cat.label} className="flex items-center gap-3">
-                                <span className="text-xs text-slate-700 flex-1 min-w-0 truncate">{cat.label}</span>
-                                <div className="w-20 h-1.5 bg-slate-200 rounded-full overflow-hidden shrink-0">
-                                  <div className="h-full bg-sun-500 rounded-full" style={{ width: `${((cat.value as number) / 5) * 100}%` }} />
-                                </div>
-                                <span className="text-xs font-semibold text-slate-700 w-6 text-right shrink-0">
-                                  {(cat.value as number).toFixed(1)}
-                                </span>
-                              </div>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
+          {/* Controls row: count + sort */}
+          <div className="flex items-center justify-between gap-3">
+            <p className="text-sm text-slate-500">
+              {selectedStar !== null ? (
+                <>
+                  {sorted.length === 0
+                    ? `No ${selectedStar}-star reviews`
+                    : hasMoreThanLimit && !showAll
+                      ? `Showing ${visibleReviews.length} of ${sorted.length} reviews`
+                      : `Showing ${sorted.length} ${sorted.length === 1 ? "review" : "reviews"}`}
+                  {" · "}
+                  <button
+                    type="button"
+                    onClick={() => handleSelectStar(null)}
+                    className="font-semibold text-cobalt-500 hover:underline cursor-pointer"
+                  >
+                    Clear filter
+                  </button>
+                </>
+              ) : hasMoreThanLimit && !showAll
+                ? `Showing ${visibleReviews.length} of ${reviewList.length} reviews`
+                : `Showing ${reviewList.length} ${reviewList.length === 1 ? "review" : "reviews"}`}
+            </p>
+            <select
+              value={sort}
+              onChange={(e) => { setSort(e.target.value as ReviewSort); }}
+              aria-label="Sort reviews"
+              className="text-sm border border-slate-200 rounded-md px-2.5 h-10 text-slate-600 bg-white cursor-pointer"
+            >
+              <option value="recent">Recent</option>
+              <option value="highest">Highest Rated</option>
+              <option value="lowest">Lowest Rated</option>
+            </select>
           </div>
 
-          {hasMoreThanLimit && (
-            <div className="flex justify-center mt-2">
+          {/* No-matches state when a star filter has no results */}
+          {sorted.length === 0 ? (
+            <div className="bg-slate-50 border border-slate-200 rounded-md p-8 text-center">
+              <Star className="w-8 h-8 mx-auto text-slate-300 mb-3" />
+              <h3 className="text-lg font-bold text-slate-900">
+                No {selectedStar}-star reviews
+              </h3>
+              <p className="text-sm text-slate-500 mt-2 max-w-md mx-auto">
+                None of the reviews match this rating.
+              </p>
               <button
                 type="button"
-                onClick={() => setShowAll((v) => !v)}
-                className="inline-flex items-center justify-center gap-1.5 h-10 px-5 bg-white border border-slate-300 text-slate-700 text-sm font-semibold rounded-md hover:bg-slate-50 transition-colors cursor-pointer"
+                onClick={() => handleSelectStar(null)}
+                className="mt-4 text-sm font-semibold text-cobalt-500 hover:underline cursor-pointer"
               >
-                {showAll
-                  ? "Show fewer reviews"
-                  : `View all ${sorted.length} reviews`}
-                {showAll ? (
-                  <ChevronUp className="w-4 h-4" />
-                ) : (
-                  <ChevronDown className="w-4 h-4" />
-                )}
+                Clear filter
               </button>
             </div>
+          ) : (
+            <>
+              <div className="flex flex-col gap-4">
+                {visibleReviews.map((review, reviewIndex) => {
+                  const isExpanded = expandedIds.has(review._id);
+                  const body: string = review.body ?? review.reviewBody ?? "";
+                  const isLong = body.length > 280;
+                  const reviewCategoryRatings = CATEGORY_FIELDS.map((cat) => ({
+                    label: cat.label,
+                    value: typeof review[cat.key] === "number" ? review[cat.key] : null,
+                  })).filter((c) => c.value != null);
+
+                  return (
+                    <div
+                      key={review._id}
+                      className="flex shrink-0 flex-col bg-white border border-slate-200 p-5 rounded-md relative overflow-visible"
+                    >
+                      <div className="flex flex-col gap-4">
+                        <div className="flex items-start justify-between gap-4">
+                          <div className="flex items-center gap-3 min-w-0">
+                            <div className="w-10 h-10 rounded-full bg-cobalt-500 text-white font-bold text-sm flex items-center justify-center shrink-0">
+                              {(review.reviewerName ?? "A").charAt(0).toUpperCase()}
+                            </div>
+                            <div className="flex flex-col min-w-0">
+                              <span className="font-bold text-sm text-neutral-900 truncate">
+                                {review.reviewerName ?? "Anonymous"}
+                              </span>
+                              <span className="text-xs text-neutral-500 truncate">
+                                {review.reviewerCountry && <>{review.reviewerCountry} · </>}
+                                Reviewed{" "}
+                                {new Date(review._creationTime).toLocaleDateString("en-US", {
+                                  month: "short",
+                                  year: "numeric",
+                                })}
+                              </span>
+                            </div>
+                          </div>
+                          {review.overallRating != null && (
+                            <div className="flex items-center gap-1 bg-slate-100 rounded-md px-2 py-1 shrink-0">
+                              <Star fill="currentColor" className="text-sun-500 w-4 h-4" />
+                              <span className="font-bold text-sm">
+                                {Number(review.overallRating).toFixed(1)}
+                              </span>
+                            </div>
+                          )}
+                        </div>
+
+                        <h3 className="text-lg font-bold text-neutral-900 leading-snug">
+                          {review.reviewTitle ?? "Program Review"}
+                        </h3>
+
+                        <div className="flex flex-col md:flex-row gap-5 md:gap-6 pt-4 border-t border-slate-100">
+                          {/* Left: experience + photos */}
+                          <div className="flex flex-col gap-3 md:flex-1 min-w-0">
+                            <div className="flex flex-col gap-2">
+                              <p className="text-[11px] font-bold uppercase tracking-wide text-neutral-500">
+                                Experience
+                              </p>
+                              <p
+                                className={`text-sm leading-relaxed text-neutral-700 ${
+                                  !isExpanded && isLong ? "line-clamp-3" : ""
+                                }`}
+                              >
+                                {body}
+                              </p>
+                              {isLong && (
+                                <button
+                                  type="button"
+                                  onClick={() => toggleExpand(review._id)}
+                                  className="text-xs text-cobalt-500 font-bold cursor-pointer hover:underline self-start text-left flex items-center gap-1"
+                                >
+                                  {isExpanded ? "Hide full review" : "Read full review"}
+                                  {isExpanded ? (
+                                    <ChevronUp className="w-3 h-3" />
+                                  ) : (
+                                    <ChevronDown className="w-3 h-3" />
+                                  )}
+                                </button>
+                              )}
+                            </div>
+
+                            {(() => {
+                              const photos = getDemoReviewPhotos(review, reviewIndex);
+                              if (!photos.length) return null;
+                              const tiles = photos.slice(0, 3);
+                              const overflow = photos.length - 3;
+                              return (
+                                <div className="flex flex-col gap-2">
+                                  <p className="text-[11px] font-bold uppercase tracking-wide text-neutral-500">
+                                    Photos
+                                  </p>
+                                  <div className="flex gap-2 flex-wrap">
+                                    {tiles.map((src, i) => {
+                                      const isOverflowTile = i === 2 && overflow > 0;
+                                      return (
+                                        <button
+                                          type="button"
+                                          key={i}
+                                          onClick={() => setLightbox({ photos, index: i })}
+                                          className="relative w-16 h-16 rounded-md overflow-hidden cursor-pointer hover:opacity-90 transition-opacity shrink-0"
+                                          aria-label={
+                                            isOverflowTile
+                                              ? `Open photo gallery (${overflow} more)`
+                                              : `Open review photo ${i + 1}`
+                                          }
+                                        >
+                                          <img
+                                            src={src}
+                                            alt={`Review photo ${i + 1}`}
+                                            className="w-full h-full object-cover"
+                                          />
+                                          {isOverflowTile && (
+                                            <div className="absolute inset-0 bg-black/60 flex items-center justify-center rounded-md">
+                                              <span className="text-white text-sm font-bold leading-none">
+                                                +{overflow}
+                                              </span>
+                                            </div>
+                                          )}
+                                        </button>
+                                      );
+                                    })}
+                                  </div>
+                                </div>
+                              );
+                            })()}
+                          </div>
+
+                          {/* Right: per-review category scorecard */}
+                          <div className="flex flex-col gap-4 md:w-[28rem] md:shrink-0 bg-slate-50 border border-slate-200 rounded-md p-4">
+                            <p className="text-xs font-bold uppercase tracking-wide text-slate-500">This reviewer&apos;s ratings</p>
+                            {reviewCategoryRatings.length === 0 ? (
+                              <p className="text-xs text-slate-500 italic">No category ratings available</p>
+                            ) : (
+                              <div className="flex flex-col gap-2.5">
+                                {reviewCategoryRatings.map((cat) => (
+                                  <div key={cat.label} className="flex items-center gap-3">
+                                    <span className="text-xs text-slate-700 flex-1 min-w-0 truncate">{cat.label}</span>
+                                    <div className="w-20 h-1.5 bg-slate-200 rounded-full overflow-hidden shrink-0">
+                                      <div className="h-full bg-sun-500 rounded-full" style={{ width: `${((cat.value as number) / 5) * 100}%` }} />
+                                    </div>
+                                    <span className="text-xs font-semibold text-slate-700 w-6 text-right shrink-0">
+                                      {(cat.value as number).toFixed(1)}
+                                    </span>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Card footer: Helpful button */}
+                        <div className="pt-3 border-t border-slate-100 flex items-center gap-2">
+                          <HelpfulButton review={review} />
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {hasMoreThanLimit && (
+                <div className="flex justify-center mt-2">
+                  <button
+                    type="button"
+                    onClick={() => setShowAll((v) => !v)}
+                    className="inline-flex items-center justify-center gap-1.5 h-10 px-5 bg-white border border-slate-300 text-slate-700 text-sm font-semibold rounded-md hover:bg-slate-50 transition-colors cursor-pointer"
+                  >
+                    {showAll
+                      ? "Show fewer reviews"
+                      : `View all ${sorted.length} reviews`}
+                    {showAll ? (
+                      <ChevronUp className="w-4 h-4" />
+                    ) : (
+                      <ChevronDown className="w-4 h-4" />
+                    )}
+                  </button>
+                </div>
+              )}
+            </>
           )}
         </>
       )}
