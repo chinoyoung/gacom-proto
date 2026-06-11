@@ -15,7 +15,7 @@ import { api } from "@/convex/_generated/api";
 import type { Id } from "@/convex/_generated/dataModel";
 // programId is stored as string in the Program type; cast to Convex Id where needed.
 import V5AiSummary from "./V5AiSummary";
-import ReviewSummary2026 from "../reviews-2026/ReviewSummary2026";
+import ReviewSummary2026 from "../v6/ReviewSummary2026";
 
 export type Review = {
   _id: string;

@@ -13,7 +13,7 @@ import V2DetailPage from "./_versions/v2/V2DetailPage";
 import V3DetailPage from "./_versions/v3/V3DetailPage";
 import V4DetailPage from "./_versions/v4/V4DetailPage";
 import V5DetailPage from "./_versions/v5/V5DetailPage";
-import Reviews2026DetailPage from "./_versions/reviews-2026/Reviews2026DetailPage";
+import Reviews2026DetailPage from "./_versions/v6/Reviews2026DetailPage";
 
 export default function ProgramDetailPage() {
   const { version } = useDesignVersion("program-detail");
@@ -58,7 +58,7 @@ export default function ProgramDetailPage() {
       return <V4DetailPage program={program} reviews={reviews} avgRating={avgRating} />;
     case "v5":
       return <V5DetailPage program={program} reviews={reviews} avgRating={avgRating} />;
-    case "reviews-2026":
+    case "v6":
       return <Reviews2026DetailPage program={program} reviews={reviews} avgRating={avgRating} />;
     default:
       return <V1DetailPage program={program} reviews={reviews} avgRating={avgRating} />;

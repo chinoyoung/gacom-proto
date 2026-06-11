@@ -35,15 +35,15 @@ export default function V1ProviderHero({ provider, avgRating, reviewCount }: Pro
         </nav>
 
         <div className="flex flex-col sm:flex-row sm:items-center gap-5">
-          <div className="h-16 w-16 sm:h-20 sm:w-20 border border-slate-200 rounded-md overflow-hidden shrink-0 bg-white flex items-center justify-center">
+          <div className="h-24 w-24 sm:h-28 sm:w-28 border border-slate-200 rounded-md overflow-hidden shrink-0 bg-white flex items-center justify-center">
             {provider.logo ? (
               <img
                 src={provider.logo}
                 alt={`${provider.name} logo`}
-                className="w-full h-full object-contain p-1.5"
+                className="w-full h-full object-contain p-2.5"
               />
             ) : (
-              <span className="text-xl font-bold text-slate-400">
+              <span className="text-3xl font-bold text-slate-400">
                 {provider.name.charAt(0)}
               </span>
             )}

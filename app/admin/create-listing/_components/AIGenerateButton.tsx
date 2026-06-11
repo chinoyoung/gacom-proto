@@ -141,7 +141,7 @@ export default function AIGenerateButton({
                 mockData.programAdministrationRating = Math.min(5, rating + Math.floor(Math.random() * 2) - 1);
                 mockData.healthAndSafetyRating = Math.min(5, rating);
                 mockData.communityRating = Math.min(5, rating + Math.floor(Math.random() * 2) - 1);
-                // New review fields for reviews-2026
+                // New review fields for v6
                 mockData.helpfulCount = Math.floor(Math.random() * 26); // 0–25
                 mockData.highlight = highlights[Math.floor(Math.random() * highlights.length)];
                 mockData.advice = advices[Math.floor(Math.random() * advices.length)];

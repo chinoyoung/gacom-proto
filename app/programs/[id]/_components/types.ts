@@ -1,4 +1,4 @@
-// Shared Review type (matches shape used by V5Reviews and reviews-2026)
+// Shared Review type (matches shape used by V5Reviews and v6)
 export type Review = {
   _id: string;
   _creationTime: number;
@@ -16,7 +16,7 @@ export type Review = {
   programAdministrationRating?: number;
   healthAndSafetyRating?: number;
   communityRating?: number;
-  /** Number of "helpful" votes. Present in Convex schema; used by reviews-2026. */
+  /** Number of "helpful" votes. Present in Convex schema; used by v6. */
   helpfulCount?: number;
   /** Standout highlight quote surfaced by the reviewer. */
   highlight?: string;

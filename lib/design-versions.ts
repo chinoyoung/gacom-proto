@@ -69,8 +69,8 @@ export const PAGE_VERSIONS: Record<string, PageVersionConfig> = {
         description: "Mix of v1–v4 addressing stakeholder feedback (May 2026)",
       },
       {
-        id: "reviews-2026",
-        label: "Reviews 2026",
+        id: "v6",
+        label: "v6",
         description: "Redesigned reviews section (REVIEWS SECTIONS PROPOSAL 2026)",
       },
     ],

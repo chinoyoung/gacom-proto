@@ -90,11 +90,11 @@ export default function V5Hero({
 
               <div className="mt-4 flex items-center gap-3">
                 {program.providerLogo && (
-                  <div className="h-11 w-11 border border-slate-200 rounded-md overflow-hidden shrink-0 bg-white flex items-center justify-center">
+                  <div className="h-16 w-16 border border-slate-200 rounded-md overflow-hidden shrink-0 bg-white flex items-center justify-center">
                     <img
                       src={program.providerLogo}
                       alt={`${program.provider} logo`}
-                      className="w-full h-full object-contain"
+                      className="w-full h-full object-contain p-2"
                     />
                   </div>
                 )}

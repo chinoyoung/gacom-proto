@@ -14,7 +14,6 @@ import ProgramArticles from "../../_components/ProgramArticles";
 
 import TrustBar from "../v5/V5TrustBar";
 import { buildFaqs, InterviewsSection } from "../v1/SupportSections";
-import { BottomInquirySection } from "../v1/BottomInquirySection";
 
 import V5Hero from "../v5/V5Hero";
 import V5Overview from "../v5/V5Overview";
@@ -29,6 +28,7 @@ import V5HelpSection from "../v5/V5HelpSection";
 import type { Review } from "../../_components/types";
 
 import Reviews2026Section from "./Reviews2026Section";
+import Apply2026Section from "./Apply2026Section";
 
 interface Reviews2026DetailPageProps {
   program: Program;
@@ -147,6 +147,11 @@ export default function Reviews2026DetailPage({
           />
         </section>
 
+        {/* Apply to this program */}
+        <section id="apply" className="w-full max-w-7xl mx-auto mt-20 px-4 xl:px-0 scroll-mt-36">
+          <Apply2026Section program={program} />
+        </section>
+
         {/* FAQs */}
         <V5FAQ faqs={faqs} />
 
@@ -159,9 +164,6 @@ export default function Reviews2026DetailPage({
         <section id="recognitions" className="w-full max-w-7xl mx-auto mt-20 px-4 xl:px-0">
           <V5Recognitions />
         </section>
-
-        {/* Bottom inquiry — provider callout with form */}
-        <BottomInquirySection program={program} />
 
         {/* Help section */}
         <section className="w-full max-w-7xl mx-auto mt-20 px-4 xl:px-0">

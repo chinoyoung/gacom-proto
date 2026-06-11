@@ -1,4 +1,4 @@
-// ── Shared constants & helpers for the reviews-2026 design version ────────────
+// ── Shared constants & helpers for the v6 design version ──────────────────────
 
 /**
  * Human-readable labels for each rating category key.
