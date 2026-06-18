@@ -29,6 +29,7 @@ import type { Review } from "../../_components/types";
 
 import Reviews2026Section from "./Reviews2026Section";
 import Apply2026Section from "./Apply2026Section";
+import Apply2026WizardSection from "./Apply2026WizardSection";
 
 interface Reviews2026DetailPageProps {
   program: Program;
@@ -150,6 +151,11 @@ export default function Reviews2026DetailPage({
         {/* Apply to this program */}
         <section id="apply" className="w-full max-w-7xl mx-auto mt-20 px-4 xl:px-0 scroll-mt-36">
           <Apply2026Section program={program} />
+        </section>
+
+        {/* Apply step by step — one question per step variant */}
+        <section id="apply-guided" className="w-full max-w-7xl mx-auto mt-20 px-4 xl:px-0 scroll-mt-36">
+          <Apply2026WizardSection program={program} />
         </section>
 
         {/* FAQs */}

@@ -10,7 +10,7 @@ interface Props {
   program: Program;
 }
 
-interface Step1State {
+export interface Step1State {
   selfDescription: string;
   inspiration: string;
   startPeriod: string;
@@ -21,7 +21,7 @@ interface Step1State {
   ageGroup: string;
 }
 
-interface Step4State {
+export interface Step4State {
   firstName: string;
   lastName: string;
   phone: string;
@@ -29,7 +29,7 @@ interface Step4State {
   termsAccepted: boolean;
 }
 
-interface Step4Errors {
+export interface Step4Errors {
   firstName?: string;
   lastName?: string;
   phone?: string;
@@ -43,19 +43,19 @@ type Step1Errors = Partial<Record<keyof Step1State, string>>;
 
 const STEP_LABELS = ["About you", "Your goals", "Timing", "Your details", "Done"];
 
-const SELF_DESCRIPTIONS = ["Purpose Driven", "Curious Explorer", "People Person", "Growth Seeker"];
-const INSPIRATIONS = ["Meet People", "Build Skills", "Help Others", "See the World"];
-const START_PERIODS = ["Jan - Mar", "Apr - Jun", "Jul - Sep", "Oct - Dec"];
-const VOLUNTEERED_BEFORE = ["Yes, Locally", "Yes, Abroad", "Yes, Both", "First Time"];
-const TRIP_SUCCESS = ["Making Impact", "Career Growth", "Adventure & Fun", "New Friendships"];
-const AGE_GROUPS = ["Under 18", "18 - 35", "36 - 65", "66+"];
+export const SELF_DESCRIPTIONS = ["Purpose Driven", "Curious Explorer", "People Person", "Growth Seeker"];
+export const INSPIRATIONS = ["Meet People", "Build Skills", "Help Others", "See the World"];
+export const START_PERIODS = ["Jan - Mar", "Apr - Jun", "Jul - Sep", "Oct - Dec"];
+export const VOLUNTEERED_BEFORE = ["Yes, Locally", "Yes, Abroad", "Yes, Both", "First Time"];
+export const TRIP_SUCCESS = ["Making Impact", "Career Growth", "Adventure & Fun", "New Friendships"];
+export const AGE_GROUPS = ["Under 18", "18 - 35", "36 - 65", "66+"];
 
-const MONTHS = [
+export const MONTHS = [
   "January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December",
 ];
 
-const DURATIONS = ["1–2 weeks", "3–4 weeks", "1–2 months", "3–6 months", "6+ months"];
+export const DURATIONS = ["1–2 weeks", "3–4 weeks", "1–2 months", "3–6 months", "6+ months"];
 
 // ─── Stepper ─────────────────────────────────────────────────────────────────
 
@@ -233,7 +233,7 @@ function NavFooter({ showBack, onBack, onContinue }: NavFooterProps) {
 
 // ─── SummaryCard ─────────────────────────────────────────────────────────────
 
-function SummaryCard({ program }: { program: Program }) {
+export function SummaryCard({ program }: { program: Program }) {
   return (
     <div className="bg-white rounded-xl p-6 border border-slate-200">
       {/* Cover image */}
@@ -487,7 +487,7 @@ interface Step4Props {
   onBack: () => void;
 }
 
-function TextInput({
+export function TextInput({
   id,
   label,
   type = "text",

@@ -1,5 +1,4 @@
-import { ArrowRight } from "lucide-react";
-import { MYG_ESSENTIALS, MYG_LINKS } from "../../_shared/content";
+import { MYG_ESSENTIALS } from "../../_shared/content";
 import V2EsimForm from "./V2EsimForm";
 
 export default function V2TravelEssentials() {
@@ -21,13 +20,6 @@ export default function V2TravelEssentials() {
             {MYG_ESSENTIALS.h2}
           </h2>
           <p className="text-lg text-slate-600 leading-relaxed mt-3">{MYG_ESSENTIALS.sub}</p>
-          <a
-            href={MYG_LINKS.resources}
-            className="inline-flex items-center gap-2 mt-4 text-sm font-semibold text-cobalt-500 hover:text-cobalt-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 rounded-lg"
-          >
-            {MYG_ESSENTIALS.exploreCta}
-            <ArrowRight className="w-4 h-4" aria-hidden="true" />
-          </a>
         </div>
 
         {/* Insurance row: illustration left, text right */}
@@ -60,7 +52,7 @@ export default function V2TravelEssentials() {
         </div>
 
         {/* eSIM row: text left, form right */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 items-center">
+        <div className="mt-8 md:mt-16 grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 items-center">
           <div className="flex flex-col gap-3">
             <h3 className="text-2xl font-bold text-neutral-900">{esim.h3}</h3>
             <h4 className="text-base font-semibold text-slate-700">{esim.h4}</h4>
