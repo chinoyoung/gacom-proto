@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Check, MapPin, CalendarDays, DollarSign, Building2 } from "lucide-react";
 import type { Program } from "../../_components/types";
 
@@ -8,6 +8,7 @@ import type { Program } from "../../_components/types";
 
 interface Props {
   program: Program;
+  variant?: "page" | "modal";
 }
 
 export interface Step1State {
@@ -330,9 +331,10 @@ interface PreferenceStepProps {
   onChange: (key: keyof Step1State, value: string) => void;
   onContinue: () => void;
   onBack?: () => void;
+  hideNav?: boolean;
 }
 
-function StepAboutYou({ state, errors, onChange, onContinue }: PreferenceStepProps) {
+function StepAboutYou({ state, errors, onChange, onContinue, hideNav }: PreferenceStepProps) {
   return (
     <div>
       <div className="space-y-6">
@@ -365,14 +367,14 @@ function StepAboutYou({ state, errors, onChange, onContinue }: PreferenceStepPro
         />
       </div>
 
-      <NavFooter showBack={false} onContinue={onContinue} />
+      {!hideNav && <NavFooter showBack={false} onContinue={onContinue} />}
     </div>
   );
 }
 
 // ─── Step 2 — Your goals ──────────────────────────────────────────────────────
 
-function StepYourGoals({ state, errors, onChange, onContinue, onBack }: PreferenceStepProps) {
+function StepYourGoals({ state, errors, onChange, onContinue, onBack, hideNav }: PreferenceStepProps) {
   return (
     <div>
       <div className="space-y-6">
@@ -395,14 +397,14 @@ function StepYourGoals({ state, errors, onChange, onContinue, onBack }: Preferen
         />
       </div>
 
-      <NavFooter showBack onBack={onBack} onContinue={onContinue} />
+      {!hideNav && <NavFooter showBack onBack={onBack} onContinue={onContinue} />}
     </div>
   );
 }
 
 // ─── Step 3 — Timing ─────────────────────────────────────────────────────────
 
-function StepTiming({ state, errors, onChange, onContinue, onBack }: PreferenceStepProps) {
+function StepTiming({ state, errors, onChange, onContinue, onBack, hideNav }: PreferenceStepProps) {
   return (
     <div>
       <div className="space-y-6">
@@ -472,7 +474,7 @@ function StepTiming({ state, errors, onChange, onContinue, onBack }: PreferenceS
         </div>
       </div>
 
-      <NavFooter showBack onBack={onBack} onContinue={onContinue} />
+      {!hideNav && <NavFooter showBack onBack={onBack} onContinue={onContinue} />}
     </div>
   );
 }
@@ -485,6 +487,7 @@ interface Step4Props {
   onChange: (key: keyof Step4State, value: string | boolean) => void;
   onContinue: () => void;
   onBack: () => void;
+  hideNav?: boolean;
 }
 
 export function TextInput({
@@ -531,7 +534,7 @@ export function TextInput({
   );
 }
 
-function StepYourDetails({ state, errors, onChange, onContinue, onBack }: Step4Props) {
+function StepYourDetails({ state, errors, onChange, onContinue, onBack, hideNav }: Step4Props) {
   return (
     <div>
       <div className="space-y-5">
@@ -609,22 +612,24 @@ function StepYourDetails({ state, errors, onChange, onContinue, onBack }: Step4P
       </div>
 
       {/* Footer */}
-      <div className="flex items-center justify-between mt-8 pt-6 border-t border-slate-100">
-        <button
-          type="button"
-          onClick={onBack}
-          className="border border-slate-300 text-neutral-800 font-semibold px-7 py-3 rounded-lg hover:bg-white hover:border-slate-400 cursor-pointer transition-colors text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500"
-        >
-          Back
-        </button>
-        <button
-          type="button"
-          onClick={onContinue}
-          className="bg-cobalt-500 text-white font-semibold px-7 py-3 rounded-lg hover:bg-cobalt-600 cursor-pointer transition-colors text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500"
-        >
-          Continue
-        </button>
-      </div>
+      {!hideNav && (
+        <div className="flex items-center justify-between mt-8 pt-6 border-t border-slate-100">
+          <button
+            type="button"
+            onClick={onBack}
+            className="border border-slate-300 text-neutral-800 font-semibold px-7 py-3 rounded-lg hover:bg-white hover:border-slate-400 cursor-pointer transition-colors text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500"
+          >
+            Back
+          </button>
+          <button
+            type="button"
+            onClick={onContinue}
+            className="bg-cobalt-500 text-white font-semibold px-7 py-3 rounded-lg hover:bg-cobalt-600 cursor-pointer transition-colors text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500"
+          >
+            Continue
+          </button>
+        </div>
+      )}
     </div>
   );
 }
@@ -668,8 +673,13 @@ function StepDone({ firstName, program, onReset }: Step5Props) {
 
 // ─── Main Component ───────────────────────────────────────────────────────────
 
-export default function Apply2026Section({ program }: Props) {
+export default function Apply2026Section({ program, variant = "page" }: Props) {
   const headingId = "apply-heading";
+  const isModal = variant === "modal";
+
+  const fieldsRef = useRef<HTMLDivElement>(null);
+  // In modal mode, reserve the tallest step's fields height so the footer stays put.
+  const [fieldsMinHeight, setFieldsMinHeight] = useState(0);
 
   const [currentStep, setCurrentStep] = useState(1);
 
@@ -772,86 +782,131 @@ export default function Apply2026Section({ program }: Props) {
     }, 500);
   }
 
+  useEffect(() => {
+    if (!isModal) return;
+    const el = fieldsRef.current;
+    if (!el) return;
+    const update = () => setFieldsMinHeight((prev) => Math.max(prev, el.offsetHeight));
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [isModal]);
+
+  function modalContinue() {
+    if (currentStep === 1) {
+      if (validatePreferenceStep(["selfDescription", "ageGroup", "volunteeredBefore"])) setCurrentStep(2);
+    } else if (currentStep === 2) {
+      if (validatePreferenceStep(["inspiration", "tripSuccess"])) setCurrentStep(3);
+    } else if (currentStep === 3) {
+      if (validatePreferenceStep(["startPeriod", "startMonth", "duration"])) setCurrentStep(4);
+    } else if (currentStep === 4) {
+      handleStep4Continue();
+    }
+  }
+
   return (
-    <section aria-labelledby={headingId}>
-      {/* Heading block */}
-      <p className="text-sm font-semibold uppercase tracking-widest text-cobalt-500 mb-2">
-        Apply Now
-      </p>
-      <h2
-        id={headingId}
-        className="text-3xl font-bold tracking-tight text-neutral-800 mb-2"
-      >
-        Start your application
-      </h2>
-      <p className="text-base leading-relaxed text-slate-600 mb-10">
-        Tell us a little about yourself and we&rsquo;ll connect you with the right program team.
-      </p>
+    <section {...(isModal ? { "aria-label": "Start your application" } : { "aria-labelledby": headingId })}>
+      {!isModal && (
+        <>
+          {/* Heading block */}
+          <p className="text-sm font-semibold uppercase tracking-widest text-cobalt-500 mb-2">
+            Apply Now
+          </p>
+          <h2
+            id={headingId}
+            className="text-3xl font-bold tracking-tight text-neutral-800 mb-2"
+          >
+            Start your application
+          </h2>
+          <p className="text-base leading-relaxed text-slate-600 mb-10">
+            Tell us a little about yourself and we&rsquo;ll connect you with the right program team.
+          </p>
+        </>
+      )}
 
       {/* Two-column layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-[1fr_340px] gap-8 items-start">
+      <div className={`grid grid-cols-1 ${isModal ? "" : "lg:grid-cols-[1fr_340px]"} gap-8 items-start`}>
         {/* LEFT — Step card */}
         <div className="bg-white rounded-xl border border-slate-200 p-6 md:p-8">
           <Stepper currentStep={currentStep} />
 
-          {currentStep === 1 && (
-            <StepAboutYou
-              state={step1}
-              errors={step1Errors}
-              onChange={handleStep1Change}
-              onContinue={() => {
-                if (validatePreferenceStep(["selfDescription", "ageGroup", "volunteeredBefore"])) setCurrentStep(2);
-              }}
-            />
-          )}
+          <div style={isModal && fieldsMinHeight ? { minHeight: `${fieldsMinHeight}px` } : undefined}>
+            <div ref={isModal ? fieldsRef : undefined}>
+              {currentStep === 1 && (
+                <StepAboutYou
+                  state={step1}
+                  errors={step1Errors}
+                  onChange={handleStep1Change}
+                  hideNav={isModal}
+                  onContinue={() => {
+                    if (validatePreferenceStep(["selfDescription", "ageGroup", "volunteeredBefore"])) setCurrentStep(2);
+                  }}
+                />
+              )}
 
-          {currentStep === 2 && (
-            <StepYourGoals
-              state={step1}
-              errors={step1Errors}
-              onChange={handleStep1Change}
-              onContinue={() => {
-                if (validatePreferenceStep(["inspiration", "tripSuccess"])) setCurrentStep(3);
-              }}
-              onBack={() => setCurrentStep(1)}
-            />
-          )}
+              {currentStep === 2 && (
+                <StepYourGoals
+                  state={step1}
+                  errors={step1Errors}
+                  onChange={handleStep1Change}
+                  hideNav={isModal}
+                  onContinue={() => {
+                    if (validatePreferenceStep(["inspiration", "tripSuccess"])) setCurrentStep(3);
+                  }}
+                  onBack={() => setCurrentStep(1)}
+                />
+              )}
 
-          {currentStep === 3 && (
-            <StepTiming
-              state={step1}
-              errors={step1Errors}
-              onChange={handleStep1Change}
-              onContinue={() => {
-                if (validatePreferenceStep(["startPeriod", "startMonth", "duration"])) setCurrentStep(4);
-              }}
-              onBack={() => setCurrentStep(2)}
-            />
-          )}
+              {currentStep === 3 && (
+                <StepTiming
+                  state={step1}
+                  errors={step1Errors}
+                  onChange={handleStep1Change}
+                  hideNav={isModal}
+                  onContinue={() => {
+                    if (validatePreferenceStep(["startPeriod", "startMonth", "duration"])) setCurrentStep(4);
+                  }}
+                  onBack={() => setCurrentStep(2)}
+                />
+              )}
 
-          {currentStep === 4 && (
-            <StepYourDetails
-              state={step4}
-              errors={step4Errors}
-              onChange={handleStep4Change}
-              onContinue={handleStep4Continue}
-              onBack={() => setCurrentStep(3)}
-            />
-          )}
+              {currentStep === 4 && (
+                <StepYourDetails
+                  state={step4}
+                  errors={step4Errors}
+                  onChange={handleStep4Change}
+                  hideNav={isModal}
+                  onContinue={handleStep4Continue}
+                  onBack={() => setCurrentStep(3)}
+                />
+              )}
 
-          {currentStep === 5 && (
-            <StepDone
-              firstName={step4.firstName}
-              program={program}
-              onReset={handleReset}
+              {currentStep === 5 && (
+                <StepDone
+                  firstName={step4.firstName}
+                  program={program}
+                  onReset={handleReset}
+                />
+              )}
+            </div>
+          </div>
+
+          {isModal && currentStep < 5 && (
+            <NavFooter
+              showBack={currentStep > 1}
+              onBack={() => setCurrentStep((s) => s - 1)}
+              onContinue={modalContinue}
             />
           )}
         </div>
 
-        {/* RIGHT — Program summary card (sticky on lg+, stacks below on mobile) */}
-        <div className="hidden lg:block lg:sticky lg:top-24 lg:self-start order-last lg:order-none">
-          <SummaryCard program={program} />
-        </div>
+        {!isModal && (
+          <div className="hidden lg:block lg:sticky lg:top-24 lg:self-start order-last lg:order-none">
+            {/* RIGHT — Program summary card (sticky on lg+, stacks below on mobile) */}
+            <SummaryCard program={program} />
+          </div>
+        )}
       </div>
     </section>
   );

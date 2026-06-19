@@ -72,7 +72,7 @@ export default function WhyChooseProgram({
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
         {/* Starting Price */}
         <div className="bg-white border border-slate-200 rounded-lg p-4 md:p-5 text-center">
-          <p className="text-xs text-slate-500 mb-1">Starting Price / Semester</p>
+          <p className="text-xs text-slate-500 mb-1">Program Costs</p>
           <p className="text-2xl font-bold text-cobalt-500">{cost}</p>
         </div>
 

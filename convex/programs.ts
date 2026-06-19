@@ -257,3 +257,127 @@ export const seedAiSummaries = mutation({
     return { updated, total: programs.length };
   },
 });
+
+// One-time: seed a dedicated rich demo program for the v6 "many fields"
+// Program Details prototype. Idempotent — upserts by slug "global-internship-demo".
+// Run with: npx convex run programs:seedRichDemo
+export const seedRichDemo = mutation({
+  args: {},
+  handler: async (ctx) => {
+    const slug = "global-internship-demo";
+    const now = Date.now();
+
+    const data = {
+      title: "Global Internship Experience",
+      provider: "Global Internship Programs",
+      slug,
+      status: "published" as const,
+      city: "Gold Coast",
+      country: "Australia",
+      terms: [
+        "Year Round",
+        "Summer",
+        "Winter",
+        "Short Term",
+        "Spring",
+        "Fall",
+        "1-3 Months",
+        "3-6 Months",
+        "1 Year",
+      ],
+      duration: "1-12 months",
+      educationLevels: [
+        "High school graduate",
+        "Some college, no degree",
+        "Associate degree",
+        "Currently enrolled undergraduate",
+        "Bachelor's degree",
+        "Recent graduate",
+        "Graduate student",
+        "Working professional",
+      ],
+      eligibleNationalities: [
+        "American",
+        "Canadian",
+        "British",
+        "Australian",
+        "Irish",
+        "New Zealander",
+        "South African",
+        "German",
+        "French",
+        "Singaporean",
+      ],
+      ageRequirement: "18-30",
+      description:
+        "Launch your career abroad with a fully supported international internship placement tailored to your field of study. Work alongside professionals at a host company, build a global network, and develop skills that set you apart.\n\nEvery placement is backed by in-country staff who handle logistics, housing, and day-to-day support so you can focus on the experience. Cultural excursions, workshops, and community events round out your time abroad.\n\nWhether you have a few weeks or a full year, flexible terms and a wide range of fields make it easy to find a placement that fits your goals.",
+      whatsIncluded: [
+        "Tuition & Fees",
+        "Accommodation / Housing for Program Duration",
+        "All Program Activity Costs",
+        "Medical / Accident Insurance",
+        "Airport Pickup",
+        "Orientation Program",
+        "24/7 In-Country Support",
+        "Welcome & Farewell Events",
+        "Local Transportation Pass",
+        "Cultural Excursions",
+      ],
+      subjectAreas: [
+        "Accounting",
+        "African Studies",
+        "Agriculture",
+        "Anthropology",
+        "Architecture",
+        "Art History",
+        "Biology",
+        "Business Administration",
+        "Chemistry",
+        "Communications",
+        "Computer Science",
+        "Economics",
+        "Education",
+        "Engineering",
+        "Environmental Science",
+        "Finance",
+        "Graphic Design",
+        "History",
+        "International Relations",
+        "Journalism",
+        "Law",
+        "Marketing",
+        "Mathematics",
+        "Nursing",
+        "Political Science",
+        "Psychology",
+        "Public Health",
+        "Sociology",
+      ],
+      highlights: [
+        "Hands-on placement with a host company",
+        "Mentorship from industry professionals",
+        "Cultural immersion and guided excursions",
+        "Career development workshops",
+      ],
+      cost: "$4,500",
+      applicationDeadline: "August 15, 2026",
+      housingType: "Apartment/Flat",
+      languageOfInstruction: "English",
+      creditsAvailable: "Up to 12 credits",
+      photos: [],
+      updatedAt: now,
+    };
+
+    const existing = await ctx.db
+      .query("programs")
+      .withIndex("by_slug", (q) => q.eq("slug", slug))
+      .first();
+
+    if (existing) {
+      await ctx.db.patch(existing._id, data);
+      return { action: "updated", id: existing._id, slug };
+    }
+    const id = await ctx.db.insert("programs", data);
+    return { action: "created", id, slug };
+  },
+});

@@ -49,7 +49,7 @@ export default function V5TrustBar({
       iconClass: "text-cobalt-500",
       bgClass: "bg-cobalt-500/10",
       value: priceValue,
-      label: "Starting price",
+      label: "Program Costs",
     },
     {
       icon: BadgeCheck,

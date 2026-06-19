@@ -59,7 +59,7 @@ export default function V5Sidebar({ program }: { program: Program }) {
       <div className="flex items-start gap-2.5">
         <DollarSign className="text-cobalt-500 w-4 h-4 shrink-0 mt-0.5" />
         <div className="flex flex-col gap-0.5 min-w-0">
-          <span className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Starting Price</span>
+          <span className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Program Costs</span>
           <span className="text-sm text-slate-900">{priceValue}</span>
         </div>
       </div>

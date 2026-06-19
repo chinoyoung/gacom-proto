@@ -12,6 +12,7 @@ interface V5HeroProps {
   reviewCount: number;
   saved: boolean;
   onToggleSave: () => void;
+  onInquire?: () => void;
 }
 
 export default function V5Hero({
@@ -20,6 +21,7 @@ export default function V5Hero({
   reviewCount,
   saved,
   onToggleSave,
+  onInquire,
 }: V5HeroProps) {
   const photos = program.photos ?? [];
   const hasEnoughPhotos = photos.length >= 5;
@@ -37,7 +39,7 @@ export default function V5Hero({
 
   return (
     <div className="bg-slate-100">
-      <div className="max-w-7xl mx-auto px-4 xl:px-0 pt-6 pb-10">
+      <div className="max-w-7xl mx-auto px-4 xl:px-0 pt-6 pb-6">
         {/* Breadcrumbs */}
         <nav aria-label="Breadcrumb">
           <Link
@@ -148,6 +150,7 @@ export default function V5Hero({
             <div className="mt-5 flex flex-wrap gap-3">
               <button
                 type="button"
+                onClick={onInquire}
                 className="inline-flex items-center h-10 px-5 bg-white border border-cobalt-500 text-cobalt-500 text-sm font-semibold rounded-md hover:bg-cobalt-500/5 transition-colors cursor-pointer"
               >
                 Inquire Here

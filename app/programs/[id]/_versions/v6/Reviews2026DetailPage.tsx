@@ -8,7 +8,7 @@ import type { Program } from "../../_components/types";
 import StickyProgramHeader from "../../_components/StickyProgramHeader";
 import MobileStickyBar from "../../_components/MobileStickyBar";
 import WhyChooseProgram from "../../_components/WhyChooseProgram";
-import ProgramDetails from "../../_components/ProgramDetails";
+import V6ProgramDetails from "./V6ProgramDetails";
 import RelatedPrograms from "../../_components/RelatedPrograms";
 import ProgramArticles from "../../_components/ProgramArticles";
 
@@ -28,8 +28,8 @@ import V5HelpSection from "../v5/V5HelpSection";
 import type { Review } from "../../_components/types";
 
 import Reviews2026Section from "./Reviews2026Section";
-import Apply2026Section from "./Apply2026Section";
 import Apply2026WizardSection from "./Apply2026WizardSection";
+import ApplyModal from "./ApplyModal";
 
 interface Reviews2026DetailPageProps {
   program: Program;
@@ -49,6 +49,7 @@ export default function Reviews2026DetailPage({
   const programCount = allPrograms?.length ?? 0;
 
   const [saved, setSaved] = useState(false);
+  const [applyOpen, setApplyOpen] = useState(false);
   const [stickyVisible, setStickyVisible] = useState(false);
   const heroRef = useRef<HTMLDivElement>(null);
 
@@ -87,12 +88,13 @@ export default function Reviews2026DetailPage({
             reviewCount={reviewCount}
             saved={saved}
             onToggleSave={() => setSaved((v) => !v)}
+            onInquire={() => setApplyOpen(true)}
           />
         </div>
 
         {/* Trust bar — straddles the hero/content seam (half slate, half white) */}
         <div className="bg-gradient-to-b from-slate-100 from-50% to-white to-50%">
-          <div className="w-full mx-auto max-w-7xl px-4 xl:px-0 py-8">
+          <div className="w-full mx-auto max-w-7xl px-4 xl:px-0 py-5">
             <TrustBar
               program={program}
               avgRating={avgRating}
@@ -103,7 +105,7 @@ export default function Reviews2026DetailPage({
         </div>
 
         {/* Two-column layout */}
-        <div className="w-full max-w-7xl mx-auto mt-12 px-4 xl:px-0 flex flex-col lg:flex-row gap-8 items-start">
+        <div className="w-full max-w-7xl mx-auto mt-8 px-4 xl:px-0 flex flex-col lg:flex-row gap-8 items-start">
           {/* Left column */}
           <div className="flex-1 min-w-0 space-y-12">
             <V5Overview program={program} />
@@ -129,7 +131,7 @@ export default function Reviews2026DetailPage({
 
         {/* Program Details — anchor target */}
         <section id="details" className="w-full max-w-7xl mx-auto mt-20 px-4 xl:px-0">
-          <ProgramDetails program={program} />
+          <V6ProgramDetails program={program} />
         </section>
 
         {/* Media Gallery */}
@@ -146,11 +148,6 @@ export default function Reviews2026DetailPage({
             reviews={reviews}
             avgRating={avgRating}
           />
-        </section>
-
-        {/* Apply to this program */}
-        <section id="apply" className="w-full max-w-7xl mx-auto mt-20 px-4 xl:px-0 scroll-mt-36">
-          <Apply2026Section program={program} />
         </section>
 
         {/* Apply step by step — one question per step variant */}
@@ -190,7 +187,8 @@ export default function Reviews2026DetailPage({
         </section>
       </main>
 
-      <MobileStickyBar program={program} />
+      <MobileStickyBar program={program} onInquire={() => setApplyOpen(true)} />
+      <ApplyModal open={applyOpen} onClose={() => setApplyOpen(false)} program={program} />
     </>
   );
 }
