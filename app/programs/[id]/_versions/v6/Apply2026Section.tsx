@@ -236,10 +236,10 @@ function NavFooter({ showBack, onBack, onContinue }: NavFooterProps) {
 
 export function SummaryCard({ program }: { program: Program }) {
   return (
-    <div className="bg-white rounded-xl p-6 border border-slate-200">
+    <div className="bg-white rounded-xl p-6 border border-slate-200 h-full flex flex-col">
       {/* Cover image */}
       {program.coverImage && (
-        <div className="w-full h-36 rounded-lg overflow-hidden mb-5">
+        <div className="w-full flex-1 min-h-0 rounded-lg overflow-hidden mb-5 max-h-40">
           <img
             src={program.coverImage}
             alt={`${program.title} cover`}
@@ -262,7 +262,7 @@ export function SummaryCard({ program }: { program: Program }) {
             />
           </span>
         )}
-        <p className="text-sm text-slate-500">{program.provider}</p>
+        <p className="text-sm text-slate-500">Provided by: {program.provider}</p>
       </div>
 
       {/* Stats */}
@@ -785,7 +785,6 @@ export default function Apply2026Section({ program, variant = "page" }: Props) {
   }
 
   useEffect(() => {
-    if (!isModal) return;
     const el = fieldsRef.current;
     if (!el) return;
     const update = () => setFieldsMinHeight((prev) => Math.max(prev, el.offsetHeight));
@@ -793,7 +792,7 @@ export default function Apply2026Section({ program, variant = "page" }: Props) {
     const ro = new ResizeObserver(update);
     ro.observe(el);
     return () => ro.disconnect();
-  }, [isModal]);
+  }, []);
 
   function modalContinue() {
     if (currentStep === 1) {
@@ -828,19 +827,19 @@ export default function Apply2026Section({ program, variant = "page" }: Props) {
       )}
 
       {/* Two-column layout */}
-      <div className={`grid grid-cols-1 ${isModal ? "" : "lg:grid-cols-[1fr_340px]"} gap-8 items-start`}>
-        {/* LEFT — Step card */}
-        <div className="bg-white rounded-xl border border-slate-200 p-6 md:p-8">
+      <div className={`grid grid-cols-1 ${isModal ? "" : "lg:grid-cols-[340px_1fr]"} gap-8 items-start`}>
+        {/* Step card (right on lg) */}
+        <div className="bg-white rounded-xl border border-slate-200 p-6 md:p-8 lg:order-2">
           <Stepper currentStep={currentStep} />
 
-          <div style={isModal && fieldsMinHeight ? { minHeight: `${fieldsMinHeight}px` } : undefined}>
-            <div ref={isModal ? fieldsRef : undefined}>
+          <div style={fieldsMinHeight ? { minHeight: `${fieldsMinHeight}px` } : undefined}>
+            <div ref={fieldsRef}>
               {currentStep === 1 && (
                 <StepAboutYou
                   state={step1}
                   errors={step1Errors}
                   onChange={handleStep1Change}
-                  hideNav={isModal}
+                  hideNav
                   onContinue={() => {
                     if (validatePreferenceStep(["selfDescription", "ageGroup", "volunteeredBefore"])) setCurrentStep(2);
                   }}
@@ -852,7 +851,7 @@ export default function Apply2026Section({ program, variant = "page" }: Props) {
                   state={step1}
                   errors={step1Errors}
                   onChange={handleStep1Change}
-                  hideNav={isModal}
+                  hideNav
                   onContinue={() => {
                     if (validatePreferenceStep(["inspiration", "tripSuccess"])) setCurrentStep(3);
                   }}
@@ -865,7 +864,7 @@ export default function Apply2026Section({ program, variant = "page" }: Props) {
                   state={step1}
                   errors={step1Errors}
                   onChange={handleStep1Change}
-                  hideNav={isModal}
+                  hideNav
                   onContinue={() => {
                     if (validatePreferenceStep(["startPeriod", "startMonth", "duration"])) setCurrentStep(4);
                   }}
@@ -878,7 +877,7 @@ export default function Apply2026Section({ program, variant = "page" }: Props) {
                   state={step4}
                   errors={step4Errors}
                   onChange={handleStep4Change}
-                  hideNav={isModal}
+                  hideNav
                   onContinue={handleStep4Continue}
                   onBack={() => setCurrentStep(3)}
                 />
@@ -894,7 +893,7 @@ export default function Apply2026Section({ program, variant = "page" }: Props) {
             </div>
           </div>
 
-          {isModal && currentStep < 5 && (
+          {currentStep < 5 && (
             <NavFooter
               showBack={currentStep > 1}
               onBack={() => setCurrentStep((s) => s - 1)}
@@ -904,8 +903,8 @@ export default function Apply2026Section({ program, variant = "page" }: Props) {
         </div>
 
         {!isModal && (
-          <div className="hidden lg:block lg:sticky lg:top-24 lg:self-start order-last lg:order-none">
-            {/* RIGHT — Program summary card (sticky on lg+, stacks below on mobile) */}
+          <div className="hidden lg:block lg:self-stretch order-last lg:order-1">
+            {/* Program summary card — stretches to match the form height */}
             <SummaryCard program={program} />
           </div>
         )}

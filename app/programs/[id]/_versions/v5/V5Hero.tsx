@@ -160,9 +160,9 @@ export default function V5Hero({
             </div>
           </div>
 
-          {/* Right: media */}
+          {/* Right: media (above the title on mobile) */}
           {hasRightMedia && (
-            <div className="w-full lg:w-[560px] shrink-0">
+            <div className="w-full lg:w-[560px] shrink-0 order-first lg:order-none">
               {hasEnoughPhotos && (
                 <>
                   <div

@@ -13,7 +13,8 @@ import RelatedPrograms from "../../_components/RelatedPrograms";
 import ProgramArticles from "../../_components/ProgramArticles";
 
 import TrustBar from "../v5/V5TrustBar";
-import { buildFaqs, InterviewsSection } from "../v1/SupportSections";
+import { buildFaqs } from "../v1/SupportSections";
+import Interviews2026Section from "./Interviews2026Section";
 
 import V5Hero from "../v5/V5Hero";
 import V5Overview from "../v5/V5Overview";
@@ -166,7 +167,7 @@ export default function Reviews2026DetailPage({
 
         {/* Interviews */}
         <section id="interviews" className="w-full max-w-7xl mx-auto mt-20 px-4 xl:px-0">
-          <InterviewsSection />
+          <Interviews2026Section />
         </section>
 
         {/* Recognitions */}
