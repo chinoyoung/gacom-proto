@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { slugify } from "@/lib/slug";
-import { MapPin, Star, Heart, Clock, Calendar, Languages, GraduationCap, Home, ArrowRight } from "lucide-react";
+import { MapPin, Star, Heart, ArrowRight } from "lucide-react";
 import type { Program } from "../../_components/types";
 
 interface V5HeroProps {
@@ -28,14 +28,6 @@ export default function V5Hero({
   const hasSomePhotos = photos.length > 0 && !hasEnoughPhotos;
   const coverOnly = !photos.length && !!program.coverImage;
   const hasRightMedia = hasEnoughPhotos || hasSomePhotos || coverOnly;
-
-  const chipDefs = [
-    program.duration ? { icon: Clock, value: program.duration } : null,
-    program.terms.length > 0 ? { icon: Calendar, value: program.terms.join(", ") } : null,
-    program.languageOfInstruction ? { icon: Languages, value: program.languageOfInstruction } : null,
-    program.creditsAvailable ? { icon: GraduationCap, value: program.creditsAvailable } : null,
-    program.housingType ? { icon: Home, value: program.housingType } : null,
-  ].filter(Boolean).slice(0, 4) as { icon: React.ElementType; value: string }[];
 
   return (
     <div className="bg-slate-100">
@@ -131,21 +123,6 @@ export default function V5Hero({
               </div>
             </div>
 
-            {/* Middle group — meta chips */}
-            <div className="mt-5">
-              <div className="flex flex-wrap gap-2">
-                {chipDefs.map(({ icon: Icon, value }, i) => (
-                  <span
-                    key={i}
-                    className="inline-flex items-center gap-1.5 bg-white border border-slate-200 rounded-md px-2.5 py-1.5 text-xs text-slate-700"
-                  >
-                    <Icon className="w-3.5 h-3.5 text-cobalt-500 shrink-0" />
-                    {value}
-                  </span>
-                ))}
-              </div>
-            </div>
-
             {/* CTAs */}
             <div className="mt-5 flex flex-wrap gap-3">
               <button
@@ -189,7 +166,7 @@ export default function V5Hero({
               {hasEnoughPhotos && (
                 <>
                   <div
-                    className="w-full h-[300px] lg:h-[380px] rounded-md overflow-hidden cursor-pointer"
+                    className="w-full h-[300px] rounded-md overflow-hidden cursor-pointer"
                     onClick={() => document.getElementById("gallery")?.scrollIntoView({ behavior: "smooth" })}
                   >
                     <img
@@ -197,27 +174,6 @@ export default function V5Hero({
                       alt={program.title}
                       className="w-full h-full object-cover"
                     />
-                  </div>
-                  <div className="flex gap-2 mt-2">
-                    {photos.slice(0, 4).map((photo, i) => {
-                      const isLastWithOverflow = i === 3 && photos.length > 5;
-                      return (
-                        <button
-                          key={i}
-                          type="button"
-                          onClick={() => document.getElementById("gallery")?.scrollIntoView({ behavior: "smooth" })}
-                          className="relative w-16 h-16 lg:w-[72px] lg:h-[72px] shrink-0 rounded-md overflow-hidden cursor-pointer hover:opacity-90 transition-opacity"
-                          aria-label={`View photo ${i + 1}`}
-                        >
-                          <img src={photo} alt={`Photo ${i + 1}`} className="w-full h-full object-cover" />
-                          {isLastWithOverflow && (
-                            <div className="absolute inset-0 bg-black/55 flex items-center justify-center">
-                              <span className="text-white text-sm font-semibold">+{photos.length - 4}</span>
-                            </div>
-                          )}
-                        </button>
-                      );
-                    })}
                   </div>
                 </>
               )}
@@ -227,7 +183,7 @@ export default function V5Hero({
                   <img
                     src={program.coverImage ?? photos[0]}
                     alt={program.title}
-                    className="w-full h-[300px] lg:h-[380px] object-cover"
+                    className="w-full h-[300px] object-cover"
                   />
                   <a
                     href="#gallery"
@@ -246,7 +202,7 @@ export default function V5Hero({
                 <img
                   src={program.coverImage!}
                   alt={program.title}
-                  className="w-full h-[300px] lg:h-[380px] object-cover rounded-md"
+                  className="w-full h-[300px] object-cover rounded-md"
                 />
               )}
             </div>
