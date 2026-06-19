@@ -15,7 +15,7 @@ const navLinks = [
     { name: "Get Program Matches", href: "#" },
 ];
 
-export default function Header() {
+export default function Header({ sticky = true }: { sticky?: boolean } = {}) {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const { user } = useUser();
     const isSuperadmin = user?.publicMetadata?.role === "superadmin";
@@ -30,7 +30,7 @@ export default function Header() {
     if (programEditMatch && version === "v5") return null;
 
     return (
-        <header className="sticky top-0 z-50 w-full bg-white border-b border-slate-100 shadow-sm">
+        <header className={`${sticky ? "sticky top-0 " : ""}z-50 w-full bg-white border-b border-slate-100 shadow-sm`}>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center h-20">
 

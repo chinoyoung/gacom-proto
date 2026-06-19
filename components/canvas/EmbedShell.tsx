@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { CommentPinLayer } from "@/components/comments/CommentPinLayer";
@@ -9,6 +9,8 @@ import type { ReactNode } from "react";
 
 export function EmbedShell({ children }: { children: ReactNode }) {
   const router = useRouter();
+  const pathname = usePathname();
+  const isProgramDetail = /^\/programs\/[^/]+$/.test(pathname ?? "");
 
   useEffect(() => {
     document.documentElement.dataset.embed = "1";
@@ -55,7 +57,7 @@ export function EmbedShell({ children }: { children: ReactNode }) {
 
   return (
     <>
-      <Header />
+      <Header sticky={!isProgramDetail} />
       {children}
       <Footer />
       <CommentPinLayer />
