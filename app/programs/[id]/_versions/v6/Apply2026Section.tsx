@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useId } from "react";
 import { Check, MapPin, CalendarDays, DollarSign, Building2 } from "lucide-react";
 import type { Program } from "../../_components/types";
 
@@ -140,6 +140,7 @@ function Stepper({ currentStep }: { currentStep: number }) {
 interface SelectableGroupProps {
   legend: string;
   name: string;
+  idPrefix: string;
   options: string[];
   value: string;
   onChange: (v: string) => void;
@@ -150,19 +151,21 @@ interface SelectableGroupProps {
 function SelectableGroup({
   legend,
   name,
+  idPrefix,
   options,
   value,
   onChange,
   gridCols = "grid-cols-2 sm:grid-cols-4",
   error,
 }: SelectableGroupProps) {
+  const groupName = `${idPrefix}-${name}`;
   return (
     <fieldset aria-invalid={!!error || undefined}>
       <legend className="text-sm font-semibold text-neutral-800 mb-2.5">{legend}</legend>
       <div className={`grid ${gridCols} gap-2`}>
         {options.map((opt) => {
           const isSelected = value === opt;
-          const inputId = `${name}-${opt.replace(/\s+/g, "-")}`;
+          const inputId = `${groupName}-${opt.replace(/\s+/g, "-")}`;
           return (
             <label
               key={opt}
@@ -178,7 +181,7 @@ function SelectableGroup({
               <input
                 type="radio"
                 id={inputId}
-                name={name}
+                name={groupName}
                 value={opt}
                 checked={isSelected}
                 onChange={() => onChange(opt)}
@@ -334,15 +337,17 @@ interface PreferenceStepProps {
   onContinue: () => void;
   onBack?: () => void;
   hideNav?: boolean;
+  idPrefix: string;
 }
 
-function StepAboutYou({ state, errors, onChange, onContinue, hideNav }: PreferenceStepProps) {
+function StepAboutYou({ state, errors, onChange, onContinue, hideNav, idPrefix }: PreferenceStepProps) {
   return (
     <div>
       <div className="space-y-6">
         <SelectableGroup
           legend="How would you best describe yourself?"
           name="selfDescription"
+          idPrefix={idPrefix}
           options={SELF_DESCRIPTIONS}
           value={state.selfDescription}
           onChange={(v) => onChange("selfDescription", v)}
@@ -352,6 +357,7 @@ function StepAboutYou({ state, errors, onChange, onContinue, hideNav }: Preferen
         <SelectableGroup
           legend="Please select your age group:"
           name="ageGroup"
+          idPrefix={idPrefix}
           options={AGE_GROUPS}
           value={state.ageGroup}
           onChange={(v) => onChange("ageGroup", v)}
@@ -362,6 +368,7 @@ function StepAboutYou({ state, errors, onChange, onContinue, hideNav }: Preferen
         <SelectableGroup
           legend="Have you volunteered before?"
           name="volunteeredBefore"
+          idPrefix={idPrefix}
           options={VOLUNTEERED_BEFORE}
           value={state.volunteeredBefore}
           onChange={(v) => onChange("volunteeredBefore", v)}
@@ -376,13 +383,14 @@ function StepAboutYou({ state, errors, onChange, onContinue, hideNav }: Preferen
 
 // ─── Step 2 — Your goals ──────────────────────────────────────────────────────
 
-function StepYourGoals({ state, errors, onChange, onContinue, onBack, hideNav }: PreferenceStepProps) {
+function StepYourGoals({ state, errors, onChange, onContinue, onBack, hideNav, idPrefix }: PreferenceStepProps) {
   return (
     <div>
       <div className="space-y-6">
         <SelectableGroup
           legend="What inspired you to choose this program?"
           name="inspiration"
+          idPrefix={idPrefix}
           options={INSPIRATIONS}
           value={state.inspiration}
           onChange={(v) => onChange("inspiration", v)}
@@ -392,6 +400,7 @@ function StepYourGoals({ state, errors, onChange, onContinue, onBack, hideNav }:
         <SelectableGroup
           legend="What would make this trip a success?"
           name="tripSuccess"
+          idPrefix={idPrefix}
           options={TRIP_SUCCESS}
           value={state.tripSuccess}
           onChange={(v) => onChange("tripSuccess", v)}
@@ -406,13 +415,14 @@ function StepYourGoals({ state, errors, onChange, onContinue, onBack, hideNav }:
 
 // ─── Step 3 — Timing ─────────────────────────────────────────────────────────
 
-function StepTiming({ state, errors, onChange, onContinue, onBack, hideNav }: PreferenceStepProps) {
+function StepTiming({ state, errors, onChange, onContinue, onBack, hideNav, idPrefix }: PreferenceStepProps) {
   return (
     <div>
       <div className="space-y-6">
         <SelectableGroup
           legend="Select your preferred start period:"
           name="startPeriod"
+          idPrefix={idPrefix}
           options={START_PERIODS}
           value={state.startPeriod}
           onChange={(v) => onChange("startPeriod", v)}
@@ -490,6 +500,7 @@ interface Step4Props {
   onContinue: () => void;
   onBack: () => void;
   hideNav?: boolean;
+  idPrefix: string;
 }
 
 export function TextInput({
@@ -536,13 +547,14 @@ export function TextInput({
   );
 }
 
-function StepYourDetails({ state, errors, onChange, onContinue, onBack, hideNav }: Step4Props) {
+function StepYourDetails({ state, errors, onChange, onContinue, onBack, hideNav, idPrefix }: Step4Props) {
+  const termsErrorId = `${idPrefix}-terms-error`;
   return (
     <div>
       <div className="space-y-5">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <TextInput
-            id="firstName"
+            id={`${idPrefix}-firstName`}
             label="First name"
             value={state.firstName}
             error={errors.firstName}
@@ -550,7 +562,7 @@ function StepYourDetails({ state, errors, onChange, onContinue, onBack, hideNav 
             onChange={(v) => onChange("firstName", v)}
           />
           <TextInput
-            id="lastName"
+            id={`${idPrefix}-lastName`}
             label="Last name"
             value={state.lastName}
             error={errors.lastName}
@@ -560,7 +572,7 @@ function StepYourDetails({ state, errors, onChange, onContinue, onBack, hideNav 
         </div>
 
         <TextInput
-          id="phone"
+          id={`${idPrefix}-phone`}
           label="Phone number"
           type="tel"
           value={state.phone}
@@ -570,7 +582,7 @@ function StepYourDetails({ state, errors, onChange, onContinue, onBack, hideNav 
         />
 
         <TextInput
-          id="email"
+          id={`${idPrefix}-email`}
           label="Email"
           type="email"
           value={state.email}
@@ -587,7 +599,7 @@ function StepYourDetails({ state, errors, onChange, onContinue, onBack, hideNav 
               checked={state.termsAccepted}
               onChange={(e) => onChange("termsAccepted", e.target.checked)}
               aria-invalid={!!errors.terms}
-              aria-describedby={errors.terms ? "terms-error" : undefined}
+              aria-describedby={errors.terms ? termsErrorId : undefined}
               className={[
                 "mt-0.5 w-4 h-4 rounded border shrink-0 cursor-pointer accent-cobalt-500",
                 errors.terms ? "border-roman-500" : "border-slate-300",
@@ -606,7 +618,7 @@ function StepYourDetails({ state, errors, onChange, onContinue, onBack, hideNav 
             </span>
           </label>
           {errors.terms && (
-            <p id="terms-error" className="text-xs text-roman-600 mt-1 ml-7" role="alert">
+            <p id={termsErrorId} className="text-xs text-roman-600 mt-1 ml-7" role="alert">
               {errors.terms}
             </p>
           )}
@@ -678,6 +690,7 @@ function StepDone({ firstName, program, onReset }: Step5Props) {
 export default function Apply2026Section({ program, variant = "page" }: Props) {
   const headingId = "apply-heading";
   const isModal = variant === "modal";
+  const uid = useId();
 
   const fieldsRef = useRef<HTMLDivElement>(null);
   // In modal mode, reserve the tallest step's fields height so the footer stays put.
@@ -840,6 +853,7 @@ export default function Apply2026Section({ program, variant = "page" }: Props) {
                   errors={step1Errors}
                   onChange={handleStep1Change}
                   hideNav
+                  idPrefix={uid}
                   onContinue={() => {
                     if (validatePreferenceStep(["selfDescription", "ageGroup", "volunteeredBefore"])) setCurrentStep(2);
                   }}
@@ -852,6 +866,7 @@ export default function Apply2026Section({ program, variant = "page" }: Props) {
                   errors={step1Errors}
                   onChange={handleStep1Change}
                   hideNav
+                  idPrefix={uid}
                   onContinue={() => {
                     if (validatePreferenceStep(["inspiration", "tripSuccess"])) setCurrentStep(3);
                   }}
@@ -865,6 +880,7 @@ export default function Apply2026Section({ program, variant = "page" }: Props) {
                   errors={step1Errors}
                   onChange={handleStep1Change}
                   hideNav
+                  idPrefix={uid}
                   onContinue={() => {
                     if (validatePreferenceStep(["startPeriod", "startMonth", "duration"])) setCurrentStep(4);
                   }}
@@ -878,6 +894,7 @@ export default function Apply2026Section({ program, variant = "page" }: Props) {
                   errors={step4Errors}
                   onChange={handleStep4Change}
                   hideNav
+                  idPrefix={uid}
                   onContinue={handleStep4Continue}
                   onBack={() => setCurrentStep(3)}
                 />
