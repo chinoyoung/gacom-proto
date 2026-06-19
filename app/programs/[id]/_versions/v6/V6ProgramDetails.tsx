@@ -12,7 +12,6 @@ import {
   ShieldCheck,
   Clock3,
   Languages,
-  AlarmClock,
   ChevronDown,
   ChevronUp,
 } from "lucide-react";
@@ -20,39 +19,123 @@ import type { Program } from "../../_components/types";
 import { CommentAnchor } from "@/components/comments/CommentAnchor";
 
 const PREVIEW_COUNT = 4;
+const CARD_BOX = "bg-slate-50 border border-slate-200 rounded-md p-5";
 
-function ExpandableList({ items }: { items: string[] }) {
+function CardHeader({ icon, title }: { icon: React.ReactNode; title: string }) {
+  return (
+    <div className="flex items-center gap-2 mb-3">
+      <span className="shrink-0 text-cobalt-500">{icon}</span>
+      <h3 className="text-[15px] font-bold text-zinc-900">{title}</h3>
+    </div>
+  );
+}
+
+function ItemList({ items }: { items: string[] }) {
+  return (
+    <ul className="flex flex-col gap-1">
+      {items.map((item, i) => (
+        <li key={i} className="text-[15px] text-slate-700 leading-snug">
+          {item}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function ToggleButton({
+  expanded,
+  count,
+  onClick,
+}: {
+  expanded: boolean;
+  count: number;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      className="mt-3 inline-flex items-center gap-1 self-start text-sm font-semibold text-cobalt-500 hover:text-cobalt-600 transition-colors cursor-pointer"
+    >
+      {expanded ? "Show less" : `Show all (${count})`}
+      {expanded ? (
+        <ChevronUp className="w-3.5 h-3.5" />
+      ) : (
+        <ChevronDown className="w-3.5 h-3.5" />
+      )}
+    </button>
+  );
+}
+
+// List card. When the list is long, "Show all" expands into an absolutely
+// positioned overlay so the surrounding grid never reflows.
+function ListCard({
+  icon,
+  title,
+  items,
+  emptyValue = "Contact program",
+}: {
+  icon: React.ReactNode;
+  title: string;
+  items: string[];
+  emptyValue?: React.ReactNode;
+}) {
   const [expanded, setExpanded] = useState(false);
   const isLong = items.length > PREVIEW_COUNT;
-  const visible = expanded || !isLong ? items : items.slice(0, PREVIEW_COUNT);
+
+  if (items.length === 0) {
+    return (
+      <div className={`${CARD_BOX} h-full`}>
+        <CardHeader icon={icon} title={title} />
+        <p className="text-[15px] text-slate-700 leading-snug">{emptyValue}</p>
+      </div>
+    );
+  }
+
+  // Short enough to fit — plain card, no expansion.
+  if (!isLong) {
+    return (
+      <div className={`${CARD_BOX} h-full`}>
+        <CardHeader icon={icon} title={title} />
+        <ItemList items={items} />
+      </div>
+    );
+  }
 
   return (
-    <div className="flex flex-col gap-1">
-      <ul className="flex flex-col gap-1">
-        {visible.map((item, i) => (
-          <li key={i} className="text-[15px] text-slate-700 leading-snug">
-            {item}
-          </li>
-        ))}
-      </ul>
-      {isLong && (
-        <button
-          onClick={() => setExpanded((v) => !v)}
-          className="mt-1 inline-flex items-center gap-1 self-start text-sm font-semibold text-cobalt-500 hover:text-cobalt-600 transition-colors cursor-pointer"
-        >
-          {expanded ? "Show less" : `Show all (${items.length})`}
-          {expanded ? (
-            <ChevronUp className="w-3.5 h-3.5" />
-          ) : (
-            <ChevronDown className="w-3.5 h-3.5" />
-          )}
-        </button>
+    <div className="relative h-full">
+      {/* Placeholder reserves the collapsed height so the grid never reflows. */}
+      <div
+        aria-hidden={expanded}
+        className={`${CARD_BOX} h-full ${expanded ? "invisible" : ""}`}
+      >
+        <CardHeader icon={icon} title={title} />
+        <ItemList items={items.slice(0, PREVIEW_COUNT)} />
+        <ToggleButton
+          expanded={false}
+          count={items.length}
+          onClick={() => setExpanded(true)}
+        />
+      </div>
+
+      {/* Expanded overlay — grows over the card below while keeping its position. */}
+      {expanded && (
+        <div className="absolute inset-x-0 top-0 z-20">
+          <div className={`${CARD_BOX} shadow-xl ring-1 ring-slate-200`}>
+            <CardHeader icon={icon} title={title} />
+            <ItemList items={items} />
+            <ToggleButton
+              expanded
+              count={items.length}
+              onClick={() => setExpanded(false)}
+            />
+          </div>
+        </div>
       )}
     </div>
   );
 }
 
-function DetailCard({
+function ValueCard({
   icon,
   title,
   children,
@@ -62,18 +145,11 @@ function DetailCard({
   children: React.ReactNode;
 }) {
   return (
-    <div className="bg-slate-50 border border-slate-200 rounded-md p-5">
-      <div className="flex items-center gap-2 mb-3">
-        <span className="shrink-0 text-cobalt-500">{icon}</span>
-        <h3 className="text-[15px] font-bold text-zinc-900">{title}</h3>
-      </div>
-      {children}
+    <div className={`${CARD_BOX} h-full`}>
+      <CardHeader icon={icon} title={title} />
+      <p className="text-[15px] text-slate-700 leading-snug">{children}</p>
     </div>
   );
-}
-
-function SingleValue({ value }: { value: React.ReactNode }) {
-  return <p className="text-[15px] text-slate-700 leading-snug">{value}</p>;
 }
 
 // Static demo values for categories not present in the data model (prototype only).
@@ -116,91 +192,67 @@ export default function V6ProgramDetails({ program }: { program: Program }) {
         </p>
 
         <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {/* Locations (static demo) */}
-          <DetailCard icon={<MapPin size={iconSize} aria-hidden="true" />} title="Locations">
-            <ExpandableList items={DEMO_LOCATIONS} />
-          </DetailCard>
+          <ListCard
+            icon={<MapPin size={iconSize} aria-hidden="true" />}
+            title="Locations"
+            items={DEMO_LOCATIONS}
+          />
+          <ListCard
+            icon={<BookOpen size={iconSize} aria-hidden="true" />}
+            title="Fields & Subjects"
+            items={program.subjectAreas}
+          />
+          <ListCard
+            icon={<Calendar size={iconSize} aria-hidden="true" />}
+            title="Available Terms"
+            items={program.terms}
+          />
+          <ListCard
+            icon={<Globe size={iconSize} aria-hidden="true" />}
+            title="Eligible Nationalities"
+            items={program.eligibleNationalities}
+            emptyValue="All nationalities welcome"
+          />
+          <ListCard
+            icon={<GraduationCap size={iconSize} aria-hidden="true" />}
+            title="Education Levels"
+            items={program.educationLevels}
+          />
+          <ListCard
+            icon={<Home size={iconSize} aria-hidden="true" />}
+            title="Accommodation Options"
+            items={DEMO_ACCOMMODATION}
+          />
+          <ListCard
+            icon={<FileText size={iconSize} aria-hidden="true" />}
+            title="Application Procedures"
+            items={DEMO_APPLICATION}
+          />
+          <ValueCard
+            icon={<ShieldCheck size={iconSize} aria-hidden="true" />}
+            title="Age Requirement"
+          >
+            {program.ageRequirement || "18+"}
+          </ValueCard>
+          <ValueCard
+            icon={<Clock3 size={iconSize} aria-hidden="true" />}
+            title="Program Length"
+          >
+            {program.duration || "Semester"}
+          </ValueCard>
+          <ValueCard
+            icon={<Languages size={iconSize} aria-hidden="true" />}
+            title="Language"
+          >
+            {program.languageOfInstruction || "English"}
+          </ValueCard>
+          <ValueCard
+            icon={<Home size={iconSize} aria-hidden="true" />}
+            title="Housing"
+          >
+            {program.housingType || "Contact for details"}
+          </ValueCard>
 
-          {/* Fields & Subjects */}
-          <DetailCard icon={<BookOpen size={iconSize} aria-hidden="true" />} title="Fields & Subjects">
-            {program.subjectAreas.length > 0 ? (
-              <ExpandableList items={program.subjectAreas} />
-            ) : (
-              <SingleValue value="Contact program" />
-            )}
-          </DetailCard>
-
-          {/* Available Terms */}
-          <DetailCard icon={<Calendar size={iconSize} aria-hidden="true" />} title="Available Terms">
-            {program.terms.length > 0 ? (
-              <ExpandableList items={program.terms} />
-            ) : (
-              <SingleValue value="Contact program" />
-            )}
-          </DetailCard>
-
-          {/* Eligible Nationalities */}
-          <DetailCard icon={<Globe size={iconSize} aria-hidden="true" />} title="Eligible Nationalities">
-            {program.eligibleNationalities.length > 0 ? (
-              <ExpandableList items={program.eligibleNationalities} />
-            ) : (
-              <SingleValue value="All nationalities welcome" />
-            )}
-          </DetailCard>
-
-          {/* Education Levels */}
-          <DetailCard icon={<GraduationCap size={iconSize} aria-hidden="true" />} title="Education Levels">
-            {program.educationLevels.length > 0 ? (
-              <ExpandableList items={program.educationLevels} />
-            ) : (
-              <SingleValue value="Contact program" />
-            )}
-          </DetailCard>
-
-          {/* Accommodation Options (static demo) */}
-          <DetailCard icon={<Home size={iconSize} aria-hidden="true" />} title="Accommodation Options">
-            <ExpandableList items={DEMO_ACCOMMODATION} />
-          </DetailCard>
-
-          {/* Application Procedures (static demo) */}
-          <DetailCard icon={<FileText size={iconSize} aria-hidden="true" />} title="Application Procedures">
-            <ExpandableList items={DEMO_APPLICATION} />
-          </DetailCard>
-
-          {/* Age Requirement */}
-          <DetailCard icon={<ShieldCheck size={iconSize} aria-hidden="true" />} title="Age Requirement">
-            <SingleValue value={program.ageRequirement || "18+"} />
-          </DetailCard>
-
-          {/* Program Length */}
-          <DetailCard icon={<Clock3 size={iconSize} aria-hidden="true" />} title="Program Length">
-            <SingleValue value={program.duration || "Semester"} />
-          </DetailCard>
-
-          {/* Language */}
-          <DetailCard icon={<Languages size={iconSize} aria-hidden="true" />} title="Language">
-            <SingleValue value={program.languageOfInstruction || "English"} />
-          </DetailCard>
-
-          {/* Housing */}
-          <DetailCard icon={<Home size={iconSize} aria-hidden="true" />} title="Housing">
-            <SingleValue value={program.housingType || "Contact for details"} />
-          </DetailCard>
-
-          {/* Next Deadline */}
-          <DetailCard icon={<AlarmClock size={iconSize} aria-hidden="true" />} title="Next Deadline">
-            <SingleValue
-              value={
-                program.applicationDeadline ? (
-                  <span className="text-red-600 font-semibold">
-                    {program.applicationDeadline}
-                  </span>
-                ) : (
-                  "Rolling Admissions"
-                )
-              }
-            />
-          </DetailCard>
         </div>
       </section>
     </CommentAnchor>

@@ -30,6 +30,7 @@ import type { Review } from "../../_components/types";
 import Reviews2026Section from "./Reviews2026Section";
 import Apply2026WizardSection from "./Apply2026WizardSection";
 import ApplyModal from "./ApplyModal";
+import ApplyInlineSection from "./ApplyInlineSection";
 
 interface Reviews2026DetailPageProps {
   program: Program;
@@ -148,6 +149,11 @@ export default function Reviews2026DetailPage({
             reviews={reviews}
             avgRating={avgRating}
           />
+        </section>
+
+        {/* Apply to this program — inline form (separate instance from the modal) */}
+        <section id="apply" className="w-full max-w-7xl mx-auto mt-20 px-4 xl:px-0 scroll-mt-36">
+          <ApplyInlineSection program={program} />
         </section>
 
         {/* Apply step by step — one question per step variant */}

@@ -291,15 +291,17 @@ export function SummaryCard({ program }: { program: Program }) {
           </div>
         )}
 
-        {program.applicationDeadline && (
+        {program.terms.length > 0 && (
           <div className="flex items-start gap-3">
             <span className="w-8 h-8 rounded-lg bg-cobalt-500/10 flex items-center justify-center shrink-0 mt-0.5">
               <CalendarDays className="w-4 h-4 text-cobalt-500" />
             </span>
             <div className="min-w-0">
-              <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">Deadline</p>
+              <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">Availability</p>
               <p className="text-sm font-bold text-neutral-800 mt-0.5 leading-snug">
-                {program.applicationDeadline}
+                {program.terms
+                  .map((t) => t.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()))
+                  .join(", ")}
               </p>
             </div>
           </div>
