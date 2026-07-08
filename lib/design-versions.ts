@@ -43,36 +43,8 @@ export const PAGE_VERSIONS: Record<string, PageVersionConfig> = {
   "program-detail": {
     pageId: "program-detail",
     versions: [
-      {
-        id: "v1",
-        label: "v1",
-        description: "GoAbroad-style layout with banner hero and sticky tabs",
-      },
-      {
-        id: "v2",
-        label: "v2",
-        description: "Enhanced V1 with pricing breakdown, reviews improvements, and inquiry form",
-      },
-      {
-        id: "v3",
-        label: "v3",
-        description: "The original layout with split hero and sidebar",
-      },
-      {
-        id: "v4",
-        label: "v4",
-        description: "Two-column layout with integrated inquiry form",
-      },
-      {
-        id: "v5",
-        label: "v5",
-        description: "Mix of v1–v4 addressing stakeholder feedback (May 2026)",
-      },
-      {
-        id: "v6",
-        label: "v6",
-        description: "Redesigned reviews section (REVIEWS SECTIONS PROPOSAL 2026)",
-      },
+      { id: "v1", label: "v1", description: "Stakeholder-feedback redesign (May 2026)" },
+      { id: "v2", label: "v2", description: "Redesigned reviews section (REVIEWS SECTIONS PROPOSAL 2026)" },
     ],
     defaultVersion: "v1",
   },

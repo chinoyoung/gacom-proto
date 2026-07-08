@@ -1,4 +1,4 @@
-// Shared Review type (matches shape used by V5Reviews and v6)
+// Shared Review type (matches shape used by V1Reviews and v2)
 export type Review = {
   _id: string;
   _creationTime: number;
