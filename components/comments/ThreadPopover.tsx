@@ -10,6 +10,7 @@ import { CommentLayerContext } from "./useCommentLayer";
 import { useCommentLayer } from "./useCommentLayer";
 import { useDevice } from "./use-device";
 import type { CommentThread } from "./types";
+import { useIsSuperadmin } from "@/lib/use-is-superadmin";
 
 interface ThreadPopoverProps {
   thread: CommentThread;
@@ -40,10 +41,14 @@ export function ThreadPopover({ thread }: ThreadPopoverProps) {
   const [reply, setReply] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [confirmingThreadDelete, setConfirmingThreadDelete] = useState(false);
+  const [confirmingMessageId, setConfirmingMessageId] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   const currentUserId = user?.id;
   const isAuthor = currentUserId === thread.createdBy;
+  const isSuperadmin = useIsSuperadmin();
+  const canDeleteThread = isAuthor || isSuperadmin;
 
   // When canvas mode is active, the anchor element lives inside the iframe and
   // cannot be queried from the parent DOM. In that case, use `activeThreadCoords`
@@ -158,7 +163,13 @@ export function ThreadPopover({ thread }: ThreadPopoverProps) {
           <Show when="signed-in">
             <div className="relative">
               <button
-                onClick={() => setMenuOpen((v) => !v)}
+                onClick={() =>
+                  setMenuOpen((v) => {
+                    const next = !v;
+                    if (!next) setConfirmingThreadDelete(false);
+                    return next;
+                  })
+                }
                 className="p-1 text-slate-500 hover:text-slate-900 rounded cursor-pointer"
                 aria-label="Thread actions"
               >
@@ -187,18 +198,36 @@ export function ThreadPopover({ thread }: ThreadPopoverProps) {
                       <RotateCcw className="w-3.5 h-3.5" /> Reopen
                     </button>
                   )}
-                  {isAuthor && (
-                    <button
-                      onClick={() => {
-                        setMenuOpen(false);
-                        deleteThread({ threadId: thread._id });
-                        setActiveThreadId(null);
-                      }}
-                      className="w-full flex items-center gap-2 px-3 py-1.5 text-xs text-roman-500 hover:bg-slate-50"
-                    >
-                      <Trash2 className="w-3.5 h-3.5" /> Delete thread
-                    </button>
-                  )}
+                  {canDeleteThread &&
+                    (confirmingThreadDelete ? (
+                      <div className="flex items-center gap-2 px-3 py-1.5">
+                        <span className="text-xs text-slate-600">Delete thread?</span>
+                        <button
+                          onClick={() => setConfirmingThreadDelete(false)}
+                          className="ml-auto text-xs text-slate-500 hover:text-slate-800 cursor-pointer"
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          onClick={() => {
+                            setConfirmingThreadDelete(false);
+                            setMenuOpen(false);
+                            deleteThread({ threadId: thread._id });
+                            setActiveThreadId(null);
+                          }}
+                          className="text-xs font-semibold text-roman-500 hover:text-roman-600 cursor-pointer"
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    ) : (
+                      <button
+                        onClick={() => setConfirmingThreadDelete(true)}
+                        className="w-full flex items-center gap-2 px-3 py-1.5 text-xs text-roman-500 hover:bg-slate-50 cursor-pointer"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" /> Delete thread
+                      </button>
+                    ))}
                 </div>
               )}
             </div>
@@ -227,14 +256,34 @@ export function ThreadPopover({ thread }: ThreadPopoverProps) {
                     {formatRelative(msg._creationTime)}
                   </span>
                   <Show when="signed-in">
-                    {msg.authorId === currentUserId && (
-                      <button
-                        onClick={() => deleteMessage({ messageId: msg._id })}
-                        className="ml-auto text-[10px] text-slate-400 hover:text-roman-500"
-                      >
-                        Delete
-                      </button>
-                    )}
+                    {(msg.authorId === currentUserId || isSuperadmin) &&
+                      (confirmingMessageId === msg._id ? (
+                        <span className="ml-auto flex items-center gap-2">
+                          <button
+                            onClick={() => setConfirmingMessageId(null)}
+                            className="text-[10px] text-slate-400 hover:text-slate-700 cursor-pointer"
+                          >
+                            Cancel
+                          </button>
+                          <button
+                            onClick={() => {
+                              setConfirmingMessageId(null);
+                              deleteMessage({ messageId: msg._id });
+                            }}
+                            className="text-[10px] font-semibold text-roman-500 hover:text-roman-600 cursor-pointer"
+                          >
+                            Delete
+                          </button>
+                        </span>
+                      ) : (
+                        <button
+                          onClick={() => setConfirmingMessageId(msg._id)}
+                          className="ml-auto text-slate-400 hover:text-roman-500 cursor-pointer"
+                          aria-label="Delete message"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      ))}
                   </Show>
                 </div>
                 <p className="text-sm text-slate-800 whitespace-pre-wrap break-words">
