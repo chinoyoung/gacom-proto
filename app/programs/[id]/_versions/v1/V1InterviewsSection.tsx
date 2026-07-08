@@ -50,7 +50,7 @@ const INTERVIEWS: Interview[] = [
   },
 ];
 
-export default function V2InterviewsSection() {
+export default function V1InterviewsSection() {
   return (
     <div>
       <h2 className="text-2xl font-bold text-slate-900">Interviews</h2>

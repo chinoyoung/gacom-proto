@@ -6,7 +6,7 @@ import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import type { Id } from "@/convex/_generated/dataModel";
 import type { Review } from "../../_components/types";
-import V2Stars from "./V2Stars";
+import V1Stars from "./V1Stars";
 import { CATEGORY_LABELS, parseReviewDate } from "./lib";
 
 // ── Constants ─────────────────────────────────────────────────────────────────
@@ -308,11 +308,11 @@ function MediaTiles({ media }: MediaTilesProps) {
 
 // ── Main Component ────────────────────────────────────────────────────────────
 
-interface V2ReviewCardProps {
+interface V1ReviewCardProps {
   review: Review;
 }
 
-export default function V2ReviewCard({ review }: V2ReviewCardProps) {
+export default function V1ReviewCard({ review }: V1ReviewCardProps) {
   const [expanded, setExpanded] = useState(false);
   // Only track whether the current user has voted; Convex live query is the
   // source of truth for the actual count.
@@ -407,7 +407,7 @@ export default function V2ReviewCard({ review }: V2ReviewCardProps) {
 
       {/* ── Star row (visual, small) ── */}
       {review.overallRating != null && (
-        <V2Stars rating={Math.round(review.overallRating)} size="sm" fractional={false} />
+        <V1Stars rating={Math.round(review.overallRating)} size="sm" fractional={false} />
       )}
 
       {/* ── Title ── */}

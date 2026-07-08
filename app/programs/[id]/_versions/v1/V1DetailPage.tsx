@@ -8,13 +8,13 @@ import type { Program } from "../../_components/types";
 import StickyProgramHeader from "../../_components/StickyProgramHeader";
 import MobileStickyBar from "../../_components/MobileStickyBar";
 import WhyChooseProgram from "../../_components/WhyChooseProgram";
-import ProgramDetails from "../../_components/ProgramDetails";
+import V1ProgramDetails from "./V1ProgramDetails";
 import RelatedPrograms from "../../_components/RelatedPrograms";
 import ProgramArticles from "../../_components/ProgramArticles";
 
 import TrustBar from "./V1TrustBar";
-import { buildFaqs, InterviewsSection } from "../../_components/SupportSections";
-import { BottomInquirySection } from "../../_components/BottomInquirySection";
+import { buildFaqs } from "../../_components/SupportSections";
+import V1InterviewsSection from "./V1InterviewsSection";
 
 import V1Hero from "./V1Hero";
 import V1Overview from "./V1Overview";
@@ -23,10 +23,15 @@ import V1Highlights from "./V1Highlights";
 import V1WhatsIncluded from "./V1WhatsIncluded";
 import V1Sidebar from "./V1Sidebar";
 import V1MediaGallery from "./V1MediaGallery";
-import V1Reviews, { type Review } from "./V1Reviews";
 import V1FAQ from "./V1FAQ";
 import V1Recognitions from "./V1Recognitions";
 import V1HelpSection from "./V1HelpSection";
+import type { Review } from "../../_components/types";
+
+import V1ReviewsSection from "./V1ReviewsSection";
+import V1ApplyWizardSection from "./V1ApplyWizardSection";
+import V1ApplyModal from "./V1ApplyModal";
+import V1ApplyInlineSection from "./V1ApplyInlineSection";
 
 interface V1DetailPageProps {
   program: Program;
@@ -46,6 +51,7 @@ export default function V1DetailPage({
   const programCount = allPrograms?.length ?? 0;
 
   const [saved, setSaved] = useState(false);
+  const [applyOpen, setApplyOpen] = useState(false);
   const [stickyVisible, setStickyVisible] = useState(false);
   const heroRef = useRef<HTMLDivElement>(null);
 
@@ -84,12 +90,13 @@ export default function V1DetailPage({
             reviewCount={reviewCount}
             saved={saved}
             onToggleSave={() => setSaved((v) => !v)}
+            onInquire={() => setApplyOpen(true)}
           />
         </div>
 
         {/* Trust bar — straddles the hero/content seam (half slate, half white) */}
         <div className="bg-gradient-to-b from-slate-100 from-50% to-white to-50%">
-          <div className="w-full mx-auto max-w-7xl px-4 xl:px-0 py-8">
+          <div className="w-full mx-auto max-w-7xl px-4 xl:px-0 py-5">
             <TrustBar
               program={program}
               avgRating={avgRating}
@@ -100,7 +107,7 @@ export default function V1DetailPage({
         </div>
 
         {/* Two-column layout */}
-        <div className="w-full max-w-7xl mx-auto mt-12 px-4 xl:px-0 flex flex-col lg:flex-row gap-8 items-start">
+        <div className="w-full max-w-7xl mx-auto mt-8 px-4 xl:px-0 flex flex-col lg:flex-row gap-8 items-start">
           {/* Left column */}
           <div className="flex-1 min-w-0 space-y-12">
             <V1Overview program={program} />
@@ -126,7 +133,7 @@ export default function V1DetailPage({
 
         {/* Program Details — anchor target */}
         <section id="details" className="w-full max-w-7xl mx-auto mt-20 px-4 xl:px-0">
-          <ProgramDetails program={program} />
+          <V1ProgramDetails program={program} />
         </section>
 
         {/* Media Gallery */}
@@ -136,15 +143,23 @@ export default function V1DetailPage({
           </section>
         )}
 
-        {/* Reviews */}
-        <section id="reviews" className="w-full max-w-7xl mx-auto mt-20 px-4 xl:px-0">
-          <V1Reviews
-            programId={program._id}
+        {/* Reviews 2026 — redesigned placeholder */}
+        <section id="reviews" className="w-full max-w-7xl mx-auto mt-20 px-4 xl:px-0 scroll-mt-36">
+          <V1ReviewsSection
+            program={program}
             reviews={reviews}
             avgRating={avgRating}
-            provider={program.provider}
-            aiSummary={program.aiSummary}
           />
+        </section>
+
+        {/* Apply to this program — inline form (separate instance from the modal) */}
+        <section id="apply" className="w-full max-w-7xl mx-auto mt-20 px-4 xl:px-0 scroll-mt-36">
+          <V1ApplyInlineSection program={program} />
+        </section>
+
+        {/* Apply step by step — one question per step variant */}
+        <section id="apply-guided" className="w-full max-w-7xl mx-auto mt-20 px-4 xl:px-0 scroll-mt-36">
+          <V1ApplyWizardSection program={program} />
         </section>
 
         {/* FAQs */}
@@ -152,16 +167,13 @@ export default function V1DetailPage({
 
         {/* Interviews */}
         <section id="interviews" className="w-full max-w-7xl mx-auto mt-20 px-4 xl:px-0">
-          <InterviewsSection />
+          <V1InterviewsSection />
         </section>
 
         {/* Recognitions */}
         <section id="recognitions" className="w-full max-w-7xl mx-auto mt-20 px-4 xl:px-0">
           <V1Recognitions />
         </section>
-
-        {/* Bottom inquiry — provider callout with form */}
-        <BottomInquirySection program={program} />
 
         {/* Help section */}
         <section className="w-full max-w-7xl mx-auto mt-20 px-4 xl:px-0">
@@ -182,7 +194,8 @@ export default function V1DetailPage({
         </section>
       </main>
 
-      <MobileStickyBar program={program} />
+      <MobileStickyBar program={program} onInquire={() => setApplyOpen(true)} />
+      <V1ApplyModal open={applyOpen} onClose={() => setApplyOpen(false)} program={program} />
     </>
   );
 }

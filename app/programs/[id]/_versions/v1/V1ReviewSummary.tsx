@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Star, ChevronDown, ChevronUp } from "lucide-react";
-import V2Stars from "./V2Stars";
+import V1Stars from "./V1Stars";
 import { CATEGORY_LABELS } from "./lib";
 
 // ── Types ────────────────────────────────────────────────────────────────────
@@ -21,7 +21,7 @@ interface ReviewStats {
   };
 }
 
-interface V2ReviewSummaryProps {
+interface V1ReviewSummaryProps {
   stats: ReviewStats;
   provider: string;
   /** Currently selected star filter (1–5) or null for all. */
@@ -36,12 +36,12 @@ const CATEGORY_PREVIEW_LIMIT = 3;
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
-export default function V2ReviewSummary({
+export default function V1ReviewSummary({
   stats,
   provider,
   selectedStar,
   onSelectStar,
-}: V2ReviewSummaryProps) {
+}: V1ReviewSummaryProps) {
   const [showAllCategories, setShowAllCategories] = useState(false);
 
   const { total, avg, distribution, categoryAverages } = stats;
@@ -71,7 +71,7 @@ export default function V2ReviewSummary({
           {avg > 0 ? avg.toFixed(1) : "—"}
         </span>
         <div className="flex flex-col gap-1">
-          <V2Stars rating={avg} size="md" fractional={true} />
+          <V1Stars rating={avg} size="md" fractional={true} />
           <span className="text-sm text-slate-500">
             {total} {total === 1 ? "review" : "reviews"}
           </span>

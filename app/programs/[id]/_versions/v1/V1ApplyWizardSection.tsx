@@ -14,8 +14,8 @@ import {
   DURATIONS,
   SummaryCard,
   TextInput,
-} from "./V2ApplySection";
-import type { Step4State, Step4Errors } from "./V2ApplySection";
+} from "./V1ApplySection";
+import type { Step4State, Step4Errors } from "./V1ApplySection";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -356,7 +356,7 @@ function DoneStep({ firstName, program, onReset }: DoneStepProps) {
 
 // ─── Main component ───────────────────────────────────────────────────────────
 
-export default function V2ApplyWizardSection({ program }: { program: Program }) {
+export default function V1ApplyWizardSection({ program }: { program: Program }) {
   const [currentStep, setCurrentStep] = useState(1);
 
   const [step1, setStep1] = useState<Step1State>({

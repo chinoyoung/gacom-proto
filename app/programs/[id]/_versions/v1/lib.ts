@@ -4,7 +4,7 @@ import type { Review } from "../../_components/types";
 
 /**
  * Human-readable labels for each rating category key.
- * Shared by V2ReviewCard (CategoryDropdown) and V2ReviewSummary.
+ * Shared by V1ReviewCard (CategoryDropdown) and V1ReviewSummary.
  */
 export const CATEGORY_LABELS: Record<string, string> = {
   academicsRating: "Academics",

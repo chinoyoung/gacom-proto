@@ -2,7 +2,7 @@
 
 import { Star } from "lucide-react";
 
-// ── Shared star renderer used by V2ReviewSummary and V2ReviewCard ─────────────
+// ── Shared star renderer used by V1ReviewSummary and V1ReviewCard ─────────────
 //
 // Props:
 //   rating     — numeric value 0–5 (integers or decimals)
@@ -11,7 +11,7 @@ import { Star } from "lucide-react";
 //                (used in the summary card); when false each star is fully
 //                filled or empty based on rounded integer (used in review cards)
 
-interface V2StarsProps {
+interface V1StarsProps {
   rating: number;
   size?: "sm" | "md" | "lg";
   fractional?: boolean;
@@ -23,7 +23,7 @@ const SIZE_CLASS: Record<"sm" | "md" | "lg", string> = {
   lg: "w-7 h-7",
 };
 
-export default function V2Stars({ rating, size = "md", fractional = false }: V2StarsProps) {
+export default function V1Stars({ rating, size = "md", fractional = false }: V1StarsProps) {
   const sizeClass = SIZE_CLASS[size];
 
   return (

@@ -7,7 +7,7 @@ import {
   type IdentityFilterKey,
 } from "./lib";
 
-// ── Re-export so V2ReviewsSection can import from one place ─────────────────
+// ── Re-export so V1ReviewsSection can import from one place ─────────────────
 export type { IdentityFilterKey };
 
 // ── Types ─────────────────────────────────────────────────────────────────────
@@ -17,7 +17,7 @@ interface TopicTag {
   count: number;
 }
 
-interface V2ReviewFiltersProps {
+interface V1ReviewFiltersProps {
   /** Topic tags from program.topicTags — only rendered when totalReviews ≥ 10. */
   topicTags: TopicTag[];
   /** Total review count from stats (controls ≥10 gate for topic tags row). */
@@ -70,7 +70,7 @@ function Chip({ label, active, onClick, ariaLabel }: ChipProps) {
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
-export default function V2ReviewFilters({
+export default function V1ReviewFilters({
   topicTags,
   totalReviews,
   selectedTopic,
@@ -78,7 +78,7 @@ export default function V2ReviewFilters({
   selectedIdentity,
   onSelectIdentity,
   reviews,
-}: V2ReviewFiltersProps) {
+}: V1ReviewFiltersProps) {
   // ── Topic tags gate: only show when program has tags AND ≥10 reviews ─────
   const showTopicTags = topicTags.length > 0 && totalReviews >= 10;
 

@@ -43,8 +43,7 @@ export const PAGE_VERSIONS: Record<string, PageVersionConfig> = {
   "program-detail": {
     pageId: "program-detail",
     versions: [
-      { id: "v1", label: "v1", description: "Stakeholder-feedback redesign (May 2026)" },
-      { id: "v2", label: "v2", description: "Redesigned reviews section (REVIEWS SECTIONS PROPOSAL 2026)" },
+      { id: "v1", label: "v1", description: "Redesigned reviews section (REVIEWS SECTIONS PROPOSAL 2026)" },
     ],
     defaultVersion: "v1",
   },

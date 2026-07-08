@@ -687,7 +687,7 @@ function StepDone({ firstName, program, onReset }: Step5Props) {
 
 // ─── Main Component ───────────────────────────────────────────────────────────
 
-export default function V2ApplySection({ program, variant = "page" }: Props) {
+export default function V1ApplySection({ program, variant = "page" }: Props) {
   const headingId = "apply-heading";
   const isModal = variant === "modal";
   const uid = useId();

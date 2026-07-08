@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { X } from "lucide-react";
 import type { Program } from "../../_components/types";
-import V2ApplySection from "./V2ApplySection";
+import V1ApplySection from "./V1ApplySection";
 
 interface ApplyModalProps {
   open: boolean;
@@ -11,7 +11,7 @@ interface ApplyModalProps {
   program: Program;
 }
 
-export default function V2ApplyModal({ open, onClose, program }: ApplyModalProps) {
+export default function V1ApplyModal({ open, onClose, program }: ApplyModalProps) {
   // Close on Escape + lock body scroll while open.
   useEffect(() => {
     if (!open) return;
@@ -69,7 +69,7 @@ export default function V2ApplyModal({ open, onClose, program }: ApplyModalProps
 
         {/* Body — scrollable */}
         <div className="flex-1 min-h-0 overflow-y-auto p-6">
-          <V2ApplySection program={program} variant="modal" />
+          <V1ApplySection program={program} variant="modal" />
         </div>
       </div>
     </div>

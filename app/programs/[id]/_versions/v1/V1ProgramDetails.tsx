@@ -175,7 +175,7 @@ const DEMO_APPLICATION = [
   "Resume/CV",
 ];
 
-export default function V2ProgramDetails({ program }: { program: Program }) {
+export default function V1ProgramDetails({ program }: { program: Program }) {
   const iconSize = 18;
 
   return (

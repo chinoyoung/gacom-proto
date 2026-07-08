@@ -7,10 +7,10 @@ import { Id } from "@/convex/_generated/dataModel";
 import { Star } from "lucide-react";
 
 import type { Program, Review } from "../../_components/types";
-import V2ReviewSummary from "./V2ReviewSummary";
-import V2AiSummary from "./V2AiSummary";
-import V2ReviewCard from "./V2ReviewCard";
-import V2ReviewFilters, { type IdentityFilterKey } from "./V2ReviewFilters";
+import V1ReviewSummary from "./V1ReviewSummary";
+import V1AiSummary from "./V1AiSummary";
+import V1ReviewCard from "./V1ReviewCard";
+import V1ReviewFilters, { type IdentityFilterKey } from "./V1ReviewFilters";
 import { parseReviewDate, IDENTITY_CHIP_DEFS, getDemoReviewMedia } from "./lib";
 
 // ── Constants ─────────────────────────────────────────────────────────────────
@@ -70,7 +70,7 @@ function sortReviews(reviews: Review[], sort: SortKey): Review[] {
 
 // ── Props ─────────────────────────────────────────────────────────────────────
 
-interface V2ReviewsSectionProps {
+interface V1ReviewsSectionProps {
   program: Program;
   reviews: Review[] | undefined;
   /**
@@ -83,11 +83,11 @@ interface V2ReviewsSectionProps {
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
-export default function V2ReviewsSection({
+export default function V1ReviewsSection({
   program,
   reviews,
   avgRating: _avgRating, // acknowledged; live stats sourced from getReviewStats
-}: V2ReviewsSectionProps) {
+}: V1ReviewsSectionProps) {
   const [selectedStar, setSelectedStar] = useState<number | null>(null);
   const [selectedTopic, setSelectedTopic] = useState<string | null>(null);
   const [selectedIdentity, setSelectedIdentity] = useState<IdentityFilterKey>("all");
@@ -209,7 +209,7 @@ export default function V2ReviewsSection({
 
       {/* Summary block — only renders once stats are loaded */}
       {stats && (
-        <V2ReviewSummary
+        <V1ReviewSummary
           stats={stats}
           provider={program.provider}
           selectedStar={selectedStar}
@@ -219,12 +219,12 @@ export default function V2ReviewsSection({
 
       {/* AI summary card — gated on aiSummary present ∧ total ≥ 10 */}
       {stats && (
-        <V2AiSummary program={program} totalReviews={stats.total} />
+        <V1AiSummary program={program} totalReviews={stats.total} />
       )}
 
       {/* ── Chip filter rows: topic tags + identity filters ──────────────── */}
       {reviewList.length > 0 && (
-        <V2ReviewFilters
+        <V1ReviewFilters
           topicTags={program.topicTags ?? []}
           totalReviews={stats?.total ?? reviewList.length}
           selectedTopic={selectedTopic}
@@ -320,7 +320,7 @@ export default function V2ReviewsSection({
           {/* ── Review cards ── */}
           <div className="flex flex-col gap-4">
             {visibleReviews.map((review) => (
-              <V2ReviewCard key={review._id} review={review} />
+              <V1ReviewCard key={review._id} review={review} />
             ))}
           </div>
 
