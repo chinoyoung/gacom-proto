@@ -58,8 +58,7 @@ export const PAGE_VERSIONS: Record<string, PageVersionConfig> = {
   "mygoabroad": {
     pageId: "mygoabroad",
     versions: [
-      { id: "v1", label: "v1", description: "Direct copy of the live MyGoAbroad page" },
-      { id: "v2", label: "v2", description: "Redesigned to match the marketplace design language" },
+      { id: "v1", label: "v1", description: "Redesigned to match the marketplace design language" },
     ],
     defaultVersion: "v1",
   },

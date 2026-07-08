@@ -1,7 +1,7 @@
 import { ArrowRight } from "lucide-react";
 import { MYG_HERO, MYG_IMAGES, MYG_LINKS } from "../../_shared/content";
 
-export default function V2Hero() {
+export default function V1Hero() {
   return (
     <section
       aria-labelledby="v2-hero-heading"

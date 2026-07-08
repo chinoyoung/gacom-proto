@@ -1,7 +1,7 @@
 import { ArrowRight } from "lucide-react";
 import { MYG_SIGNUP, MYG_LINKS } from "../../_shared/content";
 
-export default function V2Signup() {
+export default function V1Signup() {
   return (
     <section
       aria-labelledby="v2-signup-heading"

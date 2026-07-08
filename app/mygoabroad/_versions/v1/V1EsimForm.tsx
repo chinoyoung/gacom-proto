@@ -26,7 +26,7 @@ const DATA_PACKAGES = [
 const CELITECH_LOGO =
   "https://images.goabroad.com/image/upload/v1/images2/myg/marketplace/celitech_logo.webp";
 
-export default function V2EsimForm() {
+export default function V1EsimForm() {
   const [destination, setDestination] = useState("");
   const [dataPackage, setDataPackage] = useState("");
 

@@ -88,7 +88,7 @@ function FaqAnswer({ faq }: { faq: MyGFaq }) {
   );
 }
 
-export default function V2Faq() {
+export default function V1Faq() {
   const [openIdx, setOpenIdx] = useState<number | null>(null);
 
   return (

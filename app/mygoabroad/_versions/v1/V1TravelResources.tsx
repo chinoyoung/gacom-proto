@@ -1,7 +1,7 @@
 import { ArrowRight } from "lucide-react";
 import { MYG_RESOURCES, MYG_LINKS } from "../../_shared/content";
 
-export default function V2TravelResources() {
+export default function V1TravelResources() {
   return (
     <section
       id="resources"

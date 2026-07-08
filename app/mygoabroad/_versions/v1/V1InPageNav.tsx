@@ -13,7 +13,7 @@ const HEADER_HEIGHT = 0;
 const NAV_HEIGHT = 56;
 const NAV_OFFSET = HEADER_HEIGHT + NAV_HEIGHT;
 
-export default function V2InPageNav() {
+export default function V1InPageNav() {
   const [activeId, setActiveId] = useState<string>(NAV_ITEMS[0].id);
 
   useEffect(() => {

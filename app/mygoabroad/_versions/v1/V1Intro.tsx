@@ -1,6 +1,6 @@
 import { MYG_INTRO } from "../../_shared/content";
 
-export default function V2Intro() {
+export default function V1Intro() {
   return (
     <section
       aria-labelledby="v2-intro-heading"

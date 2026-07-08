@@ -1,7 +1,7 @@
 import { MYG_ESSENTIALS } from "../../_shared/content";
-import V2EsimForm from "./V2EsimForm";
+import V1EsimForm from "./V1EsimForm";
 
-export default function V2TravelEssentials() {
+export default function V1TravelEssentials() {
   const { insurance, esim } = MYG_ESSENTIALS;
   return (
     <section
@@ -62,7 +62,7 @@ export default function V2TravelEssentials() {
             <img src={esim.partnerLogo} alt="celitech logo" className="h-6 w-auto mt-1 object-contain self-start" />
           </div>
           <div>
-            <V2EsimForm />
+            <V1EsimForm />
           </div>
         </div>
       </div>
