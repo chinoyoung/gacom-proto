@@ -1,6 +1,6 @@
 "use client";
 
-import { Minus, Smartphone, Pipette, Lightbulb } from "lucide-react";
+import { Minus, Smartphone, Pipette, Lightbulb, MousePointerClick } from "lucide-react";
 
 const principles = [
   {
@@ -25,6 +25,12 @@ const principles = [
     icon: Lightbulb,
     title: "Clarity over cleverness",
     description: "Use familiar patterns and explicit labels. Predictable interfaces reduce friction and build trust across user types.",
+    accent: "cobalt",
+  },
+  {
+    icon: MousePointerClick,
+    title: "Clickable means pointer",
+    description: "Every clickable element — buttons, action links, role=\"button\" elements, clickable cards and rows — must have cursor-pointer. Tailwind v4 doesn't apply it by default on <button>, and <a> only shows a pointer when it has an href.",
     accent: "cobalt",
   },
 ] as const;

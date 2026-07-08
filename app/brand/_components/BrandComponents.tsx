@@ -1,6 +1,8 @@
 "use client";
 
 import { Globe, Handshake, Sun, Leaf, ArrowRight } from "lucide-react";
+import ArticleCard from "@/components/ArticleCard";
+import ProgramCard from "@/components/ProgramCard";
 
 export default function BrandComponents() {
   return (
@@ -18,7 +20,7 @@ export default function BrandComponents() {
             UI Components
           </h2>
           <p className="text-base text-slate-600 leading-relaxed">
-            Canonical implementations of the four recurring patterns. Copy the class strings exactly — don't invent variants.
+            Canonical implementations of the recurring patterns. Copy the class strings exactly — don't invent variants.
           </p>
         </div>
 
@@ -138,6 +140,36 @@ export default function BrandComponents() {
               ))}
             </div>
             <code className="font-mono text-xs text-slate-500 mt-4 block">w-10 h-10 bg-cobalt-500 rounded-lg · span text-xs font-bold text-white</code>
+          </div>
+        </div>
+
+        {/* Content Cards */}
+        <div className="mt-12">
+          <h3 className="text-lg font-semibold text-neutral-800 mb-2">Content Cards</h3>
+          <p className="text-sm text-slate-500 leading-relaxed mb-6">
+            Shared card components from <code className="font-mono">components/</code>. Import directly — do not recreate local variants.
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <ProgramCard
+              program={{
+                _id: "demo-program",
+                title: "Get TEFL Certified & Teach English Abroad & Online!",
+                provider: "International TEFL Academy",
+                rating: 4.68,
+                reviewCount: 3830,
+                verified: true,
+              }}
+            />
+            <ArticleCard
+              article={{
+                _id: "demo-article",
+                title: "The Best Place to Learn Spanish in Spain Might Not Be Where You Think",
+                author: "María Amorós",
+                publishDate: "2026-06-04",
+                tags: ["Europe"],
+                slug: "best-place-learn-spanish",
+              }}
+            />
           </div>
         </div>
       </div>

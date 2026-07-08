@@ -1,10 +1,29 @@
 # GoAbroad Brand Guidelines
 
-> **This is the source of truth for visual decisions across the app.** When designing or modifying any page or component, consult this document first to pick the right colors, type sizes, spacing, and component patterns. The live reference lives at `/brand`.
+> **Sample / companion file.** Copy this to your project **root** and rename it to `BRANDING.md` (uppercase). It is the full written reference that the condensed `CLAUDE.md` (see `docs/claude.md` in this repo) points to. This copy lives at `docs/branding.md` on purpose — it's a reference, not the active file.
 
-A practical reference for color tokens, type scale, components, and layout rules used across GoAbroad prototypes. Follow these conventions so every prototype speaks the same visual language without ad-hoc decisions.
+> **This is the source of truth for visual decisions across the app.** When designing or modifying any page or component, consult this document first to pick the right colors, type sizes, spacing, and component patterns. `CLAUDE.md` carries a condensed subset for quick lookup; this file carries the complete catalog. The live reference lives at `/brand`.
+
+A practical reference for color tokens, type scale, components, and layout rules. Follow these conventions so every page speaks the same visual language without ad-hoc decisions.
 
 For the live interactive reference, see `/brand`.
+
+---
+
+## Using this system (people & AI agents)
+
+This document is written for **two audiences**:
+
+- **People** — designers and developers. Skim the principles, then use the Colors / Typography / Components / Spacing sections as a lookup while you build.
+- **AI agents** — Claude (and any other agent) working in this repo. The rules here are binding: consult them before producing or modifying any UI.
+
+**If you're an AI agent, do this before writing any UI:**
+
+1. **Read this file first.** Pick existing tokens, type sizes, spacing, and component patterns. Match the system; do not invent values.
+2. **Never hardcode hex** in `className` strings. Use the brand tokens (`cobalt-*`, `roman-*`, `sun-*`, `fern-*`) defined in `app/globals.css`.
+3. **Design mobile-first.** Lay out the 375px view first, then scale up with responsive prefixes.
+4. **Reuse before you create.** If a pattern already exists, import it. If a pattern is used in 2+ features, lift it to `components/`.
+5. **Flag, don't improvise.** If a design need genuinely doesn't fit the system, say so explicitly rather than silently introducing a new color, radius, or shadow.
 
 ---
 
@@ -119,7 +138,7 @@ bg-slate-100 text-slate-400 font-semibold px-7 py-3 rounded-lg cursor-not-allowe
 
 ### Selectable Cards (form choices)
 
-For multi-choice form buttons (e.g., Coverage Type, US Citizen Yes/No in the insurance form). Tinted background marks the selected state.
+For multi-choice form buttons. Tinted background marks the selected state.
 
 ```
 Selected:
@@ -207,85 +226,9 @@ Shared components at `components/ArticleCard.tsx` and `components/ProgramCard.ts
 - Image placeholder state: solid `bg-slate-100` with a muted SVG icon — no external placeholder images.
 - Badge pills use `rounded-full`; card shells use `rounded-xl`.
 
-#### Article Card
-
-Displays an editorial article with tag badge, save button, title, author, and absolute publish date.
-
-```
-Shell <article>:
-bg-white rounded-xl border border-slate-200 overflow-hidden flex flex-col
-
-Image area:
-relative aspect-[2/1] overflow-hidden bg-slate-100
-
-Tag overlay badge (top-left, title-case — no uppercase):
-absolute top-4 left-4
-bg-cobalt-700 text-white px-3 py-1.5 rounded-full text-xs font-semibold
-
-Heart/save button (top-right, shared with Program Card):
-absolute top-3 right-3 w-9 h-9 inline-flex items-center justify-center rounded-full
-bg-white/90 text-cobalt-700 hover:bg-white cursor-pointer transition-colors
-focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500
-Icon: <Heart className="w-5 h-5" fill="currentColor" />
-
-Title <h3>:
-text-xl md:text-2xl font-bold text-neutral-800 leading-snug mb-6 line-clamp-2 min-h-14
-
-Footer date:
-Absolute "Month DD, YYYY" format (e.g. "June 04, 2026"), rendered client-side via useEffect
-to avoid hydration mismatch. Uses timeZone: "UTC" so "2026-06-04" always resolves to June 04.
-```
-
-Props: `{ article }` where `Article = { _id, title, author, publishDate, tags: string[], coverImage?, slug }`.
-
-#### Program Card
-
-Displays a study-abroad program with an image area, heart save button overlay, provider logo tile + name + rating row, cobalt title, and a CTA link with arrow. Layout flows: image → (heart overlaid) → body (provider row → title → CTA).
-
-```
-Shell <article>:
-bg-white rounded-xl border border-slate-200 overflow-hidden flex flex-col h-full
-
-Image area:
-relative aspect-[2/1] bg-slate-100 overflow-hidden
-
-Heart/save button (top-right, overlays image — shared style with Article Card):
-absolute top-3 right-3 w-9 h-9 inline-flex items-center justify-center rounded-full
-bg-white/90 text-cobalt-700 hover:bg-white cursor-pointer transition-colors
-focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500
-Icon: <Heart className="w-5 h-5" fill="currentColor" />
-
-Provider logo tile:
-w-12 h-12 rounded-lg border border-slate-200 bg-white flex items-center justify-center shrink-0 overflow-hidden
-  — with logo: <img className="w-full h-full object-contain p-1" />
-  — without:   <span className="text-lg font-semibold text-slate-400">{initial}</span>
-
-Provider name <p>:
-text-base font-bold text-neutral-800 leading-snug line-clamp-1
-
-Rating row (render only when rating != null):
-flex items-center gap-1.5 mt-0.5 text-sm
-  — score:          <span className="font-bold text-neutral-800">{rating.toFixed(2)}</span>
-  — star icon:      <Star className="w-4 h-4 text-sun-500" fill="currentColor" />
-  — review count:   <span className="text-slate-500">{n} reviews</span>
-  — verified badge: <span className="w-4 h-4 rounded-full bg-fern-500 inline-flex items-center justify-center shrink-0">
-                      <Check className="w-2.5 h-2.5 text-white" strokeWidth={3} />
-                    </span>
-                    (Note: SOLID bg-fern-500 circle — denotes a verified provider, distinct from the
-                    tinted bg-fern-500/10 Status Indicator circles used for included/excluded items.)
-
-Title <h2>:
-text-xl font-bold text-cobalt-700 leading-snug mt-4 line-clamp-2
-
-CTA <Link>:
-mt-4 inline-flex items-center justify-center gap-2 w-full bg-cobalt-500 text-white font-semibold px-7 py-3 rounded-lg hover:bg-cobalt-600 cursor-pointer transition-colors text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500
-```
-
-Props: `{ program }` where `Program = { _id, title, provider, providerLogo?, rating?, reviewCount?, verified?, coverImage?, slug? }`.
-
 ### Stat Row
 
-A compact label + value row prefixed by a small icon tile. Used in summary cards (e.g., Quote Details on the insurance quote page) to surface key facts without heavy framing.
+A compact label + value row prefixed by a small icon tile. Used in summary cards to surface key facts without heavy framing.
 
 ```
 <div className="flex items-start gap-3">
@@ -301,7 +244,7 @@ A compact label + value row prefixed by a small icon tile. Used in summary cards
 
 ### Featured Stat Card
 
-A highlighted stat sitting alongside Stat Rows when one fact deserves more weight (e.g., Duration on the quote page). Uses the cobalt tint family for prominence without competing with primary CTAs.
+A highlighted stat sitting alongside Stat Rows when one fact deserves more weight. Uses the cobalt tint family for prominence without competing with primary CTAs.
 
 ```
 bg-cobalt-500/10 border border-cobalt-500/20 rounded-lg px-5 py-4 flex flex-col gap-1
@@ -312,7 +255,7 @@ bg-cobalt-500/10 border border-cobalt-500/20 rounded-lg px-5 py-4 flex flex-col 
 
 ### Modal Dialog
 
-Used for in-place edits and detail views (e.g., Edit Information, View Plan Details on the insurance quote page).
+Used for in-place edits and detail views.
 
 ```
 Backdrop:
@@ -354,10 +297,6 @@ Body: text-sm text-slate-500 leading-relaxed
 ### Shared Components
 
 When a pattern is used in 2+ features, lift it to `components/` (not a route's `_components/`).
-
-| Component | Path | Use |
-|---|---|---|
-| `DateRangePicker` | `components/DateRangePicker.tsx` | Trip start/end picker. Single button trigger with `start → end` and total days, popover calendar (react-day-picker). Used by esim hero and insurance quote form. |
 
 ---
 
@@ -412,7 +351,7 @@ Top-to-bottom order per page:
 - Keep section padding consistent: `px-4 sm:px-6 md:px-12 lg:px-20 py-16 md:py-24`.
 - Add `aria-labelledby` to every section pointing at its `h2` id.
 - Use `focus-visible:ring-2 focus-visible:ring-cobalt-500` on interactive elements.
-- Add `cursor-pointer` to every clickable element — buttons, links styled as actions, `role="button"` elements, clickable cards/rows, and any custom interactive element. Tailwind v4 doesn't apply it by default on `<button>`, and `<a>` only shows a pointer when it has an `href`.
+- Add `cursor-pointer` to every clickable element.
 - Keep buttons modest: `px-7 py-3` or `px-5 py-2.5`.
 - Use `rounded-lg` for most elements; `rounded-xl` for cards only; `rounded-full` only on tier badges and status indicator circles.
 - Render included/excluded status as tinted circles (see Status Indicators), not bare icons.
@@ -429,6 +368,13 @@ Top-to-bottom order per page:
 - Introduce new color values not defined in `globals.css`.
 - Skip mobile layouts or test only at wide viewports.
 - Open a feature-private component (`route/_components/`) from another route — extract it first.
+- Silently invent a new pattern when something doesn't fit — flag it instead.
+
+---
+
+## Keeping the system in sync
+
+`BRANDING.md` and `/brand` are two views of one system. **Every guideline change goes in both:** update this written reference and the live page (`app/brand/`) in the same change so they never drift.
 
 ---
 

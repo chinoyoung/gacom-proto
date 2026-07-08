@@ -1,4 +1,5 @@
 import V2Hero from "./V2Hero";
+import V2InPageNav from "./V2InPageNav";
 import V2Intro from "./V2Intro";
 import V2ProgramDiscovery from "./V2ProgramDiscovery";
 import V2TravelEssentials from "./V2TravelEssentials";
@@ -10,6 +11,7 @@ export default function V2MyGoAbroadPage() {
   return (
     <div className="w-full">
       <V2Hero />
+      <V2InPageNav />
       <V2Intro />
       <V2ProgramDiscovery />
       <V2TravelEssentials />

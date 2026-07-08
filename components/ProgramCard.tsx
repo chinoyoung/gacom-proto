@@ -2,55 +2,37 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { Heart, Star, Check, ArrowRight } from "lucide-react";
 
 interface Program {
     _id: string;
     title: string;
     provider: string;
-    city: string;
-    country: string;
-    terms: string[];
+    providerLogo?: string;
+    rating?: number;
+    reviewCount?: number;
+    verified?: boolean;
     coverImage?: string;
-    cost?: string;
-    subjectAreas: string[];
     slug?: string;
 }
 
 export default function ProgramCard({ program }: { program: Program }) {
-    const termColors: Record<string, string> = {
-        fall: "bg-orange-100 text-orange-700 border-orange-200",
-        spring: "bg-green-100 text-green-700 border-green-200",
-        summer: "bg-yellow-100 text-yellow-700 border-yellow-200",
-        winter: "bg-cobalt-50/20 text-cobalt-600 border-cobalt-200",
-        academic_year: "bg-purple-100 text-purple-700 border-purple-200",
-        "year round": "bg-teal-100 text-teal-700 border-teal-200",
-    };
-
-    function termClass(term: string): string {
-        const key = term.toLowerCase();
-        return termColors[key] ?? "bg-gray-100 text-gray-600 border-gray-200";
-    }
-
-    function capitalizeFirst(str: string): string {
-        return str.charAt(0).toUpperCase() + str.slice(1).replace(/_/g, " ");
-    }
-
     return (
-        <article className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden flex flex-col hover:shadow-md transition-shadow group h-full">
-            {/* Cover image */}
-            <div className="relative h-48 bg-gradient-to-br from-slate-600 to-slate-800 overflow-hidden">
+        <article className="bg-white rounded-xl border border-slate-200 overflow-hidden flex flex-col h-full">
+            {/* Image area */}
+            <div className="relative aspect-[2/1] bg-slate-100 overflow-hidden">
                 {program.coverImage ? (
                     <Image
                         src={program.coverImage}
                         alt={program.title}
                         fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-300"
+                        className="object-cover"
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     />
                 ) : (
                     <div className="absolute inset-0 flex flex-col items-center justify-center">
                         <svg
-                            className="w-12 h-12 text-slate-500 mb-2"
+                            className="w-12 h-12 text-slate-300 mb-2"
                             fill="none"
                             stroke="currentColor"
                             strokeWidth={1.5}
@@ -63,75 +45,73 @@ export default function ProgramCard({ program }: { program: Program }) {
                                 d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3 20.25h18M3 3.75h18"
                             />
                         </svg>
-                        <span className="text-slate-400 text-xs">No photo</span>
+                        <span className="text-xs text-slate-400">No photo</span>
                     </div>
                 )}
 
-                {/* Location overlay badge */}
-                <div className="absolute bottom-2 left-2 flex items-center gap-1 bg-black/50 backdrop-blur-sm text-white text-xs px-2 py-1 rounded-full">
-                    <svg
-                        className="w-3 h-3 shrink-0"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                        aria-hidden="true"
-                    >
-                        <path
-                            fillRule="evenodd"
-                            d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
-                            clipRule="evenodd"
-                        />
-                    </svg>
-                    {program.city}, {program.country}
-                </div>
+                {/* Heart / save button */}
+                <button
+                    type="button"
+                    aria-label="Save program"
+                    className="absolute top-3 right-3 w-9 h-9 inline-flex items-center justify-center rounded-full bg-white/90 text-cobalt-700 hover:bg-white cursor-pointer transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500"
+                >
+                    <Heart className="w-5 h-5" fill="currentColor" />
+                </button>
             </div>
 
             {/* Card body */}
-            <div className="p-4 flex flex-col flex-1">
-                {/* Provider */}
-                <p className="text-xs font-semibold text-cobalt-500 uppercase tracking-wider mb-1">
-                    {program.provider}
-                </p>
-
-                {/* Title */}
-                <h2 className="text-base font-bold text-gray-900 leading-snug mb-2 line-clamp-2 group-hover:text-cobalt-500 transition-colors">
-                    {program.title}
-                </h2>
-
-                {/* Cost */}
-                {program.cost && (
-                    <p className="text-sm text-gray-500 mb-2">
-                        <span className="font-medium text-gray-700">{program.cost}</span>
-                    </p>
-                )}
-
-                {/* Terms badges */}
-                {program.terms.length > 0 && (
-                    <div className="flex flex-wrap gap-1.5 mb-3">
-                        {program.terms.slice(0, 3).map((term) => (
-                            <span
-                                key={term}
-                                className={`inline-flex items-center px-2 py-0.5 text-xs font-medium rounded-full border ${termClass(term)}`}
-                            >
-                                {capitalizeFirst(term)}
-                            </span>
-                        ))}
-                        {program.terms.length > 3 && (
-                            <span className="inline-flex items-center px-2 py-0.5 text-xs font-medium rounded-full border bg-gray-100 text-gray-500 border-gray-200">
-                                +{program.terms.length - 3} more
+            <div className="p-5 flex flex-col flex-1">
+                {/* Provider row */}
+                <div className="flex items-center gap-3">
+                    {/* Logo tile */}
+                    <div className="w-12 h-12 rounded-lg border border-slate-200 bg-white flex items-center justify-center shrink-0 overflow-hidden">
+                        {program.providerLogo ? (
+                            <img
+                                src={program.providerLogo}
+                                alt={program.provider}
+                                className="w-full h-full object-contain p-1"
+                            />
+                        ) : (
+                            <span className="text-lg font-semibold text-slate-400">
+                                {program.provider.charAt(0)}
                             </span>
                         )}
                     </div>
-                )}
 
-                {/* Subject areas */}
-                {program.subjectAreas.length > 0 && (
-                    <p className="text-xs text-gray-400 mb-3 line-clamp-1">
-                        {program.subjectAreas.slice(0, 2).join(" · ")}
-                        {program.subjectAreas.length > 2
-                            ? ` · +${program.subjectAreas.length - 2} more`
-                            : ""}
-                    </p>
-                )}
+                    {/* Text column */}
+                    <div className="min-w-0">
+                        <p className="text-base font-bold text-neutral-800 leading-snug line-clamp-1">
+                            {program.provider}
+                        </p>
+
+                        {program.rating != null && (
+                            <div className="flex items-center gap-1.5 mt-0.5 text-sm">
+                                <span className="font-bold text-neutral-800">
+                                    {program.rating.toFixed(2)}
+                                </span>
+                                <Star className="w-4 h-4 text-sun-500" fill="currentColor" />
+                                {program.reviewCount != null && (
+                                    <span className="text-slate-500">
+                                        {program.reviewCount.toLocaleString()} reviews
+                                    </span>
+                                )}
+                                {program.verified && (
+                                    <>
+                                        <span className="w-4 h-4 rounded-full bg-fern-500 inline-flex items-center justify-center shrink-0">
+                                            <Check className="w-2.5 h-2.5 text-white" strokeWidth={3} />
+                                        </span>
+                                        <span className="sr-only">Verified</span>
+                                    </>
+                                )}
+                            </div>
+                        )}
+                    </div>
+                </div>
+
+                {/* Title */}
+                <h2 className="text-xl font-bold text-cobalt-700 leading-snug mt-4 line-clamp-2">
+                    {program.title}
+                </h2>
 
                 {/* Spacer */}
                 <div className="flex-1" />
@@ -139,9 +119,9 @@ export default function ProgramCard({ program }: { program: Program }) {
                 {/* CTA */}
                 <Link
                     href={`/programs/${program.slug ?? program._id}`}
-                    className="mt-2 block w-full text-center px-4 py-2 bg-cobalt-500 text-white font-semibold text-sm rounded-lg hover:bg-cobalt-600 transition-colors"
+                    className="mt-4 inline-flex items-center justify-center gap-2 w-full bg-cobalt-500 text-white font-semibold px-7 py-3 rounded-lg hover:bg-cobalt-600 cursor-pointer transition-colors text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500"
                 >
-                    View Program
+                    View Program <ArrowRight className="w-4 h-4" />
                 </Link>
             </div>
         </article>

@@ -93,8 +93,9 @@ export default function V2Faq() {
 
   return (
     <section
+      id="faq"
       aria-labelledby="myg-faq-heading"
-      className="bg-slate-50 px-4 sm:px-6 md:px-12 lg:px-20 py-16 md:py-24"
+      className="scroll-mt-24 bg-slate-50 px-4 sm:px-6 md:px-12 lg:px-20 py-16 md:py-24"
     >
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-10 md:gap-20">
         <div className="flex-1 max-w-xs">

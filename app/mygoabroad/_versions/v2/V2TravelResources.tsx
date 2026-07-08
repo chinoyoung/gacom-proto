@@ -4,8 +4,9 @@ import { MYG_RESOURCES, MYG_LINKS } from "../../_shared/content";
 export default function V2TravelResources() {
   return (
     <section
+      id="resources"
       aria-labelledby="v2-resources-heading"
-      className="bg-white px-4 sm:px-6 md:px-12 lg:px-20 py-16 md:py-24"
+      className="scroll-mt-24 bg-white px-4 sm:px-6 md:px-12 lg:px-20 py-16 md:py-24"
     >
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         <div className="flex flex-col order-first lg:order-last">

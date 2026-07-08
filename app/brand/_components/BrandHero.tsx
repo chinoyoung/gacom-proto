@@ -32,35 +32,26 @@ export default function BrandHero() {
           </ol>
         </nav>
 
-        <div className="flex flex-col md:flex-row md:items-stretch">
-          <div className="flex-1 py-10 md:py-12 md:pr-12 flex flex-col items-center md:items-start text-center md:text-left">
-            <h1 className="text-4xl md:text-5xl font-bold text-neutral-900 leading-tight max-w-3xl mb-5">
-              GoAbroad Brand Guidelines
-            </h1>
-            <p className="text-lg text-slate-600 max-w-xl leading-relaxed mb-10">
-              A living reference for color, typography, components, and spacing. Everything in one place so every prototype speaks the same visual language.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
-              <a
-                href="#components"
-                className="inline-flex items-center justify-center bg-cobalt-500 text-white font-semibold px-7 py-3 rounded-lg hover:bg-cobalt-600 transition-colors w-full sm:w-auto text-center text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500"
-              >
-                View Components
-              </a>
-              <a
-                href="/BRANDING.md"
-                className="inline-flex items-center justify-center border border-slate-300 text-neutral-800 font-semibold px-7 py-3 rounded-lg hover:bg-white hover:border-slate-400 transition-colors w-full sm:w-auto text-center text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500"
-              >
-                Read the Docs
-              </a>
-            </div>
-          </div>
-          <div className="w-full md:w-[45%] md:self-stretch shrink-0 pb-6 md:py-8">
-            <img
-              src="https://images.unsplash.com/photo-1561070791-2526d30994b8?auto=format&fit=crop&w=1200&q=80"
-              alt="Abstract neutral design composition representing brand identity"
-              className="w-full h-[300px] object-cover rounded-lg"
-            />
+        <div className="py-10 md:py-12 flex flex-col items-center text-center">
+          <h1 className="text-4xl md:text-5xl font-bold text-neutral-900 leading-tight max-w-3xl mb-5">
+            GoAbroad Brand Guidelines
+          </h1>
+          <p className="text-lg text-slate-600 max-w-xl leading-relaxed mb-10">
+            A living reference for color, typography, components, and spacing. Everything in one place so every prototype speaks the same visual language.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+            <a
+              href="#components"
+              className="inline-flex items-center justify-center bg-cobalt-500 text-white font-semibold px-7 py-3 rounded-lg hover:bg-cobalt-600 transition-colors w-full sm:w-auto text-center text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500"
+            >
+              View Components
+            </a>
+            <a
+              href="/BRANDING.md"
+              className="inline-flex items-center justify-center border border-slate-300 text-neutral-800 font-semibold px-7 py-3 rounded-lg hover:bg-white hover:border-slate-400 transition-colors w-full sm:w-auto text-center text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500"
+            >
+              Read the Docs
+            </a>
           </div>
         </div>
       </div>

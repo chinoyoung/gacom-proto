@@ -85,7 +85,7 @@ export default function WhyChooseProgram({
         {/* Transferable Credits */}
         <div className="bg-white border border-slate-200 rounded-lg p-4 md:p-5 text-center">
           <p className="text-xs text-slate-500 mb-1">Transferable Credits</p>
-          <p className="text-2xl font-bold text-slate-800">{credits}</p>
+          <p className="text-xl font-bold text-slate-800">{credits}</p>
         </div>
 
         {/* Would Recommend */}
