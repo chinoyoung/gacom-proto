@@ -167,7 +167,7 @@ export default function V1DetailPage({
 
         {/* Interviews */}
         <section id="interviews" className="w-full max-w-7xl mx-auto mt-20 px-4 xl:px-0">
-          <V1InterviewsSection />
+          <V1InterviewsSection programId={program._id} />
         </section>
 
         {/* Recognitions */}

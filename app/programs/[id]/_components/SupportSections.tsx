@@ -45,10 +45,10 @@ export function buildFaqs(program: Program): { question: string; answer: string 
     });
   }
 
-  if (program.applicationDeadline) {
+  if (program.refundPolicy) {
     faqs.push({
-      question: "When is the application deadline?",
-      answer: `The application deadline is ${program.applicationDeadline}.`,
+      question: "What is the refund policy?",
+      answer: program.refundPolicy,
     });
   }
 

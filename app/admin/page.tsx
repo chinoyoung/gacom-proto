@@ -2,18 +2,20 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Plus, LayoutGrid, FileText, Users, MessageSquare } from "lucide-react";
+import { Plus, Mic, LayoutGrid, FileText, Users, MessageSquare } from "lucide-react";
 import ProgramsManager from "./_components/ProgramsManager";
 import ArticlesManager from "./_components/ArticlesManager";
 import ReviewsManager from "./_components/ReviewsManager";
 import UsersManager from "./_components/UsersManager";
+import InterviewsManager from "./_components/InterviewsManager";
 
-type AdminTab = "programs" | "articles" | "reviews" | "users";
+type AdminTab = "programs" | "articles" | "reviews" | "users" | "interviews";
 
 export default function AdminDashboard() {
     const [activeTab, setActiveTab] = useState<AdminTab>("programs");
     const [isCreatingArticle, setIsCreatingArticle] = useState(false);
     const [isCreatingReview, setIsCreatingReview] = useState(false);
+    const [isCreatingInterview, setIsCreatingInterview] = useState(false);
 
     return (
         <div className="min-h-screen bg-gray-50 pb-12">
@@ -48,6 +50,14 @@ export default function AdminDashboard() {
                             <Plus className="w-4 h-4" />
                             Create New Review
                         </button>
+                    ) : activeTab === "interviews" ? (
+                        <button
+                            onClick={() => setIsCreatingInterview(true)}
+                            className="inline-flex items-center gap-2 bg-cobalt-600 text-white px-6 py-3 rounded-lg font-bold text-sm hover:bg-cobalt-700 transition-all shadow-md active:scale-95 whitespace-nowrap"
+                        >
+                            <Plus className="w-4 h-4" />
+                            Create New Interview
+                        </button>
                     ) : null}
                 </div>
 
@@ -59,6 +69,7 @@ export default function AdminDashboard() {
                                 setActiveTab("programs");
                                 setIsCreatingArticle(false);
                                 setIsCreatingReview(false);
+                                setIsCreatingInterview(false);
                             }}
                             className={`flex items-center gap-2 py-4 text-sm font-bold transition-all relative ${activeTab === "programs"
                                 ? "text-cobalt-600"
@@ -76,6 +87,7 @@ export default function AdminDashboard() {
                                 setActiveTab("articles");
                                 setIsCreatingArticle(false);
                                 setIsCreatingReview(false);
+                                setIsCreatingInterview(false);
                             }}
                             className={`flex items-center gap-2 py-4 text-sm font-bold transition-all relative ${activeTab === "articles"
                                 ? "text-cobalt-600"
@@ -93,6 +105,7 @@ export default function AdminDashboard() {
                                 setActiveTab("reviews");
                                 setIsCreatingArticle(false);
                                 setIsCreatingReview(false);
+                                setIsCreatingInterview(false);
                             }}
                             className={`flex items-center gap-2 py-4 text-sm font-bold transition-all relative ${activeTab === "reviews"
                                 ? "text-cobalt-600"
@@ -107,9 +120,28 @@ export default function AdminDashboard() {
                         </button>
                         <button
                             onClick={() => {
+                                setActiveTab("interviews");
+                                setIsCreatingArticle(false);
+                                setIsCreatingReview(false);
+                                setIsCreatingInterview(false);
+                            }}
+                            className={`flex items-center gap-2 py-4 text-sm font-bold transition-all relative ${activeTab === "interviews"
+                                ? "text-cobalt-600"
+                                : "text-gray-400 hover:text-gray-600"
+                                }`}
+                        >
+                            <Mic className="w-4 h-4" />
+                            Manage Interviews
+                            {activeTab === "interviews" && (
+                                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-cobalt-600" />
+                            )}
+                        </button>
+                        <button
+                            onClick={() => {
                                 setActiveTab("users");
                                 setIsCreatingArticle(false);
                                 setIsCreatingReview(false);
+                                setIsCreatingInterview(false);
                             }}
                             className={`flex items-center gap-2 py-4 text-sm font-bold transition-all relative ${activeTab === "users"
                                 ? "text-cobalt-600"
@@ -139,6 +171,11 @@ export default function AdminDashboard() {
                     <ReviewsManager
                         isCreating={isCreatingReview}
                         onCancelCreate={() => setIsCreatingReview(false)}
+                    />
+                ) : activeTab === "interviews" ? (
+                    <InterviewsManager
+                        isCreating={isCreatingInterview}
+                        onCancelCreate={() => setIsCreatingInterview(false)}
                     />
                 ) : (
                     <UsersManager />

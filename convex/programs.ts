@@ -272,6 +272,7 @@ export const seedRichDemo = mutation({
       provider: "Global Internship Programs",
       slug,
       status: "published" as const,
+      createdBy: "AI Anthropic",
       city: "Gold Coast",
       country: "Australia",
       terms: [
@@ -379,5 +380,302 @@ export const seedRichDemo = mutation({
     }
     const id = await ctx.db.insert("programs", data);
     return { action: "created", id, slug };
+  },
+});
+
+// One-time: seed 6 additional published demo programs covering a variety
+// of program types (teaching, conservation, culinary, internship, language).
+// Idempotent — skips any program whose slug already exists.
+// Run with: npx convex run programs:seedMorePrograms
+export const seedMorePrograms = mutation({
+  args: {},
+  handler: async (ctx) => {
+    const now = Date.now();
+
+    const demoPrograms = [
+      {
+        slug: "teach-english-in-vietnam",
+        title: "Teach English in Vietnam",
+        provider: "Bridge Education Group",
+        city: "Hanoi",
+        country: "Vietnam",
+        terms: ["Summer", "Fall", "Spring", "Year Round"],
+        duration: "1-6 months",
+        educationLevels: [
+          "Bachelor's degree",
+          "Recent graduate",
+          "Working professional",
+        ],
+        eligibleNationalities: ["American", "Canadian", "British", "Australian", "Irish"],
+        description:
+          "Get TEFL-certified and step into a classroom in Hanoi, teaching English to eager students of all ages. You'll receive hands-on training, a supportive local staff team, and a placement matched to your experience level. Beyond the classroom, explore Vietnam's street food, karst landscapes, and vibrant city life.",
+        whatsIncluded: [
+          "TEFL Certification Course",
+          "Teaching Placement",
+          "Airport Pickup",
+          "Orientation Program",
+          "Housing Assistance",
+          "24/7 In-Country Support",
+          "Vietnamese Language Basics",
+        ],
+        subjectAreas: ["Education", "TESOL", "Linguistics"],
+        highlights: [
+          "TEFL certification included",
+          "Guaranteed teaching placement",
+          "Weekend trips to Ha Long Bay and Sapa",
+          "Ongoing mentorship from local staff",
+          "Vibrant expat and local teacher community",
+        ],
+        cost: "$1,800",
+        applicationDeadline: "Rolling admissions",
+        housingType: "Homestay or Shared Apartment",
+        languageOfInstruction: "English",
+        creditsAvailable: undefined,
+        hostInstitution: "Bridge Education Group Vietnam",
+        programTags: ["Teaching", "TEFL", "Southeast Asia"],
+      },
+      {
+        slug: "marine-conservation-costa-rica",
+        title: "Marine Conservation Expedition in Costa Rica",
+        provider: "EcoVolunteer Network",
+        city: "Puerto Viejo",
+        country: "Costa Rica",
+        terms: ["Summer", "Fall", "Spring", "Winter"],
+        duration: "2-8 weeks",
+        educationLevels: [
+          "Currently enrolled undergraduate",
+          "Bachelor's degree",
+          "Graduate student",
+        ],
+        eligibleNationalities: ["American", "Canadian", "British", "German", "Dutch"],
+        description:
+          "Join a hands-on sea turtle and coral reef conservation project on Costa Rica's Caribbean coast. Work alongside marine biologists on nesting surveys, reef health monitoring, and community education initiatives. Evenings and weekends leave plenty of time to explore rainforest trails and laid-back beach towns.",
+        whatsIncluded: [
+          "Field Research Training",
+          "Accommodation / Housing for Program Duration",
+          "All Meals",
+          "Snorkeling Equipment",
+          "Airport Pickup",
+          "24/7 In-Country Support",
+          "Certificate of Completion",
+        ],
+        subjectAreas: ["Marine Biology", "Environmental Science"],
+        highlights: [
+          "Hands-on sea turtle nesting surveys",
+          "Coral reef health monitoring dives",
+          "Small cohort with dedicated field scientists",
+          "Beachfront volunteer housing",
+        ],
+        cost: "$2,400",
+        applicationDeadline: "6 weeks before start date",
+        housingType: "Shared Volunteer House",
+        languageOfInstruction: "English",
+        creditsAvailable: "Up to 4 credits",
+        hostInstitution: "EcoVolunteer Network Costa Rica",
+        programTags: ["Conservation", "Marine Biology", "Volunteer"],
+      },
+      {
+        slug: "culinary-arts-immersion-florence",
+        title: "Culinary Arts Immersion in Florence",
+        provider: "Tuscan Culinary Institute",
+        city: "Florence",
+        country: "Italy",
+        terms: ["Fall", "Spring", "Summer"],
+        duration: "4-12 weeks",
+        educationLevels: [
+          "High school graduate",
+          "Currently enrolled undergraduate",
+          "Bachelor's degree",
+          "Working professional",
+        ],
+        eligibleNationalities: ["American", "Canadian", "British", "Australian", "New Zealander"],
+        description:
+          "Train in a professional Tuscan kitchen while living in the heart of Florence. Daily hands-on classes cover pasta-making, regional sauces, pastry, and wine pairing, taught by working Italian chefs. Weekly market visits and day trips to Tuscan farms connect every dish back to its ingredients.",
+        whatsIncluded: [
+          "Daily Hands-On Cooking Classes",
+          "Accommodation / Housing for Program Duration",
+          "Market and Vineyard Excursions",
+          "Chef's Uniform and Tools",
+          "Orientation Program",
+          "Certificate of Completion",
+        ],
+        subjectAreas: ["Culinary Arts", "Hospitality"],
+        highlights: [
+          "Small class sizes with professional chefs",
+          "Weekly Tuscan market and vineyard trips",
+          "Historic city-center kitchen classroom",
+          "Wine pairing and tasting workshops",
+          "Final showcase dinner for family and friends",
+        ],
+        cost: "$5,200",
+        applicationDeadline: "8 weeks before start date",
+        housingType: "Shared Apartment",
+        languageOfInstruction: "English & Italian",
+        creditsAvailable: "Up to 6 credits",
+        hostInstitution: "Tuscan Culinary Institute",
+        programTags: ["Culinary", "Hospitality", "Europe"],
+      },
+      {
+        slug: "wildlife-conservation-south-africa",
+        title: "Wildlife Conservation in South Africa",
+        provider: "Savanna Field School",
+        city: "Cape Town",
+        country: "South Africa",
+        terms: ["Summer", "Winter", "Year Round"],
+        duration: "2-10 weeks",
+        educationLevels: [
+          "Currently enrolled undergraduate",
+          "Bachelor's degree",
+          "Graduate student",
+          "Working professional",
+        ],
+        eligibleNationalities: ["American", "Canadian", "British", "German", "South African"],
+        description:
+          "Work alongside wildlife researchers on big-game monitoring, habitat restoration, and anti-poaching survey work across reserves near Cape Town. Days combine game drives and fieldwork with lectures on African ecology and conservation policy. No prior field experience is required.",
+        whatsIncluded: [
+          "Field Research Training",
+          "Accommodation / Housing for Program Duration",
+          "All Meals",
+          "Game Drive Vehicle Access",
+          "Airport Pickup",
+          "24/7 In-Country Support",
+        ],
+        subjectAreas: ["Zoology", "Environmental Science", "Conservation"],
+        highlights: [
+          "Daily game drives with wildlife researchers",
+          "Hands-on habitat restoration projects",
+          "Anti-poaching survey field experience",
+          "Lectures on African conservation policy",
+        ],
+        cost: "$3,100",
+        applicationDeadline: "6 weeks before start date",
+        housingType: "Field Camp / Lodge",
+        languageOfInstruction: "English",
+        creditsAvailable: "Up to 5 credits",
+        hostInstitution: "Savanna Field School",
+        programTags: ["Conservation", "Wildlife", "Africa"],
+      },
+      {
+        slug: "software-engineering-internship-berlin",
+        title: "Software Engineering Internship in Berlin",
+        provider: "EuroTech Interns",
+        city: "Berlin",
+        country: "Germany",
+        terms: ["Summer", "Fall", "Spring", "Year Round"],
+        duration: "8-24 weeks",
+        educationLevels: [
+          "Currently enrolled undergraduate",
+          "Bachelor's degree",
+          "Recent graduate",
+          "Graduate student",
+        ],
+        eligibleNationalities: ["American", "Canadian", "British", "Irish", "Indian"],
+        description:
+          "Land a placement at a Berlin tech startup or scale-up and build real production features alongside experienced engineers. EuroTech Interns handles visa paperwork, housing, and matches you to a role based on your stack and interests. Weekly meetups connect you with other international interns across the city.",
+        whatsIncluded: [
+          "Internship Placement Matching",
+          "Visa Sponsorship Support",
+          "Accommodation Assistance",
+          "Orientation Program",
+          "Weekly Intern Meetups",
+          "24/7 In-Country Support",
+        ],
+        subjectAreas: ["Computer Science", "Engineering"],
+        highlights: [
+          "Real production work at startups and scale-ups",
+          "Visa and relocation support included",
+          "Weekly meetups with international intern network",
+          "Mentorship from senior engineers",
+          "Access to Berlin's startup and tech events",
+        ],
+        cost: "$1,200",
+        applicationDeadline: "Rolling admissions",
+        housingType: "Shared Apartment",
+        languageOfInstruction: "English",
+        creditsAvailable: "Up to 12 credits",
+        hostInstitution: "EuroTech Interns",
+        programTags: ["Internship", "Technology", "Europe"],
+      },
+      {
+        slug: "japanese-language-culture-tokyo",
+        title: "Japanese Language & Culture in Tokyo",
+        provider: "Nihongo Institute",
+        city: "Tokyo",
+        country: "Japan",
+        terms: ["Fall", "Spring", "Summer", "1 Year"],
+        duration: "8 weeks - 1 year",
+        educationLevels: [
+          "High school graduate",
+          "Currently enrolled undergraduate",
+          "Bachelor's degree",
+          "Working professional",
+        ],
+        eligibleNationalities: ["American", "Canadian", "British", "Australian", "Singaporean"],
+        description:
+          "Intensive Japanese language instruction paired with weekly cultural workshops in calligraphy, tea ceremony, and cooking. Small class sizes and placement testing ensure you're grouped with students at your level, from complete beginners to advanced speakers. Homestay placements offer daily immersion beyond the classroom.",
+        whatsIncluded: [
+          "Intensive Language Coursework",
+          "Placement Testing",
+          "Weekly Cultural Workshops",
+          "Homestay Accommodation",
+          "Orientation Program",
+          "Airport Pickup",
+          "Certificate of Completion",
+        ],
+        subjectAreas: ["Japanese", "Asian Studies"],
+        highlights: [
+          "Small classes grouped by proficiency level",
+          "Weekly tea ceremony and calligraphy workshops",
+          "Homestay immersion with a local family",
+          "Optional university credit transfer",
+        ],
+        cost: "$4,000",
+        applicationDeadline: "10 weeks before start date",
+        housingType: "Homestay",
+        languageOfInstruction: "Japanese & English",
+        creditsAvailable: "Up to 8 credits",
+        hostInstitution: "Nihongo Institute",
+        programTags: ["Language", "Culture", "Asia"],
+      },
+    ];
+
+    let inserted = 0;
+    for (const { slug, ...rest } of demoPrograms) {
+      const existing = await ctx.db
+        .query("programs")
+        .withIndex("by_slug", (q) => q.eq("slug", slug))
+        .first();
+      if (existing) continue;
+
+      await ctx.db.insert("programs", {
+        ...rest,
+        slug,
+        status: "published",
+        createdBy: "AI Anthropic",
+        coverImage: `https://picsum.photos/seed/${slug}/800/400`,
+        photos: [],
+        updatedAt: now,
+      });
+      inserted++;
+    }
+
+    return { inserted, total: demoPrograms.length };
+  },
+});
+
+// One-time: label seeded/generated programs (those with no author) as AI-created.
+// Run with: npx convex run programs:backfillGeneratedAuthor
+export const backfillGeneratedAuthor = mutation({
+  args: {},
+  handler: async (ctx) => {
+    const programs = await ctx.db.query("programs").collect();
+    let updated = 0;
+    for (const p of programs) {
+      if (!p.createdBy) {
+        await ctx.db.patch(p._id, { createdBy: "AI Anthropic" });
+        updated++;
+      }
+    }
+    return { updated };
   },
 });

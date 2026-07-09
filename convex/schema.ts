@@ -151,6 +151,21 @@ export default defineSchema({
     .index("by_status", ["status"])
     .index("by_program_status", ["programId", "status"]),
 
+  interviews: defineTable({
+    programId: v.id("programs"),
+    name: v.string(),
+    role: v.union(v.literal("Alumni"), v.literal("Staff")),
+    year: v.string(),
+    bio: v.string(),
+    quote: v.string(),
+    photo: v.optional(v.string()),
+    status: v.union(v.literal("draft"), v.literal("published")),
+    createdBy: v.optional(v.string()),
+  })
+    .index("by_program", ["programId"])
+    .index("by_status", ["status"])
+    .index("by_program_status", ["programId", "status"]),
+
   commentThreads: defineTable({
     pageKey: v.string(),
     anchorId: v.string(),
