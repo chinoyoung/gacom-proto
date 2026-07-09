@@ -4,9 +4,17 @@ import { useState, useCallback, useEffect } from "react";
 import { X, ChevronLeft, ChevronRight, Maximize2 } from "lucide-react";
 import type { Program } from "../../_components/types";
 
+const TILE_BUTTON_CLASS =
+  "group relative block overflow-hidden rounded-md cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500";
+
+function TileHoverOverlay() {
+  return (
+    <span className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
+  );
+}
+
 export default function V1MediaGallery({ program }: { program: Program }) {
   const photos = program.photos ?? [];
-  const [activeIndex, setActiveIndex] = useState(0);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
   const closeLightbox = useCallback(() => setLightboxIndex(null), []);
@@ -36,7 +44,131 @@ export default function V1MediaGallery({ program }: { program: Program }) {
 
   if (!photos.length) return null;
 
-  const activePhoto = photos[activeIndex];
+  function renderCollage() {
+    // Single photo — centered, simple hero treatment.
+    if (photos.length === 1) {
+      return (
+        <div className="max-w-3xl mx-auto">
+          <button
+            type="button"
+            onClick={() => setLightboxIndex(0)}
+            className={`${TILE_BUTTON_CLASS} block w-full aspect-[3/2]`}
+            aria-label="Open photo 1 in lightbox"
+          >
+            <img
+              src={photos[0]}
+              alt={`${program.title} — photo 1`}
+              className="w-full h-full object-cover rounded-md"
+            />
+            <TileHoverOverlay />
+            <span className="absolute bottom-3 right-3 inline-flex items-center gap-1.5 bg-black/55 text-white text-xs font-semibold px-2.5 py-1.5 rounded-md opacity-0 group-hover:opacity-100 transition-opacity">
+              <Maximize2 className="w-3.5 h-3.5" />
+              View full size
+            </span>
+          </button>
+        </div>
+      );
+    }
+
+    // Two photos — even split, side by side on larger screens.
+    if (photos.length === 2) {
+      return (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+          {photos.map((photo, i) => (
+            <button
+              key={i}
+              type="button"
+              onClick={() => setLightboxIndex(i)}
+              className={`${TILE_BUTTON_CLASS} aspect-[3/2]`}
+              aria-label={`Open photo ${i + 1} in lightbox`}
+            >
+              <img
+                src={photo}
+                alt={`${program.title} — photo ${i + 1}`}
+                className="w-full h-full object-cover rounded-md"
+              />
+              <TileHoverOverlay />
+            </button>
+          ))}
+        </div>
+      );
+    }
+
+    // Three or more photos — Airbnb-style collage: a lead image plus a
+    // right-hand cell of tiles that visually matches the lead's height
+    // once we're on large screens.
+    const rest = photos.slice(1);
+    const totalCount = photos.length;
+    const visibleTiles = rest.slice(0, 6);
+    const hasOverflow = rest.length > 6;
+    const placeholderCount = 6 - visibleTiles.length;
+    const innerGridClass = "grid grid-cols-2 gap-2 lg:grid-rows-3 lg:h-full";
+
+    return (
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-2 lg:aspect-[7/3]">
+        <button
+          type="button"
+          onClick={() => setLightboxIndex(0)}
+          className={`${TILE_BUTTON_CLASS} w-full aspect-[3/2] lg:aspect-auto lg:h-full lg:col-span-2`}
+          aria-label="Open photo 1 in lightbox"
+        >
+          <img
+            src={photos[0]}
+            alt={`${program.title} — photo 1`}
+            className="w-full h-full object-cover rounded-md"
+          />
+          <TileHoverOverlay />
+          <span className="absolute bottom-3 left-3 inline-flex items-center gap-1.5 bg-black/55 text-white text-xs font-semibold px-2.5 py-1.5 rounded-md opacity-0 group-hover:opacity-100 transition-opacity">
+            <Maximize2 className="w-3.5 h-3.5" />
+            View full size
+          </span>
+        </button>
+
+        <div className={innerGridClass}>
+          {visibleTiles.map((photo, idx) => {
+            const realIndex = idx + 1;
+            const isOverflowTile = hasOverflow && idx === visibleTiles.length - 1;
+
+            return (
+              <button
+                key={realIndex}
+                type="button"
+                onClick={() => setLightboxIndex(realIndex)}
+                className={`${TILE_BUTTON_CLASS} relative aspect-[3/2] lg:aspect-auto`}
+                aria-label={
+                  isOverflowTile
+                    ? `View all ${totalCount} photos`
+                    : `Open photo ${realIndex + 1} in lightbox`
+                }
+              >
+                <img
+                  src={photo}
+                  alt={`${program.title} — photo ${realIndex + 1}`}
+                  className="absolute inset-0 w-full h-full object-cover rounded-md"
+                />
+                <TileHoverOverlay />
+                {isOverflowTile && (
+                  <div className="absolute inset-0 bg-black/50 flex items-center justify-center rounded-md">
+                    <span className="text-white text-lg font-semibold">
+                      View all {totalCount}
+                    </span>
+                  </div>
+                )}
+              </button>
+            );
+          })}
+          {placeholderCount > 0 &&
+            Array.from({ length: placeholderCount }).map((_, i) => (
+              <div
+                key={`placeholder-${i}`}
+                aria-hidden="true"
+                className="hidden lg:block rounded-md bg-slate-100"
+              />
+            ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -44,53 +176,7 @@ export default function V1MediaGallery({ program }: { program: Program }) {
         Media Gallery
       </h2>
 
-      <button
-        type="button"
-        onClick={() => setLightboxIndex(activeIndex)}
-        className="group relative block w-full rounded-md overflow-hidden cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500"
-        aria-label={`Open photo ${activeIndex + 1} in lightbox`}
-      >
-        <img
-          src={activePhoto}
-          alt={`${program.title} — photo ${activeIndex + 1}`}
-          className="w-full h-[320px] md:h-[460px] lg:h-[520px] object-cover"
-        />
-        <span className="absolute bottom-3 right-3 inline-flex items-center gap-1.5 bg-black/55 text-white text-xs font-semibold px-2.5 py-1.5 rounded-md opacity-0 group-hover:opacity-100 transition-opacity">
-          <Maximize2 className="w-3.5 h-3.5" />
-          View full size
-        </span>
-        <span className="absolute bottom-3 left-3 bg-black/55 text-white text-xs font-semibold px-2.5 py-1 rounded-md">
-          {activeIndex + 1} / {photos.length}
-        </span>
-      </button>
-
-      {photos.length > 1 && (
-        <div className="flex gap-2 mt-3 overflow-x-auto pb-1">
-          {photos.map((photo, i) => {
-            const isActive = i === activeIndex;
-            return (
-              <button
-                key={i}
-                type="button"
-                onClick={() => setActiveIndex(i)}
-                aria-label={`Show photo ${i + 1}`}
-                aria-current={isActive}
-                className={`relative aspect-square w-20 md:w-24 shrink-0 rounded-md overflow-hidden cursor-pointer transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 ${
-                  isActive
-                    ? "ring-2 ring-cobalt-500"
-                    : "opacity-70 hover:opacity-100"
-                }`}
-              >
-                <img
-                  src={photo}
-                  alt={`Thumbnail ${i + 1}`}
-                  className="w-full h-full object-cover"
-                />
-              </button>
-            );
-          })}
-        </div>
-      )}
+      {renderCollage()}
 
       {lightboxIndex != null && (
         <div
