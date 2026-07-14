@@ -1,113 +1,183 @@
 "use client";
 
-import { useState } from "react";
-import { Star } from "lucide-react";
-import type { ProviderReview } from "../../_components/types";
+import { useMemo, useState } from "react";
+import Link from "next/link";
+import type { Provider, ProviderReview } from "../../_components/types";
+import V1ReviewSummary from "@/app/programs/[id]/_versions/v1/V1ReviewSummary";
+import V1ReviewCard from "@/app/programs/[id]/_versions/v1/V1ReviewCard";
 
-const INITIAL = 3;
+// ── Types ─────────────────────────────────────────────────────────────────────
 
-interface Props {
-  reviews: ProviderReview[];
-  avgRating: number;
-  reviewCount: number;
+interface CategoryAverages {
+  academicsRating: number | null;
+  livingSituationRating: number | null;
+  culturalImmersionRating: number | null;
+  programAdministrationRating: number | null;
+  healthAndSafetyRating: number | null;
+  communityRating: number | null;
 }
 
-export default function V1ProviderReviews({ reviews, avgRating, reviewCount }: Props) {
-  const [showAll, setShowAll] = useState(false);
+interface ReviewStats {
+  total: number;
+  avg: number;
+  distribution: { 1: number; 2: number; 3: number; 4: number; 5: number };
+  categoryAverages: CategoryAverages;
+}
 
-  if (reviewCount === 0) return null;
+const CATEGORY_KEYS = [
+  "academicsRating",
+  "livingSituationRating",
+  "culturalImmersionRating",
+  "programAdministrationRating",
+  "healthAndSafetyRating",
+  "communityRating",
+] as const;
 
-  const sorted = [...reviews].sort((a, b) => b._creationTime - a._creationTime);
-  const visible = showAll ? sorted : sorted.slice(0, INITIAL);
+// ── Props ─────────────────────────────────────────────────────────────────────
 
-  return (
-    <div>
-      <h2 className="text-2xl font-bold text-slate-900 mb-4">Reviews</h2>
+interface V1ProviderReviewsProps {
+  provider: Provider;
+  reviews: ProviderReview[] | undefined;
+  avgRating: number;
+}
 
-      <div className="border border-slate-200 rounded-md p-5 sm:p-6 bg-white mb-4">
-        <div className="flex items-center flex-wrap gap-3">
-          <span className="text-4xl sm:text-5xl font-extrabold text-slate-900 leading-none">
-            {avgRating.toFixed(1)}
-            <span className="text-2xl sm:text-3xl font-bold text-slate-400 ml-1">/5</span>
-          </span>
-          <div className="flex items-center gap-0.5">
-            {[1, 2, 3, 4, 5].map((star) => (
-              <Star
-                key={star}
-                className={`w-6 h-6 ${
-                  avgRating >= star ? "text-sun-500 fill-current" : "text-slate-300"
-                }`}
-              />
-            ))}
+// ── Component ─────────────────────────────────────────────────────────────────
+
+export default function V1ProviderReviews({
+  provider,
+  reviews,
+  avgRating,
+}: V1ProviderReviewsProps) {
+  const [selectedStar, setSelectedStar] = useState<number | null>(null);
+
+  const stats: ReviewStats = useMemo(() => {
+    const list = reviews ?? [];
+
+    const distribution: ReviewStats["distribution"] = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+    for (const r of list) {
+      if (typeof r.overallRating !== "number") continue;
+      const star = Math.round(r.overallRating);
+      if (star >= 1 && star <= 5) {
+        distribution[star as 1 | 2 | 3 | 4 | 5] += 1;
+      }
+    }
+
+    const categoryAverages = CATEGORY_KEYS.reduce((acc, key) => {
+      const values = list
+        .map((r) => r[key])
+        .filter((v): v is number => typeof v === "number");
+      acc[key] = values.length > 0
+        ? values.reduce((sum, v) => sum + v, 0) / values.length
+        : null;
+      return acc;
+    }, {} as CategoryAverages);
+
+    return {
+      total: list.length,
+      avg: avgRating,
+      distribution,
+      categoryAverages,
+    };
+  }, [reviews, avgRating]);
+
+  // ── Loading ───────────────────────────────────────────────────────────────
+  if (reviews === undefined) {
+    return (
+      <div className="flex flex-col gap-6 animate-pulse">
+        <div className="h-8 bg-slate-200 rounded-md w-64" />
+        <div className="border border-slate-200 rounded-md bg-white p-5 sm:p-6">
+          <div className="flex flex-wrap items-center gap-3 mb-6">
+            <div className="h-12 w-16 bg-slate-200 rounded-md" />
+            <div className="flex flex-col gap-2">
+              <div className="h-4 w-28 bg-slate-200 rounded-md" />
+              <div className="h-3 w-20 bg-slate-100 rounded-md" />
+            </div>
           </div>
-          <span className="bg-cobalt-500/10 text-cobalt-600 text-xs font-semibold px-3 py-1 rounded-full">
-            {reviewCount} {reviewCount === 1 ? "review" : "reviews"} across all programs
-          </span>
+          <div className="h-24 bg-slate-100 rounded-md" />
+        </div>
+        <div className="flex flex-col gap-4">
+          {[1, 2].map((i) => (
+            <div key={i} className="bg-white border border-slate-200 rounded-md p-5 space-y-3">
+              <div className="h-4 bg-slate-200 rounded-md w-40" />
+              <div className="h-3 bg-slate-100 rounded-md w-full" />
+              <div className="h-3 bg-slate-100 rounded-md w-[85%]" />
+            </div>
+          ))}
         </div>
       </div>
+    );
+  }
 
-      <div className="flex flex-col gap-4">
-        {visible.map((review) => (
-          <div
-            key={review._id}
-            className="bg-white border border-slate-200 p-5 rounded-md"
-          >
-            <div className="flex items-start justify-between gap-4">
-              <div className="flex items-center gap-3 min-w-0">
-                <div className="w-10 h-10 rounded-full bg-cobalt-500 text-white font-bold text-sm flex items-center justify-center shrink-0">
-                  {(review.reviewerName ?? "A").charAt(0).toUpperCase()}
-                </div>
-                <div className="flex flex-col min-w-0">
-                  <span className="font-bold text-sm text-neutral-900 truncate">
-                    {review.reviewerName ?? "Anonymous"}
-                  </span>
-                  <span className="text-xs text-neutral-500 truncate">
-                    {review.reviewerCountry && <>{review.reviewerCountry} · </>}
-                    {new Date(review._creationTime).toLocaleDateString("en-US", {
-                      month: "short",
-                      year: "numeric",
-                    })}
-                  </span>
-                </div>
-              </div>
-              {review.overallRating != null && (
-                <div className="flex items-center gap-1 rounded-md px-2 py-1 bg-slate-100 shrink-0">
-                  <Star fill="currentColor" className="text-sun-500 w-4 h-4" />
-                  <span className="font-bold text-sm">
-                    {Number(review.overallRating).toFixed(1)}
-                  </span>
-                </div>
-              )}
-            </div>
-
-            {review.reviewTitle && (
-              <h3 className="text-base font-bold text-neutral-900 mt-3">
-                {review.reviewTitle}
-              </h3>
-            )}
-            {review.body && (
-              <p className="text-sm leading-relaxed text-neutral-700 mt-2 line-clamp-3">
-                {review.body}
-              </p>
-            )}
-            {review.programTitle && (
-              <p className="text-xs text-slate-400 mt-3">
-                On <span className="font-semibold text-slate-500">{review.programTitle}</span>
-              </p>
-            )}
-          </div>
-        ))}
+  // ── Empty ─────────────────────────────────────────────────────────────────
+  if (reviews.length === 0) {
+    return (
+      <div className="flex flex-col gap-6">
+        <h2 className="text-2xl font-bold text-slate-900">
+          Reviews of {provider.name}
+        </h2>
+        <div className="bg-slate-50 border border-slate-200 rounded-md p-8 text-center">
+          <p className="text-sm text-slate-500">
+            No reviews yet for {provider.name}&apos;s programs.
+          </p>
+        </div>
       </div>
+    );
+  }
 
-      {sorted.length > INITIAL && (
-        <div className="flex justify-center mt-4">
+  // ── Filtered list ─────────────────────────────────────────────────────────
+  const filteredReviews =
+    selectedStar === null
+      ? reviews
+      : reviews.filter(
+          (r) =>
+            typeof r.overallRating === "number" &&
+            Math.round(r.overallRating) === selectedStar
+        );
+
+  return (
+    <div className="flex flex-col gap-6">
+      <h2 className="text-2xl font-bold text-slate-900">
+        Reviews of {provider.name}
+      </h2>
+
+      <V1ReviewSummary
+        stats={stats}
+        provider={provider.name}
+        selectedStar={selectedStar}
+        onSelectStar={setSelectedStar}
+        ctaLabel="Review this provider"
+      />
+
+      {filteredReviews.length === 0 ? (
+        <div className="bg-slate-50 border border-slate-200 rounded-md p-8 text-center flex flex-col items-center gap-3">
+          <p className="text-sm text-slate-500">No reviews match this filter.</p>
           <button
             type="button"
-            onClick={() => setShowAll((v) => !v)}
-            className="inline-flex items-center justify-center h-10 px-5 bg-white border border-slate-300 text-slate-700 text-sm font-semibold rounded-md hover:bg-slate-50 transition-colors cursor-pointer"
+            onClick={() => setSelectedStar(null)}
+            className="text-sm font-semibold text-cobalt-500 hover:underline cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-1"
           >
-            {showAll ? "Show fewer reviews" : `View all ${sorted.length} reviews`}
+            Clear filter
           </button>
+        </div>
+      ) : (
+        <div className="flex flex-col gap-4">
+          {filteredReviews.map((r) => (
+            <div key={r._id}>
+              {r.programSlug ? (
+                <Link
+                  href={`/programs/${r.programSlug}`}
+                  className="inline-flex items-center gap-1 text-xs font-semibold text-cobalt-500 hover:underline mb-1.5"
+                >
+                  From: {r.programTitle}
+                </Link>
+              ) : (
+                <span className="inline-block text-xs font-semibold text-slate-500 mb-1.5">
+                  From: {r.programTitle}
+                </span>
+              )}
+              <V1ReviewCard review={r} />
+            </div>
+          ))}
         </div>
       )}
     </div>

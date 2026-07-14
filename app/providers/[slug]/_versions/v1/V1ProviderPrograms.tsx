@@ -1,33 +1,37 @@
+"use client";
+
 import ProgramCard from "@/components/ProgramCard";
-import type { ProviderProgram } from "../../_components/types";
+import { CommentAnchor } from "@/components/comments/CommentAnchor";
+import type { Provider, ProviderProgram } from "../../_components/types";
 
-interface Props {
-  providerName: string;
-  programs: ProviderProgram[];
-}
-
-export default function V1ProviderPrograms({ providerName, programs }: Props) {
+export default function V1ProviderPrograms({
+  provider,
+  programs,
+}: {
+  provider: Provider;
+  programs: ProviderProgram[] | undefined;
+}) {
   return (
-    <div>
-      <h2 className="text-2xl font-bold text-slate-900">
-        {providerName} Programs
-      </h2>
-      <p className="text-sm text-slate-500 mt-1 mb-5">
-        {programs.length} {programs.length === 1 ? "program" : "programs"} available
-      </p>
-      {programs.length === 0 ? (
-        <div className="bg-slate-50 border border-slate-200 rounded-md p-8 text-center">
-          <p className="text-sm text-slate-500">
-            No published programs from this provider yet.
-          </p>
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {programs.map((program) => (
-            <ProgramCard key={program._id} program={program} />
-          ))}
-        </div>
-      )}
-    </div>
+    <CommentAnchor id="provider-programs">
+      <section className="w-full max-w-7xl mx-auto mt-20 px-4 xl:px-0">
+        <h2 className="text-2xl font-bold text-slate-900 mb-6">Programs by {provider.name}</h2>
+
+        {programs === undefined ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 animate-pulse">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="bg-slate-100 rounded-lg h-80" />
+            ))}
+          </div>
+        ) : programs.length === 0 ? (
+          <p className="text-slate-500 text-sm">This provider has no published programs yet.</p>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {programs.map((program) => (
+              <ProgramCard key={program._id} program={program} />
+            ))}
+          </div>
+        )}
+      </section>
+    </CommentAnchor>
   );
 }

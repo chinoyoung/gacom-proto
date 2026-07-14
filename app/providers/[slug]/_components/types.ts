@@ -1,3 +1,5 @@
+import type { Review } from "@/app/programs/[id]/_components/types";
+
 export interface ProviderSocialLink {
   platform: string;
   url: string;
@@ -35,17 +37,7 @@ export interface Provider {
 }
 
 // A published review annotated with the program it belongs to.
-export interface ProviderReview {
-  _id: string;
-  _creationTime: number;
-  reviewerName?: string;
-  reviewerCountry?: string;
-  reviewTitle?: string;
-  body?: string;
-  overallRating?: number;
-  programTitle?: string;
-  programSlug?: string;
-}
+export type ProviderReview = Review & { programTitle?: string; programSlug?: string };
 
 // Minimal program shape needed by the programs grid (compatible with ProgramCard).
 export interface ProviderProgram {

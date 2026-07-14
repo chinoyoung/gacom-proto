@@ -5,10 +5,10 @@ import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useDesignVersion } from "@/lib/use-design-version";
 
-import type { Provider, ProviderReview, ProviderProgram } from "./_components/types";
+import type { Provider, ProviderProgram, ProviderReview } from "./_components/types";
 import LoadingSkeleton from "./_components/LoadingSkeleton";
 import ProviderNotFound from "./_components/ProviderNotFound";
-import V1ProviderDetailPage from "./_versions/v1/V1ProviderDetailPage";
+import V1ProviderPage from "./_versions/v1/V1ProviderPage";
 
 export default function ProviderDetailPage() {
   const { version } = useDesignVersion("provider-detail");
@@ -30,13 +30,11 @@ export default function ProviderDetailPage() {
     provider ? { providerName: provider.name } : "skip"
   ) as ProviderReview[] | undefined;
 
-  const reviewList = reviews ?? [];
-  const reviewCount = reviewList.length;
   const avgRating =
-    reviewCount > 0
+    reviews && reviews.length > 0
       ? Math.round(
-          (reviewList.reduce((s, r) => s + (r.overallRating ?? 0), 0) /
-            reviewCount) *
+          (reviews.reduce((sum, r) => sum + (r.overallRating ?? 0), 0) /
+            reviews.length) *
             100
         ) / 100
       : 0;
@@ -47,12 +45,11 @@ export default function ProviderDetailPage() {
   switch (version) {
     default:
       return (
-        <V1ProviderDetailPage
+        <V1ProviderPage
           provider={provider}
-          programs={programs ?? []}
-          reviews={reviewList}
+          programs={programs}
+          reviews={reviews}
           avgRating={avgRating}
-          reviewCount={reviewCount}
         />
       );
   }

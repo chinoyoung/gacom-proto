@@ -27,6 +27,8 @@ interface V1ReviewSummaryProps {
   /** Currently selected star filter (1–5) or null for all. */
   selectedStar: number | null;
   onSelectStar: (star: number | null) => void;
+  /** Label for the CTA button at the bottom of the card. */
+  ctaLabel?: string;
 }
 
 // ── Constants ─────────────────────────────────────────────────────────────────
@@ -41,6 +43,7 @@ export default function V1ReviewSummary({
   provider,
   selectedStar,
   onSelectStar,
+  ctaLabel = "Review this Program",
 }: V1ReviewSummaryProps) {
   const [showAllCategories, setShowAllCategories] = useState(false);
 
@@ -219,7 +222,7 @@ export default function V1ReviewSummary({
           type="button"
           className="bg-roman-500 text-white font-semibold px-5 py-2.5 rounded-md hover:bg-roman-600 cursor-pointer transition-colors text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-roman-500 focus-visible:ring-offset-1"
         >
-          Review this Program
+          {ctaLabel}
         </button>
       </div>
     </div>
