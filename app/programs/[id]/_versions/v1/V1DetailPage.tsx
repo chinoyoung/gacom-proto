@@ -32,6 +32,7 @@ import V1ReviewsSection from "./V1ReviewsSection";
 import V1ApplyWizardSection from "./V1ApplyWizardSection";
 import V1ApplyModal from "./V1ApplyModal";
 import V1ApplyInlineSection from "./V1ApplyInlineSection";
+import V1InquireSection from "./V1InquireSection";
 
 interface V1DetailPageProps {
   program: Program;
@@ -153,14 +154,21 @@ export default function V1DetailPage({
         </section>
 
         {/* Apply to this program — inline form (separate instance from the modal) */}
-        <section id="apply" className="w-full max-w-7xl mx-auto mt-20 px-4 xl:px-0 scroll-mt-36">
+        {/* <section id="apply" className="w-full max-w-7xl mx-auto mt-20 px-4 xl:px-0 scroll-mt-36">
           <V1ApplyInlineSection program={program} />
-        </section>
+        </section> */}
 
         {/* Apply step by step — one question per step variant */}
-        <section id="apply-guided" className="w-full max-w-7xl mx-auto mt-20 px-4 xl:px-0 scroll-mt-36">
+        {/* <section id="apply-guided" className="w-full max-w-7xl mx-auto mt-20 px-4 xl:px-0 scroll-mt-36">
           <V1ApplyWizardSection program={program} />
-        </section>
+        </section> */}
+
+        {/* Inquire — single-page inquiry form */}
+        <div className="mt-20 bg-slate-100 py-16">
+          <section id="inquire" className="w-full max-w-7xl mx-auto px-4 xl:px-0 scroll-mt-36">
+            <V1InquireSection program={program} />
+          </section>
+        </div>
 
         {/* FAQs */}
         <V1FAQ faqs={faqs} />
