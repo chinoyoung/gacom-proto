@@ -107,7 +107,7 @@ export default function V1ProviderPage({ provider, programs, reviews, avgRating 
         {/* Inquire */}
         <div className="mt-20 bg-slate-100 py-16">
           <section id="inquire" className="w-full max-w-7xl mx-auto px-4 xl:px-0 scroll-mt-36">
-            <V1ProviderInquire provider={provider} />
+            <V1ProviderInquire provider={provider} programs={programs} />
           </section>
         </div>
 

@@ -4,7 +4,7 @@ import { useEffect, useId, useRef, useState } from "react";
 import { Calendar as CalendarIcon, Check } from "lucide-react";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
-import type { Provider } from "../../_components/types";
+import type { Provider, ProviderProgram } from "../../_components/types";
 import { TextInput, MONTHS } from "@/app/programs/[id]/_versions/v1/V1ApplySection";
 
 // ─── Date helpers ───────────────────────────────────────────────────────────
@@ -36,6 +36,7 @@ interface InquireState {
   startMonth: string;
   endMonth: string;
   message: string;
+  programId: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -55,6 +56,7 @@ const EMPTY_STATE: InquireState = {
   startMonth: "",
   endMonth: "",
   message: "",
+  programId: "",
   firstName: "",
   lastName: "",
   email: "",
@@ -293,7 +295,7 @@ function BirthdayPicker({
 
 // ─── Main Component ───────────────────────────────────────────────────────────
 
-export default function V1ProviderInquire({ provider }: { provider: Provider }) {
+export default function V1ProviderInquire({ provider, programs }: { provider: Provider; programs?: ProviderProgram[] }) {
   const headingId = "inquire-heading";
   const uid = useId();
 
@@ -426,12 +428,15 @@ export default function V1ProviderInquire({ provider }: { provider: Provider }) 
     setSubmitted(false);
   }
 
+  const selectedProgramTitle = programs?.find((p) => p._id === state.programId)?.title;
+
   const messageId = `${uid}-message`;
   const termsErrorId = `${uid}-terms-error`;
   const startMonthId = `${uid}-startMonth`;
   const endMonthId = `${uid}-endMonth`;
   const whereFromId = `${uid}-whereFrom`;
   const educationId = `${uid}-education`;
+  const programSelectId = `${uid}-program`;
 
   return (
     <section aria-labelledby={headingId}>
@@ -453,7 +458,11 @@ export default function V1ProviderInquire({ provider }: { provider: Provider }) 
               <p className="text-base leading-relaxed text-slate-600 max-w-sm">
                 Thanks, <span className="font-semibold text-neutral-800">{state.firstName || "there"}</span> —{" "}
                 <span className="font-semibold text-neutral-800">{provider.name}</span> will get back
-                to you shortly about their programs.
+                to you shortly{selectedProgramTitle ? (
+                  <> about <span className="font-semibold text-neutral-800">{selectedProgramTitle}</span></>
+                ) : (
+                  " about their programs"
+                )}.
               </p>
               <button
                 type="button"
@@ -586,6 +595,24 @@ export default function V1ProviderInquire({ provider }: { provider: Provider }) 
                   <h3 className="text-lg font-bold text-neutral-800 mb-4">
                     What questions do you have for {provider.name}?
                   </h3>
+                  {programs && programs.length > 0 && (
+                    <div className="mb-6">
+                      <label htmlFor={programSelectId} className="block text-sm font-semibold text-neutral-800 mb-2.5">
+                        Which program are you interested in?
+                      </label>
+                      <select
+                        id={programSelectId}
+                        value={state.programId}
+                        onChange={(e) => handleChange("programId", e.target.value)}
+                        className="h-11 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm text-neutral-800 placeholder:text-slate-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 appearance-none cursor-pointer"
+                      >
+                        <option value="">General inquiry — not sure yet</option>
+                        {programs.map((p) => (
+                          <option key={p._id} value={p._id}>{p.title}</option>
+                        ))}
+                      </select>
+                    </div>
+                  )}
                   <textarea
                     id={messageId}
                     rows={8}
