@@ -1,15 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { Building2, Star, Heart, ArrowRight } from "lucide-react";
+import { Star, MapPin, ExternalLink } from "lucide-react";
 import type { Provider } from "../../_components/types";
 
 interface V1ProviderHeroProps {
   provider: Provider;
   avgRating: number;
   reviewCount: number;
-  saved: boolean;
-  onToggleSave: () => void;
   onInquire: () => void;
   programCount: number;
 }
@@ -18,16 +16,18 @@ export default function V1ProviderHero({
   provider,
   avgRating,
   reviewCount,
-  saved,
-  onToggleSave,
   onInquire,
   programCount,
 }: V1ProviderHeroProps) {
   const photos = provider.photos ?? [];
-  const hasEnoughPhotos = photos.length >= 5;
-  const hasSomePhotos = photos.length > 0 && !hasEnoughPhotos;
-  const coverOnly = !photos.length && !!provider.coverImage;
-  const hasRightMedia = hasEnoughPhotos || hasSomePhotos || coverOnly;
+  const hasPhotos = photos.length > 0;
+  const heroImage = provider.coverImage ?? photos[0];
+  const hasRightMedia = !!heroImage;
+
+  const scrollToGallery = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    document.getElementById("gallery")?.scrollIntoView({ behavior: "smooth" });
+  };
 
   return (
     <div className="bg-slate-100">
@@ -69,11 +69,7 @@ export default function V1ProviderHero({
           <div className={`${hasRightMedia ? "flex-1 min-w-0" : "flex-1"} flex flex-col lg:justify-center lg:min-h-[20rem]`}>
             {/* Top group */}
             <div>
-              <h1 className="text-2xl md:text-3xl lg:text-[2.25rem] font-bold text-slate-900 leading-[1.15] tracking-tight">
-                {provider.name}
-              </h1>
-
-              <div className="mt-4 flex items-center gap-3">
+              <div className="flex flex-row items-center gap-4">
                 {provider.logo && (
                   <div className="h-16 w-16 border border-slate-200 rounded-md overflow-hidden shrink-0 bg-white flex items-center justify-center">
                     <img
@@ -83,32 +79,33 @@ export default function V1ProviderHero({
                     />
                   </div>
                 )}
+                <h1 className="text-2xl md:text-3xl lg:text-[2.25rem] font-bold text-slate-900 leading-[1.15] tracking-tight">
+                  {provider.name}
+                </h1>
               </div>
 
-              {provider.tagline && (
-                <p className="text-[15px] text-slate-600 mt-1 max-w-2xl">
-                  {provider.tagline}
-                </p>
-              )}
-
-              <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-slate-600">
+              <div className="mt-3 hidden text-sm text-slate-600 sm:flex sm:flex-wrap sm:items-center sm:gap-x-3 sm:gap-y-2">
                 {avgRating > 0 && (
                   <>
-                    <span className="flex items-center gap-1">
-                      <Star className="w-4 h-4 text-sun-500 fill-current" />
-                      <span className="font-bold text-slate-900 text-base">{avgRating.toFixed(1)}</span>
+                    <span className="flex items-center gap-2">
+                      <span className="flex items-center gap-1">
+                        <Star className="w-4 h-4 text-sun-500 fill-current" />
+                        <span className="font-bold text-slate-900 text-base">{avgRating.toFixed(1)}</span>
+                      </span>
+                      <span className="text-slate-400">
+                        ({reviewCount} {reviewCount === 1 ? "review" : "reviews"})
+                      </span>
                     </span>
-                    <span className="text-slate-400">({reviewCount} {reviewCount === 1 ? "review" : "reviews"})</span>
-                    <span className="text-slate-300">•</span>
+                    <span className="hidden text-slate-300 sm:inline">•</span>
                   </>
                 )}
                 {provider.headquarters && (
                   <>
                     <span className="flex items-center gap-1">
-                      <Building2 className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                      <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
                       {provider.headquarters}
                     </span>
-                    <span className="text-slate-300">•</span>
+                    <span className="hidden text-slate-300 sm:inline">•</span>
                   </>
                 )}
                 <span className="flex items-center gap-1">
@@ -119,39 +116,23 @@ export default function V1ProviderHero({
 
             {/* CTAs */}
             <div className="mt-5 flex flex-wrap gap-3">
-              <button
-                type="button"
-                onClick={onInquire}
-                className="inline-flex items-center h-10 px-5 bg-cobalt-500 text-white text-sm font-semibold rounded-md hover:bg-cobalt-600 transition-colors cursor-pointer"
-              >
-                Inquire Here
-              </button>
               {provider.website && (
                 <a
                   href={provider.website}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 h-10 px-5 bg-white border border-cobalt-500 text-cobalt-500 text-sm font-semibold rounded-md hover:bg-cobalt-500/5 transition-colors"
+                  className="inline-flex items-center gap-2 h-10 px-5 bg-roman-500 text-white text-sm font-semibold rounded-md hover:bg-roman-600 transition-colors"
                 >
                   Visit Website
-                  <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
+                  <ExternalLink className="w-3.5 h-3.5" aria-hidden="true" />
                 </a>
               )}
               <button
                 type="button"
-                onClick={onToggleSave}
-                aria-label={saved ? "Unsave provider" : "Save provider"}
-                className={`h-10 w-10 flex items-center justify-center border rounded-md transition-colors cursor-pointer ${
-                  saved
-                    ? "bg-roman-50 border-roman-300 text-roman-500"
-                    : "bg-white border-slate-300 text-slate-500 hover:border-slate-400"
-                }`}
+                onClick={onInquire}
+                className="inline-flex items-center h-10 px-5 bg-cobalt-500 text-white text-sm font-semibold rounded-md hover:bg-cobalt-600 transition-colors cursor-pointer"
               >
-                <Heart
-                  className="w-4 h-4"
-                  fill={saved ? "currentColor" : "none"}
-                  strokeWidth={2}
-                />
+                Contact Provider
               </button>
             </div>
           </div>
@@ -159,44 +140,24 @@ export default function V1ProviderHero({
           {/* Right: media (above the title on mobile) */}
           {hasRightMedia && (
             <div className="w-full lg:w-[560px] shrink-0 order-first lg:order-none">
-              {hasEnoughPhotos && (
-                <>
-                  <div
-                    className="w-full h-[300px] rounded-md overflow-hidden cursor-pointer"
-                    onClick={() => document.getElementById("gallery")?.scrollIntoView({ behavior: "smooth" })}
-                  >
-                    <img
-                      src={provider.coverImage ?? photos[0]}
-                      alt={provider.name}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                </>
-              )}
-
-              {hasSomePhotos && (
+              {hasPhotos ? (
                 <div className="relative rounded-md overflow-hidden">
                   <img
-                    src={provider.coverImage ?? photos[0]}
+                    src={heroImage}
                     alt={provider.name}
                     className="w-full h-[300px] object-cover"
                   />
                   <a
                     href="#gallery"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      document.getElementById("gallery")?.scrollIntoView({ behavior: "smooth" });
-                    }}
+                    onClick={scrollToGallery}
                     className="absolute bottom-2 right-2 bg-black/60 text-white text-xs font-semibold px-2.5 py-1 rounded-md hover:bg-black/75 transition-colors"
                   >
-                    +{photos.length} photos
+                    View all photos
                   </a>
                 </div>
-              )}
-
-              {coverOnly && (
+              ) : (
                 <img
-                  src={provider.coverImage!}
+                  src={heroImage}
                   alt={provider.name}
                   className="w-full h-[300px] object-cover rounded-md"
                 />

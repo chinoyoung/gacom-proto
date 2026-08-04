@@ -172,7 +172,7 @@ export default function V1ProviderMediaGallery({ provider }: { provider: Provide
 
   return (
     <>
-      <h2 id="gallery" className="text-2xl font-bold text-slate-900 mb-4">
+      <h2 className="text-2xl font-bold text-slate-900 mb-4">
         Media Gallery
       </h2>
 

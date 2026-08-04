@@ -3,18 +3,6 @@
 import { Globe, Clock, Instagram, Facebook, Linkedin, Youtube, Link as LinkIcon } from "lucide-react";
 import type { Provider } from "../../_components/types";
 
-function getDomainFromUrl(url: string): string {
-  let domain = url.replace(/^https?:\/\//, "");
-  if (domain.startsWith("www.")) {
-    domain = domain.slice(4);
-  }
-  const cutIndex = domain.search(/[/?#]/);
-  if (cutIndex !== -1) {
-    domain = domain.slice(0, cutIndex);
-  }
-  return domain;
-}
-
 function getSocialIcon(platform: string): React.ElementType {
   switch (platform.toLowerCase()) {
     case "instagram":
@@ -32,8 +20,7 @@ function getSocialIcon(platform: string): React.ElementType {
 
 export default function V1ProviderInfoCard({
   provider,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- kept for prop-shape compatibility with V1ProviderPage.tsx
-  programCount: _programCount,
+  programCount,
   onInquire,
 }: {
   provider: Provider;
@@ -52,33 +39,38 @@ export default function V1ProviderInfoCard({
           className="flex items-center gap-2 text-cobalt-500 hover:underline break-all"
         >
           <Globe className="w-4 h-4 text-cobalt-500 shrink-0" />
-          <span className="text-sm">{getDomainFromUrl(provider.website)}</span>
+          <span className="text-sm">Visit Website</span>
         </a>
       )}
 
       {provider.socialLinks?.length > 0 && (
-        <div className="flex flex-wrap gap-2">
-          {provider.socialLinks.map((s) => {
-            const Icon = getSocialIcon(s.platform);
-            return (
-              <a
-                key={s.platform}
-                href={s.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={s.platform}
-                className="w-9 h-9 rounded-md bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors flex items-center justify-center"
-              >
-                <Icon className="w-4 h-4" />
-              </a>
-            );
-          })}
+        <div className="flex flex-col gap-2.5">
+          <h4 className="text-sm font-semibold text-slate-900">Follow Us</h4>
+          <div className="flex flex-wrap gap-2">
+            {provider.socialLinks.map((s) => {
+              const Icon = getSocialIcon(s.platform);
+              return (
+                <a
+                  key={s.platform}
+                  href={s.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={s.platform}
+                  className="w-9 h-9 rounded-md bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors flex items-center justify-center"
+                >
+                  <Icon className="w-4 h-4" />
+                </a>
+              );
+            })}
+          </div>
         </div>
       )}
 
+      <p className="text-sm text-slate-600">{programCount} programs</p>
+
       <div className="flex items-center gap-2">
         <Clock className="text-cobalt-500 w-4 h-4 shrink-0" />
-        <span className="text-sm text-slate-600">Typically responds within 2 business days</span>
+        <span className="text-sm text-slate-600">Typically responds within a few days</span>
       </div>
 
       <button
@@ -86,10 +78,8 @@ export default function V1ProviderInfoCard({
         onClick={onInquire}
         className="block text-center text-sm font-semibold bg-cobalt-500 text-white rounded-md py-2.5 hover:bg-cobalt-600 transition-colors mt-1 cursor-pointer"
       >
-        Inquire with {provider.name.length > 22 ? "provider" : provider.name}
+        Contact Provider
       </button>
-
-      <p className="text-xs text-slate-500 text-center">Free to inquire · no obligation</p>
     </div>
   );
 }

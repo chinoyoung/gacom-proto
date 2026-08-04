@@ -16,6 +16,11 @@ function isCanvasRoute(pathname: string): boolean {
   return false;
 }
 
+function isProviderDetailRoute(pathname: string): boolean {
+  if (/^\/providers\/[^/]+$/.test(pathname)) return true;
+  return false;
+}
+
 function ShellInner({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const params = useSearchParams();
@@ -32,9 +37,15 @@ function ShellInner({ children }: { children: ReactNode }) {
 
   // Routes that aren't canvas-eligible (e.g. /programs directory) render bare.
   if (!isCanvasRoute(pathname)) {
+    // The provider detail page renders its own StickyProviderHeader +
+    // V1ProviderInPageNav, which assume nothing else occupies the top of the
+    // viewport. If the global header stays sticky too, it bleeds through the
+    // translucent in-page nav as a leftover band. Unstick it there only; every
+    // other non-canvas route (e.g. the /providers index) keeps it sticky.
+    const isProviderDetail = isProviderDetailRoute(pathname);
     return (
       <>
-        <Header />
+        <Header sticky={!isProviderDetail} />
         {children}
         <Footer />
       </>

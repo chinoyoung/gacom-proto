@@ -1,19 +1,17 @@
 "use client";
 
-import { ArrowRight, Star } from "lucide-react";
+import { CircleCheck, ExternalLink, Star } from "lucide-react";
 import type { Provider } from "./types";
 
 export default function StickyProviderHeader({
   provider,
   visible,
   avgRating,
-  reviewCount,
   onInquire,
 }: {
   provider: Provider;
   visible: boolean;
   avgRating?: number;
-  reviewCount?: number;
   onInquire: () => void;
 }) {
   return (
@@ -44,46 +42,40 @@ export default function StickyProviderHeader({
             {provider.name}
           </p>
 
-          {avgRating != null && reviewCount != null && avgRating > 0 && (
-            <span className="shrink-0 flex items-center gap-1.5 text-xs font-medium flex-wrap">
-              <span className="flex items-center gap-0.5">
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <Star
-                    key={star}
-                    className={`w-3.5 h-3.5 ${
-                      avgRating >= star ? "text-sun-500 fill-current" : "text-slate-300"
-                    }`}
-                    aria-hidden="true"
-                  />
-                ))}
-              </span>
-              <span className="text-sun-700">{avgRating.toFixed(1)}</span>
-              <span className="text-slate-500 font-normal">· {reviewCount} {reviewCount === 1 ? "review" : "reviews"}</span>
+          {avgRating != null && avgRating > 0 && (
+            <span className="flex items-center gap-2 text-base font-bold">
+              <Star className="w-4 h-4 text-sun-500 fill-current" aria-hidden="true" />
+              {avgRating.toFixed(1)}
             </span>
           )}
+
+          <span className="hidden shrink-0 items-center gap-1 text-xs font-bold text-slate-700 sm:flex">
+            <CircleCheck className="w-3.5 h-3.5 text-fern-500" aria-hidden="true" />
+            Verified
+          </span>
         </div>
 
         {/* Right: CTAs */}
         <div className="flex items-center gap-3 shrink-0">
-          <button
-            type="button"
-            onClick={onInquire}
-            className="inline-flex justify-center items-center px-5 py-2 border border-cobalt-500 text-cobalt-500 font-semibold text-sm rounded-md hover:bg-cobalt-500/5 transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2"
-          >
-            Inquire Here
-          </button>
-
           {provider.website && (
             <a
               href={provider.website}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex justify-center items-center gap-2 px-5 py-2 bg-cobalt-500 text-white font-semibold text-sm rounded-md hover:bg-cobalt-600 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2"
+              className="inline-flex items-center justify-center gap-2 h-10 rounded-md px-5 text-center font-bold text-white transition-colors bg-roman-500 hover:bg-roman-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-roman-500 focus-visible:ring-offset-2"
             >
               Visit Website
-              <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
+              <ExternalLink className="w-3.5 h-3.5" aria-hidden="true" />
             </a>
           )}
+
+          <button
+            type="button"
+            onClick={onInquire}
+            className="inline-flex items-center justify-center h-10 rounded-md px-5 text-center font-bold text-white transition-colors bg-cobalt-500 hover:bg-cobalt-600 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2"
+          >
+            Contact Provider
+          </button>
         </div>
       </div>
     </div>

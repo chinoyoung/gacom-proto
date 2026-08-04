@@ -23,6 +23,8 @@ interface StatItem {
   bgClass: string;
   value: string;
   label: string;
+  /** Overrides the default value text size — e.g. smaller for long values like location. */
+  valueClass?: string;
 }
 
 export default function V1ProviderTrustBar({
@@ -81,40 +83,49 @@ export default function V1ProviderTrustBar({
       bgClass: "bg-cobalt-500/10",
       value: provider.headquarters ?? "—",
       label: "Headquarters",
+      valueClass: "text-sm leading-tight",
     },
   ];
 
   return (
-    <div className="w-full bg-white border rounded-lg border-gray-200 py-4">
-      {/* Desktop: horizontal row with dividers */}
-      <div className="hidden sm:flex items-center justify-around">
+    <div className="w-full bg-white border rounded-lg border-gray-200 px-4 py-4 xl:px-0">
+      {/* Desktop: horizontal row of equal-width cells with centered dividers */}
+      <div className="hidden xl:flex items-stretch">
         {stats.map((stat, index) => {
           const Icon = stat.icon;
           return (
-            <div key={stat.label} className="flex items-center">
-              <div className="flex items-center gap-3">
-                <div
-                  className={`w-10 h-10 rounded-md flex items-center justify-center shrink-0 ${stat.bgClass}`}
-                >
-                  <Icon className={`w-5 h-5 ${stat.iconClass}`} />
-                </div>
-                <div className="flex flex-col gap-0.5">
-                  <span className="text-base font-bold text-neutral-900 leading-none">
-                    {stat.value}
-                  </span>
-                  <span className="text-xs text-neutral-500">{stat.label}</span>
-                </div>
-              </div>
-              {index < stats.length - 1 && (
-                <div className="w-px h-10 bg-gray-200 ml-8" aria-hidden />
+            <div
+              key={stat.label}
+              className="relative flex flex-1 items-center justify-center gap-3 px-4"
+            >
+              {index > 0 && (
+                <span
+                  className="absolute left-0 top-1/2 h-10 w-px -translate-y-1/2 bg-gray-200"
+                  aria-hidden
+                />
               )}
+              <div
+                className={`w-10 h-10 rounded-md flex items-center justify-center shrink-0 ${stat.bgClass}`}
+              >
+                <Icon className={`w-5 h-5 ${stat.iconClass}`} />
+              </div>
+              <div className="flex flex-col gap-0.5">
+                <span
+                  className={`font-bold text-neutral-900 ${
+                    stat.valueClass ?? "text-base leading-none"
+                  }`}
+                >
+                  {stat.value}
+                </span>
+                <span className="text-xs text-neutral-500">{stat.label}</span>
+              </div>
             </div>
           );
         })}
       </div>
 
-      {/* Mobile: 2x2 grid */}
-      <div className="grid grid-cols-2 gap-x-4 gap-y-5 sm:hidden">
+      {/* Mobile: 2x2 / 3col grid */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-5 xl:hidden">
         {stats.map((stat) => {
           const Icon = stat.icon;
           return (
@@ -125,7 +136,11 @@ export default function V1ProviderTrustBar({
                 <Icon className={`w-5 h-5 ${stat.iconClass}`} />
               </div>
               <div className="flex flex-col gap-0.5">
-                <span className="text-base font-bold text-neutral-900 leading-none">
+                <span
+                  className={`font-bold text-neutral-900 ${
+                    stat.valueClass ?? "text-base leading-none"
+                  }`}
+                >
                   {stat.value}
                 </span>
                 <span className="text-xs text-neutral-500">{stat.label}</span>

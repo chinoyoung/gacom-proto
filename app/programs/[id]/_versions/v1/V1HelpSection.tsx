@@ -1,16 +1,24 @@
 import { Star } from "lucide-react";
 
-export default function V1HelpSection() {
+interface V1HelpSectionProps {
+  heading?: string;
+  description?: string;
+}
+
+export default function V1HelpSection({
+  heading = "Have questions about this program?",
+  description = "Our advisors can help you compare programs and find the right fit.",
+}: V1HelpSectionProps = {}) {
   return (
     <div className="bg-slate-50 rounded-lg p-8 md:p-12 text-center">
       <p className="text-xs font-bold uppercase tracking-wide text-cobalt-500 mb-2">
         Still deciding?
       </p>
       <h2 className="text-2xl md:text-3xl font-bold text-slate-900">
-        Have questions about this program?
+        {heading}
       </h2>
       <p className="text-sm text-slate-600 mt-2 max-w-xl mx-auto">
-        Our advisors can help you compare programs and find the right fit.
+        {description}
       </p>
       <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
         <button

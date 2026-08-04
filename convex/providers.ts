@@ -71,6 +71,33 @@ export const listReviewsByProvider = query({
   },
 });
 
+// Returns up to 3 published interviews across all of a provider's programs, each
+// annotated with the program title it belongs to (interviews span multiple programs here).
+export const listInterviewsByProvider = query({
+  args: { providerName: v.string() },
+  handler: async (ctx, { providerName }) => {
+    const programs = await ctx.db
+      .query("programs")
+      .withIndex("by_provider", (q) => q.eq("provider", providerName))
+      .collect();
+
+    const out = [];
+    for (const program of programs) {
+      const interviews = await ctx.db
+        .query("interviews")
+        .withIndex("by_program_status", (q) =>
+          q.eq("programId", program._id).eq("status", "published")
+        )
+        .collect();
+      for (const iv of interviews) {
+        out.push({ ...iv, programTitle: program.title });
+        if (out.length >= 3) return out;
+      }
+    }
+    return out;
+  },
+});
+
 // ─── One-time seed ─────────────────────────────────────────────────────────────
 
 type SeedNarrative = {
@@ -227,5 +254,53 @@ export const seedProviders = mutation({
       created++;
     }
     return { created, total: names.length };
+  },
+});
+
+// ─── Mutations ───────────────────────────────────────────────────────────────
+
+export const updateProvider = mutation({
+  args: {
+    slug: v.string(),
+    name: v.optional(v.string()),
+    logo: v.optional(v.string()),
+    coverImage: v.optional(v.string()),
+    tagline: v.optional(v.string()),
+    about: v.optional(v.string()),
+    whyChoosePoints: v.optional(v.array(v.string())),
+    headquarters: v.optional(v.string()),
+    yearFounded: v.optional(v.number()),
+    website: v.optional(v.string()),
+    socialLinks: v.optional(
+      v.array(v.object({ platform: v.string(), url: v.string() }))
+    ),
+    photos: v.optional(v.array(v.string())),
+    awards: v.optional(
+      v.array(
+        v.object({
+          name: v.string(),
+          result: v.string(),
+          year: v.optional(v.string()),
+        })
+      )
+    ),
+    faqs: v.optional(v.array(v.object({ question: v.string(), answer: v.string() }))),
+    status: v.optional(v.union(v.literal("draft"), v.literal("published"))),
+  },
+  handler: async (ctx, { slug, ...fields }) => {
+    const existing = await ctx.db
+      .query("providers")
+      .withIndex("by_slug", (q) => q.eq("slug", slug))
+      .first();
+    if (!existing) {
+      throw new Error(`No provider found with slug "${slug}"`);
+    }
+
+    const updates: Partial<typeof fields> = Object.fromEntries(
+      Object.entries(fields).filter(([, value]) => value !== undefined)
+    );
+
+    await ctx.db.patch(existing._id, updates);
+    return existing._id;
   },
 });
