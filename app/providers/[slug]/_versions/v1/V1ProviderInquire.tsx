@@ -90,7 +90,7 @@ const EDUCATION_LEVELS = [
   "Master's degree or higher",
 ];
 
-const STEP_LABELS = ["Timing", "Your question", "Background", "About you"];
+const STEP_LABELS = ["Program", "Timing", "Your question", "Background", "About you"];
 
 // ─── Stepper (local 4-step version, mirrors V1ApplySection's Stepper) ───────
 
@@ -340,6 +340,16 @@ export default function V1ProviderInquire({ provider, programs }: { provider: Pr
   }
 
   function validateStep1(): boolean {
+    // Program.
+    if (!state.programId) {
+      setErrors({ programId: "Please select a program" });
+      return false;
+    }
+    setErrors({});
+    return true;
+  }
+
+  function validateStep2(): boolean {
     // Timing: a window card OR a complete specific date range.
     const next: InquireErrors = { ...errors };
     let ok = true;
@@ -368,7 +378,7 @@ export default function V1ProviderInquire({ provider, programs }: { provider: Pr
     return ok;
   }
 
-  function validateStep2(): boolean {
+  function validateStep3(): boolean {
     // Your question.
     if (!state.message.trim()) {
       setErrors({ message: "Please add a message" });
@@ -378,7 +388,7 @@ export default function V1ProviderInquire({ provider, programs }: { provider: Pr
     return true;
   }
 
-  function validateStep3(): boolean {
+  function validateStep4(): boolean {
     // Background.
     const next: InquireErrors = {};
     if (!state.educationLevel) next.educationLevel = "Please select your education level";
@@ -387,7 +397,7 @@ export default function V1ProviderInquire({ provider, programs }: { provider: Pr
     return Object.keys(next).length === 0;
   }
 
-  function validateStep4(): boolean {
+  function validateStep5(): boolean {
     // About you.
     const next: InquireErrors = {};
     if (!state.firstName.trim()) next.firstName = "First name is required";
@@ -402,11 +412,11 @@ export default function V1ProviderInquire({ provider, programs }: { provider: Pr
   }
 
   function handleNext() {
-    const validators = [validateStep1, validateStep2, validateStep3];
+    const validators = [validateStep1, validateStep2, validateStep3, validateStep4];
     const validate = validators[currentStep - 1];
     if (validate && validate()) {
       setErrors({});
-      setCurrentStep((s) => Math.min(4, s + 1));
+      setCurrentStep((s) => Math.min(5, s + 1));
     }
   }
 
@@ -417,8 +427,8 @@ export default function V1ProviderInquire({ provider, programs }: { provider: Pr
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (currentStep !== 4) return;
-    if (validateStep4()) setSubmitted(true);
+    if (currentStep !== 5) return;
+    if (validateStep5()) setSubmitted(true);
   }
 
   function handleReset() {
@@ -477,6 +487,40 @@ export default function V1ProviderInquire({ provider, programs }: { provider: Pr
               <InquireStepper currentStep={currentStep} />
 
               {currentStep === 1 && (
+                <div>
+                  <h3 className="text-lg font-bold text-neutral-800 mb-4">
+                    Which program are you interested in?
+                  </h3>
+                  <fieldset className="min-w-0" aria-invalid={!!errors.programId || undefined}>
+                    {!programs || programs.length === 0 ? (
+                      <p className="text-sm text-slate-500">
+                        No programs are available to inquire about right now.
+                      </p>
+                    ) : (
+                      <select
+                        id={programSelectId}
+                        aria-label="Which program are you interested in?"
+                        value={state.programId}
+                        onChange={(e) => handleChange("programId", e.target.value)}
+                        className={[
+                          "h-11 w-full rounded-lg border bg-white px-3 text-sm text-neutral-800 placeholder:text-slate-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 appearance-none cursor-pointer",
+                          errors.programId ? "border-roman-500" : "border-slate-300",
+                        ].join(" ")}
+                      >
+                        <option value="">Choose a program</option>
+                        {programs.map((p) => (
+                          <option key={p._id} value={p._id}>{p.title}</option>
+                        ))}
+                      </select>
+                    )}
+                    {errors.programId && (
+                      <p className="text-xs text-roman-600 mt-1.5" role="alert">{errors.programId}</p>
+                    )}
+                  </fieldset>
+                </div>
+              )}
+
+              {currentStep === 2 && (
                 <div className="space-y-6">
                   <h3 className="text-lg font-bold text-neutral-800 mb-4">When do you want to travel?</h3>
                   <fieldset aria-invalid={!!errors.travelWindow || undefined}>
@@ -590,29 +634,11 @@ export default function V1ProviderInquire({ provider, programs }: { provider: Pr
                 </div>
               )}
 
-              {currentStep === 2 && (
+              {currentStep === 3 && (
                 <div className="flex flex-col">
                   <h3 className="text-lg font-bold text-neutral-800 mb-4">
                     What questions do you have for {provider.name}?
                   </h3>
-                  {programs && programs.length > 0 && (
-                    <div className="mb-6">
-                      <label htmlFor={programSelectId} className="block text-sm font-semibold text-neutral-800 mb-2.5">
-                        Which program are you interested in?
-                      </label>
-                      <select
-                        id={programSelectId}
-                        value={state.programId}
-                        onChange={(e) => handleChange("programId", e.target.value)}
-                        className="h-11 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm text-neutral-800 placeholder:text-slate-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 appearance-none cursor-pointer"
-                      >
-                        <option value="">General inquiry — not sure yet</option>
-                        {programs.map((p) => (
-                          <option key={p._id} value={p._id}>{p.title}</option>
-                        ))}
-                      </select>
-                    </div>
-                  )}
                   <textarea
                     id={messageId}
                     rows={8}
@@ -639,7 +665,7 @@ export default function V1ProviderInquire({ provider, programs }: { provider: Pr
                 </div>
               )}
 
-              {currentStep === 3 && (
+              {currentStep === 4 && (
                 <div>
                   <h3 className="text-lg font-bold text-neutral-800 mb-4">Tell us about your background.</h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
@@ -703,7 +729,7 @@ export default function V1ProviderInquire({ provider, programs }: { provider: Pr
                 </div>
               )}
 
-              {currentStep === 4 && (
+              {currentStep === 5 && (
                 <div>
                   <h3 className="text-lg font-bold text-neutral-800 mb-4">Tell us about yourself.</h3>
                   <div className="space-y-5">
@@ -834,11 +860,11 @@ export default function V1ProviderInquire({ provider, programs }: { provider: Pr
               <NavFooter
                 showBack={currentStep > 1}
                 onBack={handleBack}
-                isLastStep={currentStep === 4}
+                isLastStep={currentStep === 5}
                 onContinue={handleNext}
               />
 
-              {currentStep === 4 && (
+              {currentStep === 5 && (
                 <p className="text-xs text-slate-400 text-center mt-4">
                   This site is protected by Google reCAPTCHA.
                 </p>
