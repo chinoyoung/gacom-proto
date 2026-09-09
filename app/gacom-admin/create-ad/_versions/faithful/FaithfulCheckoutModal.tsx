@@ -79,6 +79,8 @@ export default function FaithfulCheckoutModal({
 }
 
 function CartStep({ cart }: { cart: Cart }) {
+  const [confirmId, setConfirmId] = useState<string | null>(null);
+
   if (cart.items.length === 0) {
     return <p className="text-sm text-slate-500">Your cart is empty.</p>;
   }
@@ -137,14 +139,36 @@ function CartStep({ cart }: { cart: Cart }) {
                 <span className="text-sm font-medium text-slate-800">
                   ${item.price.toLocaleString()}
                 </span>
-                <button
-                  type="button"
-                  onClick={() => cart.removeItem(item.id)}
-                  aria-label="Remove"
-                  className="text-slate-400 hover:text-red-600 cursor-pointer"
-                >
-                  <Trash2 className="h-4 w-4" />
-                </button>
+                {confirmId === item.id ? (
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        cart.removeItem(item.id);
+                        setConfirmId(null);
+                      }}
+                      className="text-xs font-semibold text-red-600 hover:text-red-700 cursor-pointer"
+                    >
+                      Remove
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setConfirmId(null)}
+                      className="text-xs font-medium text-slate-500 hover:text-slate-700 cursor-pointer"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => setConfirmId(item.id)}
+                    aria-label="Remove"
+                    className="text-slate-400 hover:text-red-600 cursor-pointer"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </button>
+                )}
               </div>
             </li>
           );
@@ -169,7 +193,7 @@ function CartStep({ cart }: { cart: Cart }) {
       <button
         type="button"
         onClick={cart.goToBilling}
-        className="w-full bg-sky-500 hover:bg-sky-600 text-white text-sm font-semibold px-4 py-2 rounded-md cursor-pointer"
+        className="w-full bg-cobalt-500 hover:bg-cobalt-600 text-white text-sm font-semibold px-4 py-2 rounded-md cursor-pointer"
       >
         Proceed to payment
       </button>

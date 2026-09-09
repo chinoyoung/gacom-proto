@@ -21,6 +21,10 @@ export default function StudioCampaignBar({ form, cart }: StudioCampaignBarProps
       setAddError("Add at least one placement first.");
       return;
     }
+    if (!form.contentComplete) {
+      setAddError("Fill in all required fields: " + form.missingFieldLabels.join(", "));
+      return;
+    }
     setAddError(null);
     cart.addItem({
       adType: form.state.adType,
@@ -45,7 +49,7 @@ export default function StudioCampaignBar({ form, cart }: StudioCampaignBarProps
             <span className="text-sm font-medium text-slate-800">
               Your campaign &middot; {cart.count} placement{cart.count === 1 ? "" : "s"}
             </span>
-            <span className="text-xs text-slate-500">${cart.total.toLocaleString()}</span>
+            <span className="text-lg font-bold text-roman-600">${cart.total.toLocaleString()}</span>
           </div>
         )}
 

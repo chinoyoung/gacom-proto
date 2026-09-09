@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { AD_TYPES } from "./ad-types";
+import { AD_TYPES, getAdType, getAdFields, AD_FIELD_LABELS } from "./ad-types";
 import type { CreateAdState, PlacementDim, PreviewDevice } from "./types";
 
 export const TITLE_MAX = 85 as const;
@@ -119,6 +119,30 @@ export default function useCreateAdForm() {
 
   const placementCount = state.locations.length + state.timings.length + state.types.length;
 
+  const activeSpec = getAdType(state.adType);
+  const activeFields = activeSpec ? getAdFields(activeSpec) : [];
+  const missingFields = activeSpec
+    ? activeFields.filter((f) => {
+        switch (f) {
+          case "title":
+            return !activeSpec.titleAuto && state.title.trim() === "";
+          case "clientLink":
+            if (activeFields.includes("customizeClientLink") && !state.customizeClientLink) return false;
+            return state.clientLink.trim() === "";
+          case "videoLink":
+            return state.videoLink.trim() === "";
+          case "description":
+            return state.description.trim() === "";
+          case "image":
+            return state.uploadedFileName == null;
+          default:
+            return false; // featuredProgram (mock/empty) and customizeClientLink are not required
+        }
+      })
+    : [];
+  const missingFieldLabels = missingFields.map((f) => AD_FIELD_LABELS[f]);
+  const contentComplete = missingFields.length === 0;
+
   return {
     state,
     setAdType,
@@ -141,5 +165,8 @@ export default function useCreateAdForm() {
     TITLE_MAX,
     descriptionLength: state.description.length,
     DESCRIPTION_MAX,
+    missingFields,
+    missingFieldLabels,
+    contentComplete,
   };
 }

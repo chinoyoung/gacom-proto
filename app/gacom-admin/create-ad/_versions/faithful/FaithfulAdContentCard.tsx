@@ -17,6 +17,10 @@ export default function FaithfulAdContentCard({ form, cart }: { form: Form; cart
       setAddError("Add at least one placement first.");
       return;
     }
+    if (!form.contentComplete) {
+      setAddError("Fill in all required fields: " + form.missingFieldLabels.join(", "));
+      return;
+    }
     setAddError(null);
     cart.addItem({
       adType: form.state.adType,

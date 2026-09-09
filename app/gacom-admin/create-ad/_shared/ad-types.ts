@@ -25,6 +25,16 @@ export type AdField =
   | "featuredProgram"
   | "customizeClientLink";
 
+export const AD_FIELD_LABELS: Record<AdField, string> = {
+  title: "Title",
+  clientLink: "Client Link",
+  videoLink: "Video Link",
+  description: "Description",
+  image: "Image",
+  featuredProgram: "Featured Program",
+  customizeClientLink: "Customize Client Link",
+};
+
 export interface AdTypeSpec {
   code: string; // "Ad A", "HH", ...
   name: string; // "Homepage Premier Feature"
