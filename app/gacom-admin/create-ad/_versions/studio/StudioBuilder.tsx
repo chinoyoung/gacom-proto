@@ -53,10 +53,8 @@ export default function StudioBuilder({ form, cart }: StudioBuilderProps) {
 
         <StudioFormatCarousel area={area} form={form} />
 
-        <StudioTargetingCard form={form} />
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
-          <div className="lg:col-span-2 bg-white rounded-xl border border-slate-200 flex flex-col">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+          <div className="bg-white rounded-xl border border-slate-200 flex flex-col">
             <div className="px-4 py-3 border-b border-slate-200 flex items-center justify-between">
               <span className="text-sm font-bold text-slate-900">Live preview</span>
               <div className="inline-flex items-center gap-0.5 bg-slate-100 rounded-md p-0.5">
@@ -89,7 +87,7 @@ export default function StudioBuilder({ form, cart }: StudioBuilderProps) {
               </div>
             </div>
 
-            <div className="p-6 flex-1 grid place-items-center bg-slate-200">
+            <div className="p-6 flex-1 grid place-items-center bg-slate-200 min-h-[36rem]">
               <div
                 style={{
                   maxWidth:
@@ -97,7 +95,7 @@ export default function StudioBuilder({ form, cart }: StudioBuilderProps) {
                       ? Math.min(frameMaxWidth(spec), 340)
                       : frameMaxWidth(spec),
                 }}
-                className="mx-auto w-full transition-all"
+                className="mx-auto w-full transition-all rounded-xl border border-slate-300 overflow-hidden bg-white p-4"
               >
                 <PreviewSwitcher spec={spec} form={form} />
               </div>
@@ -116,7 +114,10 @@ export default function StudioBuilder({ form, cart }: StudioBuilderProps) {
             </div>
           </div>
 
-          <StudioContentPanel form={form} />
+          <div className="space-y-6">
+            <StudioTargetingCard form={form} />
+            <StudioContentPanel form={form} />
+          </div>
         </div>
       </div>
 
