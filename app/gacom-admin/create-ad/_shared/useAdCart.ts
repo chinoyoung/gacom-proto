@@ -9,6 +9,7 @@ export default function useAdCart() {
   const [items, setItems] = useState<CartItem[]>([]);
   const [checkoutStep, setCheckoutStep] = useState<CheckoutStep>("closed");
   const [lastOrder, setLastOrder] = useState<{ count: number; total: number } | null>(null);
+  const [addedOpen, setAddedOpen] = useState(false);
 
   const count = items.length;
   const subtotal = items.reduce((s, i) => s + i.price, 0);
@@ -50,6 +51,14 @@ export default function useAdCart() {
     setCheckoutStep("closed");
   }
 
+  function openAdded() {
+    setAddedOpen(true);
+  }
+
+  function closeAdded() {
+    setAddedOpen(false);
+  }
+
   return {
     items,
     count,
@@ -66,5 +75,8 @@ export default function useAdCart() {
     backToCart,
     placeOrder,
     closeCheckout,
+    addedOpen,
+    openAdded,
+    closeAdded,
   };
 }

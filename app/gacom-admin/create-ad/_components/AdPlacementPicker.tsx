@@ -70,8 +70,8 @@ function PlacementCombobox({ form, dim }: { form: Form; dim: PlacementDim }) {
   function handleSelect(opt: string) {
     form.addPlacementTag(dim, opt);
     setQuery("");
-    setOpen(true);
-    inputRef.current?.focus();
+    setOpen(false);
+    inputRef.current?.blur();
   }
 
   function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
@@ -141,40 +141,48 @@ function PlacementCombobox({ form, dim }: { form: Form; dim: PlacementDim }) {
           </div>
         ) : null}
       </div>
-
-      {selected.length > 0 ? (
-        <div className="flex flex-wrap gap-2 mt-2">
-          {selected.map((v) => (
-            <PlacementChip key={v} value={v} onRemove={() => form.removePlacementTag(dim, v)} />
-          ))}
-        </div>
-      ) : null}
     </div>
   );
 }
 
 export default function AdPlacementPicker({ form, columns = false }: { form: Form; columns?: boolean }) {
+  const pills = [
+    ...form.state.locations.map((v) => ({ dim: "location" as const, v })),
+    ...form.state.timings.map((v) => ({ dim: "timing" as const, v })),
+    ...form.state.types.map((v) => ({ dim: "type" as const, v })),
+  ];
+
   return (
-    <div className={columns ? "grid grid-cols-1 lg:grid-cols-3 gap-4 items-start" : "space-y-4"}>
-      <div>
-        <label className="text-xs font-semibold text-slate-500 mb-1.5 block">
-          {PLACEMENT_DIM_LABELS.location}
-        </label>
-        <PlacementCombobox form={form} dim="location" />
-      </div>
+    <div>
+      {pills.length > 0 ? (
+        <div className="flex flex-wrap gap-2 mb-3">
+          {pills.map(({ dim, v }) => (
+            <PlacementChip key={`${dim}-${v}`} value={v} onRemove={() => form.removePlacementTag(dim, v)} />
+          ))}
+        </div>
+      ) : null}
 
-      <div>
-        <label className="text-xs font-semibold text-slate-500 mb-1.5 block">
-          {PLACEMENT_DIM_LABELS.timing}
-        </label>
-        <PlacementCombobox form={form} dim="timing" />
-      </div>
+      <div className={columns ? "grid grid-cols-1 lg:grid-cols-3 gap-4 items-start" : "space-y-4"}>
+        <div>
+          <label className="text-xs font-semibold text-slate-500 mb-1.5 block">
+            {PLACEMENT_DIM_LABELS.location}
+          </label>
+          <PlacementCombobox form={form} dim="location" />
+        </div>
 
-      <div>
-        <label className="text-xs font-semibold text-slate-500 mb-1.5 block">
-          {PLACEMENT_DIM_LABELS.type}
-        </label>
-        <PlacementCombobox form={form} dim="type" />
+        <div>
+          <label className="text-xs font-semibold text-slate-500 mb-1.5 block">
+            {PLACEMENT_DIM_LABELS.timing}
+          </label>
+          <PlacementCombobox form={form} dim="timing" />
+        </div>
+
+        <div>
+          <label className="text-xs font-semibold text-slate-500 mb-1.5 block">
+            {PLACEMENT_DIM_LABELS.type}
+          </label>
+          <PlacementCombobox form={form} dim="type" />
+        </div>
       </div>
     </div>
   );

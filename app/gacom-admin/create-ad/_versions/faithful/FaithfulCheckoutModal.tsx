@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { X, Trash2, CreditCard, ArrowLeft, Check, Image as ImageIcon } from "lucide-react";
+import { X, Trash2, CreditCard, ArrowLeft, Check, Image as ImageIcon, Calendar } from "lucide-react";
 import type useAdCart from "../../_shared/useAdCart";
 import { getAdType, adExampleThumb } from "../../_shared/ad-types";
 
@@ -12,6 +12,14 @@ const STEP_TITLES: Record<string, string> = {
   billing: "Billing & payment",
   done: "Order placed",
 };
+
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+function formatDate(iso: string): string {
+  const [y, m, d] = iso.split("-").map(Number);
+  if (!y || !m || !d) return iso;
+  return `${MONTHS[m - 1]} ${d}, ${y}`;
+}
 
 const inputClass = "h-10 w-full rounded-md border border-slate-300 px-3 text-sm";
 
@@ -43,7 +51,7 @@ export default function FaithfulCheckoutModal({
       <div
         role="dialog"
         aria-modal="true"
-        className="bg-white rounded-lg w-full max-w-lg max-h-[90vh] overflow-y-auto shadow-xl cursor-default"
+        className="bg-white rounded-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-xl cursor-default"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between px-5 py-4 border-b border-slate-200">
@@ -87,7 +95,7 @@ function CartStep({ cart }: { cart: Cart }) {
               key={item.id}
               className="flex items-start gap-3 border border-slate-200 rounded-md p-3"
             >
-              <div className="relative w-20 aspect-video shrink-0 rounded-md bg-slate-200 overflow-hidden">
+              <div className="relative w-28 aspect-video shrink-0 rounded-md bg-slate-200 overflow-hidden">
                 {thumb ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
@@ -108,12 +116,22 @@ function CartStep({ cart }: { cart: Cart }) {
                   </span>
                 ) : null}
                 <p className="text-sm font-medium text-slate-800 truncate">{item.adType}</p>
-                {tags.length > 0 ? (
-                  <p className="text-xs text-slate-500 line-clamp-1">{tags.join(" · ")}</p>
-                ) : null}
-                <p className="text-xs text-slate-400">
-                  {item.startDate} → {item.endDate}
+                <p className="text-xs text-slate-500 flex items-center gap-1.5 mt-1">
+                  <Calendar className="h-3.5 w-3.5 text-slate-400" aria-hidden="true" />
+                  {formatDate(item.startDate)} → {formatDate(item.endDate)}
                 </p>
+                {tags.length > 0 ? (
+                  <div className="flex flex-wrap gap-1.5 mt-1">
+                    {tags.map((t) => (
+                      <span
+                        key={t}
+                        className="inline-flex items-center bg-roman-500 text-white text-[11px] font-semibold px-2 py-0.5 rounded-full"
+                      >
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                ) : null}
               </div>
               <div className="flex items-center gap-3 shrink-0">
                 <span className="text-sm font-medium text-slate-800">

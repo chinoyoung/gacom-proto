@@ -16,6 +16,15 @@ export type AdArchetype =
   | "cover-photo"
   | "hot-jobs";
 
+export type AdField =
+  | "title"
+  | "clientLink"
+  | "videoLink"
+  | "description"
+  | "image"
+  | "featuredProgram"
+  | "customizeClientLink";
+
 export interface AdTypeSpec {
   code: string; // "Ad A", "HH", ...
   name: string; // "Homepage Premier Feature"
@@ -32,6 +41,7 @@ export interface AdTypeSpec {
   price: number; // flat mock price
   example: string; // cloudinary desktop example URL (reference only)
   tips?: string[];
+  fields?: AdField[]; // explicit form field order; falls back to inference when omitted
 }
 
 function example(slug: string): string {
@@ -40,6 +50,38 @@ function example(slug: string): string {
 
 export const AD_TYPES: AdTypeSpec[] = [
   // Homepage
+  {
+    code: "Ad E",
+    name: "GoAbroad Homepage Video Ad",
+    area: "Homepage",
+    archetype: "video-split",
+    titleMax: 80,
+    titleAuto: false,
+    descriptionMax: null,
+    imageDesktop: "1280 × 720",
+    imageRatio: "16:9",
+    buttons: ["Visit Website"],
+    autoFields: ["Provider", "Thumbnail"],
+    price: 1000,
+    example: example("e"),
+    fields: ["title", "clientLink", "videoLink"],
+  },
+  {
+    code: "Ad HFP",
+    name: "Homepage Featured Program",
+    area: "Homepage",
+    archetype: "program-card",
+    titleMax: 70,
+    titleAuto: false,
+    descriptionMax: null,
+    imageDesktop: "400 × 300",
+    imageRatio: "4:3",
+    buttons: ["Visit Website", "View Program"],
+    autoFields: ["Provider", "Logo", "Reviews", "Verification"],
+    price: 800,
+    example: example("a"),
+    fields: ["featuredProgram", "customizeClientLink", "clientLink", "title", "image"],
+  },
   {
     code: "Ad A",
     name: "Homepage Premier Feature",
@@ -54,51 +96,7 @@ export const AD_TYPES: AdTypeSpec[] = [
     autoFields: ["Provider", "Logo", "Reviews", "Verification"],
     price: 1200,
     example: example("a"),
-  },
-  {
-    code: "Ad B",
-    name: "Homepage Feature",
-    area: "Homepage",
-    archetype: "program-card",
-    titleMax: 60,
-    titleAuto: false,
-    descriptionMax: null,
-    imageDesktop: "282 × 150",
-    imageRatio: "3:2",
-    buttons: ["View Program"],
-    autoFields: ["Provider", "Logo", "Reviews", "Verification"],
-    price: 600,
-    example: example("b"),
-  },
-  {
-    code: "Ad C",
-    name: "Homepage Organizational Feature",
-    area: "Homepage",
-    archetype: "split-banner",
-    titleMax: 80,
-    titleAuto: false,
-    descriptionMax: null,
-    imageDesktop: "1400 × 400",
-    imageRatio: "1.91:1",
-    buttons: ["Visit Website"],
-    autoFields: ["Provider"],
-    price: 1000,
-    example: example("c"),
-  },
-  {
-    code: "Ad E",
-    name: "Homepage Video",
-    area: "Homepage",
-    archetype: "video-split",
-    titleMax: 80,
-    titleAuto: false,
-    descriptionMax: null,
-    imageDesktop: "1280 × 720",
-    imageRatio: "16:9",
-    buttons: ["Visit Website"],
-    autoFields: ["Provider", "Thumbnail"],
-    price: 1000,
-    example: example("e"),
+    fields: ["clientLink", "description", "image"],
   },
 
   // Directory Homepage
@@ -483,10 +481,21 @@ export function getAdType(name: string): AdTypeSpec | undefined {
   return AD_TYPES.find((spec) => spec.name === name);
 }
 
+export function getAdFields(spec: AdTypeSpec): AdField[] {
+  if (spec.fields) return spec.fields;
+  const f: AdField[] = [];
+  if (spec.titleAuto || spec.titleMax != null) f.push("title");
+  if (spec.descriptionMax != null) f.push("description");
+  f.push("clientLink");
+  if (spec.archetype === "video-split") f.push("videoLink");
+  else if (spec.imageDesktop.includes("×")) f.push("image");
+  return f;
+}
+
 // Local example screenshots under public/images/ads-specs, keyed by ad code.
-// Ad T and Ad D share one combined example; Ad C has none (returns null).
+// Ad T and Ad D share one combined example; Ad HFP has none (returns null).
 const AD_EXAMPLE_THUMBS: Record<string, string> = {
-  "Ad A": "a", "Ad B": "b", "Ad E": "e", "Ad F": "f", "Ad G": "g",
+  "Ad A": "a", "Ad E": "e", "Ad F": "f", "Ad G": "g",
   "Ad H": "h", "Ad I": "i", "Ad J": "j", "Ad L": "l", "Ad N": "n",
   "Ad M": "m", "Ad O": "o", "Ad P": "p", "Ad Q": "q", "Ad R": "r",
   "Ad T": "t-d", "Ad D": "t-d", "Ad K": "k",

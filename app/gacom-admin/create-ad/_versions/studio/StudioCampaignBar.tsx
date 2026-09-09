@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowRight, Check, ShoppingBag, ShoppingCart } from "lucide-react";
+import { ArrowRight, ShoppingBag, ShoppingCart } from "lucide-react";
 import type useCreateAdForm from "../../_shared/useCreateAdForm";
 import type useAdCart from "../../_shared/useAdCart";
 
@@ -15,7 +15,6 @@ interface StudioCampaignBarProps {
 
 export default function StudioCampaignBar({ form, cart }: StudioCampaignBarProps) {
   const [addError, setAddError] = useState<string | null>(null);
-  const [justAdded, setJustAdded] = useState(false);
 
   function handleAdd() {
     if (form.placementCount === 0) {
@@ -32,8 +31,7 @@ export default function StudioCampaignBar({ form, cart }: StudioCampaignBarProps
       endDate: form.state.endDate,
     });
     form.resetPlacementFields();
-    setJustAdded(true);
-    setTimeout(() => setJustAdded(false), 1500);
+    cart.openAdded();
   }
 
   return (
@@ -60,23 +58,10 @@ export default function StudioCampaignBar({ form, cart }: StudioCampaignBarProps
           <button
             type="button"
             onClick={handleAdd}
-            className={
-              justAdded
-                ? "bg-green-600 text-white text-sm font-semibold px-4 py-2 rounded-md inline-flex items-center gap-1.5 cursor-pointer"
-                : "bg-roman-500 hover:bg-roman-600 text-white text-sm font-semibold px-4 py-2 rounded-md inline-flex items-center gap-1.5 cursor-pointer"
-            }
+            className="bg-roman-500 hover:bg-roman-600 text-white text-sm font-semibold px-4 py-2 rounded-md inline-flex items-center gap-1.5 cursor-pointer"
           >
-            {justAdded ? (
-              <>
-                <Check className="h-4 w-4" aria-hidden="true" />
-                Added
-              </>
-            ) : (
-              <>
-                <ShoppingCart className="h-4 w-4" aria-hidden="true" />
-                Add to campaign
-              </>
-            )}
+            <ShoppingCart className="h-4 w-4" aria-hidden="true" />
+            Add to campaign
           </button>
           {cart.count > 0 ? (
             <button

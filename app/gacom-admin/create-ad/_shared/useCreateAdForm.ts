@@ -23,6 +23,9 @@ const INITIAL_STATE: CreateAdState = {
   title: "",
   description: "",
   clientLink: "",
+  videoLink: "",
+  featuredProgram: "",
+  customizeClientLink: false,
   previewDevice: "desktop",
   uploadedFileName: null,
   uploadedPreviewUrl: null,
@@ -46,11 +49,7 @@ export default function useCreateAdForm() {
 
   function addPlacementTag(dim: PlacementDim, value: string) {
     const key = PLACEMENT_DIM_KEYS[dim];
-    setState((s) => {
-      const current = s[key];
-      if (current.includes(value)) return s;
-      return { ...s, [key]: [...current, value] };
-    });
+    setState((s) => ({ ...s, [key]: [value] }));
   }
 
   function removePlacementTag(dim: PlacementDim, value: string) {
@@ -68,6 +67,18 @@ export default function useCreateAdForm() {
 
   function setClientLink(v: string) {
     setState((s) => ({ ...s, clientLink: v }));
+  }
+
+  function setVideoLink(v: string) {
+    setState((s) => ({ ...s, videoLink: v }));
+  }
+
+  function setFeaturedProgram(v: string) {
+    setState((s) => ({ ...s, featuredProgram: v }));
+  }
+
+  function setCustomizeClientLink(v: boolean) {
+    setState((s) => ({ ...s, customizeClientLink: v }));
   }
 
   function setPreviewDevice(v: PreviewDevice) {
@@ -98,6 +109,9 @@ export default function useCreateAdForm() {
       title: "",
       description: "",
       clientLink: "",
+      videoLink: "",
+      featuredProgram: "",
+      customizeClientLink: false,
       uploadedFileName: null,
       uploadedPreviewUrl: null,
     }));
@@ -116,6 +130,9 @@ export default function useCreateAdForm() {
     setTitle,
     setDescription,
     setClientLink,
+    setVideoLink,
+    setFeaturedProgram,
+    setCustomizeClientLink,
     setPreviewDevice,
     setUploadedFile,
     dismissProfileBanner,

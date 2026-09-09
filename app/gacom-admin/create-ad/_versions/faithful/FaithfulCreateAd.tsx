@@ -10,6 +10,7 @@ import FaithfulAdPreviewCard from "./FaithfulAdPreviewCard";
 import FaithfulAdContentCard from "./FaithfulAdContentCard";
 import FaithfulCartSummary from "./FaithfulCartSummary";
 import FaithfulCheckoutModal from "./FaithfulCheckoutModal";
+import AddedToCampaignModal from "../../_components/AddedToCampaignModal";
 
 export default function FaithfulCreateAd() {
   const form = useCreateAdForm();
@@ -48,6 +49,7 @@ export default function FaithfulCreateAd() {
       </div>
 
       <FaithfulCheckoutModal cart={cart} programName={PROGRAM_NAME} />
+      <AddedToCampaignModal cart={cart} />
     </div>
   );
 }

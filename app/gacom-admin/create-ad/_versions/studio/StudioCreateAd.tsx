@@ -6,6 +6,7 @@ import { NAV_ITEMS, PROGRAM_NAME, PROFILE_COMPLETION } from "../../_shared/mock-
 import FaithfulSidebar from "../faithful/FaithfulSidebar";
 import FaithfulTopChrome from "../faithful/FaithfulTopChrome";
 import FaithfulCheckoutModal from "../faithful/FaithfulCheckoutModal";
+import AddedToCampaignModal from "../../_components/AddedToCampaignModal";
 import StudioBuilder from "./StudioBuilder";
 
 export default function StudioCreateAd() {
@@ -30,6 +31,7 @@ export default function StudioCreateAd() {
       </div>
 
       <FaithfulCheckoutModal cart={cart} programName={PROGRAM_NAME} />
+      <AddedToCampaignModal cart={cart} />
     </div>
   );
 }
