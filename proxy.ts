@@ -4,6 +4,10 @@ import { NextResponse } from "next/server";
 
 const isPublicRoute = createRouteMatcher(["/sign-in(.*)", "/sign-up(.*)"]);
 
+// Emails outside the @goabroad.com domain that are still allowed into the
+// prototype (e.g. test accounts). Listed and compared in lowercase.
+const EMAIL_EXCEPTIONS = ["chinofyoung@gmail.com"];
+
 export default clerkMiddleware(async (auth, req) => {
     // 1. Force authentication for all routes except public ones
     if (!isPublicRoute(req)) {
@@ -23,8 +27,12 @@ export default clerkMiddleware(async (auth, req) => {
             (email) => email.id === user.primaryEmailAddressId
         )?.emailAddress;
 
-        // 2. Enforce the @goabroad.com domain restriction
-        if (primaryEmail && !primaryEmail.endsWith("@goabroad.com")) {
+        // 2. Enforce the @goabroad.com domain restriction (with test-account exceptions)
+        if (
+            primaryEmail &&
+            !primaryEmail.endsWith("@goabroad.com") &&
+            !EMAIL_EXCEPTIONS.includes(primaryEmail.toLowerCase())
+        ) {
             return new NextResponse(
                 `<html>
                     <head>

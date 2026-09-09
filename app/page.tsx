@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Globe, ArrowRight, LayoutDashboard, PenTool, Handshake, Smartphone, Palette, Building2, Compass } from 'lucide-react';
+import { Globe, ArrowRight, LayoutDashboard, PenTool, Handshake, Smartphone, Palette, Building2, Compass, Megaphone } from 'lucide-react';
 import AdminHeader from '@/components/AdminHeader';
 import AdminFooter from '@/components/AdminFooter';
 
@@ -71,6 +71,13 @@ const GROUPS: ModuleGroup[] = [
         title: "Create Listing",
         description: "The 8-step flow for drafting and publishing a program.",
         thumb: "/images/prototypes/create-listing.jpeg",
+      },
+      {
+        href: "/gacom-admin/create-ad",
+        icon: Megaphone,
+        title: "Create Ad",
+        description: "Build and preview an ad placement, add it to a cart, and check out. Faithful admin recreation.",
+        thumb: "/images/prototypes/create-ad.png",
       },
     ],
   },

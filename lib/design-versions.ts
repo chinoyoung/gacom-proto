@@ -61,6 +61,15 @@ export const PAGE_VERSIONS: Record<string, PageVersionConfig> = {
     ],
     defaultVersion: "v1",
   },
+  "create-ad": {
+    pageId: "create-ad",
+    versions: [
+      { id: "faithful", label: "Faithful", description: "Matches the real GoAbroad admin" },
+      { id: "brand", label: "Brand", description: "Same layout, restyled with the prototype brand" },
+      { id: "studio", label: "Studio", description: "Campaign Studio — guided visual builder" },
+    ],
+    defaultVersion: "studio",
+  },
 };
 
 export function getVersionConfig(pageId: string): PageVersionConfig | null {
