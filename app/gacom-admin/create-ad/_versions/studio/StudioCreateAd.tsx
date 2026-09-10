@@ -13,6 +13,8 @@ export default function StudioCreateAd() {
   const form = useCreateAdForm();
   const cart = useAdCart();
 
+  const modalOpen = cart.checkoutStep !== "closed" || cart.addedOpen;
+
   return (
     <div className="min-h-screen bg-slate-50 flex text-slate-800">
       <FaithfulSidebar navItems={NAV_ITEMS} activeKey="image" />
@@ -25,7 +27,7 @@ export default function StudioCreateAd() {
           onDismissBanner={form.dismissProfileBanner}
         />
 
-        <main className="flex-1 overflow-y-auto">
+        <main className={`flex-1 ${modalOpen ? "overflow-hidden" : "overflow-y-auto"}`}>
           <StudioBuilder form={form} cart={cart} />
         </main>
       </div>

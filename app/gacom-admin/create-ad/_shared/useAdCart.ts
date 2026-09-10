@@ -14,7 +14,7 @@ export default function useAdCart() {
   const count = items.length;
   const subtotal = items.reduce((s, i) => s + i.price, 0);
   const tax = Math.round(subtotal * TAX_RATE);
-  const total = subtotal + tax;
+  const total = subtotal;
 
   function addItem(snapshot: PlacementSnapshot) {
     const price = getAdType(snapshot.adType)?.price ?? DEFAULT_AD_PRICE;

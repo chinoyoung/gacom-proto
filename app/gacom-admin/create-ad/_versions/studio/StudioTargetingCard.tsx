@@ -39,10 +39,12 @@ export default function StudioTargetingCard({ form }: { form: Form }) {
           />
         </div>
       </div>
-      <div>
-        <label className={LABEL}>Ad placement</label>
-        <AdPlacementPicker form={form} columns />
-      </div>
+      {!form.usesPrograms ? (
+        <div>
+          <label className={LABEL}>Ad placement</label>
+          <AdPlacementPicker form={form} columns />
+        </div>
+      ) : null}
     </div>
   );
 }

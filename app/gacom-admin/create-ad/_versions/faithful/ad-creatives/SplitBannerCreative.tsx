@@ -24,12 +24,11 @@ export default function SplitBannerCreative({
   const title = form.state.title || AD_PREVIEW_DEFAULT_TITLE;
   const href = form.state.clientLink || "#";
   const buttonLabel = spec.buttons[0] ?? "Visit Website";
-  // The banner overall (not just the photo half) reads as ~1.91:1, so the
-  // row's height is driven by this aspect ratio rather than by content —
-  // the left column then stretches its CoverImage to fill that height
-  // (via the child-height override below) instead of imposing its own
-  // aspect ratio on half the width, which would leave it visibly short.
-  const bannerAspectRatio = (spec.imageRatio ?? "1.91:1").replace(":", "/");
+  // Size the banner card to the ad's real pixel dimensions (e.g. "1000 × 350")
+  // so it reads as the actual wide/short unit, rather than the too-tall imageRatio.
+  const [bannerW, bannerH] = spec.imageDesktop.split("×").map((s) => Number(s.trim()));
+  const bannerAspectRatio =
+    bannerW && bannerH ? `${bannerW} / ${bannerH}` : "1000 / 350";
 
   return (
     <div

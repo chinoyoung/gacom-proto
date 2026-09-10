@@ -38,14 +38,18 @@ export default function FaithfulCheckoutModal({
       if (e.key === "Escape") cart.closeCheckout();
     }
     window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "";
+    };
   }, [isOpen, cart]);
 
   if (cart.checkoutStep === "closed") return null;
 
   return (
     <div
-      className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4 cursor-pointer"
+      className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4 cursor-pointer"
       onClick={cart.closeCheckout}
     >
       <div
@@ -179,10 +183,6 @@ function CartStep({ cart }: { cart: Cart }) {
         <div className="flex items-center justify-between text-sm text-slate-600">
           <span>Subtotal</span>
           <span>${cart.subtotal.toLocaleString()}</span>
-        </div>
-        <div className="flex items-center justify-between text-sm text-slate-600">
-          <span>Tax</span>
-          <span>${cart.tax.toLocaleString()}</span>
         </div>
         <div className="flex items-center justify-between text-sm font-bold text-slate-900">
           <span>Total</span>

@@ -14,6 +14,7 @@ export interface CreateAdState {
   clientLink: string;
   videoLink: string;
   featuredProgram: string;
+  programs: string[];
   customizeClientLink: boolean;
   previewDevice: PreviewDevice;
   uploadedFileName: string | null;

@@ -25,6 +25,7 @@ const INITIAL_STATE: CreateAdState = {
   clientLink: "",
   videoLink: "",
   featuredProgram: "",
+  programs: [],
   customizeClientLink: false,
   previewDevice: "desktop",
   uploadedFileName: null,
@@ -77,6 +78,14 @@ export default function useCreateAdForm() {
     setState((s) => ({ ...s, featuredProgram: v }));
   }
 
+  function addProgram(v: string) {
+    setState((s) => (s.programs.includes(v) ? s : { ...s, programs: [...s.programs, v] }));
+  }
+
+  function removeProgram(v: string) {
+    setState((s) => ({ ...s, programs: s.programs.filter((p) => p !== v) }));
+  }
+
   function setCustomizeClientLink(v: boolean) {
     setState((s) => ({ ...s, customizeClientLink: v }));
   }
@@ -111,6 +120,7 @@ export default function useCreateAdForm() {
       clientLink: "",
       videoLink: "",
       featuredProgram: "",
+      programs: [],
       customizeClientLink: false,
       uploadedFileName: null,
       uploadedPreviewUrl: null,
@@ -121,6 +131,7 @@ export default function useCreateAdForm() {
 
   const activeSpec = getAdType(state.adType);
   const activeFields = activeSpec ? getAdFields(activeSpec) : [];
+  const usesPrograms = activeFields.includes("programs");
   const missingFields = activeSpec
     ? activeFields.filter((f) => {
         switch (f) {
@@ -135,6 +146,8 @@ export default function useCreateAdForm() {
             return state.description.trim() === "";
           case "image":
             return state.uploadedFileName == null;
+          case "programs":
+            return state.programs.length === 0;
           default:
             return false; // featuredProgram (mock/empty) and customizeClientLink are not required
         }
@@ -156,6 +169,8 @@ export default function useCreateAdForm() {
     setClientLink,
     setVideoLink,
     setFeaturedProgram,
+    addProgram,
+    removeProgram,
     setCustomizeClientLink,
     setPreviewDevice,
     setUploadedFile,
@@ -168,5 +183,6 @@ export default function useCreateAdForm() {
     missingFields,
     missingFieldLabels,
     contentComplete,
+    usesPrograms,
   };
 }

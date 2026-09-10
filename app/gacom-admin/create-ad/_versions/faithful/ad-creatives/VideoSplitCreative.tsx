@@ -28,7 +28,7 @@ export default function VideoSplitCreative({
 
   return (
     <div className="flex gap-5 items-center">
-      <div className="w-1/2 flex flex-col gap-3">
+      <div className="w-1/3 flex flex-col gap-3">
         <span className="text-xs font-bold uppercase tracking-wide text-amber-500">
           Featured video of the month
         </span>
@@ -45,7 +45,7 @@ export default function VideoSplitCreative({
         </a>
       </div>
 
-      <div className="w-1/2">
+      <div className="w-2/3">
         <div className="relative rounded-lg overflow-hidden bg-slate-900 aspect-video [&>div]:h-full">
           <CoverImage form={form} ratio="16:9" />
 

@@ -1,9 +1,10 @@
 "use client";
 
-import { Info, Link as LinkIcon, Monitor, Video } from "lucide-react";
+import { Info, Link as LinkIcon, Monitor, Video, X } from "lucide-react";
 import { AD_TYPES, getAdType, getAdFields } from "../_shared/ad-types";
 import type { AdField } from "../_shared/ad-types";
 import type useCreateAdForm from "../_shared/useCreateAdForm";
+import { PROGRAMS } from "../_shared/mock-data";
 
 type Form = ReturnType<typeof useCreateAdForm>;
 
@@ -147,6 +148,37 @@ export default function AdContentFields({ form }: { form: Form }) {
             </label>
           </div>
         );
+      case "programs": {
+        const available = PROGRAMS.filter((p) => !form.state.programs.includes(p));
+        return (
+          <div key="programs">
+            <label className={LABEL} htmlFor="ad-programs">Select program(s)</label>
+            {form.state.programs.length > 0 ? (
+              <div className="flex flex-wrap gap-2 mb-2">
+                {form.state.programs.map((p) => (
+                  <span key={p} className="inline-flex items-center gap-1 bg-roman-500 text-white text-xs font-semibold px-2.5 py-1 rounded-full">
+                    {p}
+                    <button type="button" aria-label={`Remove ${p}`} onClick={() => form.removeProgram(p)} className="cursor-pointer">
+                      <X className="h-3 w-3" aria-hidden="true" />
+                    </button>
+                  </span>
+                ))}
+              </div>
+            ) : null}
+            <select
+              id="ad-programs"
+              value=""
+              onChange={(e) => { if (e.target.value) form.addProgram(e.target.value); }}
+              className="h-10 w-full rounded-md border border-slate-300 px-3 text-sm bg-white cursor-pointer"
+            >
+              <option value="" disabled>Add a program…</option>
+              {available.map((p) => (
+                <option key={p} value={p}>{p}</option>
+              ))}
+            </select>
+          </div>
+        );
+      }
       default:
         return null;
     }

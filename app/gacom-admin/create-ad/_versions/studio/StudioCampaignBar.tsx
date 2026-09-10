@@ -17,7 +17,7 @@ export default function StudioCampaignBar({ form, cart }: StudioCampaignBarProps
   const [addError, setAddError] = useState<string | null>(null);
 
   function handleAdd() {
-    if (form.placementCount === 0) {
+    if (!form.usesPrograms && form.placementCount === 0) {
       setAddError("Add at least one placement first.");
       return;
     }

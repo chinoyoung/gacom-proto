@@ -121,7 +121,9 @@ function CarouselCard({ spec, selected, onSelect }: CarouselCardProps) {
   const thumb = adExampleThumb(spec);
   const specLine = spec.titleAuto
     ? `${spec.imageDesktop} · auto title`
-    : `${spec.imageDesktop} · title ${spec.titleMax}`;
+    : spec.titleMax != null
+      ? `${spec.imageDesktop} · title ${spec.titleMax}`
+      : spec.imageDesktop;
 
   return (
     <button

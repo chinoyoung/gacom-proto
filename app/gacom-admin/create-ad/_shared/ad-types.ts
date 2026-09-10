@@ -23,6 +23,7 @@ export type AdField =
   | "description"
   | "image"
   | "featuredProgram"
+  | "programs"
   | "customizeClientLink";
 
 export const AD_FIELD_LABELS: Record<AdField, string> = {
@@ -32,6 +33,7 @@ export const AD_FIELD_LABELS: Record<AdField, string> = {
   description: "Description",
   image: "Image",
   featuredProgram: "Featured Program",
+  programs: "Programs",
   customizeClientLink: "Customize Client Link",
 };
 
@@ -309,6 +311,7 @@ export const AD_TYPES: AdTypeSpec[] = [
     autoFields: [],
     price: 800,
     example: example("t"),
+    fields: ["image", "programs"],
   },
   {
     code: "Ad D",
@@ -325,6 +328,7 @@ export const AD_TYPES: AdTypeSpec[] = [
     autoFields: [],
     price: 900,
     example: example("d"),
+    fields: ["image", "programs"],
   },
   {
     code: "Ad K",
@@ -341,6 +345,7 @@ export const AD_TYPES: AdTypeSpec[] = [
     autoFields: ["Provider", "Logo", "Reviews", "Verification"],
     price: 1200,
     example: example("k"),
+    fields: ["image", "programs"],
   },
 
   // Brand Promotions

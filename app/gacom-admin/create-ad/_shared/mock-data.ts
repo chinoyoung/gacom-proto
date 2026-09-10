@@ -62,6 +62,14 @@ export const PLACEMENT_DIM_LABELS: Record<PlacementDim, string> = {
   type: "Type",
 };
 
+export const PROGRAMS: string[] = [
+  "6019 - Internships in Spain - Adelante Abroad",
+  "7315 - Law Internships in Madrid, Spain",
+  "8193 - Semester Study Abroad in Seville, Spain - Adelante Abroad",
+  "8194 - Internships in Madrid, Spain",
+  "13158 - Volunteer in Oaxaca, Mexico - Adelante Abroad",
+];
+
 export const DEFAULT_AD_PRICE = 400;
 export const TAX_RATE = 0.08;
 

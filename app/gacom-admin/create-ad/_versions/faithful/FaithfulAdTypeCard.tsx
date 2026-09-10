@@ -62,10 +62,12 @@ export default function FaithfulAdTypeCard({ form }: { form: Form }) {
         </div>
       </div>
 
-      <div className="mt-4">
-        <label className={FIELD_LABEL}>Ad Placement</label>
-        <AdPlacementPicker form={form} />
-      </div>
+      {!form.usesPrograms ? (
+        <div className="mt-4">
+          <label className={FIELD_LABEL}>Ad Placement</label>
+          <AdPlacementPicker form={form} />
+        </div>
+      ) : null}
     </div>
   );
 }

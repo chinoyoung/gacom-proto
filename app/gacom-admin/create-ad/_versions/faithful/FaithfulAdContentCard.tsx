@@ -13,7 +13,7 @@ export default function FaithfulAdContentCard({ form, cart }: { form: Form; cart
   const [addError, setAddError] = useState<string | null>(null);
 
   function handleAddToCart() {
-    if (form.placementCount === 0) {
+    if (!form.usesPrograms && form.placementCount === 0) {
       setAddError("Add at least one placement first.");
       return;
     }

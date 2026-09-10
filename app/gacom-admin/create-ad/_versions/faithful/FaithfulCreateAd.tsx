@@ -16,6 +16,8 @@ export default function FaithfulCreateAd() {
   const form = useCreateAdForm();
   const cart = useAdCart();
 
+  const modalOpen = cart.checkoutStep !== "closed" || cart.addedOpen;
+
   return (
     <div className="min-h-screen bg-slate-50 flex text-slate-800">
       <FaithfulSidebar navItems={NAV_ITEMS} activeKey="image" />
@@ -28,7 +30,7 @@ export default function FaithfulCreateAd() {
           onDismissBanner={form.dismissProfileBanner}
         />
 
-        <main className="flex-1 overflow-y-auto">
+        <main className={`flex-1 ${modalOpen ? "overflow-hidden" : "overflow-y-auto"}`}>
           <div className="max-w-[1400px] mx-auto px-6 py-6">
             <h1 className="text-xl font-semibold text-slate-900 mb-6">Create Ad</h1>
 
