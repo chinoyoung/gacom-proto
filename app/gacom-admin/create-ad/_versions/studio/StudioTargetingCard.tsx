@@ -90,56 +90,60 @@ export default function StudioTargetingCard({ form }: { form: Form }) {
   return (
     <div className={CARD}>
       <h2 className="text-sm font-bold text-slate-900 mb-4">Targeting &amp; schedule</h2>
-      <div className="flex items-center flex-wrap gap-2 mb-4">
-        <span className="text-xs font-semibold text-slate-500">Duration</span>
-        {DURATIONS.map((dur) => (
-          <button
-            key={dur.months}
-            type="button"
-            onClick={() => applyPreset(dur.months)}
-            className={`text-sm px-3 py-1 rounded-full cursor-pointer ${
-              preset === dur.months
-                ? "bg-roman-500 text-white border border-roman-500"
-                : "border border-slate-300 text-slate-600 hover:border-slate-400"
-            }`}
-          >
-            {dur.label}
-          </button>
-        ))}
-      </div>
-      <div className="flex gap-3 mb-2">
-        <div className="w-36 sm:w-40">
-          <label className={LABEL} htmlFor="studio-start-date">
-            Start Date
-          </label>
-          <input
-            id="studio-start-date"
-            type="date"
-            className={INPUT}
-            value={form.state.startDate}
-            onChange={(e) => handleStart(e.target.value)}
-          />
+      <div className="bg-slate-50 rounded-lg p-4 mb-4">
+        <div className="flex items-center flex-wrap gap-2 mb-4">
+          <span className="text-xs font-semibold text-slate-500">Duration</span>
+          {DURATIONS.map((dur) => (
+            <button
+              key={dur.months}
+              type="button"
+              onClick={() => applyPreset(dur.months)}
+              className={`text-sm px-3 py-1 rounded-full cursor-pointer ${
+                preset === dur.months
+                  ? "bg-roman-500 text-white border border-roman-500"
+                  : "border border-slate-300 text-slate-600 hover:border-slate-400"
+              }`}
+            >
+              {dur.label}
+            </button>
+          ))}
         </div>
-        <div className="w-36 sm:w-40">
-          <label className={LABEL} htmlFor="studio-end-date">
-            End Date
-          </label>
-          <input
-            id="studio-end-date"
-            type="date"
-            className={INPUT}
-            value={form.state.endDate}
-            onChange={(e) => handleEnd(e.target.value)}
-          />
+        <div className="flex flex-wrap items-end gap-3">
+          <div className="w-36 sm:w-40">
+            <label className={LABEL} htmlFor="studio-start-date">
+              Start Date
+            </label>
+            <input
+              id="studio-start-date"
+              type="date"
+              className={INPUT}
+              value={form.state.startDate}
+              onChange={(e) => handleStart(e.target.value)}
+            />
+          </div>
+          <div className="w-36 sm:w-40">
+            <label className={LABEL} htmlFor="studio-end-date">
+              End Date
+            </label>
+            <input
+              id="studio-end-date"
+              type="date"
+              className={INPUT}
+              value={form.state.endDate}
+              onChange={(e) => handleEnd(e.target.value)}
+            />
+          </div>
+          {preset === null && runDays > 0 ? (
+            <div className="flex items-center h-10">
+              <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 text-xs font-medium whitespace-nowrap">
+                Runs for {runDays} day{runDays === 1 ? "" : "s"}
+              </span>
+            </div>
+          ) : null}
         </div>
       </div>
-      <p className="text-xs text-slate-500 mb-4 h-4">
-        {preset === null && runDays > 0
-          ? `Runs for ${runDays} day${runDays === 1 ? "" : "s"}`
-          : ""}
-      </p>
       {!form.usesPrograms ? (
-        <div>
+        <div className="bg-slate-50 rounded-lg p-4">
           <label className={LABEL}>Ad placement</label>
           <AdPlacementPicker
             form={form}
@@ -153,7 +157,7 @@ export default function StudioTargetingCard({ form }: { form: Form }) {
                   <button
                     type="button"
                     onClick={handleCheck}
-                    className={`text-sm font-medium px-3 py-1.5 rounded-md inline-flex items-center gap-1.5 cursor-pointer whitespace-nowrap border ${
+                    className={`text-xs font-semibold px-2.5 py-1 rounded-full inline-flex items-center gap-1 cursor-pointer whitespace-nowrap border ${
                       availability
                         ? availability.available
                           ? "bg-green-100 text-green-700 border-green-200 hover:bg-green-200"
@@ -164,18 +168,18 @@ export default function StudioTargetingCard({ form }: { form: Form }) {
                     {availability ? (
                       availability.available ? (
                         <>
-                          <Check className="h-4 w-4" aria-hidden="true" />
+                          <Check className="h-3 w-3" aria-hidden="true" />
                           Available
                         </>
                       ) : (
                         <>
-                          <X className="h-4 w-4" aria-hidden="true" />
+                          <X className="h-3 w-3" aria-hidden="true" />
                           Unavailable
                         </>
                       )
                     ) : (
                       <>
-                        <CalendarSearch className="h-4 w-4" aria-hidden="true" />
+                        <CalendarSearch className="h-3 w-3" aria-hidden="true" />
                         Check availability
                       </>
                     )}

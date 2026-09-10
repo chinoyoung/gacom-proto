@@ -162,17 +162,6 @@ export default function AdPlacementPicker({
 
   return (
     <div>
-      {pills.length > 0 || actions ? (
-        <div className="flex items-start justify-between gap-3 mb-3">
-          <div className="flex flex-wrap gap-2">
-            {pills.map(({ dim, v }) => (
-              <PlacementChip key={`${dim}-${v}`} value={v} onRemove={() => form.removePlacementTag(dim, v)} />
-            ))}
-          </div>
-          {actions ? <div className="shrink-0">{actions}</div> : null}
-        </div>
-      ) : null}
-
       <div className={columns ? "grid grid-cols-1 lg:grid-cols-3 gap-4 items-start" : "space-y-4"}>
         <div>
           <label className="text-xs font-semibold text-slate-500 mb-1.5 block">
@@ -195,6 +184,17 @@ export default function AdPlacementPicker({
           <PlacementCombobox form={form} dim="type" />
         </div>
       </div>
+
+      {pills.length > 0 || actions ? (
+        <div className="flex items-start justify-between gap-3 mt-3">
+          <div className="flex flex-wrap gap-2">
+            {pills.map(({ dim, v }) => (
+              <PlacementChip key={`${dim}-${v}`} value={v} onRemove={() => form.removePlacementTag(dim, v)} />
+            ))}
+          </div>
+          {actions ? <div className="shrink-0">{actions}</div> : null}
+        </div>
+      ) : null}
     </div>
   );
 }
