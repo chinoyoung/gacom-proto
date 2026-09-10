@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Search, X } from "lucide-react";
 import { PLACEMENT_DIM_LABELS, PLACEMENT_OPTIONS } from "../_shared/mock-data";
 import type { PlacementDim } from "../_shared/types";
@@ -145,7 +145,15 @@ function PlacementCombobox({ form, dim }: { form: Form; dim: PlacementDim }) {
   );
 }
 
-export default function AdPlacementPicker({ form, columns = false }: { form: Form; columns?: boolean }) {
+export default function AdPlacementPicker({
+  form,
+  columns = false,
+  actions,
+}: {
+  form: Form;
+  columns?: boolean;
+  actions?: ReactNode;
+}) {
   const pills = [
     ...form.state.locations.map((v) => ({ dim: "location" as const, v })),
     ...form.state.timings.map((v) => ({ dim: "timing" as const, v })),
@@ -154,11 +162,14 @@ export default function AdPlacementPicker({ form, columns = false }: { form: For
 
   return (
     <div>
-      {pills.length > 0 ? (
-        <div className="flex flex-wrap gap-2 mb-3">
-          {pills.map(({ dim, v }) => (
-            <PlacementChip key={`${dim}-${v}`} value={v} onRemove={() => form.removePlacementTag(dim, v)} />
-          ))}
+      {pills.length > 0 || actions ? (
+        <div className="flex items-start justify-between gap-3 mb-3">
+          <div className="flex flex-wrap gap-2">
+            {pills.map(({ dim, v }) => (
+              <PlacementChip key={`${dim}-${v}`} value={v} onRemove={() => form.removePlacementTag(dim, v)} />
+            ))}
+          </div>
+          {actions ? <div className="shrink-0">{actions}</div> : null}
         </div>
       ) : null}
 

@@ -132,6 +132,8 @@ export default function useCreateAdForm() {
   const activeSpec = getAdType(state.adType);
   const activeFields = activeSpec ? getAdFields(activeSpec) : [];
   const usesPrograms = activeFields.includes("programs");
+  const hasLimitedSlots =
+    !!activeSpec && ["video-split", "split-banner"].includes(activeSpec.archetype);
   const missingFields = activeSpec
     ? activeFields.filter((f) => {
         switch (f) {
@@ -184,5 +186,6 @@ export default function useCreateAdForm() {
     missingFieldLabels,
     contentComplete,
     usesPrograms,
+    hasLimitedSlots,
   };
 }

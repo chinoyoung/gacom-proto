@@ -510,7 +510,7 @@ export function getAdFields(spec: AdTypeSpec): AdField[] {
 // Local example screenshots under public/images/ads-specs, keyed by ad code.
 // Ad T and Ad D share one combined example; Ad HFP has none (returns null).
 const AD_EXAMPLE_THUMBS: Record<string, string> = {
-  "Ad A": "a", "Ad E": "e", "Ad F": "f", "Ad G": "g",
+  "Ad A": "a", "Ad E": "e", "Ad HFP": "i", "Ad F": "f", "Ad G": "g",
   "Ad H": "h", "Ad I": "i", "Ad J": "j", "Ad L": "l", "Ad N": "n",
   "Ad M": "m", "Ad O": "o", "Ad P": "p", "Ad Q": "q", "Ad R": "r",
   "Ad T": "t-d", "Ad D": "t-d", "Ad K": "k",
