@@ -21,6 +21,10 @@ export default function StudioCampaignBar({ form, cart }: StudioCampaignBarProps
       setAddError("Add at least one placement first.");
       return;
     }
+    if (form.requiresDirectory && form.state.directories.length === 0) {
+      setAddError("Choose a directory.");
+      return;
+    }
     if (!form.contentComplete) {
       setAddError("Fill in all required fields: " + form.missingFieldLabels.join(", "));
       return;

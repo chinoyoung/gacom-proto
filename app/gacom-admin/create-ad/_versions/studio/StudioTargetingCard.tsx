@@ -111,6 +111,10 @@ export default function StudioTargetingCard({ form, cart }: { form: Form; cart: 
       setReserveError("Add at least one placement first.");
       return;
     }
+    if (form.requiresDirectory && form.state.directories.length === 0) {
+      setReserveError("Choose a directory.");
+      return;
+    }
     if (!form.contentComplete) {
       setReserveError("Fill in all required fields: " + form.missingFieldLabels.join(", "));
       return;

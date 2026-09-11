@@ -143,6 +143,8 @@ export default function useCreateAdForm() {
   const usesPrograms = activeFields.includes("programs");
   const hasLimitedSlots =
     !!activeSpec && ["video-split", "split-banner"].includes(activeSpec.archetype);
+  const requiresDirectory =
+    activeSpec?.area === "Directory Homepage" || activeSpec?.area === "Search Results";
   const missingFields = activeSpec
     ? activeFields.filter((f) => {
         switch (f) {
@@ -197,5 +199,6 @@ export default function useCreateAdForm() {
     contentComplete,
     usesPrograms,
     hasLimitedSlots,
+    requiresDirectory,
   };
 }
