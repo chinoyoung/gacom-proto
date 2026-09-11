@@ -6,7 +6,7 @@ import type useCreateAdForm from "../../_shared/useCreateAdForm";
 import type useAdCart from "../../_shared/useAdCart";
 import { AD_TYPES_BY_AREA, getAdType } from "../../_shared/ad-types";
 import type { PlacementArea } from "../../_shared/ad-types";
-import { PREVIEW_URL } from "../../_shared/mock-data";
+import { DIRECTORIES, PREVIEW_URL } from "../../_shared/mock-data";
 import PreviewSwitcher, { frameMaxWidth } from "../faithful/ad-creatives/PreviewSwitcher";
 import StudioCampaignBar from "./StudioCampaignBar";
 import StudioContentPanel from "./StudioContentPanel";
@@ -50,6 +50,32 @@ export default function StudioBuilder({ form, cart }: StudioBuilderProps) {
             </button>
           ))}
         </div>
+
+        {area === "Directory Homepage" || area === "Search Results" ? (
+          <div className="bg-white rounded-xl border border-slate-200 p-4">
+            <label className="mb-2.5 block text-xs font-semibold text-slate-500">Choose a Directory</label>
+            <div className="flex flex-wrap gap-2">
+              {DIRECTORIES.map((d) => {
+                const on = form.state.directories.includes(d);
+                return (
+                  <button
+                    key={d}
+                    type="button"
+                    onClick={() => form.toggleDirectory(d)}
+                    aria-pressed={on}
+                    className={`cursor-pointer rounded-full border px-2.5 py-1 text-xs font-medium ${
+                      on
+                        ? "border-roman-500 bg-roman-500 text-white"
+                        : "border-slate-300 bg-white text-slate-600 hover:border-slate-400"
+                    }`}
+                  >
+                    {d}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        ) : null}
 
         <StudioFormatCarousel area={area} form={form} />
 

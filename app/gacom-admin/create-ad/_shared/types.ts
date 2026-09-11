@@ -9,6 +9,7 @@ export interface CreateAdState {
   locations: string[];
   timings: string[];
   types: string[];
+  directories: string[];
   title: string;
   description: string;
   clientLink: string;

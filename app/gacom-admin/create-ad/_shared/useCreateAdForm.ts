@@ -15,11 +15,12 @@ const PLACEMENT_DIM_KEYS: Record<PlacementDim, "locations" | "timings" | "types"
 
 const INITIAL_STATE: CreateAdState = {
   adType: AD_TYPES[0].name,
-  startDate: "2026-07-17",
-  endDate: "2026-08-15",
+  startDate: "2026-10-01",
+  endDate: "2026-10-31",
   locations: [],
   timings: [],
   types: [],
+  directories: [],
   title: "",
   description: "",
   clientLink: "",
@@ -115,6 +116,7 @@ export default function useCreateAdForm() {
       locations: [],
       timings: [],
       types: [],
+      directories: [],
       title: "",
       description: "",
       clientLink: "",
@@ -124,6 +126,13 @@ export default function useCreateAdForm() {
       customizeClientLink: false,
       uploadedFileName: null,
       uploadedPreviewUrl: null,
+    }));
+  }
+
+  function toggleDirectory(name: string) {
+    setState((s) => ({
+      ...s,
+      directories: s.directories.includes(name) ? [] : [name],
     }));
   }
 
@@ -178,6 +187,7 @@ export default function useCreateAdForm() {
     setUploadedFile,
     dismissProfileBanner,
     resetPlacementFields,
+    toggleDirectory,
     titleLength: state.title.length,
     TITLE_MAX,
     descriptionLength: state.description.length,

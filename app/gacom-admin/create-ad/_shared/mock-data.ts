@@ -50,6 +50,20 @@ export const PLACEMENT_TYPES: string[] = [
   "Psychology",
 ];
 
+export const DIRECTORIES: string[] = [
+  "Study Abroad",
+  "Volunteer Abroad",
+  "Intern Abroad",
+  "Teach Abroad",
+  "TEFL Courses",
+  "GAP Year",
+  "Degrees Abroad",
+  "High School Programs Abroad",
+  "Language Schools",
+  "Adventure Travel",
+  "Jobs Abroad",
+];
+
 export const PLACEMENT_OPTIONS: Record<PlacementDim, string[]> = {
   location: PLACEMENT_LOCATIONS,
   timing: PLACEMENT_TIMINGS,
