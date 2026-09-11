@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { X, Trash2, CreditCard, ArrowLeft, Check, Image as ImageIcon, Calendar } from "lucide-react";
+import { X, Trash2, CreditCard, ArrowLeft, Check, Image as ImageIcon, Calendar, Folder } from "lucide-react";
 import type useAdCart from "../../_shared/useAdCart";
 import { getAdType, adExampleThumb } from "../../_shared/ad-types";
 
@@ -126,8 +126,17 @@ function CartStep({ cart }: { cart: Cart }) {
                   <Calendar className="h-3.5 w-3.5 text-slate-400" aria-hidden="true" />
                   {formatDate(item.startDate)} → {formatDate(item.endDate)}
                 </p>
-                {tags.length > 0 ? (
+                {tags.length > 0 || item.directories.length > 0 ? (
                   <div className="flex flex-wrap gap-1.5 mt-1">
+                    {item.directories.map((d) => (
+                      <span
+                        key={d}
+                        className="inline-flex items-center gap-1 bg-cobalt-500 text-white text-[11px] font-semibold px-2 py-0.5 rounded-full"
+                      >
+                        <Folder className="h-3 w-3" aria-hidden="true" />
+                        {d}
+                      </span>
+                    ))}
                     {tags.map((t) => (
                       <span
                         key={t}

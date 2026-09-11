@@ -35,6 +35,7 @@ export interface PlacementSnapshot {
   locations: string[];
   timings: string[];
   types: string[];
+  directories: string[];
   startDate: string;
   endDate: string;
 }

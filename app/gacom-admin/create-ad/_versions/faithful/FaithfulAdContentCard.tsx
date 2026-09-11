@@ -27,6 +27,7 @@ export default function FaithfulAdContentCard({ form, cart }: { form: Form; cart
       locations: form.state.locations,
       timings: form.state.timings,
       types: form.state.types,
+      directories: form.state.directories,
       startDate: form.state.startDate,
       endDate: form.state.endDate,
     });
