@@ -1,11 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { CalendarSearch, Check, X } from "lucide-react";
+import { CalendarClock, CalendarSearch, Check, X } from "lucide-react";
 import AdPlacementPicker from "../../_components/AdPlacementPicker";
 import type useCreateAdForm from "../../_shared/useCreateAdForm";
+import type useAdCart from "../../_shared/useAdCart";
 
 type Form = ReturnType<typeof useCreateAdForm>;
+type Cart = ReturnType<typeof useAdCart>;
 
 const CARD = "bg-white rounded-xl border border-slate-200 p-5";
 const LABEL = "text-xs font-semibold text-slate-500 mb-1.5 block";
@@ -37,29 +39,58 @@ function daysBetween(startIso: string, endIso: string): number {
   return Math.round((e - s) / 86400000);
 }
 
-function checkSlots(loc: string[], tim: string[], typ: string[]): { available: boolean; slots: number } {
+// Deterministic mock: each placement combo maps to one slot.
+// ~1/3 of combos are open now (null); the rest are held by a running ad
+// until a date some weeks out from today.
+function slotBookedUntil(loc: string[], tim: string[], typ: string[]): string | null {
   const key = [...loc, ...tim, ...typ].join("|");
+  if (!key) return null;
   let hash = 0;
   for (let i = 0; i < key.length; i++) hash = (hash * 31 + key.charCodeAt(i)) >>> 0;
-  const slots = hash % 5; // 0..4 of 5 remaining
-  return { available: slots > 0, slots };
+  if (hash % 3 === 0) return null; // open now
+  const daysOut = 25 + (hash % 100); // 25..124 days out
+  const d = new Date();
+  d.setHours(0, 0, 0, 0);
+  d.setDate(d.getDate() + daysOut);
+  return isoOf(d);
 }
 
-export default function StudioTargetingCard({ form }: { form: Form }) {
-  const [preset, setPreset] = useState<number | null>(null);
-  const [availability, setAvailability] = useState<{ available: boolean; slots: number } | null>(null);
-  const [needsPlacement, setNeedsPlacement] = useState(false);
+function isoOf(d: Date): string {
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+}
 
-  // Reset the stale result when the placement combo or ad type changes.
+function addDaysIso(iso: string, n: number): string {
+  const [y, m, d] = iso.split("-").map(Number);
+  const dt = new Date(y, m - 1, d);
+  dt.setDate(dt.getDate() + n);
+  return isoOf(dt);
+}
+
+function fmtDate(iso: string, withYear = false): string {
+  const [y, m, d] = iso.split("-").map(Number);
+  const dt = new Date(y, m - 1, d);
+  return dt.toLocaleDateString("en-US", withYear
+    ? { month: "short", day: "numeric", year: "numeric" }
+    : { month: "short", day: "numeric" });
+}
+
+export default function StudioTargetingCard({ form, cart }: { form: Form; cart: Cart }) {
+  const [preset, setPreset] = useState<number | null>(null);
+  const [availability, setAvailability] = useState<{ free: boolean; bookedUntil: string | null } | null>(null);
+  const [needsPlacement, setNeedsPlacement] = useState(false);
+  const [reserveError, setReserveError] = useState<string | null>(null);
+
+  // Reset the stale result when the placement combo, ad type, or start date changes.
   // Adjusted during render (React's documented pattern for "state derived from
   // a prop change") rather than in a useEffect, which would call setState
   // synchronously inside the effect body and trigger a cascading-render lint error.
-  const placementKey = `${form.state.adType}|${form.state.locations.join()}|${form.state.timings.join()}|${form.state.types.join()}`;
+  const placementKey = `${form.state.adType}|${form.state.locations.join()}|${form.state.timings.join()}|${form.state.types.join()}|${form.state.startDate}`;
   const [lastPlacementKey, setLastPlacementKey] = useState(placementKey);
   if (placementKey !== lastPlacementKey) {
     setLastPlacementKey(placementKey);
     setAvailability(null);
     setNeedsPlacement(false);
+    setReserveError(null);
   }
 
   function handleCheck() {
@@ -69,7 +100,45 @@ export default function StudioTargetingCard({ form }: { form: Form }) {
       return;
     }
     setNeedsPlacement(false);
-    setAvailability(checkSlots(form.state.locations, form.state.timings, form.state.types));
+    const bookedUntil = slotBookedUntil(form.state.locations, form.state.timings, form.state.types);
+    const free = bookedUntil === null || bookedUntil < form.state.startDate;
+    setAvailability({ free, bookedUntil });
+  }
+
+  function handleReserve(bookedUntil: string) {
+    // same validation as "Add to campaign"
+    if (!form.usesPrograms && form.placementCount === 0) {
+      setReserveError("Add at least one placement first.");
+      return;
+    }
+    if (!form.contentComplete) {
+      setReserveError("Fill in all required fields: " + form.missingFieldLabels.join(", "));
+      return;
+    }
+    setReserveError(null);
+
+    // reserved window — preserve the chosen duration
+    const open = addDaysIso(bookedUntil, 1);
+    let newEnd: string;
+    if (preset != null) {
+      newEnd = addMonths(open, preset);
+    } else {
+      const len = daysBetween(form.state.startDate, form.state.endDate);
+      newEnd = len > 0 ? addDaysIso(open, len) : form.state.endDate;
+    }
+
+    form.setStartDate(open);
+    form.setEndDate(newEnd);
+    cart.addItem({
+      adType: form.state.adType,
+      locations: form.state.locations,
+      timings: form.state.timings,
+      types: form.state.types,
+      startDate: open,
+      endDate: newEnd,
+    });
+    form.resetPlacementFields();
+    cart.openAdded();
   }
 
   function handleStart(v: string) {
@@ -159,14 +228,14 @@ export default function StudioTargetingCard({ form }: { form: Form }) {
                     onClick={handleCheck}
                     className={`text-xs font-semibold px-2.5 py-1 rounded-full inline-flex items-center gap-1 cursor-pointer whitespace-nowrap border ${
                       availability
-                        ? availability.available
+                        ? availability.free
                           ? "bg-green-100 text-green-700 border-green-200 hover:bg-green-200"
                           : "bg-red-100 text-red-700 border-red-200 hover:bg-red-200"
                         : "border-slate-300 text-slate-700 hover:bg-slate-50"
                     }`}
                   >
                     {availability ? (
-                      availability.available ? (
+                      availability.free ? (
                         <>
                           <Check className="h-3 w-3" aria-hidden="true" />
                           Available
@@ -188,6 +257,36 @@ export default function StudioTargetingCard({ form }: { form: Form }) {
               ) : undefined
             }
           />
+          {availability && !availability.free && availability.bookedUntil ? (
+            <div className="mt-3 rounded-lg border border-slate-200 bg-white p-4">
+              <div className="flex flex-col items-center text-center">
+                <div className="grid h-9 w-9 place-items-center rounded-lg bg-fern-500 text-white">
+                  <CalendarClock className="h-5 w-5" aria-hidden="true" />
+                </div>
+                <p className="mt-2 text-sm font-semibold text-slate-900">Reserve this spot before someone else does</p>
+                <p className="mt-1 text-sm text-slate-600">
+                  It opens up on{" "}
+                  <span className="font-semibold text-fern-700">
+                    {fmtDate(addDaysIso(availability.bookedUntil, 1), true)}
+                  </span>
+                  . Lock it in now and your ad goes live the moment it frees.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => handleReserve(availability.bookedUntil!)}
+                  className="mt-3 inline-flex items-center gap-1.5 rounded-md bg-fern-500 px-4 py-2 text-sm font-semibold text-white hover:bg-fern-600 cursor-pointer"
+                >
+                  <CalendarClock className="h-4 w-4" aria-hidden="true" />
+                  Reserve — start {fmtDate(addDaysIso(availability.bookedUntil, 1))}
+                </button>
+                {reserveError ? (
+                  <p role="alert" className="mt-2 text-xs text-red-600">
+                    {reserveError}
+                  </p>
+                ) : null}
+              </div>
+            </div>
+          ) : null}
         </div>
       ) : null}
     </div>

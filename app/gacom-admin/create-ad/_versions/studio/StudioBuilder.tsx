@@ -115,7 +115,7 @@ export default function StudioBuilder({ form, cart }: StudioBuilderProps) {
           </div>
 
           <div className="space-y-6">
-            <StudioTargetingCard form={form} />
+            <StudioTargetingCard form={form} cart={cart} />
             <StudioContentPanel form={form} />
           </div>
         </div>
